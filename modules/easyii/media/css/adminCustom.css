@@ -1,0 +1,47 @@
+#admin-body .container {
+    width: 100%;
+    padding: 0;
+}
+
+#admin-body .sidebar a.menu-item {
+    border: none;
+}
+
+#admin-body .header .logo img {
+    height: 40px;
+    display: block;
+    margin: 5px auto;
+}
+
+#admin-body .header .logo .short-title {
+    float: left;
+    margin-left: 15px;
+}
+
+.language-switch .dropdown-menu {
+    background-color: #1d212a;
+}
+
+.nav .language-switch.open > a, .nav .language-switch.open > a:hover, .nav .language-switch.open > a:focus {
+    background-color: #1d212a;
+}
+
+#admin-body .header .nav .language-switch a:hover {
+    background-color: #1d212a;
+    cursor: pointer;
+}
+
+#admin-body .language-switch img {
+    margin-bottom: 5px;
+    margin-right: 5px;
+    height: 12px;
+}
+
+#to-main-page {
+    display: none;
+    margin-top: 20px;
+}
+
+#short {
+    display: none;
+}

@@ -1,0 +1,5 @@
+# nginx logs
+api-access.log
+api-error.log
+frontend-access.log
+frontend-error.log
