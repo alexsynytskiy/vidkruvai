@@ -2,7 +2,6 @@
 
 namespace app\modules\comment\models;
 
-use app\components\ActiveRecord;
 use app\components\CommentQuery;
 use app\models\definitions\DefComment;
 use app\models\CommentChannel;
@@ -31,7 +30,7 @@ use app\components\AppMsg;
  * @property User           $landingUser
  * @property CommentVote    $userVote
  */
-class Comment extends ActiveRecord
+class Comment extends \yii\db\ActiveRecord
 {
     /**
      * @var int

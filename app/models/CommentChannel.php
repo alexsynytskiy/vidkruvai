@@ -5,6 +5,7 @@ namespace app\models;
 use app\components\AppMsg;
 use Yii;
 use yii\behaviors\SluggableBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "site_comment_channel".
@@ -13,10 +14,12 @@ use yii\behaviors\SluggableBehavior;
  * @property string    $name
  * @property string    $slug
  * @property string    $description
+ * @property string    $status
+ * @property integer   $site_user_id
  *
  * @property Comment[] $landingsComments
  */
-class CommentChannel extends \app\components\ActiveRecord
+class CommentChannel extends ActiveRecord
 {
     /**
      * @inheritdoc

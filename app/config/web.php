@@ -24,7 +24,7 @@ $config = [
         $getParam = $app->request->get('parent');
         preg_match('/[^\/]+$/', $pathInfo, $matches);
 
-        $startRedirect = ['admin', 'site', 'location'];
+        $startRedirect = ['admin', 'site'];
         $stopRedirect  = ['items', 'edit', 'photos', 'settings', 'index', 'list', 'redactor'];
 
         $redirect = false;
@@ -50,6 +50,11 @@ $config = [
             $app->end();
         }
     },
+    'modules'      => [
+        'comment'    => [
+            'class' => "modules\\comment\\Module",
+        ]
+    ],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -66,6 +71,8 @@ $config = [
         ],
         'urlManager' => [
             'rules' => [
+                'comment/<channelId:\d+>/<action:[\w-]+>' => 'comment/default/<action>',
+                'comment/<action:[\w-]+>'                 => 'comment/default/<action>',
                 '<controller:\w+>/'                  => '<controller>/index',
                 '<controller:\w+>/<slug:[\w-]+>'     => '<controller>/view',
                 '<controller:\w+>/<action:\w+>/'     => '<controller>/<action>',

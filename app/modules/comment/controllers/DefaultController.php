@@ -1,12 +1,13 @@
 <?php
-namespace landings\comment\controllers;
+
+namespace app\modules\comment\controllers;
 
 use app\models\CommentChannel;
 use app\models\definitions\DefComment;
 use app\modules\comment\components\CommentService;
+use app\modules\comment\models\Comment;
 use app\modules\comment\models\CommentVote;
 use Yii;
-use app\modules\comment\models\Comment;
 use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -16,7 +17,7 @@ use yii\widgets\ActiveForm;
 
 /**
  * Class DefaultController
- * @package landings\comment\controllers
+ * @package app\modules\comment\controllers
  */
 class DefaultController extends Controller
 {
@@ -28,12 +29,13 @@ class DefaultController extends Controller
     /**
      * DefaultController constructor.
      *
-     * @param string           $id
+     * @param string $id
      * @param \yii\base\Module $module
-     * @param CommentService   $commentService
-     * @param array            $config
+     * @param CommentService $commentService
+     * @param array $config
      */
-    public function __construct($id, \yii\base\Module $module, CommentService $commentService, array $config = []) {
+    public function __construct($id, \yii\base\Module $module, CommentService $commentService, array $config = [])
+    {
         $this->commentService = $commentService;
 
         parent::__construct($id, $module, $config);
@@ -45,23 +47,24 @@ class DefaultController extends Controller
      * @return array|string
      * @throws BadRequestHttpException
      */
-    public function actionAdd($channelId) {
+    public function actionAdd($channelId)
+    {
         $r = Yii::$app->request;
 
-        if(!$r->isPost || !$r->isAjax || \Yii::$app->user->isGuest) {
+        if (!$r->isPost || !$r->isAjax || \Yii::$app->user->isGuest) {
             throw new BadRequestHttpException();
         }
 
         $post = $r->post();
         $csrf = $r->post(Yii::$app->request->csrfParam);
 
-        if(!Yii::$app->request->validateCsrfToken($csrf)) {
+        if (!Yii::$app->request->validateCsrfToken($csrf)) {
             throw new BadRequestHttpException;
         }
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        if(!$this->validateChannelId($channelId)) {
+        if (!$this->validateChannelId($channelId)) {
             return [];
         }
 
@@ -71,21 +74,21 @@ class DefaultController extends Controller
             $comment = new Comment();
             $comment->load($post);
 
-            if($comment->replyTo) {
+            if ($comment->replyTo) {
                 $appendComment = Comment::findOne($comment->replyTo);
 
-                if(!$appendComment->children()->all()) {
+                if (!$appendComment->children()->all()) {
                     $comment->isFirstReply = true;
                 }
             }
 
             $this->preFillModel($comment, $channelId);
 
-            if($appendComment === null && !$comment->makeRoot()) {
+            if ($appendComment === null && !$comment->makeRoot()) {
                 return [];
             }
 
-            if($appendComment !== null && !$comment->appendTo($appendComment)) {
+            if ($appendComment !== null && !$comment->appendTo($appendComment)) {
                 return [];
             }
 
@@ -95,8 +98,7 @@ class DefaultController extends Controller
             $comment->refresh();
 
             return $this->renderAjax($service->getTemplatePath() . '/_parts/items', ['comments' => [$comment]]);
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             Yii::error("Невозможно добавить комментарий.\nError: " . $e->getMessage());
         }
 
@@ -109,14 +111,15 @@ class DefaultController extends Controller
      * @return array
      * @throws NotFoundHttpException
      */
-    public function actionCheckSubmission($channelId) {
-        if(!Yii::$app->request->isPost || !Yii::$app->request->isAjax) {
+    public function actionCheckSubmission($channelId)
+    {
+        if (!Yii::$app->request->isPost || !Yii::$app->request->isAjax) {
             throw new NotFoundHttpException();
         }
 
         $model = new Comment();
 
-        if($model->load(\Yii::$app->request->post())) {
+        if ($model->load(\Yii::$app->request->post())) {
             \Yii::$app->response->format = Response::FORMAT_JSON;
 
             $this->preFillModel($model, $channelId);
@@ -129,14 +132,15 @@ class DefaultController extends Controller
 
     /**
      * @param Comment $model
-     * @param int     $channelId
+     * @param int $channelId
      */
-    protected function preFillModel(&$model, $channelId) {
-        $model->status     = DefComment::STATUS_MODERATOR;
+    protected function preFillModel(&$model, $channelId)
+    {
+        $model->status = DefComment::STATUS_MODERATOR;
         $model->channel_id = $channelId;
-        $model->message    = trim($model->message);
+        $model->message = trim($model->message);
 
-        if(!Yii::$app->user->isGuest) {
+        if (!Yii::$app->user->isGuest) {
             $model->site_user_id = Yii::$app->user->id;
         }
     }
@@ -149,31 +153,32 @@ class DefaultController extends Controller
      * @return array
      * @throws NotFoundHttpException
      */
-    public function actionLoadMore($channelId) {
-        if(!Yii::$app->request->isPost || !Yii::$app->request->isAjax) {
+    public function actionLoadMore($channelId)
+    {
+        if (!Yii::$app->request->isPost || !Yii::$app->request->isAjax) {
             throw new NotFoundHttpException();
         }
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        if(!$this->validateChannelId($channelId)) {
+        if (!$this->validateChannelId($channelId)) {
             return [];
         }
 
-        $treeId       = (int)Yii::$app->request->post('treeId');
+        $treeId = (int)Yii::$app->request->post('treeId');
         $templateName = (string)Yii::$app->request->post('template');
 
-        if(!$treeId) {
+        if (!$treeId) {
             return [];
         }
 
         $template = $this->commentService->getTemplate($templateName);
-        $userId   = (Yii::$app->user->id ?: null);
+        $userId = (Yii::$app->user->id ?: null);
 
         $trees = Comment::getTopTrees($channelId, $this->commentService->getTreesLimit(), $treeId);
 
         $treeStructure = [];
-        if(count($trees) > 0) {
+        if (count($trees) > 0) {
             $treeStructure = Comment::getComments($this->commentService->commentOffset, $channelId, $userId, $trees);
         }
 
@@ -181,13 +186,14 @@ class DefaultController extends Controller
 
         $this->commentService->setIsGuest(\Yii::$app->user->isGuest);
 
-        $items = $this->renderPartial($this->commentService->getTemplatePath($template) . '/_parts/items', ['comments' => $treeStructure]);
+        $items = $this->renderPartial($this->commentService->getTemplatePath($template) . '/_parts/items',
+            ['comments' => $treeStructure]);
 
         return [
-            'items'      => $items,
-            'treeId'     => (int)$this->commentService->maxTreeId,
-            'ids'        => ArrayHelper::getColumn($treeStructure, 'id'),
-            'treesCount' => (int)count($trees),
+            'items' => $items,
+            'treeId' => (int)$this->commentService->maxTreeId,
+            'ids' => ArrayHelper::getColumn($treeStructure, 'id'),
+            'treesCount' => count($trees),
         ];
     }
 
@@ -199,26 +205,27 @@ class DefaultController extends Controller
      * @return array
      * @throws NotFoundHttpException
      */
-    public function actionReloadTree($channelId) {
-        if(!Yii::$app->request->isPost || !Yii::$app->request->isAjax) {
+    public function actionReloadTree($channelId)
+    {
+        if (!Yii::$app->request->isPost || !Yii::$app->request->isAjax) {
             throw new NotFoundHttpException();
         }
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        if(!$this->validateChannelId($channelId)) {
+        if (!$this->validateChannelId($channelId)) {
             return [];
         }
 
-        $treeId       = (int)Yii::$app->request->post('treeId');
+        $treeId = (int)Yii::$app->request->post('treeId');
         $templateName = (string)Yii::$app->request->post('template');
 
-        if(!$treeId) {
+        if (!$treeId) {
             return [];
         }
 
         $template = $this->commentService->getTemplate($templateName);
-        $userId   = (Yii::$app->user->id ?: null);
+        $userId = (Yii::$app->user->id ?: null);
 
         /** @var Comment $tree */
         $commentsTree = Comment::getComments($this->commentService->commentOffset, $channelId, $userId, $treeId);
@@ -227,12 +234,13 @@ class DefaultController extends Controller
 
         $this->commentService->setIsGuest(\Yii::$app->user->isGuest);
 
-        $items = $this->renderPartial($this->commentService->getTemplatePath($template) . '/_parts/items', ['comments' => $commentsTree]);
+        $items = $this->renderPartial($this->commentService->getTemplatePath($template) . '/_parts/items',
+            ['comments' => $commentsTree]);
 
         return [
-            'items'  => $items,
+            'items' => $items,
             'treeId' => (int)$this->commentService->maxTreeId,
-            'ids'    => ArrayHelper::getColumn($commentsTree, 'id'),
+            'ids' => ArrayHelper::getColumn($commentsTree, 'id'),
         ];
     }
 
@@ -243,39 +251,40 @@ class DefaultController extends Controller
      * @throws \Throwable
      * @throws \yii\db\Exception
      */
-    public function actionVote($channelId) {
-        if(!Yii::$app->request->isPost || !Yii::$app->request->isAjax || Yii::$app->user->isGuest) {
+    public function actionVote($channelId)
+    {
+        if (!Yii::$app->request->isPost || !Yii::$app->request->isAjax || Yii::$app->user->isGuest) {
             throw new NotFoundHttpException();
         }
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        if(!$this->validateChannelId($channelId)) {
+        if (!$this->validateChannelId($channelId)) {
             return [];
         }
 
         $commentId = (int)Yii::$app->request->post('commentId');
-        $rating    = (int)Yii::$app->request->post('rating');
+        $rating = (int)Yii::$app->request->post('rating');
 
         $comment = Comment::findOne([
-            'id'         => $commentId,
+            'id' => $commentId,
             'channel_id' => $channelId,
         ]);
 
-        if($comment === null) {
+        if ($comment === null) {
             return [];
         }
 
-        $rating    = $rating > 0 ? 1 : -1;
+        $rating = $rating > 0 ? 1 : -1;
         $isNewVote = false;
 
         $commentVote = CommentVote::findOne(['site_user_id' => Yii::$app->user->id, 'comment_id' => $commentId]);
 
-        if(!$commentVote) {
-            $commentVote                  = new CommentVote;
+        if (!$commentVote) {
+            $commentVote = new CommentVote;
             $commentVote->site_user_id = Yii::$app->user->id;
-            $commentVote->comment_id      = $commentId;
-            $commentVote->rating          = $rating;
+            $commentVote->comment_id = $commentId;
+            $commentVote->rating = $rating;
 
             $isNewVote = true;
         }
@@ -283,7 +292,7 @@ class DefaultController extends Controller
         $transaction = Yii::$app->db->beginTransaction();
 
         try {
-            if($isNewVote) {
+            if ($isNewVote) {
                 $commentVote->save(true);
 
                 $totalRating = $comment->rating + $rating;
@@ -293,25 +302,22 @@ class DefaultController extends Controller
                 $transaction->commit();
 
                 return ['totalRating' => $totalRating, 'rating' => $rating, 'blockBtn' => $rating];
-            } else {
-                if($commentVote->rating !== $rating) {
-                    if(($commentVote->rating + $rating) === 0) {
-                        $commentVote->delete();
-
-                        $totalRating = $comment->rating + $rating;
-
-                        $comment->updateAttributes(['rating' => $totalRating]);
-
-                        $transaction->commit();
-
-                        return ['totalRating' => $totalRating, 'rating' => $rating, 'blockBtn' => 0];
-                    }
-                } else {
-                    return [];
-                }
             }
-        }
-        catch(\Exception $e) {
+
+            if ($commentVote->rating !== $rating && ($commentVote->rating + $rating) === 0) {
+                $commentVote->delete();
+
+                $totalRating = $comment->rating + $rating;
+
+                $comment->updateAttributes(['rating' => $totalRating]);
+
+                $transaction->commit();
+
+                return ['totalRating' => $totalRating, 'rating' => $rating, 'blockBtn' => 0];
+            }
+
+            return [];
+        } catch (\Exception $e) {
             $transaction->rollBack();
 
             Yii::error("Невозможно проголосовать за комментарий.\nError: " . $e->getMessage());
@@ -323,7 +329,8 @@ class DefaultController extends Controller
     /**
      * @return CommentService
      */
-    public function getCommentService() {
+    public function getCommentService()
+    {
         return $this->commentService;
     }
 
@@ -332,7 +339,8 @@ class DefaultController extends Controller
      *
      * @return bool
      */
-    protected function validateChannelId($channelId) {
+    protected function validateChannelId($channelId)
+    {
         return CommentChannel::findOne(['id' => $channelId]) !== null;
     }
 }

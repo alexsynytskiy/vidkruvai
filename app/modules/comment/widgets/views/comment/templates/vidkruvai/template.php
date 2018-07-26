@@ -1,7 +1,7 @@
 <?php
 
 /** @var bool $hasTreesToLoadMore */
-/** @var landings\comment\components\CommentService $service */
+/** @var \app\modules\comment\components\CommentService $service */
 $service = $this->context->commentService;
 
 ?>
@@ -11,11 +11,7 @@ $service = $this->context->commentService;
         ['needAuthMsg' => 'Чтобы оставить отзыв, вам необходимо авторизоваться']
     ); ?>
 <?php endif; ?>
-<div class="comments-admin-online-message">
-    <?= 'Уважаемые покупатели, при любых проблемах обращайтесь , мы с радостью Вам поможем!', [
-        'supportUrl' => \yii\helpers\Url::to(['/contacts']),
-    ]; ?>
-</div>
+
 <!-- Testimonials section -->
 <section id="testimonials-section">
     <div class="container">

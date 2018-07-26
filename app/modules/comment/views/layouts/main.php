@@ -1,7 +1,9 @@
 <?php
 /** @var string $content */
 
-?><!DOCTYPE html>
+?>
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="<?= Yii::$app->charset ?>"/>

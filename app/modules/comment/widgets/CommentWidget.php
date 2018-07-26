@@ -1,9 +1,9 @@
 <?php
 namespace app\modules\comment\widgets;
 
-use app\models\landing\CommentChannel;
+use app\models\CommentChannel;
 use app\modules\comment\components\CommentService;
-use landings\comment\models\landing\Comment;
+use app\modules\comment\models\Comment;
 use yii\base\Widget;
 
 /**
@@ -66,6 +66,9 @@ class CommentWidget extends Widget
         parent::__construct($config);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function init() {
         parent::init();
 
@@ -75,19 +78,19 @@ class CommentWidget extends Widget
 
         if($this->channelId === null && $this->channelName === null) {
             throw new \Exception('Channel ID or Channel Name must be specified.');
-        } else {
-            if($this->channelId === null) {
-                /** @var CommentChannel $channel */
-                $channel = CommentChannel::findOne(['slug' => $this->channelName]);
+        }
 
-                if($channel === null) {
-                    throw new \Exception("Channel \"{$this->channelName}\" not found.");
-                } else {
-                    $this->channelId = $channel->id;
-                }
-            } elseif(CommentChannel::findOne($this->channelId) === null) {
-                throw new \Exception("Channel ID \"{$this->channelId}\" not found.");
+        if($this->channelId === null) {
+            /** @var CommentChannel $channel */
+            $channel = CommentChannel::findOne(['slug' => $this->channelName]);
+
+            if($channel === null) {
+                throw new \Exception("Channel \"{$this->channelName}\" not found.");
             }
+
+            $this->channelId = $channel->id;
+        } elseif(CommentChannel::findOne($this->channelId) === null) {
+            throw new \Exception("Channel ID \"{$this->channelId}\" not found.");
         }
 
         $this->activeFormOptions['action']        = '/comment/' . $this->channelId . '/add';

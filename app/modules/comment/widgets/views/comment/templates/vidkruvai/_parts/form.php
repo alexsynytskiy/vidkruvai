@@ -1,14 +1,11 @@
 <?php
-use landings\common\components\assets\LandingsAsset;
-use landings\common\components\LMsg;
+use app\components\AppMsg;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\web\View;
 
-/** @var landings\comment\models\landing\Comment $model */
+/** @var \app\modules\comment\models\Comment $model */
 /** @var View $this */
-
-LandingsAsset::getInstance()->setView($this)->registerAsset();
 
 $this->context->activeFormOptions['fieldConfig'] = [
     'template'     => "{input}\n{error}",
@@ -18,7 +15,6 @@ $this->context->activeFormOptions['fieldConfig'] = [
 ];
 
 $user    = Yii::$app->user;
-$profile = $user->getSocialProfile();
 ?>
 
 <?php if(!Yii::$app->user->isGuest): ?>
@@ -26,30 +22,19 @@ $profile = $user->getSocialProfile();
         <div class="row">
             <div class="col-lg-2 col-md-3 col-sm-3">
                 <div class="test-avatar">
-                    <?php if($avatar = $profile->avatar) { ?>
-                        <img src="<?= Html::encode($avatar) ?>" alt="avatar">
-                    <?php } elseif($user->identity->avatar) { ?>
-                        <img src="<?= Html::encode($user->identity->avatar) ?>" alt="avatar">
-                    <?php } else { ?>
-                        <img src="<?= \Yii::$app->view->params['pathToImages'] . '/account.png' ?>" alt="avatar">
-                    <?php } ?>
-
-                    <?php if($name = $profile->name) { ?>
-                        <div class="test-login"><?= Html::encode($name) ?></div>
-                    <?php } else { ?>
-                        <div class="test-login"><?= Html::encode($user->identity->name) ?></div>
-                    <?php } ?>
+                    <img src="#" alt="avatar">
+                    <div class="test-login">nm,n,nm,</div>
                 </div>
             </div>
             <div class="col-lg-10 col-md-9 col-sm-9">
                 <?php $form = ActiveForm::begin($this->context->activeFormOptions); ?>
                 <?= Html::hiddenInput('t', $this->context->commentService->template); ?>
                 <div class="form-group clearfix">
-                    <?= $form->field($model, 'message')->textarea(['placeholder' => LMsg::t('Оставьте свой отзыв'), 'class' => 'textarea']); ?>
+                    <?= $form->field($model, 'message')->textarea(['placeholder' => AppMsg::t('Оставьте свой отзыв'), 'class' => 'textarea']); ?>
                 </div>
                 <div class="form-group clearfix">
-                    <?= Html::submitButton(LMsg::t('Отправить'), ['class' => 'button']); ?>
-                    <?= Html::button(LMsg::t('Отмена'), ['class' => 'button cancel-reply hidden']); ?>
+                    <?= Html::submitButton(AppMsg::t('Отправить'), ['class' => 'button']); ?>
+                    <?= Html::button(AppMsg::t('Отмена'), ['class' => 'button cancel-reply hidden']); ?>
                 </div>
                 <?php ActiveForm::end(); ?>
             </div>

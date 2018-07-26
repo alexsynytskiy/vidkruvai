@@ -5,6 +5,7 @@ namespace app\models;
 use app\components\AppMsg;
 use app\components\CommentQuery;
 use creocoder\nestedsets\NestedSetsBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "site_comment".
@@ -24,7 +25,7 @@ use creocoder\nestedsets\NestedSetsBehavior;
  * @property CommentChannel $channel
  * @property SiteUser $siteUser
  */
-class Comment extends \app\components\ActiveRecord
+class Comment extends ActiveRecord
 {
     /**
      * @var int
@@ -77,8 +78,10 @@ class Comment extends \app\components\ActiveRecord
             [['channel_id', 'site_user_id'], 'integer'],
             [['message', 'status'], 'string'],
             [['created_at', 'replyTo', 'editCommentId'], 'safe'],
-            [['channel_id'], 'exist', 'skipOnError' => true, 'targetClass' => CommentChannel::className(), 'targetAttribute' => ['channel_id' => 'id']],
-            [['site_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SiteUser::className(), 'targetAttribute' => ['site_user_id' => 'id']],
+            [['channel_id'], 'exist', 'skipOnError' => true,
+                'targetClass' => CommentChannel::className(), 'targetAttribute' => ['channel_id' => 'id']],
+            [['site_user_id'], 'exist', 'skipOnError' => true,
+                'targetClass' => SiteUser::className(), 'targetAttribute' => ['site_user_id' => 'id']],
         ];
     }
 
