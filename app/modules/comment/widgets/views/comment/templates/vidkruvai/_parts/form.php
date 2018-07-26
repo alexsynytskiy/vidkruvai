@@ -7,6 +7,8 @@ use yii\web\View;
 /** @var \app\modules\comment\models\Comment $model */
 /** @var View $this */
 
+\app\modules\comment\assets\CommentAsset::getInstance()->setView($this)->registerAsset();
+
 $this->context->activeFormOptions['fieldConfig'] = [
     'template'     => "{input}\n{error}",
     'inputOptions' => [
@@ -14,7 +16,7 @@ $this->context->activeFormOptions['fieldConfig'] = [
     ],
 ];
 
-$user    = Yii::$app->user;
+$user = Yii::$app->user;
 ?>
 
 <?php if(!Yii::$app->user->isGuest): ?>
@@ -22,15 +24,17 @@ $user    = Yii::$app->user;
         <div class="row">
             <div class="col-lg-2 col-md-3 col-sm-3">
                 <div class="test-avatar">
-                    <img src="#" alt="avatar">
-                    <div class="test-login">nm,n,nm,</div>
+                    <img src="<?= \Yii::$app->view->params['pathToImages'] . '/user-icon.png' ?>" alt="avatar">
+                    <div class="test-login"><?= 'Name' ?></div>
                 </div>
             </div>
             <div class="col-lg-10 col-md-9 col-sm-9">
                 <?php $form = ActiveForm::begin($this->context->activeFormOptions); ?>
                 <?= Html::hiddenInput('t', $this->context->commentService->template); ?>
                 <div class="form-group clearfix">
-                    <?= $form->field($model, 'message')->textarea(['placeholder' => AppMsg::t('Оставьте свой отзыв'), 'class' => 'textarea']); ?>
+                    <?= $form->field($model, 'message')->textarea(
+                            ['placeholder' => AppMsg::t('Сообщение'), 'class' => 'textarea']
+                    ); ?>
                 </div>
                 <div class="form-group clearfix">
                     <?= Html::submitButton(AppMsg::t('Отправить'), ['class' => 'button']); ?>

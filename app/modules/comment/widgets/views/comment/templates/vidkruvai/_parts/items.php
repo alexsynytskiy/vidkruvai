@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /** @var \app\modules\comment\models\Comment[] $comments */
 /** @var \app\modules\comment\components\CommentService $service */
 
-\app\modules\comment\assets\CommentAsset::register($this);
+\app\modules\comment\assets\CommentAsset::getInstance()->setView($this)->registerAsset();
 
 $service = $this->context->commentService;
 $defaultUsername = \app\modules\comment\components\CommentService::UNKNOWN_USERNAME;
@@ -39,13 +39,13 @@ foreach ($comments as $comment): ?>
                  data-depth="<?= Html::encode($comment->depth) ?>">
                 <div class="left-side">
                     <div class="avatar">
-                        <img class="#" src="#">
+                        <img class="" src="<?= \Yii::$app->view->params['pathToImages'] . '/user-icon.png' ?>">
                     </div>
                 </div>
                 <div class="right-side">
                     <div class="side-inner">
                         <div class="user-login">
-                            ghjghjghj
+                            <?= $comment->landingUser->name ?>
                         </div>
                         <div class="comment">
                             <p>
@@ -92,12 +92,13 @@ foreach ($comments as $comment): ?>
                     </div>
                     <div class="info-block clearfix">
                         <div class="info-item">
-                            <div class="info"><?= AppMsg::t('Последний выигрыш'); ?></div>
-                            <img data-toggle="tooltip" data-placement="top" title="#" src="#" alt="alt">
+                            <div class="info"><?= AppMsg::t('Команда'); ?></div>
+                            <img data-toggle="tooltip" data-placement="top" title="#"
+                                 src="<?= \Yii::$app->view->params['pathToImages'] . '/team.png' ?>" alt="alt">
                         </div>
                         <div class="info-item">
-                            <p><?= AppMsg::t('Открыто <span>кейсов</span>'); ?></p>
-                            <div class="counter">2</div>
+                            <p><?= AppMsg::t('Досвід'); ?></p>
+                            <div class="counter"><?= $comment->landingUser->total_experience ?></div>
                         </div>
                     </div>
                 </div>

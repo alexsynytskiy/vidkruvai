@@ -7,8 +7,8 @@ use Yii;
 use yii\db\Query;
 
 /**
- * Class Comment
- * @package landings\comment\models
+ * Class Comm
+ * @package app\modules\comment\models
  */
 class Comm extends \yii\db\ActiveRecord
 {

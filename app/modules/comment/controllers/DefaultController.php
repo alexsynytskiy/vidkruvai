@@ -136,12 +136,12 @@ class DefaultController extends Controller
      */
     protected function preFillModel(&$model, $channelId)
     {
-        $model->status = DefComment::STATUS_MODERATOR;
+        $model->status = DefComment::STATUS_ACTIVE;
         $model->channel_id = $channelId;
         $model->message = trim($model->message);
 
         if (!Yii::$app->user->isGuest) {
-            $model->site_user_id = Yii::$app->user->id;
+            $model->site_user_id = 1;
         }
     }
 

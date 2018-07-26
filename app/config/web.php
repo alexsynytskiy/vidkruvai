@@ -52,7 +52,7 @@ $config = [
     },
     'modules'      => [
         'comment'    => [
-            'class' => "modules\\comment\\Module",
+            'class' => "app\\modules\\comment\\Module",
         ]
     ],
     'components' => [

@@ -6,7 +6,6 @@
     padding-left: 0;
     list-style: none;
     margin: 0;
-    background-color: #150f16;
 }
 
 .testimonials-list li {
@@ -128,7 +127,7 @@ a.first-level-group, .first-level-group {
     display: inline-block;
     text-align: center;
     vertical-align: top;
-    background: url(../img/test-gun-bg.png) no-repeat top center;
+    background: url(../img/test-bg.png) no-repeat top center;
     height: 144px;
     width: 47%;
     max-width: 144px;
@@ -256,8 +255,10 @@ a.first-level-group, .first-level-group {
 }
 
 #testimonials-section .add-testimonials {
+    padding: 30px;
     margin-bottom: 30px;
     position: relative;
+    background-color: #150f16;
 }
 
 #testimonials-section .add-testimonials .test-avatar {
@@ -366,4 +367,44 @@ a.first-level-group, .first-level-group {
 
 .hidden {
     display: none;
+}
+
+.testimonials-list li.first-reply:before {
+    width: 43px;
+    height: 83px;
+    background: url(../img/test-arrow-top.png) no-repeat center center;
+    position: absolute;
+    top: -15px;
+    content: "";
+}
+
+.testimonials-list li.p-5.first-reply:before {
+    left: -5px;
+}
+.testimonials-list li.p-35.first-reply:before {
+    left: 35px;
+}
+.testimonials-list li.p-75.first-reply:before {
+    left: 75px;
+}
+.testimonials-list li.p-105.first-reply:before {
+    left: 105px;
+}
+.testimonials-list li.p-115.first-reply:before {
+    left: 115px;
+}
+.testimonials-list li.p-155.first-reply:before {
+    left: 155px;
+}
+.testimonials-list li.p-195.first-reply:before {
+    left: 195px;
+}
+.testimonials-list li.p-235.first-reply:before {
+    left: 235px;
+}
+.testimonials-list li.p-275.first-reply:before {
+    left: 275px;
+}
+.testimonials-list li.p-315.first-reply:before {
+    left: 315px;
 }

@@ -3,9 +3,9 @@
 namespace app\modules\comment\models;
 
 use app\components\CommentQuery;
+use creocoder\nestedsets\NestedSetsBehavior;
 use app\models\definitions\DefComment;
 use app\models\CommentChannel;
-use creocoder\nestedsets\NestedSetsBehavior;
 use app\models\SiteUser as User;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
@@ -77,7 +77,6 @@ class Comment extends \yii\db\ActiveRecord
         return [
             [['channel_id', 'site_user_id', 'message'], 'required'],
             [['channel_id', 'site_user_id'], 'integer'],
-//            [['channel_id', 'site_user_id', 'replyTo'], 'integer'],
             [['message', 'status'], 'string'],
             [['created_at'], 'safe'],
             [['channel_id'], 'exist', 'skipOnError' => true, 'targetClass' => CommentChannel::className(), 'targetAttribute' => ['channel_id' => 'id']],
