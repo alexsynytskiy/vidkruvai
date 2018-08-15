@@ -11,12 +11,10 @@ $baseUrl = $asset->baseUrl;
 <section class="page-block padding">
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
-                <?= \app\modules\comment\widgets\CommentWidget::widget([
-                    'channelName' => 'main-page',
-                    'template'    => 'vidkruvai',
-                ]); ?>
-            </div>
+            <?= \app\modules\comment\widgets\CommentWidget::widget([
+                'channelName' => 'main-page',
+                'template'    => 'vidkruvai',
+            ]); ?>
         </div>
     </div>
 </section>

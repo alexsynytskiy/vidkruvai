@@ -199,8 +199,8 @@ const Comment = function(options) {
 
             if($(this).hasClass("disabled")) {
                 new PNotify({
-                    title: LandingCore.t('Ошибка'),
-                    text: LandingCore.t('Вы не можете голосовать дважды'),
+                    title: 'Ошибка',
+                    text: 'Вы не можете голосовать дважды',
                     icon: '',
                     type: 'error',
                     delay: 8000 //Show the notification 4sec

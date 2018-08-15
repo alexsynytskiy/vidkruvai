@@ -6,14 +6,8 @@ $service = $this->context->commentService;
 
 ?>
 
-<?php if(Yii::$app->user->isGuest): ?>
-    <?= $this->render('@landings/way2case/views/_blocks/auth-block',
-        ['needAuthMsg' => 'Чтобы оставить отзыв, вам необходимо авторизоваться']
-    ); ?>
-<?php endif; ?>
-
 <!-- Testimonials section -->
-<section id="testimonials-section">
+<section class="col-md-12" id="testimonials-section">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">

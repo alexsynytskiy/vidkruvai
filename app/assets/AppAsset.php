@@ -29,6 +29,7 @@ class AppAsset extends \yii\web\AssetBundle
         'plugins/isotope-portfolio/css/jquery.fancybox.css',
         'plugins/pnotify/pnotify.min.css',
         'css/jquery.bxslider.css',
+        'css/custom-questions.css?version=1',
         'css/custom.css?version=1',
     ];
 
@@ -46,6 +47,10 @@ class AppAsset extends \yii\web\AssetBundle
         'plugins/isotope-portfolio/js/jquery.fancybox.pack.js',
         'plugins/pnotify/pnotify.min.js',
         'js/jquery.bxslider.js',
+        'js/SiteCore.js',
+        'js/RulesPage.js',
+        'js/AnswerPage.js',
+        'js/ProfilePage.js',
         'js/main.js',
     ];
 

@@ -69,8 +69,26 @@ $config = [
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
         ],
+        'siteUser' => [
+            'class' => 'yii\web\User',
+            'identityClass' => 'app\models\SiteUser',
+            'enableAutoLogin' => false,
+            'authTimeout' => 60 * 30,
+            'loginUrl' => ['/login'],
+            'identityCookie' => [
+                'name' => '_panelSiteUser',
+            ]
+        ],
+        'mutex'  => [
+            'class' => 'yii\mutex\FileMutex',
+        ],
         'urlManager' => [
             'rules' => [
+                'game-rules' => 'site/game-rules',
+                'event-info' => 'site/event-info',
+                '<alias:\w+>' => 'site/<alias>',
+                'answer/<hash:\w+>' => 'site/answer',
+                'block-finished/<hash:\w+>' => 'site/block-finished',
                 'comment/<channelId:\d+>/<action:[\w-]+>' => 'comment/default/<action>',
                 'comment/<action:[\w-]+>'                 => 'comment/default/<action>',
                 '<controller:\w+>/'                  => '<controller>/index',

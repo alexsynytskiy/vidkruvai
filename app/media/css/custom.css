@@ -12,6 +12,7 @@
 
 body {
     font-family: 'rubik_regular';
+    position: relative;
 }
 
 .clearfix:after {
@@ -278,6 +279,8 @@ article img {
 footer {
     min-height: 170px;
     background-color: #2DCFD5;
+    position: absolute;
+    bottom: 0;
 }
 
 footer .rights {
