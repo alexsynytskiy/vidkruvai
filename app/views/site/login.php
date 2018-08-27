@@ -5,17 +5,17 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
 $asset = \app\assets\AppAsset::register($this);
-
-$this->title = 'Вход на сайт';
 ?>
 
 <div class="steps-block login clearfix">
-    <div class="step-subtitle"><?= 'Вхід' ?></div>
-    <div class="social-items">
-        <div class="row">
+    <div class="block-left">
+        <div class="step-title"><?= 'Вхід' ?></div>
+        <div class="step-subtitle"><?= 'Введіть логін та пароль для входу до особистого кабінету.' ?></div>
+        <div class="social-items clearfix">
             <?php
             $form = ActiveForm::begin([
                 'id'          => 'user-login',
+                'enableClientValidation' => true,
                 'options'     => [
                     'class'   => 'link-form',
                     'enctype' => 'multipart/form-data',
@@ -27,9 +27,25 @@ $this->title = 'Вход на сайт';
             ?>
 
             <div class="col-md-12 form-z-index">
-                <?= $form->field($model, 'nickname')->textInput(['maxlength' => true, 'placeholder' => 'Логін/Нік']) ?>
+                <?= $form->field($model, 'email')->textInput([
+                    'maxlength' => true,
+                    'placeholder' => 'Електронна пошта',
+                    [
+                        'inputOptions' => [
+                            'autocomplete' => 'off'
+                        ]
+                    ]
+                ]) ?>
 
-                <?= $form->field($model, 'password')->passwordInput(['maxlength' => true, 'placeholder' => 'Пароль']) ?>
+                <?= $form->field($model, 'password')->passwordInput([
+                    'maxlength' => true,
+                    'placeholder' => 'Пароль',
+                    [
+                        'inputOptions' => [
+                            'autocomplete' => 'off'
+                        ]
+                    ]
+                ]) ?>
 
                 <?= $form->field($model, 'captchaUser')->widget(\yii\captcha\Captcha::className(), [
                     'captchaAction' => 'site/captcha',
@@ -53,5 +69,16 @@ $this->title = 'Вход на сайт';
 
             <?php ActiveForm::end(); ?>
         </div>
+        <div class="profile-header clearfix">
+            <div class="profile-navigation">
+                <a href='<?= \yii\helpers\Url::to(['/site/help']) ?>' class="link-additional">
+                    <div class="link-icon">
+                        <div class="help"></div>
+                    </div>
+                    Техпідтримка
+                </a>
+            </div>
+        </div>
     </div>
+    <div class="block-right"></div>
 </div>

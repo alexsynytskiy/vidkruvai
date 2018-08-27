@@ -29,8 +29,8 @@ class AppAsset extends \yii\web\AssetBundle
         'plugins/isotope-portfolio/css/jquery.fancybox.css',
         'plugins/pnotify/pnotify.min.css',
         'css/jquery.bxslider.css',
-        'css/custom-questions.css?version=1',
-        'css/custom.css?version=1',
+        'css/custom-questions.css?version=2',
+        'css/custom.css?version=2',
     ];
 
     public $js = [
@@ -51,7 +51,7 @@ class AppAsset extends \yii\web\AssetBundle
         'js/RulesPage.js',
         'js/AnswerPage.js',
         'js/ProfilePage.js',
-        'js/main.js',
+        'js/main.js?version=2',
     ];
 
     public $publishOptions = [

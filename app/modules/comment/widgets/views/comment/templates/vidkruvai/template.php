@@ -8,7 +8,6 @@ $service = $this->context->commentService;
 
 <!-- Testimonials section -->
 <section class="col-md-12" id="testimonials-section">
-    <div class="container">
         <div class="row">
             <div class="col-lg-12">
                 <ul class="testimonials-list">
@@ -34,5 +33,4 @@ $service = $this->context->commentService;
                 </div>
             </div>
         <?php endif; ?>
-    </div>
 </section>

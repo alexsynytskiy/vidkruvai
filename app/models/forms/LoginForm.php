@@ -17,7 +17,7 @@ class LoginForm extends Model
     /**
      * @var string
      */
-    public $nickname;
+    public $email;
     /**
      * @var string
      */
@@ -37,7 +37,7 @@ class LoginForm extends Model
     public function rules()
     {
         return [
-            [['nickname', 'password', 'captchaUser'], 'required'],
+            [['email', 'password', 'captchaUser'], 'required'],
             ['captchaUser', 'captcha', 'captchaAction' => '/site/captcha'],
             ['password', 'validatePassword'],
         ];
@@ -49,7 +49,7 @@ class LoginForm extends Model
     public function attributeLabels()
     {
         return [
-            'nickname' => 'Логін/Нік',
+            'email' => 'Електронна пошта',
             'password' => 'Пароль',
             'captchaUser' => 'Капча',
         ];
@@ -67,7 +67,7 @@ class LoginForm extends Model
         if (!$this->hasErrors()) {
             $user = $this->getUser();
 
-            $errorMsg = 'Ник или пароль введены неверно.';
+            $errorMsg = 'Пошта чи пароль введені з помилкою.';
 
             try {
                 if (!$user) {
@@ -96,7 +96,7 @@ class LoginForm extends Model
         if (!$this->hasErrors()) {
             $user = $this->getUser();
 
-            $errorMsg = 'Вход на сайт запрещен.';
+            $errorMsg = 'Вхід заборонено';
 
             try {
                 if (!$user) {
@@ -134,7 +134,7 @@ class LoginForm extends Model
     protected function getUser()
     {
         if ($this->_user === null) {
-            $this->_user = SiteUser::findIdentityByNick($this->nickname);
+            $this->_user = SiteUser::findIdentityByNick($this->email);
         }
 
         return $this->_user;

@@ -17,16 +17,20 @@ $baseUrl = $asset->baseUrl;
     <div class="separator-space"></div>
 
     <div class="image-group">
-        <img src="/app/media/img/<?= $group->hash ?>.png">
+        <img src="/app/media/img/<?= $group->hash ?>.svg">
     </div>
 
     <div class="congrads">
         Вітаємо з проходженням <?= $group->id ?>-го блоку запитань!
     </div>
 
+    <div class="new-info about-event">
+        <?= $group->completed_data ?>
+    </div>
+
     <?php if($wrongAnswers): ?>
-        <div class="new-info">
-            Тепер ти знаеш що: <br>
+        <div class="new-info about-event">
+            <div class="block-finished-sub-title">Тепер ти знаеш що:</div>
             <?php foreach ($wrongAnswers as $answer): ?>
                 <?= $answer ?><br>
             <?php endforeach; ?>

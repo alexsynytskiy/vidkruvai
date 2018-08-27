@@ -1,16 +1,14 @@
 <?php
 
-namespace yii\easyii\modules\questions\controllers;
+namespace yii\easyii\modules\news\controllers;
 
 use app\models\Answer;
 use app\models\Question;
 use Yii;
 use yii\data\ActiveDataProvider;
-use yii\easyii\behaviors\SortableDateController;
 use yii\easyii\components\Controller;
 use yii\easyii\helpers\Image;
-use yii\easyii\modules\questions\models\QuestionSaver;
-use yii\helpers\ArrayHelper;
+use yii\easyii\modules\news\models\QuestionSaver;
 use yii\helpers\VarDumper;
 use yii\web\UploadedFile;
 use yii\widgets\ActiveForm;
@@ -20,7 +18,7 @@ class AController extends Controller
     public function actionIndex()
     {
         $data = new ActiveDataProvider([
-            'query' => Question::find()->orderBy('created_at')
+            'query' => Question::find()->orderBy('group_id')
         ]);
 
         return $this->render('index', [
@@ -40,59 +38,59 @@ class AController extends Controller
             if (Yii::$app->request->isAjax) {
                 Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
                 return ActiveForm::validate($model);
-            } else {
-                if (isset($_FILES)) {
-                    $model->image = UploadedFile::getInstance($model, 'image');
+            }
 
-                    if ($model->image && $model->validate(['image'])) {
-                        $model->image = Image::upload($model->image, 'questions');
-                    } else {
-                        $model->image = '';
-                    }
-                }
+            if (isset($_FILES)) {
+                $model->image = UploadedFile::getInstance($model, 'image');
 
-                $question = new Question();
-                $question->text = $model->text;
-                $question->correct_answer = $model->correct_answer;
-                $question->group_id = $model->group_id;
-                $question->image = $model->image;
-                $question->reward = $model->reward ?: 1;
-
-                $answer1 = new Answer();
-                $answer2 = new Answer();
-                $answer3 = new Answer();
-                $answer4 = new Answer();
-
-                if ($question->save()) {
-                    $answer1->text = $model->answerOneText;
-                    $answer1->is_correct = $model->answerOneCorrect;
-                    $answer1->question_id = $question->id;
-
-                    $answer2->text = $model->answerTwoText;
-                    $answer2->is_correct = $model->answerTwoCorrect;
-                    $answer2->question_id = $question->id;
-
-                    $answer3->text = $model->answerThreeText;
-                    $answer3->is_correct = $model->answerThreeCorrect;
-                    $answer3->question_id = $question->id;
-
-                    $answer4->text = $model->answerFourText;
-                    $answer4->is_correct = $model->answerFourCorrect;
-                    $answer4->question_id = $question->id;
-
-                    if($answer1->save() && $answer2->save() && $answer3->save() && $answer4->save()) {
-                        $this->flash('success', Yii::t('easyii/questions', 'Question created'));
-                        return $this->redirect(['/admin/' . $this->module->id]);
-                    }
+                if ($model->image && $model->validate(['image'])) {
+                    $model->image = Image::upload($model->image, 'news');
                 } else {
-                    $this->flash('error', VarDumper::export($question->getErrors()));
-                    $this->flash('error', VarDumper::export($answer1->getErrors()));
-                    $this->flash('error', VarDumper::export($answer2->getErrors()));
-                    $this->flash('error', VarDumper::export($answer3->getErrors()));
-                    $this->flash('error', VarDumper::export($answer4->getErrors()));
-
-                    return $this->refresh();
+                    $model->image = '';
                 }
+            }
+
+            $question = new Question();
+            $question->text = $model->text;
+            $question->correct_answer = $model->correct_answer;
+            $question->group_id = $model->group_id;
+            $question->image = $model->image;
+            $question->reward = $model->reward ?: 1;
+
+            $answer1 = new Answer();
+            $answer2 = new Answer();
+            $answer3 = new Answer();
+            $answer4 = new Answer();
+
+            if ($question->save()) {
+                $answer1->text = $model->answerOneText;
+                $answer1->is_correct = $model->answerOneCorrect;
+                $answer1->question_id = $question->id;
+
+                $answer2->text = $model->answerTwoText;
+                $answer2->is_correct = $model->answerTwoCorrect;
+                $answer2->question_id = $question->id;
+
+                $answer3->text = $model->answerThreeText;
+                $answer3->is_correct = $model->answerThreeCorrect;
+                $answer3->question_id = $question->id;
+
+                $answer4->text = $model->answerFourText;
+                $answer4->is_correct = $model->answerFourCorrect;
+                $answer4->question_id = $question->id;
+
+                if ($answer1->save() && $answer2->save() && $answer3->save() && $answer4->save()) {
+                    $this->flash('success', Yii::t('easyii/questions', 'Question created'));
+                    return $this->redirect(['/admin/' . $this->module->id]);
+                }
+            } else {
+                $this->flash('error', VarDumper::export($question->getErrors()));
+                $this->flash('error', VarDumper::export($answer1->getErrors()));
+                $this->flash('error', VarDumper::export($answer2->getErrors()));
+                $this->flash('error', VarDumper::export($answer3->getErrors()));
+                $this->flash('error', VarDumper::export($answer4->getErrors()));
+
+                return $this->refresh();
             }
         } else {
             return $this->render('create', [
@@ -102,45 +100,126 @@ class AController extends Controller
     }
 
     /**
-     * @param $id
-     * @return array|string|\yii\web\Response
+     * @param int $id
+     * @return string|\yii\web\Response
+     * @throws \Exception
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      * @throws \yii\web\HttpException
      */
     public function actionEdit($id)
     {
-        $model = Question::find()->where(['id' => $id])->one();
+        /** @var Question $model */
+        $question = Question::find()->where(['id' => $id])->one();
 
-        if ($model === null) {
+        if ($question === null) {
             $this->flash('error', Yii::t('easyii', 'Not found'));
             return $this->redirect(['/admin/' . $this->module->id]);
+        }
+
+        $model = new QuestionSaver();
+        $model->text = $question->text;
+        $model->correct_answer = $question->correct_answer;
+        $model->group_id = $question->group_id;
+        $model->image = $question->image;
+        $model->reward = $question->reward ?: 1;
+
+        $answers = Answer::find()->where(['question_id' => $id])->orderBy('id')->all();
+
+        if(count($answers) > 0) {
+            if(count($answers) >= 1) {
+                $model->answerOneText = $answers[0]->text;
+                $model->answerOneCorrect = $answers[0]->is_correct;
+            }
+
+            if(count($answers) >= 2) {
+                $model->answerTwoText = $answers[1]->text;
+                $model->answerTwoCorrect = $answers[1]->is_correct;
+            }
+
+            if(count($answers) >= 3) {
+                $model->answerThreeText = $answers[2]->text;
+                $model->answerThreeCorrect = $answers[2]->is_correct;
+            }
+
+            if(count($answers) >= 4) {
+                $model->answerFourText = $answers[3]->text;
+                $model->answerFourCorrect = $answers[3]->is_correct;
+            }
         }
 
         if ($model->load(Yii::$app->request->post())) {
             if (Yii::$app->request->isAjax) {
                 Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
                 return ActiveForm::validate($model);
-            } else {
-                if (isset($_FILES) && $this->module->settings['enableThumb']) {
-                    $model->image = UploadedFile::getInstance($model, 'image');
-                    if ($model->image && $model->validate(['image'])) {
-                        $model->image = Image::upload($model->image, 'questions');
-                    } else {
-                        $model->image = $model->oldAttributes['image'];
+            }
+
+            if (isset($_FILES) && $this->module->settings['enableThumb']) {
+                $model->image = UploadedFile::getInstance($model, 'image');
+                if ($model->image && $model->validate(['image'])) {
+                    $model->image = Image::upload($model->image, 'news');
+                }
+            }
+
+            $question->text = $model->text;
+            $question->correct_answer = $model->correct_answer;
+            $question->group_id = $model->group_id;
+            $question->image = $model->image;
+            $question->reward = $model->reward ?: 1;
+
+            $answers = Answer::find()->where(['question_id' => $id])->orderBy('id')->all();
+
+            if ($question->update() && count($answers) > 0) {
+                if(count($answers) >= 1) {
+                    $answers[0]->text = $model->answerOneText;
+                    $answers[0]->is_correct = $model->answerOneCorrect;
+                    $answers[0]->question_id = $question->id;
+                }
+
+                if(count($answers) >= 2) {
+                    $answers[1]->text = $model->answerTwoText;
+                    $answers[1]->is_correct = $model->answerTwoCorrect;
+                    $answers[1]->question_id = $question->id;
+                }
+
+                if(count($answers) >= 3) {
+                    $answers[2]->text = $model->answerThreeText;
+                    $answers[2]->is_correct = $model->answerThreeCorrect;
+                    $answers[2]->question_id = $question->id;
+                }
+
+                if(count($answers) >= 4) {
+                    $answers[3]->text = $model->answerFourText;
+                    $answers[3]->is_correct = $model->answerFourCorrect;
+                    $answers[3]->question_id = $question->id;
+                }
+
+                $count = 0;
+
+                foreach ($answers as $answer) {
+                    if($answer->update()) {
+                        $count++;
                     }
                 }
 
-                if ($model->save()) {
-                    $this->flash('success', Yii::t('easyii/questions', 'Questions updated'));
-                } else {
-                    $this->flash('error', Yii::t('easyii', 'Update error. {0}', $model->formatErrors()));
+                if ($count === count($answers)) {
+                    $this->flash('success', Yii::t('easyii/questions', 'Question updated'));
+                    return $this->redirect(['/admin/' . $this->module->id]);
                 }
+            } else {
+                $this->flash('error', VarDumper::export($question->getErrors()));
+                foreach ($answers as $answer) {
+                    $this->flash('error', VarDumper::export($answer->getErrors()));
+                }
+
                 return $this->refresh();
             }
-        } else {
-            return $this->render('edit', [
-                'model' => $model
-            ]);
         }
+
+        return $this->render('edit', [
+            'model' => $model
+        ]);
     }
 
     /**
@@ -152,12 +231,18 @@ class AController extends Controller
      */
     public function actionDelete($id)
     {
-        if (($model = Question::findOne($id))) {
-            $model->delete();
+        if ($question = Question::find()->where(['id' => $id])->one()) {
+            $question->delete();
+
+            $answers = Answer::find()->where(['question_id' => $id])->orderBy('id')->all();
+
+            foreach ($answers as $answer) {
+                $answer->delete();
+            }
         } else {
             $this->error = Yii::t('easyii', 'Not found');
         }
-        return $this->formatResponse(Yii::t('easyii/questions', 'Questions deleted'));
+        return $this->formatResponse(Yii::t('easyii/questions', 'Question and answers deleted'));
     }
 
     /**
@@ -179,19 +264,9 @@ class AController extends Controller
                 @unlink(Yii::getAlias('@webroot') . $model->image);
                 $this->flash('success', Yii::t('easyii', 'Image cleared'));
             } else {
-                $this->flash('error', Yii::t('easyii', 'Update error. {0}', $model->formatErrors()));
+                $this->flash('error', Yii::t('easyii', 'Update error. {0}', $model->getErrors()));
             }
         }
         return $this->back();
-    }
-
-    public function actionOn($id)
-    {
-        return $this->changeStatus($id, Question::STATUS_ON);
-    }
-
-    public function actionOff($id)
-    {
-        return $this->changeStatus($id, Question::STATUS_OFF);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace yii\easyii\modules\questions\models;
+namespace yii\easyii\modules\news\models;
 
 use app\models\Question;
 use Yii;
@@ -8,7 +8,7 @@ use yii\helpers\ArrayHelper;
 
 /**
  * Class QuestionSaver
- * @package yii\easyii\modules\questions\models
+ * @package yii\easyii\modules\news\models
  */
 class QuestionSaver extends Question
 {

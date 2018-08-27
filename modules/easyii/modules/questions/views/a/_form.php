@@ -1,5 +1,5 @@
 <?php
-/** @var $model \yii\easyii\modules\questions\models\QuestionSaver */
+/** @var $model \yii\easyii\modules\news\models\QuestionSaver */
 
 use yii\easyii\helpers\Image;
 use yii\helpers\Html;
@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 
 $module = $this->context->module->id;
 
-$asset = \yii\easyii\modules\questions\assets\QuestionsAsset::register($this);
+$asset = \yii\easyii\modules\news\assets\NewsAsset::register($this);
 ?>
 
 <?php $form = ActiveForm::begin([

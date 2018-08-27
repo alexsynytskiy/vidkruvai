@@ -9,28 +9,46 @@ $asset = \app\assets\AppAsset::register($this);
     <div class="container">
         <div class="row">
             <div class="col-md-12 footer-main">
-                <div class="col-md-4 nopadding socials">
-                    <div class="socials-block">
-                        <div class="social-icon-pack">
-                            <a class="social-icon" href="<?= Text::get('facebook-link') ?>">
-                                <img src="<?= $asset->baseUrl ?>/img/fb-icon.svg">
-                            </a>
-                            <a class="social-icon" href="<?= Text::get('instagram-link') ?>">
-                                <img src="<?= $asset->baseUrl ?>/img/insta-icon.svg">
-                            </a>
-                        </div>
-                        <a class="phone-number"
-                           href="tel:<?= trim(\yii\easyii\modules\text\api\Text::get('phone-number')) ?>">
-                            <?= \yii\easyii\modules\text\api\Text::get('phone-number') ?>
+                <div class="col-md-6 nopadding socials">
+                    <div class="links-block">
+                        <a class="link" href="#">
+                            Поширені питання
+                        </a>
+                        <a class="link" href="#">
+                            Контакт
+                        </a>
+                        <a class="link" href="#">
+                            Партнери
+                        </a>
+                        <a class="link" href="#">
+                            Про проект
                         </a>
                     </div>
+                    <div class="footer-logo">
+                        <img class="svg" src="<?= $asset->baseUrl ?>/img/logo-grey.png">
+                    </div>
+                </div>
+                <div class="col-md-6 rights nopadding">
+                    <div class="social-block">
+                        <div class="social-icon-pack">
 
-                </div>
-                <div class="col-md-4 footer-logo">
-                    <img class="svg" src="<?= $asset->baseUrl ?>/img/logo-white.png">
-                </div>
-                <div class="col-md-4 rights nopadding">
-                    <?= Text::get('rights-reserved') ?>
+                            <a class="social-icon" href="#">
+                                <img class="svg" src="<?= $asset->baseUrl ?>/img/mail.png">
+                            </a>
+                            <a class="social-icon" href="#">
+                                <img class="svg" src="<?= $asset->baseUrl ?>/img/instagram.png">
+                            </a>
+                            <a class="social-icon" href="#">
+                                <img class="svg" src="<?= $asset->baseUrl ?>/img/youtube.png">
+                            </a>
+                            <a class="social-icon" href="#">
+                                <img class="svg" src="<?= $asset->baseUrl ?>/img/facebook.png">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="footer-rights">
+                        <?= Text::get('rights-reserved') ?>
+                    </div>
                 </div>
             </div>
         </div>

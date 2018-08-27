@@ -27,6 +27,12 @@ class QuizController extends Controller
     {
         $errorResponse = ['status' => 'error', 'message' => 'Щось пішло не так..'];
 
+        if (!\Yii::$app->mutex->acquire('multiple-agreement')) {
+            \Yii::info('Пользователь попытался выполнить несколько раз подряд вход');
+
+            return $errorResponse;
+        }
+
         try {
             \Yii::$app->response->format = Response::FORMAT_JSON;
 
@@ -44,7 +50,7 @@ class QuizController extends Controller
             $userId = \Yii::$app->siteUser->identity->id;
             $user = SiteUser::findOne($userId);
 
-            if ($user) {
+            if ($user && !$user->agreement_read) {
                 if (!$user->answers || count($user->answers) !== 6) {
                     UserAnswer::deleteAll(['user_id' => $userId]);
                     QuestionsSetter::setUserQuestions();
@@ -75,6 +81,12 @@ class QuizController extends Controller
     public function actionStartBlock()
     {
         $errorResponse = ['status' => 'error', 'message' => 'Щось пішло не так..'];
+
+        if (!\Yii::$app->mutex->acquire('multiple-start-block')) {
+            \Yii::info('Пользователь попытался выполнить несколько раз подряд вход');
+
+            return $errorResponse;
+        }
 
         try {
             \Yii::$app->response->format = Response::FORMAT_JSON;
@@ -113,6 +125,12 @@ class QuizController extends Controller
     public function actionAnswerCheck()
     {
         $errorResponse = ['status' => 'error', 'message' => 'Щось пішло не так..'];
+
+        if (!\Yii::$app->mutex->acquire('multiple-answer-check')) {
+            \Yii::info('Пользователь попытался выполнить несколько раз подряд вход');
+
+            return $errorResponse;
+        }
 
         try {
             \Yii::$app->response->format = Response::FORMAT_JSON;
@@ -233,7 +251,7 @@ class QuizController extends Controller
                         'status' => 'success',
                         'isCorrect' => $isAnswerCorrect,
                         'answerCorrectId' => $answerCorrectId,
-                        'message' => 'Молодець! Відповіді зараховано вчасно',
+                        'message' => 'Відповіді зараховано вчасно!',
                         'blockFinishedUrl' => '/block-finished/' . QuestionGroup::findOne($groupId)->hash,
                     ];
                 }

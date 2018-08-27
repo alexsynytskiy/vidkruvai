@@ -11,6 +11,7 @@ $contact = '';
 $portfolio = '';
 $clients = '';
 $blog = '';
+$login = '';
 
 switch ($controller) {
     case 'blog':
@@ -18,6 +19,9 @@ switch ($controller) {
         break;
     case 'contact':
         $contact = "active";
+        break;
+    case 'login':
+        $login = "active";
         break;
 }
 ?>
@@ -41,13 +45,23 @@ switch ($controller) {
         <div class="navbar-collapse collapse navbar-right" id="navbar">
             <ul class="nav navbar-nav">
                 <li class="<?= $blog ?>">
-                    <a href="<?= Url::to(['/blog']) ?>">
-                        Блог
+                    <a href="<?= Url::to(['/lections']) ?>">
+                        Освітні Лекції
                     </a>
                 </li>
-                <li class="last <?= $contact ?>">
-                    <a href="<?= Url::to(['/contact']) ?>">
-                        Контакт
+                <li class="<?= $blog ?>">
+                    <a href="<?= Url::to(['/news']) ?>">
+                        Новини
+                    </a>
+                </li>
+                <li class="<?= $contact ?>">
+                    <a href="<?= Url::to(['/register']) ?>">
+                        Реєстрація
+                    </a>
+                </li>
+                <li class="last <?= $login ?> login">
+                    <a href="<?= Url::to(['/login']) ?>">
+                        Вхід
                     </a>
                 </li>
             </ul>

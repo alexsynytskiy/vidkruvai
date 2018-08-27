@@ -5,21 +5,19 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
 $asset = \app\assets\AppAsset::register($this);
-
-$this->title = 'Реєстрація';
 ?>
 
-<div class="steps-block register clearfix">
-    <div class="logo"></div>
-    <div class="step-title"><?= 'День народження компанії' ?></div>
-    <div class="step-subtitle"><?= 'Реєстрація' ?></div>
-    <div class="social-items">
-        <div class="row">
+<div class="steps-block login clearfix">
+    <div class="block-left">
+        <div class="step-title"><?= 'Реєстрація на проект' ?></div>
+        <div class="step-subtitle"><?= 'Заповніть форму реєстрації та створіть захищений пароль. Усі поля обов’язкові для заповнення.' ?></div>
+        <div class="social-items clearfix">
             <?php
             $form = ActiveForm::begin([
-                'id' => 'user-register',
-                'options' => [
-                    'class' => 'link-form',
+                'id'          => 'user-register',
+                'enableClientValidation' => true,
+                'options'     => [
+                    'class'   => 'link-form',
                     'enctype' => 'multipart/form-data',
                 ],
                 'fieldConfig' => [
@@ -29,11 +27,19 @@ $this->title = 'Реєстрація';
             ?>
 
             <div class="col-md-12 form-z-index clearfix">
+                <?= $form->field($model, 'role')->textInput(['maxlength' => true, 'placeholder' => 'Роль']) ?>
+
                 <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => "Ім'я"]) ?>
 
                 <?= $form->field($model, 'surname')->textInput(['maxlength' => true, 'placeholder' => 'Прізвище']) ?>
 
-                <?= $form->field($model, 'nickname')->textInput(['maxlength' => true, 'placeholder' => 'Логін/Нік']) ?>
+                <?= $form->field($model, 'age')->textInput(['maxlength' => true, 'placeholder' => 'Вік']) ?>
+
+                <?= $form->field($model, 'class')->textInput(['maxlength' => true, 'placeholder' => 'Клас']) ?>
+
+                <?= $form->field($model, 'school')->textInput(['maxlength' => true, 'placeholder' => 'Школа']) ?>
+
+                <?= $form->field($model, 'email')->textInput(['maxlength' => true, 'placeholder' => 'Електронна пошта']) ?>
 
                 <?= $form->field($model, 'userPassword')->passwordInput(['maxlength' => true, 'placeholder' => 'Пароль']) ?>
 
@@ -54,10 +60,23 @@ $this->title = 'Реєстрація';
                 ]) ?>
 
                 <?= Html::submitButton('Далі', ['class' => 'link-button']) ?>
-                <?= 'Вже зареєстровані? ' . Html::a('Вхід', '/login', ['class' => 'link-button']) ?>
+                <div class="already">
+                    <?= 'Маєте профіль? ' . Html::a('Вхід', '/login', ['class' => 'link-button']) ?>
+                </div>
             </div>
 
             <?php ActiveForm::end(); ?>
         </div>
+        <div class="profile-header clearfix">
+            <div class="profile-navigation">
+                <a href='<?= \yii\helpers\Url::to(['/site/help']) ?>' class="link-additional">
+                    <div class="link-icon">
+                        <div class="help"></div>
+                    </div>
+                    Техпідтримка
+                </a>
+            </div>
+        </div>
     </div>
+    <div class="block-right"></div>
 </div>

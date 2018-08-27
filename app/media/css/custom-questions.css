@@ -1,9 +1,13 @@
-@import url('https://fonts.googleapis.com/css?family=Play:400,700&subset=cyrillic,cyrillic-ext,latin-ext');
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700&subset=cyrillic');
-
 body {
-    font-family: 'Play', sans-serif;
+    font-family: 'Lato', sans-serif;
+    color: #263745;
+    position: relative;
     min-width: 474px;
+}
+
+.ios,
+.ios * {
+    cursor: pointer;
 }
 
 .clearfix:after {
@@ -28,7 +32,7 @@ body {
     padding-bottom: 15px;
     padding-right: 20px;
     color: #B3B8C3;
-    font-family: 'Open Sans', sans-serif !important;
+    font-family: 'Lato', sans-serif !important;
     font-weight: 300;
     line-height: 1.8;
     font-size: 14px;
@@ -47,16 +51,8 @@ body {
     margin-bottom: 0 !important;
 }
 
-.stars {
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    /* background: url(/app/media/img/2.png) no-repeat center;
-    background-size: cover;*/
-}
-
 .steps-block {
-    max-width: 800px;
+    max-width: 1028px;
     min-width: 474px;
     background-color: #fff;
     border-radius: 20px;
@@ -82,34 +78,64 @@ form#user-register, form#user-login {
     margin: 0 auto;
 }
 
-form input.form-control {
-    height: 54px;
-    border-radius: 10px;
-    border: solid 2px #CBD5DC;
+form input.form-control,
+#registerform-captchauser,
+#loginform-captchauser {
+    height: 44px;
+    border-radius: 5px;
+    background-color: #F7F9FB;
+    padding: 12px;
+    color: #373737;
+    font-size: 14px;
+    border: 2px solid #F7F9FB;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
 }
 
 button.link-button {
-    width: 400px;
-    background-color: #45D6AD;
+    width: 340px;
+    background-color: #007BFF;
     border: none;
-    height: 60px;
-    border-radius: 10px;
+    height: 44px;
+    border-radius: 5px;
     color: #fff;
     line-height: 28px;
-    font-size: 24px;
+    font-size: 16px;
     font-weight: bold;
     margin-bottom: 16px;
+    margin-top: 8px;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+}
+
+button.link-button:hover {
+    background-color: #3195FF;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
 }
 
 form .already {
     color: #41505c;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: bold;
+    font-family: 'Lato', sans-serif;
+    font-weight: normal;
     font-size: 14px;
 }
 
 form .already a {
-    color: #45D6AD;
+    color: #007BFF;
+}
+
+form .already a:hover {
+    color: #3195FF;
 }
 
 .form-z-index {
@@ -117,44 +143,36 @@ form .already a {
 }
 
 #registerform-captchauser, #loginform-captchauser {
-    height: 54px;
-    border-radius: 10px;
-    width: 285px;
-    padding: 15px;
-    border: solid 2px #CBD5DC;
+    width: 230px;
 }
 
-.field-registerform-captchauser, .field-loginform-captchauser {
-    height: 54px;
-}
-
-.steps-block .logo {
-    background: url(/app/media/img/logo.svg) no-repeat;
-    background-size: 300px 100px;
-    height: 100px;
-    width: 300px;
-    margin: 0 auto 30px;
+#registerform-captchauser::placeholder, #loginform-captchauser::placeholder {
+    color: #93A0A9;
 }
 
 .steps-block .step-title {
     font-size: 22px;
-    margin-bottom: 30px;
+    margin-bottom: 22px;
     font-weight: bold;
+    text-align: left;
+    line-height: 29px;
 }
 
 .steps-block .step-subtitle {
-    font-size: 20px;
-    margin-bottom: 15px;
-    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 24px;
+    font-weight: normal;
+    text-align: left;
+    line-height: 22px;
 }
 
 .steps-block.rules {
     color: #263745;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Lato', sans-serif;
 }
 
 .steps-block.rules .step-title {
-    font-family: 'Play', sans-serif;
+    font-family: 'Lato', sans-serif;
 }
 
 .steps-block.rules .text-info-block {
@@ -188,34 +206,67 @@ form .already a {
     background-size: 180px 60px;
 }
 
-.steps-block.profile .profile-navigation {
+.steps-block.register .profile-navigation,
+.steps-block.login .profile-navigation {
+    float: none !important;
+    margin: 10px auto 0;
+    width: 137px;
+}
+
+.steps-block.profile .profile-navigation,
+.steps-block.register .profile-navigation,
+.steps-block.login .profile-navigation {
     height: 60px;
     float: right;
-    color: #45D6AD;
+    color: #007BFF;
 }
 
-.steps-block.profile a.link-additional {
+.steps-block.profile a.link-additional,
+.steps-block.register a.link-additional,
+.steps-block.login a.link-additional {
     float: right;
-    margin-left: 30px;
+    margin-left: 20px;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: normal;
     line-height: 60px;
-    font-family: 'Open Sans', sans-serif;
-    color: #45D6AD;
+    font-family: 'Lato', sans-serif;
+    color: #007BFF;
     display: table;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
 }
 
-.steps-block.profile a.link-additional:last-child {
+.steps-block.profile a.link-additional:hover,
+.steps-block.register a.link-additional:hover,
+.steps-block.login a.link-additional:hover {
+    color: #3195FF;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+}
+
+.steps-block.profile a.link-additional:last-child,
+.steps-block.register a.link-additional:last-child,
+.steps-block.login a.link-additional:last-child {
     margin-left: 0;
 }
 
-.steps-block.profile .link-additional .link-icon {
+.steps-block.profile .link-additional .link-icon,
+.steps-block.register .link-additional .link-icon,
+.steps-block.login .link-additional .link-icon {
     width: 24px;
     vertical-align: middle;
     display: table-cell;
 }
 
-.steps-block.profile .link-additional .link-icon > div {
+.steps-block.profile .link-additional .link-icon > div,
+.steps-block.register .link-additional .link-icon > div,
+.steps-block.login .link-additional .link-icon > div {
     height: 24px;
     width: 24px;
     margin-right: 7px;
@@ -236,7 +287,9 @@ form .already a {
     background-size: 24px 24px;
 }
 
-.steps-block.profile .link-additional .link-icon .help {
+.steps-block.profile .link-additional .link-icon .help,
+.steps-block.register .link-additional .link-icon .help,
+.steps-block.login .link-additional .link-icon .help {
     background: url(/app/media/img/icon2.svg) no-repeat;
     background-size: 24px 24px;
 }
@@ -262,7 +315,7 @@ form .already a {
     text-align: center;
     color: #263745;
     font-weight: bold;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Lato', sans-serif;
     margin-bottom: 40px;
 }
 
@@ -279,22 +332,12 @@ form .already a {
     float: left;
 }
 
-.steps-block.profile .smarts .icon {
-    background: url(/app/media/img/rocket.svg) no-repeat;
-    background-size: 24px 24px;
-    height: 24px;
-    width: 24px;
-    margin-right: 7px;
-    float: left;
-    margin-left: 20px;
-}
-
 .steps-block.profile .questions .block {
     margin-bottom: 30px;
     width: 100%;
-    height: 116px;
-    border-radius: 10px;
-    border: 2px solid #45D6AD;
+    min-height: 116px;
+    border-radius: 5px;
+    border: 2px solid #007BFF;
 }
 
 .steps-block.profile .questions .block:last-child {
@@ -317,13 +360,14 @@ form .already a {
     float: left;
     width: calc(100% - 173px);
     height: 100%;
+    min-height: 116px;
     text-align: left;
     padding-left: 20px;
 }
 
 .steps-block.profile .questions .block .left-part .title {
     height: 50%;
-    font-family: 'Play', sans-serif;
+    font-family: 'Lato', sans-serif;
     font-size: 24px;
     font-weight: bold;
     color: #263745;
@@ -333,12 +377,44 @@ form .already a {
 
 .steps-block.profile .questions .block .left-part .sub-title {
     height: 50%;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Lato', sans-serif;
     font-size: 16px;
     font-weight: normal;
     color: #263745;
-    line-height: 15px;
+    line-height: 22px;
     padding-top: 12px;
+}
+
+.steps-block.profile .questions .block .left-part .sub-title.info {
+    line-height: 21px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.steps-block.profile .questions .block .left-part .sub-title.info .block-finished-sub-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 3px;
+    font-size: 19px;
+}
+
+.steps-block.profile .questions .block .left-part .sub-title.info .block-finished-text {
+    font-size: 14px;
+    line-height: 22px;
+    padding-right: 20px;
+}
+
+.new-info.about-event {
+    text-align: justify;
+    font-size: 14px;
+    line-height: 28px;
+    width: 600px;
+    margin: 20px auto 30px;
+}
+
+.new-info.about-event .block-finished-sub-title {
+    font-weight: bold;
+    font-size: 17px;
 }
 
 .steps-block.profile .questions .block .right-part {
@@ -355,8 +431,8 @@ form .already a {
 
 .steps-block.profile .questions .block .right-part .number {
     height: 50%;
-    border: 2px solid #45D6AD;
-    font-family: 'Open Sans', sans-serif;
+    border: 2px solid #007BFF;
+    font-family: 'Lato', sans-serif;
     font-size: 18px;
     font-weight: bold;
     line-height: 55px;
@@ -409,7 +485,7 @@ form .already a {
 }
 
 .steps-block.profile .questions .block .right-part .start.enabled {
-    background-color: #45D6AD;
+    background-color: #007BFF;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
     -webkit-transition: all ease 0.5s;
@@ -422,7 +498,7 @@ form .already a {
 .steps-block.profile .questions .block .right-part .start.enabled:hover {
     cursor: pointer;
     background-color: #fff;
-    color: #45D6AD;
+    color: #007BFF;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     -webkit-transition: all ease 0.5s;
@@ -434,13 +510,13 @@ form .already a {
 
 .steps-block.profile .questions .block .right-part .start .text {
     height: 50%;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Lato', sans-serif;
     font-size: 18px;
     font-weight: bold;
 }
 
 .steps-block.profile .questions .block .right-part .start .text.title {
-    padding-top: 15px;
+    padding-top: 25px;
     line-height: 40px;
 }
 
@@ -457,7 +533,7 @@ form .already a {
 
 .steps-block.profile .questions .block .right-part .start.answered {
     position: relative;
-    background-color: #45D6AD;
+    background-color: #007BFF;
 }
 
 .steps-block.profile .questions .block .right-part .start.disabled .icon,
@@ -489,9 +565,9 @@ form .already a {
     font-size: 24px;
     line-height: 28px;
     padding-bottom: 20px;
-    border-bottom: 2px solid #45D6AD;
+    border-bottom: 2px solid #007BFF;
     margin-bottom: 20px;
-    font-family: 'Play', sans-serif;
+    font-family: 'Lato', sans-serif;
 }
 
 .steps-block.profile .answer {
@@ -500,7 +576,7 @@ form .already a {
     height: 98px;
     border-radius: 10px;
     border: 2px solid #CBD5DC;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Lato', sans-serif;
     font-size: 16px;
     font-weight: normal;
     margin-bottom: 20px;
@@ -514,7 +590,7 @@ form .already a {
 
 .steps-block.profile .answer:hover {
     cursor: pointer;
-    border: 2px solid #45D6AD;
+    border: 2px solid #007BFF;
     -webkit-transition: all ease 0.5s;
     -moz-transition: all ease 0.5s;
     -o-transition: all ease 0.5s;
@@ -527,9 +603,9 @@ form .already a {
 }
 
 .steps-block.profile .answer.selected {
-    background-color: #45D6AD;
+    background-color: #007BFF;
     color: #fff;
-    border: 2px solid #45D6AD;
+    border: 2px solid #007BFF;
 }
 
 .steps-block.profile .answer.wrong {
@@ -567,7 +643,7 @@ form .already a {
 }
 
 .congrads {
-    font-family: 'Play', sans-serif;
+    font-family: 'Lato', sans-serif;
     font-size: 24px;
     font-weight: bold;
     text-align: center;
@@ -575,7 +651,7 @@ form .already a {
 }
 
 .new-info {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Lato', sans-serif;
     font-size: 16px;
     font-weight: normal;
     text-align: center;
@@ -588,7 +664,7 @@ form .already a {
     text-align: center;
     margin-top: 8px;
     margin-bottom: 29px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Lato', sans-serif;
     font-size: 16px;
     font-weight: bold;
 }
@@ -657,6 +733,100 @@ form .already a {
     margin-bottom: 0;
 }
 
+.name-must-be, a:hover, a:focus {
+    color: #FF4D00;
+}
+
+a {
+    color: #007BFF;
+}
+
+.help-info {
+    font-size: 16px;
+    line-height: 33px;
+    text-align: left;
+    margin-bottom: 30px;
+    padding-left: 36px;
+    padding-right: 36px;
+}
+
+.help-info .bold {
+    display: inline-block;
+    font-weight: normal;
+}
+
+.has-error .help-block, .has-error .control-label,
+.has-error .radio, .has-error .checkbox, .has-error .radio-inline,
+.has-error .checkbox-inline, .has-error.radio label,
+.has-error.checkbox label, .has-error.radio-inline label,
+.has-error.checkbox-inline label {
+    color: #FF4D00;
+}
+
+.field-registerform-captchauser img, .field-loginform-captchauser img {
+    margin: 0;
+}
+
+.block-left {
+    width: 380px;
+    float: left;
+    margin-right: 40px;
+}
+
+.block-right {
+    width: 480px;
+    float: left;
+    background-color: #F7F9FB;
+    min-height: 480px;
+}
+
+.social-items {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px 0 rgba(0, 60, 125, 0.15);
+}
+
+.media-right {
+    padding: 0;
+}
+
+.form-group {
+    margin-bottom: 12px;
+}
+
+.form-control:hover,
+#registerform-captchauser:hover,
+#loginform-captchauser:hover {
+    background-color: #fff;
+    border: 2px solid #F7F9FB;
+}
+
+.form-control:focus,
+#registerform-captchauser:focus,
+#loginform-captchauser:focus {
+    border: 2px solid #007BFF;
+    box-shadow: none;
+    background-color: #fff;
+}
+
+.has-error .form-control:focus,
+.has-error .form-control,
+.has-error #registerform-captchauser:focus,
+.has-error #loginform-captchauser:focus,
+.has-error #registerform-captchauser,
+.has-error #loginform-captchauser {
+    border: 2px solid #FF6B00;
+    box-shadow: none;
+    background-color: #fff;
+}
+
+.has-success .form-control,
+.has-success .form-control:focus {
+    border: 2px solid #007BFF;
+    box-shadow: none;
+    background-color: #fff;
+}
+
 @media (max-width: 1199px) {
 
 }
@@ -675,14 +845,16 @@ form .already a {
 
 @media (max-width: 767px) {
     .steps-block.profile a.link-additional {
-        margin-left: 21px;
+        margin-left: 0;
+        width: 50%;
+        text-align: left;
     }
 
     .steps-block.profile .questions .block .left-part .sub-title {
         line-height: 15px;
         padding-right: 15px;
-        font-size: 14px;
-        padding-top: 0;
+        font-size: 12px;
+        padding-top: 5px;
     }
 
     .steps-block.profile .questions .block .left-part .title {
@@ -696,7 +868,8 @@ form .already a {
     }
 
     .steps-block.profile .profile-navigation {
-        margin-top: 20px;
+        margin-top: 30px;
+        height: 100%;
     }
 
     .steps-block.profile .logo {
@@ -710,6 +883,34 @@ form .already a {
     .steps-block.profile .answer .text {
         padding-left: 15px;
         padding-right: 15px;
+    }
+
+    .profile-navigation {
+        height: 100%;
+        width: 360px;
+        display: block;
+        margin: 20px auto 0;
+    }
+
+    button.link-button, form#user-register, form#user-login {
+        max-width: 345px;
+    }
+
+    #registerform-captchauser, #loginform-captchauser {
+        width: 225px;
+    }
+
+    .new-info.about-event, .image-group img {
+        max-width: 600px;
+        width: 100%;
+    }
+
+    .main-rules .text-info-block {
+        padding: 0 !important;
+    }
+
+    .steps-block.rules.main-rules .separator-space {
+        height: 30px;
     }
 }
 
@@ -727,14 +928,4 @@ form .already a {
 
 @media (max-width: 624px) {
 
-}
-
-::-moz-selection {
-    color: #fff;
-    background: rgb(233, 65, 77);
-}
-
-::selection {
-    color: #fff;
-    background: rgb(233, 65, 77);
 }

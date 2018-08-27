@@ -446,7 +446,7 @@ CREATE TABLE `easyii_modules` (
 
 INSERT INTO `easyii_modules` (`module_id`, `name`, `class`, `title`, `icon`, `settings`, `notice`, `order_num`, `status`) VALUES
 (2, \'carousel\', \'yii\\easyii\\modules\\carousel\\CarouselModule\', \'Карусель\', \'picture\', \'{\"enableTitle\":true,\"enableText\":true}\', 0, 30, 0),
-(3, \'catalog\', \'yii\\easyii\\modules\\catalog\\CatalogModule\', \'Каталог\', \'list-alt\', \'{\"categoryThumb\":true,\"itemsInFolder\":false,\"itemThumb\":true,\"itemPhotos\":true,\"itemDescription\":true,\"itemSale\":true}\', 0, 100, 0),
+(3, \'catalog\', \'yii\\easyii\\modules\\catalog\\SiteUsersModule\', \'Каталог\', \'list-alt\', \'{\"categoryThumb\":true,\"itemsInFolder\":false,\"itemThumb\":true,\"itemPhotos\":true,\"itemDescription\":true,\"itemSale\":true}\', 0, 100, 0),
 (4, \'faq\', \'yii\\easyii\\modules\\faq\\FaqModule\', \'Вопросы и ответы\', \'question-sign\', \'[]\', 0, 40, 0),
 (5, \'feedback\', \'yii\\easyii\\modules\\feedback\\FeedbackModule\', \'Обратная связь\', \'earphone\', \'{\"mailAdminOnNewFeedback\":true,\"subjectOnNewFeedback\":\"New feedback\",\"templateOnNewFeedback\":\"@easyii\\/modules\\/feedback\\/mail\\/uk\\/new_feedback\",\"answerTemplate\":\"@easyii\\/modules\\/feedback\\/mail\\/uk\\/answer\",\"answerSubject\":\"Answer on your feedback message\",\"answerHeader\":\"Hello,\",\"answerFooter\":\"Best regards.\",\"enableTitle\":false,\"enablePhone\":true,\"enableCaptcha\":false}\', 0, 60, 1),
 (6, \'file\', \'yii\\easyii\\modules\\file\\FileModule\', \'Файлы\', \'floppy-disk\', \'[]\', 0, 20, 1),

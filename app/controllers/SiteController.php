@@ -32,7 +32,7 @@ class SiteController extends Controller
             ],
             'captcha' => [
                 'class' => CaptchaAction::className(),
-                'height' => 60,
+                'height' => 50,
                 'maxLength' => 4,
                 'minLength' => 4,
             ],
@@ -101,15 +101,27 @@ class SiteController extends Controller
     /**
      * @return string
      */
+    public function actionHelp()
+    {
+        \Yii::$app->seo->setTitle('Техпідтримка');
+        \Yii::$app->seo->setDescription('Intellias quiz');
+        \Yii::$app->seo->setKeywords('intellias, quiz');
+
+        return $this->render(\Yii::$app->siteUser->isGuest ? 'help-guest' : 'help-logged-in');
+    }
+
+    /**
+     * @return string
+     */
     public function actionRules()
     {
         if (\Yii::$app->siteUser->isGuest) {
             return $this->redirect('/login');
         }
 
-        \Yii::$app->seo->setTitle('Rules');
-        \Yii::$app->seo->setDescription('quiz');
-        \Yii::$app->seo->setKeywords('quiz');
+        \Yii::$app->seo->setTitle('Правила');
+        \Yii::$app->seo->setDescription('Intellias quiz');
+        \Yii::$app->seo->setKeywords('intellias, quiz');
 
         return $this->render('rules');
     }
@@ -125,9 +137,9 @@ class SiteController extends Controller
             return $status;
         }
 
-        \Yii::$app->seo->setTitle('Event info');
-        \Yii::$app->seo->setDescription('quiz');
-        \Yii::$app->seo->setKeywords('quiz');
+        \Yii::$app->seo->setTitle('Про подію');
+        \Yii::$app->seo->setDescription('Intellias quiz');
+        \Yii::$app->seo->setKeywords('intellias, quiz');
 
         return $this->render('simple-info');
     }
@@ -143,9 +155,9 @@ class SiteController extends Controller
             return $status;
         }
 
-        \Yii::$app->seo->setTitle('Game rules');
-        \Yii::$app->seo->setDescription('quiz');
-        \Yii::$app->seo->setKeywords('quiz');
+        \Yii::$app->seo->setTitle('Правила');
+        \Yii::$app->seo->setDescription('Intellias quiz');
+        \Yii::$app->seo->setKeywords('intellias, quiz');
 
         return $this->render('simple-rules');
     }
@@ -161,9 +173,9 @@ class SiteController extends Controller
             return $status;
         }
 
-        \Yii::$app->seo->setTitle('Profile');
-        \Yii::$app->seo->setDescription('quiz');
-        \Yii::$app->seo->setKeywords('quiz');
+        \Yii::$app->seo->setTitle('Профіль');
+        \Yii::$app->seo->setDescription('Intellias quiz');
+        \Yii::$app->seo->setKeywords('intellias, quiz');
 
         $questionGroups = QuestionGroup::find()->all();
         $currentTime = time();
@@ -217,6 +229,10 @@ class SiteController extends Controller
         $group = QuestionGroup::findOne(['hash' => $hash]);
 
         if ($group) {
+            \Yii::$app->seo->setTitle('Блок питань ' . $group->name);
+            \Yii::$app->seo->setDescription('Intellias quiz');
+            \Yii::$app->seo->setKeywords('intellias, quiz');
+
             /** @var UserAnswer[] $userAnswers */
             $userAnswers = UserAnswer::find()
                 ->alias('qa')
@@ -268,6 +284,10 @@ class SiteController extends Controller
         $group = QuestionGroup::findOne(['hash' => $hash]);
 
         if ($group) {
+            \Yii::$app->seo->setTitle('Блок питань ' . $group->name . ' завершено');
+            \Yii::$app->seo->setDescription('Intellias quiz');
+            \Yii::$app->seo->setKeywords('intellias, quiz');
+
             $userAnswers = $group->userAnswers;
             $answersCount = 0;
             $wrongAnswers = [];
@@ -310,6 +330,10 @@ class SiteController extends Controller
             throw new BadRequestHttpException();
         }
 
+        \Yii::$app->seo->setTitle('Реєстрація');
+        \Yii::$app->seo->setDescription('Intellias quiz');
+        \Yii::$app->seo->setKeywords('intellias, quiz');
+
         $model = new RegisterForm();
 
         if ($model->load(\Yii::$app->request->post()) && $model->register()) {
@@ -339,6 +363,10 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        if(!\Yii::$app->user->isGuest) {
+            \Yii::$app->user->logout();
+        }
+
         if (!\Yii::$app->siteUser->isGuest && \Yii::$app->siteUser->identity->agreement_read) {
             return $this->redirect(['/profile']);
         }
@@ -348,6 +376,10 @@ class SiteController extends Controller
 
             throw new BadRequestHttpException();
         }
+
+        \Yii::$app->seo->setTitle('Вхід');
+        \Yii::$app->seo->setDescription('Intellias quiz');
+        \Yii::$app->seo->setKeywords('intellias, quiz');
 
         $model = new LoginForm();
 

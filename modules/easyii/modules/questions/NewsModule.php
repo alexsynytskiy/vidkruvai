@@ -1,9 +1,14 @@
 <?php
-namespace yii\easyii\modules\questions;
+namespace yii\easyii\modules\news;
 
-class QuestionsModule extends \yii\easyii\components\Module
+class NewsModule extends \yii\easyii\components\Module
 {
     public $settings = [
+        'enableThumb' => true,
+        'enablePhotos' => true,
+        'enableShort' => true,
+        'shortMaxLength' => 256,
+        'enableTags' => true
     ];
 
     public static $installConfig = [

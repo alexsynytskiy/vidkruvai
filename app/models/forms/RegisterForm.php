@@ -22,6 +22,26 @@ class RegisterForm extends Model
     /**
      * @var string
      */
+    public $email;
+    /**
+     * @var string
+     */
+    public $role;
+    /**
+     * @var string
+     */
+    public $age;
+    /**
+     * @var string
+     */
+    public $class;
+    /**
+     * @var string
+     */
+    public $school;
+    /**
+     * @var string
+     */
     public $userPassword;
     /**
      * @var string
@@ -42,17 +62,26 @@ class RegisterForm extends Model
     public function rules()
     {
         return [
-            [['name', 'surname', 'passwordRepeat', 'userPassword', 'captchaUser'], 'required'],
+            [['name', 'surname', 'passwordRepeat', 'userPassword', 'captchaUser', 'role', 'age', 'class',
+                'school', 'email'], 'required'],
             ['captchaUser', 'captcha', 'captchaAction' => '/site/captcha'],
             ['userPassword', 'string', 'min' => 6],
-            [['name', 'surname'], 'uniqueSiteUser'],
+            [['name', 'surname', 'role', 'age', 'class', 'school'], 'uniqueSiteUser'],
             ['passwordRepeat', 'compare', 'compareAttribute' => 'userPassword'],
         ];
     }
 
     public function uniqueSiteUser($attribute, $params, $validator)
     {
-        $userExists = SiteUser::findOne(['name' => $this->name, 'surname' => $this->surname]);
+        $userExists = SiteUser::findOne([
+            'name' => $this->name,
+            'surname' => $this->surname,
+            'role' => $this->role,
+            'age' => $this->age,
+            'school' => $this->school,
+            'email' => $this->email,
+        ]);
+
         if($userExists)
         {
             $this->addError($attribute, "Такий користувач вже існує ({$this->name} {$this->surname})");
@@ -67,6 +96,11 @@ class RegisterForm extends Model
         return [
             'name' => "Ім'я",
             'surname' => 'Прізвище',
+            'email' => 'Електронна пошта',
+            'role' => 'Роль',
+            'age' => 'Вік',
+            'class' => 'Клас',
+            'school' => 'Школа',
             'nickname' => 'Логін/Нік',
             'userPassword' => 'Пароль',
             'passwordRepeat' => 'Пароль ще раз',
@@ -92,6 +126,11 @@ class RegisterForm extends Model
         $user = new SiteUser();
         $user->name = $this->name;
         $user->surname = $this->surname;
+        $user->role = $this->role;
+        $user->age = $this->age;
+        $user->class = $this->class;
+        $user->school = $this->school;
+        $user->email = $this->email;
         $user->userPassword = $this->userPassword;
         $user->passwordRepeat = $this->passwordRepeat;
 
