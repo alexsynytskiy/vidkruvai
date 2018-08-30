@@ -12,7 +12,6 @@ class CategoryHelper
      * Const allowed languages
      */
     const CATEGORY_NEWS = 'news';
-    const CATEGORY_PORTFOLIO = 'portfolio';
 
     /**
      * @return array
@@ -20,8 +19,7 @@ class CategoryHelper
     public static function getCategories()
     {
         return [
-            self::CATEGORY_NEWS => 'Новости',
-            self::CATEGORY_PORTFOLIO => 'Портфолио',
+            self::CATEGORY_NEWS => 'Новости'
         ];
     }
 
@@ -31,8 +29,7 @@ class CategoryHelper
     public static function getCategoriesValues()
     {
         return [
-            self::CATEGORY_NEWS,
-            self::CATEGORY_PORTFOLIO,
+            self::CATEGORY_NEWS
         ];
     }
 }

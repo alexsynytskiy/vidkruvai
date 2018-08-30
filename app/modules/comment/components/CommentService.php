@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\comment\components;
 
 use yii\base\Object;
@@ -7,14 +8,14 @@ use yii\base\Object;
  * Class CommentService
  * @package app\modules\comment\components
  *
- * @property int    $commentOffset
- * @property int    $treesLimit
- * @property int    $totalComments
- * @property int    $maxTreeId
- * @property bool   $isGuest
+ * @property int $commentOffset
+ * @property int $treesLimit
+ * @property int $totalComments
+ * @property int $maxTreeId
+ * @property bool $isGuest
  * @property string $template
- * @property array  $allowedTemplates
- * @property int    $channelId
+ * @property array $allowedTemplates
+ * @property int $channelId
  */
 class CommentService extends Object
 {
@@ -33,7 +34,8 @@ class CommentService extends Object
     /**
      * @param $template
      */
-    public function setTemplate($template) {
+    public function setTemplate($template)
+    {
         $this->template = $template;
     }
 
@@ -42,8 +44,9 @@ class CommentService extends Object
      *
      * @return null|string
      */
-    public function getTemplate($template = null) {
-        if($template === null) {
+    public function getTemplate($template = null)
+    {
+        if ($template === null) {
             return $this->template;
         }
 
@@ -53,81 +56,92 @@ class CommentService extends Object
     /**
      * @param int $total
      */
-    public function setTotalComments($total) {
+    public function setTotalComments($total)
+    {
         $this->totalComments = $total;
     }
 
     /**
      * @return int
      */
-    public function getTotalComments() {
+    public function getTotalComments()
+    {
         return $this->totalComments;
     }
 
     /**
      * @return string
      */
-    public function getWidgetViewPath() {
+    public function getWidgetViewPath()
+    {
         return $this->widgetViewPath;
     }
 
     /**
      * @return int
      */
-    public function getCommentOffset() {
+    public function getCommentOffset()
+    {
         return $this->commentOffset;
     }
 
     /**
      * @return int
      */
-    public function getTreesLimit() {
+    public function getTreesLimit()
+    {
         return $this->treesLimit;
     }
 
     /**
      * @return array
      */
-    public function getAllowedTemplates() {
+    public function getAllowedTemplates()
+    {
         return $this->allowedTemplates;
     }
 
     /**
      * @param int $maxTreeId
      */
-    public function setMaxTreeId($maxTreeId) {
+    public function setMaxTreeId($maxTreeId)
+    {
         $this->maxTreeId = $maxTreeId;
     }
 
     /**
      * @return int
      */
-    public function getMaxTreeId() {
+    public function getMaxTreeId()
+    {
         return $this->maxTreeId;
     }
 
     /**
      * @param $isGuest
      */
-    public function setIsGuest($isGuest) {
+    public function setIsGuest($isGuest)
+    {
         $this->isGuest = $isGuest;
     }
 
     /**
      * @return bool
      */
-    public function getIsGuest() {
+    public function getIsGuest()
+    {
         return $this->isGuest;
     }
 
     /**
      * @param array $listComments
      */
-    public function prepareMaxTreeId(array $listComments) {
+    public function prepareMaxTreeId(array $listComments)
+    {
         $rev = array_reverse($listComments);
 
-        if(isset($rev[0])) {
-            $c               = $rev[0];
+        if (isset($rev[0])) {
+            $c = $rev[0];
             $this->maxTreeId = $c->tree;
         }
     }
@@ -137,8 +151,9 @@ class CommentService extends Object
      *
      * @return string
      */
-    public function getTemplatePath($template = null) {
-        if($template === null) {
+    public function getTemplatePath($template = null)
+    {
+        if ($template === null) {
             $template = $this->template;
         } else {
             $template = $this->getTemplate($template);

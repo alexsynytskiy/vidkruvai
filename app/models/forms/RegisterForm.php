@@ -64,7 +64,7 @@ class RegisterForm extends Model
         return [
             [['name', 'surname', 'passwordRepeat', 'userPassword', 'captchaUser', 'role', 'age', 'class',
                 'school', 'email'], 'required'],
-            ['captchaUser', 'captcha', 'captchaAction' => '/site/captcha'],
+            ['captchaUser', 'captcha', 'captchaAction' => '/profile/captcha'],
             ['userPassword', 'string', 'min' => 6],
             [['name', 'surname', 'role', 'age', 'class', 'school'], 'uniqueSiteUser'],
             ['passwordRepeat', 'compare', 'compareAttribute' => 'userPassword'],
@@ -82,8 +82,7 @@ class RegisterForm extends Model
             'email' => $this->email,
         ]);
 
-        if($userExists)
-        {
+        if ($userExists) {
             $this->addError($attribute, "Такий користувач вже існує ({$this->name} {$this->surname})");
         }
     }

@@ -15,33 +15,38 @@ class Comm extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'comm';
     }
 
-    public static function find() {
+    public static function find()
+    {
         return new CommQuery(get_called_class());
     }
 
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'tree' => [
-                'class'          => NestedSetsBehavior::className(),
-                'treeAttribute'  => 'tree',
-                'leftAttribute'  => 'lft',
+                'class' => NestedSetsBehavior::className(),
+                'treeAttribute' => 'tree',
+                'leftAttribute' => 'lft',
                 'rightAttribute' => 'rgt',
                 'depthAttribute' => 'depth',
             ],
         ];
     }
 
-    public static function getCountComm() {
+    public static function getCountComm()
+    {
         return (new Query)
             ->from(static::tableName())
             ->count();
     }
 
-    public static function getComm($offset = 0, $limit = 5) {
+    public static function getComm($offset = 0, $limit = 5)
+    {
         return static::find()
             ->orderBy('tree DESC, lft')
             ->offset($offset)

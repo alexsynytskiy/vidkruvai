@@ -16,15 +16,15 @@ $userAnswer = \app\models\UserAnswer::findOne([
 ]);
 ?>
 
-<div class="steps-block profile answer-block clearfix">
-    <?= $this->render('/_blocks/profile-header') ?>
+    <div class="steps-block profile answer-block clearfix">
+        <?= $this->render('/_blocks/profile-header') ?>
 
-    <div class="separator-space"></div>
+        <div class="separator-space"></div>
 
-    <div id="question-wrapper">
-        <?= $this->render('/_blocks/question-body', ['blockQuestion' => $blockQuestion]) ?>
+        <div id="question-wrapper">
+            <?= $this->render('/_blocks/question-body', ['blockQuestion' => $blockQuestion]) ?>
+        </div>
     </div>
-</div>
 
 <?php
 $pageOptions = \yii\helpers\Json::encode([

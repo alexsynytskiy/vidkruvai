@@ -23,9 +23,8 @@ $module = $this->context->module->id;
             <?php endif; ?>
             <th><?= Yii::t('easyii', 'Имя') ?></th>
             <th><?= Yii::t('easyii', 'Фамилия') ?></th>
-            <th><?= Yii::t('easyii', 'Ник') ?></th>
-            <th><?= Yii::t('easyii', 'Пароль') ?></th>
-            <th><?= Yii::t('easyii', 'Смартов') ?></th>
+            <th><?= Yii::t('easyii', 'E-Mail') ?></th>
+            <th width="100"><?= Yii::t('easyii', 'Status') ?></th>
         </tr>
         </thead>
         <tbody>
@@ -36,9 +35,14 @@ $module = $this->context->module->id;
                 <?php endif; ?>
                 <td><?= $item->name ?></td>
                 <td><?= $item->surname ?></td>
-                <td><?= $item->nickname ?></td>
-                <td><?= $item->password_admins ?></td>
-                <td><?= $item->total_smart ?></td>
+                <td><?= $item->email ?></td>
+                <td class="status">
+                    <?= Html::checkbox('', $item->status === \app\models\SiteUser::STATUS_ACTIVE, [
+                        'class' => 'switch',
+                        'data-id' => $item->primaryKey,
+                        'data-link' => Url::to(['/admin/' . $module . '/a']),
+                    ]) ?>
+                </td>
             </tr>
         <?php endforeach; ?>
         </tbody>

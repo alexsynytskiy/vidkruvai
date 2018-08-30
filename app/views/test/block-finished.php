@@ -28,7 +28,7 @@ $baseUrl = $asset->baseUrl;
         <?= $group->completed_data ?>
     </div>
 
-    <?php if($wrongAnswers): ?>
+    <?php if ($wrongAnswers): ?>
         <div class="new-info about-event">
             <div class="block-finished-sub-title">Тепер ти знаеш що:</div>
             <?php foreach ($wrongAnswers as $answer): ?>

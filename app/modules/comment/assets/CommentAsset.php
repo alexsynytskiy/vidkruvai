@@ -1,6 +1,7 @@
 <?php
 
 namespace app\modules\comment\assets;
+
 use yii\web\View;
 
 /**
@@ -30,22 +31,25 @@ class CommentAsset extends \yii\web\AssetBundle
     /**
      * @return CommentAsset
      */
-    public static function getInstance() {
-        if(!static::$_instance) {
+    public static function getInstance()
+    {
+        if (!static::$_instance) {
             static::$_instance = new static;
         }
 
         return static::$_instance;
     }
 
-    public function getImagesPath() {
+    public function getImagesPath()
+    {
         return self::$pathToImages;
     }
 
     /**
      * @param \yii\web\AssetManager $assetManager
      */
-    public function publish($assetManager) {
+    public function publish($assetManager)
+    {
         $view = static::$_view;
 
         $landingsMedia = $assetManager->publish('@app/modules/comment/media',
@@ -75,7 +79,8 @@ class CommentAsset extends \yii\web\AssetBundle
      *
      * @return $this
      */
-    public function setView(View $view) {
+    public function setView(View $view)
+    {
         static::$_view = $view;
 
         return $this;
@@ -85,7 +90,8 @@ class CommentAsset extends \yii\web\AssetBundle
      * @return \yii\web\AssetBundle
      * @throws \yii\base\InvalidConfigException
      */
-    public function registerAsset() {
+    public function registerAsset()
+    {
         return static::$_view->registerAssetBundle(get_called_class());
     }
 
@@ -94,7 +100,8 @@ class CommentAsset extends \yii\web\AssetBundle
      * @return string
      * @throws \yii\base\InvalidConfigException
      */
-    public static function getTheme($view) {
+    public static function getTheme($view)
+    {
         static::getInstance()->setView($view)->registerAsset();
 
         return static::$_theme;

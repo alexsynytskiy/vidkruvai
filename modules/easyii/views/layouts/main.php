@@ -12,7 +12,7 @@ $moduleName = $this->context->module->id;
     <meta charset="<?= Yii::$app->charset ?>"/>
     <?= Html::csrfMetaTags() ?>
     <title><?= Yii::t('easyii', 'Control Panel') ?> - <?= Html::encode($this->title) ?></title>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
     <link rel="shortcut icon" href="<?= $asset->baseUrl ?>/img/favicon.png" type="image/x-icon">
 
     <script>
@@ -32,7 +32,7 @@ $moduleName = $this->context->module->id;
         <div class="wrapper">
             <div class="header">
                 <div class="logo">
-                    <a href="/admin"><img src="<?= $asset->baseUrl ?>/img/logo-white.svg"></a>
+                    <a href="/admin"><img src="<?= $asset->baseUrl ?>/img/logo-white.png"></a>
                 </div>
                 <div class="nav">
                     <a href="<?= Url::to(['/admin/sign/out']) ?>" class="pull-right"><i class="glyphicon glyphicon-log-out"></i> <?= Yii::t('easyii', 'Logout') ?></a>

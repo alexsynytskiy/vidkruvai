@@ -22,7 +22,7 @@ var RulesPage = function (options) {
                     url += json.profileUrl;
                 }
             })
-        ).then(function( data, textStatus, jqXHR ) {
+        ).then(function (data, textStatus, jqXHR) {
             $(location).attr('href', url);
         });
     });

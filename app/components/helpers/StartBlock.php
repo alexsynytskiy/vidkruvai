@@ -19,7 +19,8 @@ class StartBlock
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
      */
-    public static function startBlockLogic($hash) {
+    public static function startBlockLogic($hash)
+    {
         $group = QuestionGroup::findOne(['hash' => $hash]);
 
         if ($group) {
@@ -43,8 +44,7 @@ class StartBlock
                     ($answer->answered_at === null || $answer->answer_id === null) &&
                     strtotime($answer->started_at) + Question::TIME_FOR_ANSWER < time()) {
                     $answer->answer_id = -1;
-                }
-                elseif ($answer->started_at !== null && $answer->answered_at === null) {
+                } elseif ($answer->started_at !== null && $answer->answered_at === null) {
                     $alreadyStarted = true;
                 }
 

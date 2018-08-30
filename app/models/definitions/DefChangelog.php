@@ -11,9 +11,9 @@ use app\components\BaseDefinition;
  */
 class DefChangelog extends BaseDefinition
 {
-    const EVENT_INSERT  = 'insert';
-    const EVENT_UPDATE  = 'update';
-    const EVENT_DELETE  = 'delete';
+    const EVENT_INSERT = 'insert';
+    const EVENT_UPDATE = 'update';
+    const EVENT_DELETE = 'delete';
     const EVENT_ARCHIVE = 'archive';
 
     /**
@@ -23,11 +23,12 @@ class DefChangelog extends BaseDefinition
      *
      * @return array
      */
-    public static function getListEvents($returnType = 'key-value') {
+    public static function getListEvents($returnType = 'key-value')
+    {
         $types = [
-            self::EVENT_INSERT  => AppMsg::t('Добавление'),
-            self::EVENT_UPDATE  => AppMsg::t('Обновление'),
-            self::EVENT_DELETE  => AppMsg::t('Удаление'),
+            self::EVENT_INSERT => AppMsg::t('Добавление'),
+            self::EVENT_UPDATE => AppMsg::t('Обновление'),
+            self::EVENT_DELETE => AppMsg::t('Удаление'),
             self::EVENT_ARCHIVE => AppMsg::t('Архивирование'),
         ];
 

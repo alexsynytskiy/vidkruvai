@@ -1,31 +1,34 @@
 <?php ?>
 
-<div class="profile-header clearfix">
-    <div class="logo"></div>
-    <div class="profile-navigation clearfix">
-        <a href="<?= \yii\helpers\Url::to(['/site/logout']) ?>" class="link-additional">
-            <div class="link-icon">
-                <div class="exit"></div>
+<div class="cabinet-menu nopadding">
+    <div class="wrapper">
+        <div class="menu-link active">
+            <div class="icon"></div>
+            <div class="text">Завдання</div>
+        </div>
+        <div class="menu-link">
+            <div class="icon"></div>
+            <div class="text">Новини</div>
+        </div>
+        <div class="menu-link">
+            <div class="icon">
+                <div class="new-count">1</div>
             </div>
-            Вихід
-        </a>
-        <a href='<?= \yii\helpers\Url::to(['/site/help']) ?>' class="link-additional">
-            <div class="link-icon">
-                <div class="help"></div>
-            </div>
-            Техпідтримка
-        </a>
-        <a href="<?= \yii\helpers\Url::to(['/site/game-rules']) ?>" class="link-additional">
-            <div class="link-icon">
-                <div class="rules"></div>
-            </div>
-            Правила
-        </a>
-        <a href="<?= \yii\helpers\Url::to(['/site/event-info']) ?>" class="link-additional">
-            <div class="link-icon">
-                <div class="about"></div>
-            </div>
-            Про подію
-        </a>
+            <div class="text">Повідомлення</div>
+        </div>
+        <div class="menu-link">
+            <div class="icon"></div>
+            <div class="text">Команда</div>
+        </div>
+        <div class="menu-link">
+            <div class="icon"></div>
+            <div class="text">Профіль</div>
+        </div>
+        <div class="menu-link">
+            <div class="icon"></div>
+            <a href="<?= \yii\helpers\Url::to(['/logout']) ?>">
+                <div class="text">Вихід</div>
+            </a>
+        </div>
     </div>
 </div>

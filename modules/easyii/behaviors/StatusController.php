@@ -1,7 +1,9 @@
 <?php
+
 namespace yii\easyii\behaviors;
 
 use Yii;
+use yii\helpers\VarDumper;
 
 /**
  * Status behavior. Adds statuses to models
@@ -11,15 +13,25 @@ class StatusController extends \yii\base\Behavior
 {
     public $model;
 
+    /**
+     * @param int $id
+     * @param string $status
+     *
+     * @return mixed
+     */
     public function changeStatus($id, $status)
     {
         $modelClass = $this->model;
 
-        if(($model = $modelClass::findOne($id))){
+        if (($model = $modelClass::findOne($id))) {
+            /** SiteUser $model */
             $model->status = $status;
-            $model->update();
-        }
-        else{
+
+            if(!$model->update()) {
+                $this->owner->formatResponse(Yii::t('easyii', 'Not updated with error: ' .
+                    VarDumper::export($model->getErrors())));
+            }
+        } else {
             $this->error = Yii::t('easyii', 'Not found');
         }
 

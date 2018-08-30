@@ -27,7 +27,6 @@ use \yii\easyii\components\ActiveRecord;
  * @property integer $status
  * @property string  $title
  * @property string  $text
- * @property integer $on_main
  *
  * @property Tag[]   $tags
  * @property SeoText $seo
@@ -56,7 +55,7 @@ class News extends ActiveRecord
             [['category'], 'string'],
             ['title', 'string', 'max' => 128],
             ['image', 'image'],
-            [['views', 'time', 'status', 'on_main'], 'integer'],
+            [['views', 'time', 'status'], 'integer'],
             ['time', 'default', 'value' => time()],
             ['slug', 'match', 'pattern' => self::$SLUG_PATTERN, 'message' => Yii::t('easyii', 'Slug can contain only 0-9, a-z and "-" characters (max: 128).')],
             ['slug', 'default', 'value' => null],
@@ -76,7 +75,6 @@ class News extends ActiveRecord
             'slug'  => Yii::t('easyii', 'Slug'),
             'tagNames' => Yii::t('easyii', 'Tags'),
             'category' => Yii::t('easyii', 'Category'),
-            'on_main' => Yii::t('easyii', 'To main page'),
         ];
     }
 

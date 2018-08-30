@@ -14,21 +14,21 @@ use app\components\AppMsg;
 /**
  * This is the model class for table "site_comment".
  *
- * @property integer        $id
- * @property integer        $channel_id
- * @property integer        $site_user_id
- * @property integer        $tree
- * @property integer        $lft
- * @property integer        $rgt
- * @property integer        $depth
- * @property string         $message
- * @property integer        $rating
- * @property string         $status
- * @property string         $created_at
+ * @property integer $id
+ * @property integer $channel_id
+ * @property integer $site_user_id
+ * @property integer $tree
+ * @property integer $lft
+ * @property integer $rgt
+ * @property integer $depth
+ * @property string $message
+ * @property integer $rating
+ * @property string $status
+ * @property string $created_at
  *
  * @property CommentChannel $channel
- * @property User           $landingUser
- * @property CommentVote    $userVote
+ * @property User $landingUser
+ * @property CommentVote $userVote
  */
 class Comment extends \yii\db\ActiveRecord
 {
@@ -44,26 +44,29 @@ class Comment extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'site_comment';
     }
 
     /**
      * @return CommentQuery
      */
-    public static function find() {
+    public static function find()
+    {
         return new CommentQuery(get_called_class());
     }
 
     /**
      * @return array
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'tree' => [
-                'class'          => NestedSetsBehavior::className(),
-                'treeAttribute'  => 'tree',
-                'leftAttribute'  => 'lft',
+                'class' => NestedSetsBehavior::className(),
+                'treeAttribute' => 'tree',
+                'leftAttribute' => 'lft',
                 'rightAttribute' => 'rgt',
                 'depthAttribute' => 'depth',
             ],
@@ -73,7 +76,8 @@ class Comment extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['channel_id', 'site_user_id', 'message'], 'required'],
             [['channel_id', 'site_user_id'], 'integer'],
@@ -88,56 +92,61 @@ class Comment extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
-            'id'              => 'ID',
-            'channel_id'      => 'Channel ID',
+            'id' => 'ID',
+            'channel_id' => 'Channel ID',
             'site_user_id' => 'User ID',
-            'tree'            => 'Tree',
-            'lft'             => 'Lft',
-            'rgt'             => 'Rgt',
-            'depth'           => 'Depth',
-            'message'         => AppMsg::t('Комментарий'),
-            'status'          => 'Стататус',
-            'created_at'      => AppMsg::t('Создано'),
+            'tree' => 'Tree',
+            'lft' => 'Lft',
+            'rgt' => 'Rgt',
+            'depth' => 'Depth',
+            'message' => AppMsg::t('Комментарий'),
+            'status' => 'Стататус',
+            'created_at' => AppMsg::t('Создано'),
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getChannel() {
+    public function getChannel()
+    {
         return $this->hasOne(CommentChannel::className(), ['id' => 'channel_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getLandingUser() {
+    public function getLandingUser()
+    {
         return $this->hasOne(User::className(), ['id' => 'site_user_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUserVote() {
+    public function getUserVote()
+    {
         return $this->hasOne(CommentVote::className(), ['comment_id' => 'id']);
     }
 
     /**
-     * @param int   $offset
+     * @param int $offset
      * @param       $channelId
-     * @param null  $userId
+     * @param null $userId
      * @param array $tree
      *
      * @return array|\yii\db\ActiveRecord[]
      */
-    public static function getComments($offset = 0, $channelId, $userId = null, $tree = []) {
+    public static function getComments($offset = 0, $channelId, $userId = null, $tree = [])
+    {
         $comments = static::find();
 
         $comments->alias('t');
 
-        if($userId !== null) {
+        if ($userId !== null) {
             $comments->joinWith([
                 'landingUser',
                 'userVote AS userVote' => function ($query) use ($userId) {
@@ -159,14 +168,14 @@ class Comment extends \yii\db\ActiveRecord
             ],
             [
                 't.site_user_id' => $userId,
-                't.status'          => [
+                't.status' => [
                     DefComment::STATUS_MODERATOR,
                     DefComment::STATUS_DELETED,
                 ],
             ],
         ]);
 
-        if(count($tree) > 0) {
+        if (count($tree) > 0) {
             $comments->andWhere(['t.tree' => $tree]);
         }
 
@@ -176,12 +185,12 @@ class Comment extends \yii\db\ActiveRecord
             ->all();
 
         /**
-         * @var string  $key
+         * @var string $key
          * @var Comment $comment
          */
-        foreach($result as $key => $comment) {
-            if(!$comment->isRoot()) {
-                $parent       = $comment->parents()->one();
+        foreach ($result as $key => $comment) {
+            if (!$comment->isRoot()) {
+                $parent = $comment->parents()->one();
                 $resultParent = array_filter(
                     $result,
                     function ($c) use ($parent) {
@@ -189,16 +198,16 @@ class Comment extends \yii\db\ActiveRecord
                     }
                 );
 
-                if(!$resultParent) {
+                if (!$resultParent) {
                     //Gets all its children IDs
                     $childrenIDs = ArrayHelper::getColumn($comment->children()->all(), 'id');
 
                     unset($result[$key]);
 
                     //Remove all children
-                    foreach($result as $innerKey => $innerComment) {
-                        foreach($childrenIDs as $childrenID) {
-                            if($innerComment->id == $childrenID && isset($result[$innerKey])) {
+                    foreach ($result as $innerKey => $innerComment) {
+                        foreach ($childrenIDs as $childrenID) {
+                            if ($innerComment->id == $childrenID && isset($result[$innerKey])) {
                                 unset($result[$innerKey]);
                             }
                         }
@@ -210,9 +219,9 @@ class Comment extends \yii\db\ActiveRecord
         //Reset array indexes
         $result = array_values($result);
 
-        if(count($result) > 1) {
-            for($i = 1; $i < count($result); $i++) {
-                if($result[$i]->depth > $result[$i - 1]->depth) {
+        if (count($result) > 1) {
+            for ($i = 1; $i < count($result); $i++) {
+                if ($result[$i]->depth > $result[$i - 1]->depth) {
                     $result[$i]->isFirstReply = true;
                 }
             }
@@ -229,14 +238,15 @@ class Comment extends \yii\db\ActiveRecord
      *
      * @return array|\yii\db\ActiveRecord[]
      */
-    public static function getTopTrees($channelId, $limit, $selectFrom = null, $userId = null) {
+    public static function getTopTrees($channelId, $limit, $selectFrom = null, $userId = null)
+    {
         $query = new Query;
 
         $query->select('t.tree')
             ->from(static::tableName() . ' t')
             ->where(['t.channel_id' => $channelId]);
 
-        if($selectFrom) {
+        if ($selectFrom) {
             $query->andWhere('t.tree < :t', [':t' => $selectFrom]);
         }
 
@@ -247,7 +257,7 @@ class Comment extends \yii\db\ActiveRecord
             ],
             [
                 't.site_user_id' => $userId,
-                't.status'          => [
+                't.status' => [
                     DefComment::STATUS_MODERATOR,
                     DefComment::STATUS_DELETED,
                 ],
@@ -267,7 +277,8 @@ class Comment extends \yii\db\ActiveRecord
      *
      * @return int|string
      */
-    public static function getCountComments($channelId) {
+    public static function getCountComments($channelId)
+    {
         return (new Query)
             ->from(static::tableName())
             ->where(['channel_id' => $channelId])
@@ -277,7 +288,8 @@ class Comment extends \yii\db\ActiveRecord
     /**
      * @return int
      */
-    public static function getCommentsOnModerationCounter() {
+    public static function getCommentsOnModerationCounter()
+    {
         $cnt = (new Query())
             ->select(['COUNT(*) cnt'])
             ->from('site_comment')

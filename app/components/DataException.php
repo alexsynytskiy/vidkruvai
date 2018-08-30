@@ -11,7 +11,8 @@ class DataException extends \yii\base\UserException
     /**
      * @inheritdoc
      */
-    public function getName() {
+    public function getName()
+    {
         return 'Data Exception';
     }
 }

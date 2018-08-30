@@ -1,5 +1,5 @@
 <?php
-/** @var \app\models\forms\RegisterForm $model */
+/** @var \app\models\forms\LoginForm $model */
 
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
@@ -9,15 +9,15 @@ $asset = \app\assets\AppAsset::register($this);
 
 <div class="steps-block login clearfix">
     <div class="block-left">
-        <div class="step-title"><?= 'Реєстрація на проект' ?></div>
-        <div class="step-subtitle"><?= 'Заповніть форму реєстрації та створіть захищений пароль. Усі поля обов’язкові для заповнення.' ?></div>
+        <div class="step-title"><?= 'Вхід' ?></div>
+        <div class="step-subtitle"><?= 'Введіть логін та пароль для входу до особистого кабінету.' ?></div>
         <div class="social-items clearfix">
             <?php
             $form = ActiveForm::begin([
-                'id'          => 'user-register',
+                'id' => 'user-login',
                 'enableClientValidation' => true,
-                'options'     => [
-                    'class'   => 'link-form',
+                'options' => [
+                    'class' => 'link-form',
                     'enctype' => 'multipart/form-data',
                 ],
                 'fieldConfig' => [
@@ -26,27 +26,29 @@ $asset = \app\assets\AppAsset::register($this);
             ]);
             ?>
 
-            <div class="col-md-12 form-z-index clearfix">
-                <?= $form->field($model, 'role')->textInput(['maxlength' => true, 'placeholder' => 'Роль']) ?>
+            <div class="col-md-12 form-z-index">
+                <?= $form->field($model, 'email')->textInput([
+                    'maxlength' => true,
+                    'placeholder' => 'Електронна пошта',
+                    [
+                        'inputOptions' => [
+                            'autocomplete' => 'off'
+                        ]
+                    ]
+                ]) ?>
 
-                <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => "Ім'я"]) ?>
-
-                <?= $form->field($model, 'surname')->textInput(['maxlength' => true, 'placeholder' => 'Прізвище']) ?>
-
-                <?= $form->field($model, 'age')->textInput(['maxlength' => true, 'placeholder' => 'Вік']) ?>
-
-                <?= $form->field($model, 'class')->textInput(['maxlength' => true, 'placeholder' => 'Клас']) ?>
-
-                <?= $form->field($model, 'school')->textInput(['maxlength' => true, 'placeholder' => 'Школа']) ?>
-
-                <?= $form->field($model, 'email')->textInput(['maxlength' => true, 'placeholder' => 'Електронна пошта']) ?>
-
-                <?= $form->field($model, 'userPassword')->passwordInput(['maxlength' => true, 'placeholder' => 'Пароль']) ?>
-
-                <?= $form->field($model, 'passwordRepeat')->passwordInput(['maxlength' => true, 'placeholder' => 'Повторіть пароль']) ?>
+                <?= $form->field($model, 'password')->passwordInput([
+                    'maxlength' => true,
+                    'placeholder' => 'Пароль',
+                    [
+                        'inputOptions' => [
+                            'autocomplete' => 'off'
+                        ]
+                    ]
+                ]) ?>
 
                 <?= $form->field($model, 'captchaUser')->widget(\yii\captcha\Captcha::className(), [
-                    'captchaAction' => 'site/captcha',
+                    'captchaAction' => 'profile/captcha',
                     'options' => [
                         'placeholder' => 'Код перевірки',
                         'autocomplete' => 'off',
@@ -61,7 +63,7 @@ $asset = \app\assets\AppAsset::register($this);
 
                 <?= Html::submitButton('Далі', ['class' => 'link-button']) ?>
                 <div class="already">
-                    <?= 'Маєте профіль? ' . Html::a('Вхід', '/login', ['class' => 'link-button']) ?>
+                    <?= 'Потрібен аккаунт? ' . Html::a('Реєстрація', '/register', ['class' => 'link-button']) ?>
                 </div>
             </div>
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace app\modules\comment\widgets;
 
 use app\models\CommentChannel;
@@ -32,14 +33,14 @@ class CommentWidget extends Widget
      * @var array
      */
     public $activeFormOptions = [
-        'action'                 => null,
-        'options'                => [
+        'action' => null,
+        'options' => [
             'data-pjax' => true,
-            'class'     => 'comment-form'
+            'class' => 'comment-form'
         ],
         'enableClientValidation' => true,
-        'enableAjaxValidation'   => true,
-        'validationUrl'          => [],
+        'enableAjaxValidation' => true,
+        'validationUrl' => [],
     ];
     /**
      * The ID of comment channel
@@ -58,9 +59,10 @@ class CommentWidget extends Widget
      * CommentWidget constructor.
      *
      * @param CommentService $commentService
-     * @param array          $config
+     * @param array $config
      */
-    public function __construct(CommentService $commentService, array $config = []) {
+    public function __construct(CommentService $commentService, array $config = [])
+    {
         $this->commentService = $commentService;
 
         parent::__construct($config);
@@ -69,38 +71,40 @@ class CommentWidget extends Widget
     /**
      * @throws \Exception
      */
-    public function init() {
+    public function init()
+    {
         parent::init();
 
         $this->commentService->setTemplate($this->template);
 
         $this->viewPath = $this->commentService->getWidgetViewPath();
 
-        if($this->channelId === null && $this->channelName === null) {
+        if ($this->channelId === null && $this->channelName === null) {
             throw new \Exception('Channel ID or Channel Name must be specified.');
         }
 
-        if($this->channelId === null) {
+        if ($this->channelId === null) {
             /** @var CommentChannel $channel */
             $channel = CommentChannel::findOne(['slug' => $this->channelName]);
 
-            if($channel === null) {
+            if ($channel === null) {
                 throw new \Exception("Channel \"{$this->channelName}\" not found.");
             }
 
             $this->channelId = $channel->id;
-        } elseif(CommentChannel::findOne($this->channelId) === null) {
+        } elseif (CommentChannel::findOne($this->channelId) === null) {
             throw new \Exception("Channel ID \"{$this->channelId}\" not found.");
         }
 
-        $this->activeFormOptions['action']        = '/comment/' . $this->channelId . '/add';
+        $this->activeFormOptions['action'] = '/comment/' . $this->channelId . '/add';
         $this->activeFormOptions['validationUrl'] = '/comment/' . $this->channelId . '/check-submission';
     }
 
-    public function run() {
-        $model        = new Comment;
+    public function run()
+    {
+        $model = new Comment;
         $templatePath = $this->viewPath . '/templates/' . $this->template;
-        $data         = [
+        $data = [
             'model' => $model,
         ];
 
@@ -109,12 +113,12 @@ class CommentWidget extends Widget
 
         $userId = \Yii::$app->user->id ?: null;
 
-        $trees         = Comment::getTopTrees($this->channelId, $this->commentService->getTreesLimit(), null, $userId);
+        $trees = Comment::getTopTrees($this->channelId, $this->commentService->getTreesLimit(), null, $userId);
         $treeStructure = Comment::getComments($this->commentService->commentOffset, $this->channelId, $userId, $trees);
 
         $this->commentService->prepareMaxTreeId($treeStructure);
 
-        $form  = $this->render($templatePath . '/_parts/form', $data);
+        $form = $this->render($templatePath . '/_parts/form', $data);
         $items = $this->render($templatePath . '/_parts/items', ['comments' => $treeStructure]);
 
         $template = $this->render($templatePath . '/template', ['hasTreesToLoadMore' => (count($trees) < $this->commentService->treesLimit) ? false : true]);
@@ -128,14 +132,16 @@ class CommentWidget extends Widget
     /**
      * @return int
      */
-    public function getTotalComments() {
+    public function getTotalComments()
+    {
         return $this->totalComments;
     }
 
     /**
      * @return CommentService
      */
-    public function getCommentService() {
+    public function getCommentService()
+    {
         return $this->commentService;
     }
 }

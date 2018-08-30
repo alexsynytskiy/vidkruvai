@@ -4,7 +4,8 @@ namespace app\components;
 
 use yii\base\BootstrapInterface;
 
-class AdminBootstrap implements BootstrapInterface {
+class AdminBootstrap implements BootstrapInterface
+{
     /**
      * @param \yii\web\Application $app
      */
@@ -12,10 +13,10 @@ class AdminBootstrap implements BootstrapInterface {
     {
         $pathInfo = $app->request->pathInfo;
 
-        if(strpos($pathInfo, 'admin') !== false) {
+        if (strpos($pathInfo, 'admin') !== false) {
             $app->setComponents([
                 'assetManager' => [
-                    'class'   => 'yii\web\AssetManager',
+                    'class' => 'yii\web\AssetManager',
                     'bundles' => [
                         'yii\web\JqueryAsset' => [
                             'js' => [YII_DEBUG ? 'jquery.js' : 'jquery.min.js'],

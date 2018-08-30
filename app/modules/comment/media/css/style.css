@@ -381,30 +381,39 @@ a.first-level-group, .first-level-group {
 .testimonials-list li.p-5.first-reply:before {
     left: -5px;
 }
+
 .testimonials-list li.p-35.first-reply:before {
     left: 35px;
 }
+
 .testimonials-list li.p-75.first-reply:before {
     left: 75px;
 }
+
 .testimonials-list li.p-105.first-reply:before {
     left: 105px;
 }
+
 .testimonials-list li.p-115.first-reply:before {
     left: 115px;
 }
+
 .testimonials-list li.p-155.first-reply:before {
     left: 155px;
 }
+
 .testimonials-list li.p-195.first-reply:before {
     left: 195px;
 }
+
 .testimonials-list li.p-235.first-reply:before {
     left: 235px;
 }
+
 .testimonials-list li.p-275.first-reply:before {
     left: 275px;
 }
+
 .testimonials-list li.p-315.first-reply:before {
     left: 315px;
 }

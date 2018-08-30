@@ -43,7 +43,7 @@ class Feedback extends \yii\easyii\components\ActiveRecord
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
-            if($insert){
+            if($insert) {
                 $this->ip = Yii::$app->request->userIP;
                 $this->time = time();
                 $this->status = self::STATUS_NEW;

@@ -51,6 +51,7 @@ class AppAsset extends \yii\web\AssetBundle
         'js/RulesPage.js',
         'js/AnswerPage.js',
         'js/ProfilePage.js',
+        'js/RegisterPage.js',
         'js/main.js?version=2',
     ];
 

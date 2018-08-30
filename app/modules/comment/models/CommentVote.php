@@ -11,21 +11,23 @@ use yii\db\ActiveRecord;
  * @property integer $site_user_id
  * @property integer $comment_id
  * @property integer $rating
- * @property string  $created_at
+ * @property string $created_at
  */
 class CommentVote extends ActiveRecord
 {
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'site_comment_vote';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['site_user_id', 'comment_id', 'rating'], 'required'],
             [['site_user_id', 'comment_id', 'rating'], 'integer'],
@@ -36,12 +38,13 @@ class CommentVote extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'site_user_id' => 'Landing User ID',
-            'comment_id'      => 'Comment ID',
-            'rating'          => 'Rating',
-            'created_at'      => 'Created At',
+            'comment_id' => 'Comment ID',
+            'rating' => 'Rating',
+            'created_at' => 'Created At',
         ];
     }
 }

@@ -88,8 +88,8 @@ class Question extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
-            if(!$insert && $this->image !== $this->oldAttributes['image'] && $this->oldAttributes['image']){
-                @unlink(\Yii::getAlias('@webroot').$this->oldAttributes['image']);
+            if (!$insert && $this->image !== $this->oldAttributes['image'] && $this->oldAttributes['image']) {
+                @unlink(\Yii::getAlias('@webroot') . $this->oldAttributes['image']);
             }
             return true;
         }
@@ -102,8 +102,8 @@ class Question extends \yii\db\ActiveRecord
     {
         parent::afterDelete();
 
-        if($this->image){
-            @unlink(\Yii::getAlias('@webroot').$this->image);
+        if ($this->image) {
+            @unlink(\Yii::getAlias('@webroot') . $this->image);
         }
     }
 

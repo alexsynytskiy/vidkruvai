@@ -47,7 +47,7 @@ var AnswerPage = function (options) {
     }).on("click", selectors.confirm, function (e) {
         e.preventDefault();
 
-        if(stateHolder.answerAction) {
+        if (stateHolder.answerAction) {
             return false;
         }
 
@@ -134,12 +134,12 @@ var AnswerPage = function (options) {
                 })
             ).then(function (data, textStatus, jqXHR) {
                 if (!newQuestion) {
-                    setTimeout (function(){
+                    setTimeout(function () {
                         $(location).attr('href', url);
                     }, 4000);
                 }
                 else {
-                    setTimeout (function(){
+                    setTimeout(function () {
                         $(selectors.questionWrapper).html(newQuestionHtml);
                         $('#submit-answer').show();
                     }, 4000);

@@ -54,16 +54,20 @@ switch ($controller) {
                         Новини
                     </a>
                 </li>
-                <li class="<?= $contact ?>">
-                    <a href="<?= Url::to(['/register']) ?>">
-                        Реєстрація
-                    </a>
-                </li>
-                <li class="last <?= $login ?> login">
-                    <a href="<?= Url::to(['/login']) ?>">
-                        Вхід
-                    </a>
-                </li>
+                <?php if (\Yii::$app->siteUser->isGuest): ?>
+                    <li class="<?= $contact ?>">
+                        <a href="<?= Url::to(['/register']) ?>">
+                            Реєстрація
+                        </a>
+                    </li>
+                    <li class="last <?= $login ?> login">
+                        <a href="<?= Url::to(['/login']) ?>">
+                            Вхід
+                        </a>
+                    </li>
+                <?php else: ?>
+
+                <?php endif; ?>
             </ul>
 
         </div>

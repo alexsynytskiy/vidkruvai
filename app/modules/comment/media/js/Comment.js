@@ -1,4 +1,4 @@
-const Comment = function(options) {
+const Comment = function (options) {
     const commentWrapper = '.comment-wrapper',
         replyFormSelector = '.reply-form',
         testimonalsItemSelector = '.testimonials-item',
@@ -25,13 +25,13 @@ const Comment = function(options) {
             method: 'POST',
             data: {template: template, treeId: dataTreeId},
             dataType: 'json',
-            success: function(response) {
-                if(response) {
-                    if(typeof response.items !== 'undefined') {
+            success: function (response) {
+                if (response) {
+                    if (typeof response.items !== 'undefined') {
                         var $commentItem = $(testimonalsItemSelector + '[data-tree-id="' + dataTreeId + '"]');
 
                         $commentItem.first().closest(commentWrapper).replaceWith('<div id="treeReload"></div>');
-                        $commentItem.each(function() {
+                        $commentItem.each(function () {
                             $(this).closest(commentWrapper).remove();
                         });
 
@@ -42,8 +42,8 @@ const Comment = function(options) {
         });
     }
 
-    $('body').on('beforeSubmit', 'form.comment-form', function() {
-        if(!stateHolder.addCommentRequestFree) {
+    $('body').on('beforeSubmit', 'form.comment-form', function () {
+        if (!stateHolder.addCommentRequestFree) {
             return false;
         }
 
@@ -56,13 +56,13 @@ const Comment = function(options) {
             method: 'POST',
             data: $form.serializeArray(),
             dataType: 'json',
-            beforeSend: function() {
+            beforeSend: function () {
                 stateHolder.addCommentRequestFree = false;
                 $form.find(formPreloaderSelector).text('...')
             },
-            success: function(response) {
-                if(response) {
-                    if(!isReplyForm) {
+            success: function (response) {
+                if (response) {
+                    if (!isReplyForm) {
                         $commentList.prepend($(response).filter(commentWrapper));
                     } else {
                         var template = $(loadMoreSelector).attr('data-t'),
@@ -80,7 +80,7 @@ const Comment = function(options) {
 
                 stateHolder.addCommentRequestFree = true;
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 $form.find(formPreloaderSelector).text('');
 
                 stateHolder.addCommentRequestFree = true;
@@ -89,7 +89,7 @@ const Comment = function(options) {
 
         return false;
     })
-        .on('click', loadMoreSelector, function(e) {
+        .on('click', loadMoreSelector, function (e) {
             e.preventDefault();
 
             const $loadMore = $(this),
@@ -101,25 +101,25 @@ const Comment = function(options) {
                 {
                     template: template, treeId: treeId, _csrf: LandingCore.getCsrfToken()
                 },
-                function(response) {
-                    if(typeof response.ids !== 'undefined') {
+                function (response) {
+                    if (typeof response.ids !== 'undefined') {
                         var idsSelectors = [];
-                        for(var i in response.ids) {
+                        for (var i in response.ids) {
                             idsSelectors.push('.comment-wrapper[data-id=' + response.ids[i] + ']');
                         }
 
-                        if(idsSelectors.length) {
+                        if (idsSelectors.length) {
                             $(idsSelectors.join(', ')).remove();
                         }
                     }
 
-                    if(typeof response.items !== 'undefined') {
+                    if (typeof response.items !== 'undefined') {
                         $commentList.append(response.items);
                     }
 
-                    if(typeof response.treesCount !== 'undefined' &&
+                    if (typeof response.treesCount !== 'undefined' &&
                         response.items !== 'undefined' && response.items) {
-                        if(response.treesCount >= pageOptions.treesLimit) {
+                        if (response.treesCount >= pageOptions.treesLimit) {
                             $loadMore.attr('data-tree-id', response.treeId);
                         }
                         else {
@@ -133,10 +133,10 @@ const Comment = function(options) {
 
             $loadMore.blur();
         })
-        .on('click', '.testimonials-list .reply-to', function(e) {
+        .on('click', '.testimonials-list .reply-to', function (e) {
             e.preventDefault();
 
-            $('.testimonials-list .add-testimonials.reply').each(function() {
+            $('.testimonials-list .add-testimonials.reply').each(function () {
                 $(this).find('.cancel-reply').click();
             });
 
@@ -160,7 +160,7 @@ const Comment = function(options) {
                 value: replyId
             }));
 
-            for(var i in formData.attributes) {
+            for (var i in formData.attributes) {
                 var attribute = formData.attributes[i];
 
                 validationAttributes.push(attribute);
@@ -177,27 +177,27 @@ const Comment = function(options) {
                 "validationUrl": pageOptions.validationUrl
             });
         })
-        .on('click', '.reply-form .cancel-reply', function(e) {
+        .on('click', '.reply-form .cancel-reply', function (e) {
             e.preventDefault();
 
             var $currentComment = $(this).closest(commentWrapper),
                 currentDataDepth = $currentComment.find(testimonalsItemSelector).attr('data-depth'),
                 nextDataDepth = $currentComment.next(commentWrapper).find(testimonalsItemSelector).attr('data-depth');
 
-            if(currentDataDepth < nextDataDepth) {
+            if (currentDataDepth < nextDataDepth) {
                 $currentComment.next(commentWrapper).find('.comment').addClass('first-reply');
             }
 
             $(this).closest(replyFormSelector).css('display', 'none');
             $(this).closest(replyFormSelector).html('');
         })
-        .on('click', '.rating-btn', function(e) {
+        .on('click', '.rating-btn', function (e) {
             e.preventDefault();
-            if(!stateHolder.voteRequestFree) {
+            if (!stateHolder.voteRequestFree) {
                 return false;
             }
 
-            if($(this).hasClass("disabled")) {
+            if ($(this).hasClass("disabled")) {
                 new PNotify({
                     title: 'Ошибка',
                     text: 'Вы не можете голосовать дважды',
@@ -211,7 +211,7 @@ const Comment = function(options) {
 
             var $btn = $(this);
 
-            if($btn.hasClass('disabled')) {
+            if ($btn.hasClass('disabled')) {
                 return false;
             }
 
@@ -225,24 +225,24 @@ const Comment = function(options) {
                 method: 'POST',
                 data: {commentId: commentId, rating: rating},
                 dataType: 'json',
-                beforeSend: function() {
+                beforeSend: function () {
                     stateHolder.voteRequestFree = false;
                     $ratingText.text('...')
                 },
-                success: function(response) {
-                    if(typeof response.totalRating !== 'undefined') {
+                success: function (response) {
+                    if (typeof response.totalRating !== 'undefined') {
                         $ratingText.text(response.totalRating)
                     } else {
                         $ratingText.text(oldRatingText)
                     }
 
-                    if(typeof response.blockBtn !== 'undefined') {
+                    if (typeof response.blockBtn !== 'undefined') {
                         blockVoteBtn($btn, response.blockBtn)
                     }
 
                     stateHolder.voteRequestFree = true;
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
+                error: function (jqXHR, textStatus, errorThrown) {
                     stateHolder.voteRequestFree = true;
                     $ratingText.text(oldRatingText)
                 }
@@ -253,7 +253,7 @@ const Comment = function(options) {
 
                 $parent.find('.rating-btn').removeClass('disabled');
 
-                if(blockBtn !== 0) {
+                if (blockBtn !== 0) {
                     $parent.find('.rating-btn[data-rating=' + blockBtn + ']').addClass('disabled');
                 }
             }

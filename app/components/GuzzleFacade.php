@@ -15,12 +15,13 @@ class GuzzleFacade extends Object
     /**
      * @param string $method
      * @param string $requestUrl
-     * @param array  $requestOptions
-     * @param array  $guzzleConfig
+     * @param array $requestOptions
+     * @param array $guzzleConfig
      *
      * @return array
      */
-    public function request($method, $requestUrl, $requestOptions = [], $guzzleConfig = null) {
+    public function request($method, $requestUrl, $requestOptions = [], $guzzleConfig = null)
+    {
         $finalRequestOptions = array_merge($requestOptions, [
         ]);
 
@@ -31,11 +32,10 @@ class GuzzleFacade extends Object
         try {
             $response = $client->request($method, $requestUrl, $finalRequestOptions);
             $response = Json::decode($response->getBody()->getContents());
-        }
-        catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             $msg = $e->getMessage();
 
-            if(!$response) {
+            if (!$response) {
                 $response[] = $msg;
             } else {
                 $response = array_merge($response, [$msg]);
@@ -45,7 +45,7 @@ class GuzzleFacade extends Object
         }
 
         return [
-            'response'       => $response,
+            'response' => $response,
             'requestOptions' => $finalRequestOptions,
         ];
     }

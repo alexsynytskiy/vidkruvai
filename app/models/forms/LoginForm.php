@@ -38,7 +38,7 @@ class LoginForm extends Model
     {
         return [
             [['email', 'password', 'captchaUser'], 'required'],
-            ['captchaUser', 'captcha', 'captchaAction' => '/site/captcha'],
+            ['captchaUser', 'captcha', 'captchaAction' => '/profile/captcha'],
             ['password', 'validatePassword'],
         ];
     }
@@ -134,7 +134,7 @@ class LoginForm extends Model
     protected function getUser()
     {
         if ($this->_user === null) {
-            $this->_user = SiteUser::findIdentityByNick($this->email);
+            $this->_user = SiteUser::findIdentityByEmail($this->email);
         }
 
         return $this->_user;

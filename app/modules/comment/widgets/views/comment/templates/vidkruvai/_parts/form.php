@@ -1,4 +1,5 @@
 <?php
+
 use app\components\AppMsg;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
@@ -10,7 +11,7 @@ use yii\web\View;
 \app\modules\comment\assets\CommentAsset::getInstance()->setView($this)->registerAsset();
 
 $this->context->activeFormOptions['fieldConfig'] = [
-    'template'     => "{input}\n{error}",
+    'template' => "{input}\n{error}",
     'inputOptions' => [
         'class' => '',
     ],
@@ -19,7 +20,7 @@ $this->context->activeFormOptions['fieldConfig'] = [
 $user = Yii::$app->user;
 ?>
 
-<?php if(!Yii::$app->user->isGuest): ?>
+<?php if (!Yii::$app->user->isGuest): ?>
     <div class="add-testimonials main-comment-form">
         <div class="row">
             <div class="col-lg-2 col-md-3 col-sm-3">
@@ -33,7 +34,7 @@ $user = Yii::$app->user;
                 <?= Html::hiddenInput('t', $this->context->commentService->template); ?>
                 <div class="form-group clearfix">
                     <?= $form->field($model, 'message')->textarea(
-                            ['placeholder' => AppMsg::t('Сообщение'), 'class' => 'textarea']
+                        ['placeholder' => AppMsg::t('Сообщение'), 'class' => 'textarea']
                     ); ?>
                 </div>
                 <div class="form-group clearfix">
@@ -48,16 +49,16 @@ $user = Yii::$app->user;
 
 <?php
 $pageOptions = [
-    'cid'         => $this->context->channelId,
+    'cid' => $this->context->channelId,
     'loadMoreUrl' => "/comment/{$this->context->channelId}/load-more",
-    'treesLimit'  => $this->context->commentService->getTreesLimit(),
+    'treesLimit' => $this->context->commentService->getTreesLimit(),
 ];
 
-if(!Yii::$app->user->isGuest) {
+if (!Yii::$app->user->isGuest) {
     $pageOptions = array_merge($pageOptions, [
-        'voteUrl'       => "/comment/{$this->context->channelId}/vote",
+        'voteUrl' => "/comment/{$this->context->channelId}/vote",
         'validationUrl' => $this->context->activeFormOptions['validationUrl'],
-        'addReloadUrl'  => "/comment/{$this->context->channelId}/reload-tree",
+        'addReloadUrl' => "/comment/{$this->context->channelId}/reload-tree",
     ]);
 }
 

@@ -2,6 +2,7 @@
 namespace yii\easyii\modules\feedback\api;
 
 use Yii;
+use yii\base\Exception;
 use yii\easyii\helpers\TypeHelper;
 use yii\easyii\modules\feedback\models\Feedback as FeedbackModel;
 
@@ -31,47 +32,65 @@ class Feedback extends \yii\easyii\components\API
 
     public function api_form($options = [])
     {
-        $model    = new FeedbackModel;
-        $settings = Yii::$app->getModule('admin')->activeModules['feedback']->settings;
-        $options  = array_merge($this->_defaultFormOptions, $options);
+        try {
 
-        ob_start();
-        $form = ActiveForm::begin([
-            'action' => Url::to(['/admin/feedback/send']),
-            'options' => [
-                'class'   => 'col-md-6 contact-form',
-                'enctype' => 'multipart/form-data'
-            ],
-            'fieldConfig' => [
-                'template' => "<div class=\"form-group\">{input}</div>",
+            $model = new FeedbackModel;
+            $settings = Yii::$app->getModule('admin')->activeModules['feedback']->settings;
+            $options = array_merge($this->_defaultFormOptions, $options);
+
+            ob_start();
+            $form = ActiveForm::begin([
+                'action' => Url::to(['/admin/feedback/send']),
                 'options' => [
-                    'tag' => false,
+                    'class' => 'col-md-6 contact-form',
+                    'enctype' => 'multipart/form-data'
                 ],
-            ],
-        ]);
+                'fieldConfig' => [
+                    'template' => "<div class=\"form-group\">{input}</div>",
+                    'options' => [
+                        'tag' => false,
+                    ],
+                ],
+            ]);
 
             echo '<div class="form-title">Заповніть контактну форму</div>';
             echo '<div class="form-sub-title">Ми зв’яжемось з вами найближчим часом</div>';
 
             echo Html::hiddenInput('errorUrl', $options['errorUrl'] ? $options['errorUrl'] : Url::current([self::SENT_VAR => 0]));
             echo Html::hiddenInput('successUrl', $options['successUrl'] ? $options['successUrl'] : Url::current([self::SENT_VAR => 1]));
-    
+
             echo $form->field($model, 'name')->textInput(['class' => 'form-control', 'id' => 'first-name', 'placeholder' => 'Ім\'я']);
-            
+
             echo $form->field($model, 'phone')->textInput(['class' => 'form-control', 'id' => 'last-name', 'placeholder' => 'Телефон']);
-    
+
             echo $form->field($model, 'email')->input('email', ['class' => 'form-control', 'id' => 'email', 'placeholder' => 'E-mail']);
 
             echo $form->field($model, 'client_type')->dropDownList(TypeHelper::getListRules(),
                 ['class' => 'form-control', 'id' => 'client_type', 'placeholder' => 'Тип клієнта']);
-    
+
             echo $form->field($model, 'text')->textarea(['class' => 'form-control', 'rows' => '7', 'placeholder' => 'Повідомлення']);
-    
-            if($settings['enableCaptcha']) echo $form->field($model, 'reCaptcha')->widget(ReCaptcha::className());
+
+            echo $form->field($model, 'captchaUser')->widget(\yii\captcha\Captcha::className(), [
+                'captchaAction' => '/admin/feedback/captcha',
+                'options' => [
+                    'placeholder' => 'Код перевірки',
+                    'autocomplete' => 'off',
+                ],
+                'imageOptions' => [
+                    'data-toggle' => "tooltip",
+                    'data-placement' => "top",
+                    'title' => 'Оновити картинку',
+                ],
+                'template' => '<div class="media-body"><div class="pl-0" style="padding-right: 10px;">{input}</div></div><div class="media-right">{image}</div>',
+            ]);
 
             echo '<div class="button-order-container col-md-12 col-xs-12">';
-                echo Html::submitButton('Замовити', ['class' => 'button-order']);
+            echo Html::submitButton('Замовити', ['class' => 'button-order']);
             echo '</div><div class="clearfix"></div>';
+
+        } catch (Exception $e) {
+            print_r($e->getMessage());
+        }
         
         ActiveForm::end();
 

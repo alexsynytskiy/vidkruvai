@@ -72,7 +72,7 @@ class QuestionGroup extends \yii\db\ActiveRecord
      */
     public function getUserAnswers()
     {
-        return  UserAnswer::find()
+        return UserAnswer::find()
             ->alias('qa')
             ->innerJoin(Question::tableName() . ' q', 'q.id = qa.question_id')
             ->innerJoin(self::tableName() . ' g', 'q.group_id = g.id')

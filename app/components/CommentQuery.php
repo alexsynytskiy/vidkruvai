@@ -7,7 +7,8 @@ use yii\db\ActiveQuery;
 
 class CommentQuery extends ActiveQuery
 {
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             NestedSetsQueryBehavior::className(),
         ];

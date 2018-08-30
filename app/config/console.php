@@ -2,7 +2,7 @@
 $params = require(__DIR__ . '/params.php');
 $db = require(__DIR__ . '/db.php');
 
-$basePath =  dirname(__DIR__);
+$basePath = dirname(__DIR__);
 $webroot = dirname($basePath);
 
 return [
@@ -19,7 +19,7 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-        'guzzle'           => [
+        'guzzle' => [
             'class' => 'app\components\GuzzleFacade',
         ],
         'mailer' => [
@@ -28,10 +28,10 @@ return [
             //comment the following array to send mail using php's mail function
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host'  => 'smtp.gmail.com',
+                'host' => 'smtp.gmail.com',
                 'username' => 'alexsynytskiy',
                 'password' => 'lqihkgrxigneawzm',
-                'port'     => 587,
+                'port' => 587,
                 'encryption' => 'tls',
             ],
         ],

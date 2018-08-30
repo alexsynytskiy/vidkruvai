@@ -35,13 +35,8 @@ class AController extends Controller
             'query' => News::find()->where(['category' => CategoryHelper::CATEGORY_NEWS])->orderBy('time')
         ]);
 
-        $dataPortfolio = new ActiveDataProvider([
-            'query' => News::find()->where(['category' => CategoryHelper::CATEGORY_PORTFOLIO])->orderBy('time')
-        ]);
-
         return $this->render('index', [
-            'dataNews' => $dataNews,
-            'dataPortfolio' => $dataPortfolio
+            'dataNews' => $dataNews
         ]);
     }
 

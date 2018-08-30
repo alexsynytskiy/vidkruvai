@@ -10,12 +10,12 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "site_comment_channel".
  *
- * @property integer   $id
- * @property string    $name
- * @property string    $slug
- * @property string    $description
- * @property string    $status
- * @property integer   $site_user_id
+ * @property integer $id
+ * @property string $name
+ * @property string $slug
+ * @property string $description
+ * @property string $status
+ * @property integer $site_user_id
  *
  * @property Comment[] $landingsComments
  */
@@ -24,19 +24,21 @@ class CommentChannel extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'site_comment_channel';
     }
 
     /**
      * @return array
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return array_merge(parent::behaviors(), [
             'slug' => [
-                'class'        => SluggableBehavior::className(),
-                'attribute'    => 'name',
-                'immutable'    => true,
+                'class' => SluggableBehavior::className(),
+                'attribute' => 'name',
+                'immutable' => true,
             ],
         ]);
     }
@@ -44,7 +46,8 @@ class CommentChannel extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['name', 'slug'], 'required'],
             [['name', 'slug'], 'string', 'max' => 255],
@@ -56,11 +59,12 @@ class CommentChannel extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
-            'id'          => 'ID',
-            'name'        => AppMsg::t('Имя'),
-            'slug'        => AppMsg::t('Slug'),
+            'id' => 'ID',
+            'name' => AppMsg::t('Имя'),
+            'slug' => AppMsg::t('Slug'),
             'description' => AppMsg::t('Описание'),
         ];
     }
@@ -68,7 +72,8 @@ class CommentChannel extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getLandingsComments() {
+    public function getLandingsComments()
+    {
         return $this->hasMany(Comment::className(), ['channel_id' => 'id']);
     }
 }

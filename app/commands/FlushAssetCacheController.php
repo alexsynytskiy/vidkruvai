@@ -19,10 +19,11 @@ class FlushAssetCacheController extends Controller
      * Change time of the modification of the directories
      * It forces AssetManager to republish directories
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $date = date('YmdHi.s');
 
-        foreach($this->paths as $path) {
+        foreach ($this->paths as $path) {
             exec("touch -t {$date} {$path}");
         }
     }

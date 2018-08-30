@@ -6,7 +6,7 @@ $countAnswered = 2 - $blockQuestion->emptyQuestionsCount;
 ?>
 
 <div class="question clearfix" data-id="<?= $blockQuestion->id ?>" data-group-id="<?= $blockQuestion->group_id ?>">
-    <?php if($blockQuestion->image): ?>
+    <?php if ($blockQuestion->image): ?>
         <div class="question-text">
             <?= $blockQuestion->text ?>
         </div>
@@ -42,11 +42,11 @@ $countAnswered = 2 - $blockQuestion->emptyQuestionsCount;
 
 <div class="pointer-question">
     <div class="pointer-question-wrapper clearfix">
-        <?php for($i = 0; $i < $countAnswered; $i++): ?>
+        <?php for ($i = 0; $i < $countAnswered; $i++): ?>
             <div class="item answered-point"></div>
         <?php endfor; ?>
 
-        <?php for($i = 0; $i < 2 - $countAnswered; $i++): ?>
+        <?php for ($i = 0; $i < 2 - $countAnswered; $i++): ?>
             <div class="item unanswered-point"></div>
         <?php endfor; ?>
     </div>

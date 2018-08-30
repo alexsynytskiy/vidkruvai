@@ -40,8 +40,16 @@ use yii\web\IdentityInterface;
  * @property Answer[] $answers
  *
  */
-class SiteUser extends \yii\db\ActiveRecord
+class SiteUser extends \yii\db\ActiveRecord implements IdentityInterface
 {
+    const STATUS_ACTIVE = 'ACTIVE';
+    const STATUS_UNCONFIRMED = 'UNCONFIRMED';
+    const STATUS_BANNED = 'BANNED';
+    const STATUS_DISABLED = 'DISABLED';
+
+    const ROLE_MENTOR = 'mentor';
+    const ROLE_PARTICIPANT = 'participant';
+
     /**
      * Salt uses to hash user ID
      */
@@ -88,6 +96,7 @@ class SiteUser extends \yii\db\ActiveRecord
         if (parent::beforeSave($insert)) {
             if ($this->userPassword) {
                 $this->password = \Yii::$app->security->generatePasswordHash($this->passwordWithSalt);
+                $this->status = self::STATUS_UNCONFIRMED;
             }
 
             if ($insert) {
@@ -109,8 +118,8 @@ class SiteUser extends \yii\db\ActiveRecord
             [['created_at', 'updated_at', 'passwordRepeat', 'userPassword'], 'safe'],
             [['password', 'email'], 'string', 'min' => 4, 'max' => 60],
             [['userPassword'], 'string', 'min' => 4, 'max' => 60],
-            [['name'], 'string', 'max' => 255],
-            [['agreement_read', 'login_count', 'total_smart'], 'integer'],
+            [['name', 'class', 'school'], 'string', 'max' => 255],
+            [['agreement_read', 'login_count', 'age'], 'integer'],
             [['name', 'surname'], 'unique', 'targetAttribute' => ['name', 'surname']],
             ['passwordRepeat', 'compare', 'compareAttribute' => 'userPassword'],
         ];
@@ -181,9 +190,9 @@ class SiteUser extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function findIdentityByNick($nickname)
+    public static function findIdentityByEmail($email)
     {
-        return static::findOne(['nickname' => $nickname]);
+        return static::findOne(['email' => $email]);
     }
 
     /**
@@ -263,5 +272,16 @@ class SiteUser extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Answer::className(), ['id' => 'answer_id'])
             ->viaTable(static::answersTableName(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return array
+     */
+    public static function getRoles()
+    {
+        return [
+            self::ROLE_PARTICIPANT => 'Учасник',
+            self::ROLE_MENTOR => 'Ментор',
+        ];
     }
 }

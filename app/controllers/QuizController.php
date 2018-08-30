@@ -51,16 +51,14 @@ class QuizController extends Controller
             $user = SiteUser::findOne($userId);
 
             if ($user && !$user->agreement_read) {
-                if (!$user->answers || count($user->answers) !== 6) {
-                    UserAnswer::deleteAll(['user_id' => $userId]);
-                    QuestionsSetter::setUserQuestions();
-                }
+//                if (!$user->answers || count($user->answers) !== 6) {
+//                    UserAnswer::deleteAll(['user_id' => $userId]);
+//                    QuestionsSetter::setUserQuestions();
+//                }
 
-                if (!$user->agreement_read) {
-                    $user->agreement_read = SiteUser::AGREEMENT_READ;
-                    if (!$user->update()) {
-                        return $errorResponse;
-                    }
+                $user->agreement_read = SiteUser::AGREEMENT_READ;
+                if (!$user->update()) {
+                    return $errorResponse;
                 }
             }
 
@@ -71,7 +69,6 @@ class QuizController extends Controller
             return $errorResponse;
         }
     }
-
 
 
     /**
@@ -200,7 +197,7 @@ class QuizController extends Controller
                         }
                     }
 
-                    if(!$isAnswerCorrect) {
+                    if (!$isAnswerCorrect) {
                         $userAnswerCorrect = Answer::find()
                             ->where([
                                 'question_id' => $questionId,
