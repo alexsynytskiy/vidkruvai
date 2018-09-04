@@ -88,7 +88,8 @@ $config = [
         ],
         'urlManager' => [
             'rules' => [
-                '<alias:\w+>' => 'profile/<alias>',
+                'register' =>'profile/register',
+                'login' =>'profile/login',
                 'comment/<channelId:\d+>/<action:[\w-]+>' => 'comment/default/<action>',
                 'comment/<action:[\w-]+>' => 'comment/default/<action>',
                 '<controller:\w+>/' => '<controller>/index',

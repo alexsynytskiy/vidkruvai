@@ -2,7 +2,6 @@ body {
     font-family: 'Lato', sans-serif;
     color: #263745;
     position: relative;
-    min-width: 474px;
 }
 
 .ios,
@@ -53,7 +52,6 @@ body {
 
 .steps-block {
     max-width: 1028px;
-    min-width: 474px;
     background-color: #fff;
     border-radius: 20px;
     position: absolute;
@@ -80,7 +78,8 @@ form#user-register, form#user-login {
 
 form input.form-control,
 #registerform-captchauser,
-#loginform-captchauser {
+#loginform-captchauser,
+.kv-fileinput-caption {
     height: 44px;
     border-radius: 5px;
     background-color: #F7F9FB;
@@ -776,12 +775,19 @@ a {
 .block-right {
     width: 480px;
     float: left;
-    background-color: #F7F9FB;
     min-height: 480px;
+    background: url(/app/media/img/signup.png) no-repeat center;
+    background-size: 480px 480px;
 }
 
 .social-items {
     padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px 0 rgba(0, 60, 125, 0.15);
+}
+
+.user-form-edit {
+    padding: 64px;
     border-radius: 10px;
     box-shadow: 0 3px 15px 0 rgba(0, 60, 125, 0.15);
 }
@@ -828,7 +834,7 @@ a {
 }
 
 .custom-option .item {
-    width: 164px;
+    width: calc(50% - 6px);
     float: left;
     margin-right: 12px;
     height: 44px;
@@ -872,6 +878,50 @@ a {
 
 .field-registerform-role, .field-registerform-role .help-block {
     margin: 0;
+}
+
+.field-siteuser-avatar .btn-file, button.fileinput-upload {
+    height: 44px !important;
+    border-top-right-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
+    background-color: #047afb !important;
+    padding: 12px !important;
+    font-size: 14px !important;
+    border: 2px solid #047afb !important;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+    margin: 0 !important;
+    color: #fff !important;
+}
+
+button.fileinput-upload {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.field-siteuser-avatar .btn-file:hover,
+button.fileinput-upload:hover {
+    background-color: #fff !important;
+    border: 2px solid #047afb !important;
+    color: #047afb !important;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+}
+
+.field-siteuser-avatar .btn-file:hover span,
+button.fileinput-upload:hover span
+{
+    color: #047afb;
+}
+
+.field-siteuser-avatar span {
+    color: #fff;
 }
 
 @media (max-width: 1199px) {
@@ -940,11 +990,11 @@ a {
     }
 
     button.link-button, form#user-register, form#user-login {
-        max-width: 345px;
+        max-width: 313px;
     }
 
     #registerform-captchauser, #loginform-captchauser {
-        width: 225px;
+        width: 200px;
     }
 
     .new-info.about-event, .image-group img {
@@ -958,6 +1008,16 @@ a {
 
     .steps-block.rules.main-rules .separator-space {
         height: 30px;
+    }
+
+    .steps-block {
+        padding: 64px 16px;
+    }
+
+    .block-left, .block-right {
+        width: 100%;
+        float: none;
+        display: block;
     }
 }
 

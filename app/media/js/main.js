@@ -1,5 +1,6 @@
 var screenH;
 var screenW;
+var sidebarClass = '.sidebar-right-fixed';
 
 $.fn.extend({
     equalHeights: function (options) {
@@ -13,9 +14,13 @@ $.fn.extend({
 $(document).ready(function () {
     'use strict';
 
-    windowSize();
+    // Calculate the screen size
+    screenH = $(document).height();
+    screenW = $(document).width();
+
+    windowSize(screenW);
     $(window).resize(function () {
-        windowSize();
+        windowSize(screenW);
     });
 
     const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
@@ -28,26 +33,67 @@ $(document).ready(function () {
         $('.answers .answer').equalHeights();
     }).trigger('resize');
 
-    // Calculate the screen size
-    screenH = $(document).height();
-    screenW = $(document).width();
+    $(window).scroll(function () {
+        if ($(window).width() > 991) {
+            var classToAdd = 'sidebar-right-fixed-bottom-big';
+
+            if ($(window).width() < 1200) {
+                classToAdd = 'sidebar-right-fixed-bottom-small';
+            }
+
+            if ($(window).scrollTop() + 120 > $(document).height() - $(window).height()) {
+                console.log('add');
+                $(sidebarClass).addClass(classToAdd);
+            }
+            else {
+                console.log('remove');
+                var $sidebar = $(sidebarClass);
+                $sidebar.removeClass('sidebar-right-fixed-bottom-small');
+                $sidebar.removeClass('sidebar-right-fixed-bottom-big');
+            }
+        }
+    });
 });
 
 /**
- * Animate the canvas
+ * window height preparing
  */
-function animate() {
-    context.clearRect(0, 0, screenW, screenH);
-    $.each(stars, function () {
-        this.draw(context);
-    })
-}
+function windowSize(width) {
+    var biggestHeight = 0;
 
-/**
- * window with gradient size preparing
- */
-function windowSize() {
-    var height = 80 + $('.steps-block').height() + 310;
+    var isCabinet = $('.cabinet').size(),
+        searchBlock = '.steps-block > div',
+        isEdit = $('.user-form-edit').size();
+
+    if(isCabinet) {
+        searchBlock = '.cabinet article > div';
+    }
+
+    console.log(searchBlock);
+
+    $(searchBlock).each(function() {
+        if(width < 768) {
+            biggestHeight += $(this).height();
+        }
+        else {
+            console.log($(this).height());
+            if($(this).height() > biggestHeight) {
+                biggestHeight = $(this).height();
+            }
+        }
+    });
+
+    $(".steps-block").height(biggestHeight);
+
+    var height = 80 + biggestHeight + 300;
+
+    if(isEdit) {
+        height += 320;
+    }
+
+    if(width < 768) {
+        height = 80 + biggestHeight + 410;
+    }
 
     if (height < $(window).height()) {
         height = '100vh';
@@ -56,7 +102,7 @@ function windowSize() {
         height += 'px';
     }
 
-    $('#gradient, body').css({
+    $('body').css({
         'min-height': height
     });
 }

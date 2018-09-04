@@ -3,6 +3,9 @@
 /* @var $this yii\web\View */
 /* @var $name string */
 /* @var $email string */
+/* @var $showLoadMore bool */
+/* @var $news yii\easyii\modules\news\models\News[] */
+/* @var $tag string */
 
 $asset = \app\assets\AppAsset::register($this);
 
@@ -16,18 +19,12 @@ $baseUrl = $asset->baseUrl;
                 <?= $this->render('/_blocks/profile-header') ?>
             </div>
             <div class="content-left-fixed">
-                <div class="project-info-page-description">
-
-                </div>
-
+                <?php $large = array_shift($news); ?>
+                <?= $this->render('news-item-first', ['item' => $large]) ?>
+                <?php foreach ($news as $item): ?>
+                    <?= $this->render('news-item', ['item' => $item]) ?>
+                <?php endforeach; ?>
             </div>
         </article>
     </div>
 </div>
-
-<?php
-$pageOptions = \yii\helpers\Json::encode([
-]);
-
-$this->registerJs('ProfilePage(' . $pageOptions . ')');
-?>

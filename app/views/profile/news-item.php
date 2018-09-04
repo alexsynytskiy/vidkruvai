@@ -1,0 +1,21 @@
+<?php
+/* @var $this yii\web\View */
+/* @var $item yii\easyii\modules\news\api\NewsObject */
+
+?>
+
+<div class="news-item small clearfix">
+    <div class="image" style="background: url(<?= $item->image ?>);background-size: cover;"></div>
+    <div class="information">
+        <div class="title">
+            <?= $item->title ?>
+        </div>
+        <div class="short">
+            <?= $item->short ?>
+        </div>
+        <div class="short item-date">
+            <?= date('d.m.Y', $item->time); ?>
+        </div>
+        <a class="short read-more" href="<?= \yii\helpers\Url::to(['news/'.$item->slug]) ?>">Читати далі</a>
+    </div>
+</div>
