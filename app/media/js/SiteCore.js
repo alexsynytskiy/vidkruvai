@@ -1,3 +1,10 @@
+var AppConfig = $.extend(true, {
+    systemLanguage: 'uk',
+    userTimeZone: '',
+    domain: '',
+    httpScheme: ''
+}, (typeof AppConfig !== 'undefined' ? AppConfig : {}));
+
 var SiteCore = function (options) {
     return {
         init: function () {
@@ -23,6 +30,30 @@ var SiteCore = function (options) {
         getCsrfToken: function () {
             var token = $('meta[name="csrf-token"]').attr("content");
             return (typeof token != 'undefined' ? token : null);
+        },
+        t: function(key, params, lang) {
+            lang = lang || AppConfig.systemLanguage;
+            params = params || {};
+
+            var keys = key.split('.'),
+                result = undefined,
+                keysStr = '';
+
+            for(var i in keys) {
+                keysStr += '["' + keys[i] + '"]';
+            }
+
+            if(keysStr) {
+                result = eval('Translations["' + lang + '"]' + keysStr + ';');
+            }
+
+            if(result && params) {
+                for(var paramName in params) {
+                    result = result.replace(new RegExp('\{' + paramName + '\}', 'g'), params[paramName]);
+                }
+            }
+
+            return result;
         }
     }
 }();

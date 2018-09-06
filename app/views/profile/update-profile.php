@@ -54,7 +54,7 @@ $baseUrl = $asset->baseUrl;
                                             'initialPreviewAsData' => true,
                                             'initialPreviewConfig' => [
                                                 [
-                                                    'url' => \yii\helpers\Url::to(['/admin/siteuser/a/clear-image', 'id' => $model->primaryKey]),
+                                                    'url' => \yii\helpers\Url::to(['/profile/clear-image/' . $model->primaryKey]),
                                                 ],
                                             ],
                                         ]

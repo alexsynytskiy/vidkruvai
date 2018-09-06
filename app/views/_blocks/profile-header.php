@@ -1,4 +1,7 @@
-<?php ?>
+<?php
+$totalNews = \yii\easyii\modules\news\models\News::getUserNewsCounters();
+$totalNews = $totalNews > 0 ? $totalNews : null;
+?>
 
 <div class="cabinet-menu nopadding">
     <div class="wrapper">
@@ -14,15 +17,15 @@
             <div class="text">Завдання</div>
         </div>
         <div class="menu-link">
-            <div class="icon"></div>
+            <div class="icon">
+                <?php if($totalNews): ?><div class="new-count news-unread"><?= $totalNews ?></div><?php endif; ?>
+            </div>
             <a href="<?= \yii\helpers\Url::to(['profile/news']) ?>">
                 <div class="text">Новини</div>
             </a>
         </div>
         <div class="menu-link">
-            <div class="icon">
-                <div class="new-count">1</div>
-            </div>
+            <div class="icon"></div>
             <div class="text">Повідомлення</div>
         </div>
         <div class="menu-link">

@@ -455,6 +455,7 @@ article {
 .content-left-fixed .news-item .information .short.item-date {
     color: #93A0A9;
     margin-bottom: 40px;
+    margin-bottom: 15px;
 }
 
 .content-left-fixed .news-item .information a.short.read-more {
@@ -521,7 +522,7 @@ article {
     margin-right: 50px;
 }
 
-.news-item.small:nth-child(2n + 1) {
+.news-item.small:nth-child(2n) {
     margin-right: 0;
 }
 
@@ -538,7 +539,7 @@ article {
     float: none;
     display: block;
     width: 100%;
-    min-height: 350px;
+    min-height: 375px;
 }
 
 .cabinet-menu .profile-info {
@@ -614,6 +615,61 @@ article {
     -o-transition: all ease 0.5s;
     -ms-transition: all ease 0.5s;
     transition: all ease 0.5s;
+}
+
+.read-news {
+    float: left;
+    font-size: 12px;
+    padding: 7px;
+    background-color: #007BFF;
+    margin-bottom: 30px;
+}
+
+.read-news:hover {
+    background-color: #3195FF !important;
+}
+
+.read-news i {
+    margin-right: 5px;
+}
+
+.helpers-header {
+    display: block;
+    margin-bottom: 40px;
+}
+
+#mark-all-news-as-read {
+    float: right;
+    height: 100%;
+    padding: 6px 11px 6px 45px;
+    width: 175px;
+    font-size: 15px;
+    color: #fff;
+    background-color: #007BFF;
+    border: 2px solid #007BFF;
+    border-radius: 5px;
+    position: relative;
+}
+
+#mark-all-news-as-read:hover {
+    cursor: pointer;
+    background-color: #fff;
+    color: #007BFF;
+}
+
+#mark-all-news-as-read:hover i {
+    color: #007BFF;
+}
+
+#mark-all-news-as-read i {
+    padding: 12px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    line-height: 1;
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
 }
 
 @media (max-width: 1199px) {

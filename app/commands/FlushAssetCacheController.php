@@ -27,4 +27,21 @@ class FlushAssetCacheController extends Controller
             exec("touch -t {$date} {$path}");
         }
     }
+
+    /**
+     * @return void
+     */
+    public function actionTranslations()
+    {
+        $acpJsTranslations = require(__DIR__ . '/../modules/messages/JsTranslations.php');
+
+        $acpJsFile = __DIR__ . '/../media/js/js-translations.js';
+
+        $acpJsVar = 'var Translations = ';
+
+        file_put_contents($acpJsFile, $acpJsVar . json_encode([
+                'uk' => $acpJsTranslations,
+                'en' => $acpJsTranslations,
+            ]) . ';');
+    }
 }

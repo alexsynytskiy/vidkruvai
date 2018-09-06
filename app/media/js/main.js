@@ -29,8 +29,9 @@ $(document).ready(function () {
         document.documentElement.classList.add('ios');
     }
 
+    $('.news-item.small').equalHeights();
     $(window).resize(function () {
-        $('.answers .answer').equalHeights();
+        $('.news-item.small').equalHeights();
     }).trigger('resize');
 
     $(window).scroll(function () {
@@ -69,14 +70,11 @@ function windowSize(width) {
         searchBlock = '.cabinet article > div';
     }
 
-    console.log(searchBlock);
-
     $(searchBlock).each(function() {
         if(width < 768) {
             biggestHeight += $(this).height();
         }
         else {
-            console.log($(this).height());
             if($(this).height() > biggestHeight) {
                 biggestHeight = $(this).height();
             }

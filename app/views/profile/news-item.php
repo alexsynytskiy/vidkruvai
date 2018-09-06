@@ -17,5 +17,15 @@
             <?= date('d.m.Y', $item->time); ?>
         </div>
         <a class="short read-more" href="<?= \yii\helpers\Url::to(['news/'.$item->slug]) ?>">Читати далі</a>
+
+        <div class="heading-elements" data-news-id="<?= $item->id; ?>">
+            <?php if($item->read): ?>
+                <a id="read<?= $item->id ?>"
+                   href="<?= \yii\helpers\Url::to(['/news/read', 'id' => $item->id]) ?>"
+                   class="label label-success heading-text read-news" data-ajax="1">
+                    <i class="fa fa-check"></i>Ознайомився
+                </a>
+            <?php endif; ?>
+        </div>
     </div>
 </div>

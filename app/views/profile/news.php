@@ -19,6 +19,12 @@ $baseUrl = $asset->baseUrl;
                 <?= $this->render('/_blocks/profile-header') ?>
             </div>
             <div class="content-left-fixed">
+                <div class="helpers-header clearfix">
+                    <?= \yii\helpers\Html::a('<i class="fa fa-check"></i> Прочитати все',
+                        null,
+                        ['id' => 'mark-all-news-as-read', 'class' => 'no-spinner']) ?>
+                </div>
+
                 <?php $large = array_shift($news); ?>
                 <?= $this->render('news-item-first', ['item' => $large]) ?>
                 <?php foreach ($news as $item): ?>
@@ -28,3 +34,7 @@ $baseUrl = $asset->baseUrl;
         </article>
     </div>
 </div>
+
+<?php
+$this->registerJs('News.NewsPage().init()');
+?>

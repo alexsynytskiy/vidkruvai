@@ -9,11 +9,14 @@ use app\models\forms\RegisterForm;
 use app\models\SiteUser;
 use yii\captcha\CaptchaAction;
 use yii\easyii\components\helpers\LanguageHelper;
+use yii\easyii\helpers\Image;
 use yii\easyii\models\Admin;
 use yii\easyii\modules\news\api\News;
 use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
+use yii\web\UploadedFile;
+use yii\widgets\ActiveForm;
 
 /**
  * Class ProfileController
@@ -126,15 +129,14 @@ class ProfileController extends Controller
 
         $news = null;
 
-        if(\Yii::$app->language !== LanguageHelper::LANG_UA) {
+        if (\Yii::$app->language !== LanguageHelper::LANG_UA) {
             $news = News::items(['limit' => 6, 'language' => 'en', 'tags' => \Yii::$app->request->get('tag')]);
-        }
-        else {
+        } else {
             $news = News::items(['limit' => 6, 'tags' => \Yii::$app->request->get('tag')]);
         }
 
         $showLoadMore = false;
-        if(count($news) > 6) {
+        if (count($news) > 6) {
             $showLoadMore = true;
             array_pop($news);
         }
@@ -142,12 +144,46 @@ class ProfileController extends Controller
         $tag = \Yii::$app->request->get('tag');
 
         $params = ArrayHelper::merge($this->testDataUser(), [
-            'news'         => $news,
+            'news' => $news,
             'showLoadMore' => $showLoadMore,
-            'tag'          => $tag,
+            'tag' => $tag,
         ]);
 
         return $this->render('news', $params);
+    }
+
+    /**
+     * @param null $slug
+     * @return bool|string|\yii\web\Response
+     * @throws \yii\db\Exception
+     */
+    public function actionNewsItem($slug = null)
+    {
+        $status = $this->checkUserStatus();
+
+        if ($status !== true) {
+            return $status;
+        }
+
+        if (!$slug) {
+            return $this->redirect(['news/']);
+        }
+
+        $news = null;
+
+        if (\Yii::$app->language !== LanguageHelper::LANG_UA) {
+            $news = News::get([$slug, 'en']);
+        } else {
+            $news = News::get([$slug]);
+        }
+
+        \yii\easyii\modules\news\models\News::readByIds([$news->id]);
+
+        isset($news->title) ? \Yii::$app->seo->setTitle($news->title) : null;
+        isset($news->seo->description) ? \Yii::$app->seo->setDescription($news->seo->description) : null;
+        isset($news->seo->keywords) ? \Yii::$app->seo->setKeywords($news->seo->keywords) : null;
+
+        return $this->render('view', ['news' => $news]);
     }
 
     /**
@@ -254,27 +290,44 @@ class ProfileController extends Controller
     }
 
     /**
-     * @return bool|string|\yii\web\Response
+     * @return array|bool|string|\yii\web\Response
+     * @throws \yii\web\HttpException
      */
-    public function actionUpdateProfile() {
+    public function actionUpdateProfile()
+    {
         $status = $this->checkUserStatus();
 
         if ($status !== true) {
             return $status;
         }
 
+        \Yii::$app->seo->setTitle('Редагуати профіль');
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('Відкривай, Україну');
+
         $model = SiteUser::findIdentity(\Yii::$app->siteUser->identity->id);
 
-        if($model && $model->load(\Yii::$app->request->post())) {
-            try {
-                if($this->_saveUser($model)) {
+        if ($model && $model->load(\Yii::$app->request->post())) {
+            if (\Yii::$app->request->isAjax) {
+                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+            }
 
-                    return $this->redirect(['edit']);
+            if (isset($_FILES)) {
+                $model->avatar = UploadedFile::getInstance($model, 'avatar');
+                if ($model->avatar && $model->validate(['avatar'])) {
+                    $model->avatar = Image::upload($model->avatar, 'siteusers');
+                } else {
+                    $model->avatar = $model->oldAttributes['avatar'];
                 }
             }
-            catch(\Exception $e) {
-                \Yii::error("Произошла ошибка при обновлении профиля.\nError: " . $e->getMessage());
+
+            if ($model->save()) {
+                $this->flash('success', \Yii::t('easyii', 'User updated'));
+            } else {
+                $this->flash('error', \Yii::t('easyii', 'Update error. {0}', $model->getErrors()));
             }
+            return $this->refresh();
         }
 
         return $this->render('update-profile', [
@@ -283,22 +336,28 @@ class ProfileController extends Controller
     }
 
     /**
-     * @param SiteUser $model
-     *
-     * @return bool
+     * @param $id
+     * @return \yii\web\Response
+     * @throws \Exception
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
-    private function _saveUser($model) {
-        if($model->validate()) {
-            if($model->save(false)) {
-                \Yii::$app->session->setFlash('success', AppMsg::t('Изменения успешно сохраненны.'));
+    public function actionClearImage($id)
+    {
+        $model = SiteUser::findOne($id);
 
-                return true;
+        if ($model === null) {
+            $this->flash('error', \Yii::t('easyii', 'Not found'));
+        } else {
+            $model->avatar = '';
+            if ($model->update()) {
+                @unlink(\Yii::getAlias('@webroot') . $model->avatar);
+                $this->flash('success', \Yii::t('easyii', 'Image cleared'));
+            } else {
+                $this->flash('error', \Yii::t('easyii', 'Update error. {0}', $model->getErrors()));
             }
         }
-
-        \Yii::$app->session->setFlash('error', AppMsg::t('При заполнении формы были допущены ошибки. Изменения не сохранены.'));
-
-        return false;
+        return $this->back();
     }
 
     /**
@@ -309,5 +368,20 @@ class ProfileController extends Controller
         \Yii::$app->siteUser->logout();
 
         return $this->redirect(['site/index']);
+    }
+
+    /**
+     * Write in sessions alert messages
+     * @param string $type error or success
+     * @param string $message alert body
+     */
+    public function flash($type, $message)
+    {
+        \Yii::$app->getSession()->setFlash($type === 'error' ? 'danger' : $type, $message);
+    }
+
+    public function back()
+    {
+        return $this->redirect(\Yii::$app->request->referrer);
     }
 }

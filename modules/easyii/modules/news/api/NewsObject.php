@@ -3,6 +3,7 @@
 namespace yii\easyii\modules\news\api;
 
 use Yii;
+use yii\db\Query;
 use yii\easyii\components\API;
 use yii\easyii\components\ApiObject;
 use yii\easyii\models\Photo;
@@ -127,5 +128,57 @@ class NewsObject extends ApiObject
     public function getEditLink()
     {
         return Url::to(['/admin/news/a/edit/', 'id' => $this->id, 'language' => 'uk']);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getRead()
+    {
+        $rows = (new Query())
+            ->select([])
+            ->from('news_user_notification')
+            ->where([
+                'news_id' => $this->id,
+                'site_user_id' => Yii::$app->siteUser->identity->id,
+            ])
+            ->one();
+
+        if ($rows) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     * @throws \yii\db\Exception
+     */
+    public function setRead()
+    {
+        Yii::$app->db->createCommand()
+            ->delete('news_user_notification', [
+                'news_id' => $this->id,
+                'site_user_id' => Yii::$app->siteUser->identity->id,
+            ])
+            ->execute();
+
+        return true;
+    }
+
+    /**
+     * @return bool
+     * @throws \yii\db\Exception
+     */
+    public function setUnRead()
+    {
+        Yii::$app->db->createCommand()
+            ->delete('news_user_notification', [
+                'news_id' => $this->id,
+            ])
+            ->execute();
+
+        return true;
     }
 }
