@@ -1,34 +1,39 @@
 <?php
 
-namespace yii\easyii\modules\news\models;
+namespace app\models;
 
-use app\models\SiteUser;
-use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 use yii\easyii\components\ActiveRecord;
 
 /**
- * Class NewsUser
- * @property integer $news_id
- * @property integer $site_user_id
+ * Class TeamSiteUser
  * @property integer $id
+ * @property integer $site_user_id
+ * @property integer $team_id
+ * @property string $email
+ * @property string $status
  * @property string $created_at
  * @property string $updated_at
  *
- * @package yii\easyii\modules\news\models
+ * @package app\models
  */
-class NewsUser extends ActiveRecord
+class TeamSiteUser extends ActiveRecord
 {
+    const STATUS_ACTIVE = 'ACTIVE';
+    const STATUS_UNCONFIRMED = 'UNCONFIRMED';
+
     public static function tableName()
     {
-        return 'news_user_notification';
+        return 'team_site_user';
     }
 
     public function rules()
     {
         return [
-            [['news_id', 'site_user_id'], 'integer'],
+            [['site_user_id', 'team_id'], 'integer'],
+            [['email', 'status'], 'string', 'max' => 255],
+            [['created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -54,11 +59,11 @@ class NewsUser extends ActiveRecord
         return $this->hasOne(SiteUser::className(), ['id' => 'site_user_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getNews()
-    {
-        return $this->hasOne(News::className(), ['id' => 'news_id']);
-    }
+//    /**
+//     * @return \yii\db\ActiveQuery
+//     */
+//    public function getNews()
+//    {
+//        return $this->hasOne(News::className(), ['id' => 'news_id']);
+//    }
 }

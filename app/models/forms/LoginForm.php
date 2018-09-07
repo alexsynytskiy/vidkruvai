@@ -103,7 +103,7 @@ class LoginForm extends Model
                     throw new DataException($errorMsg);
                 }
 
-                if ($user->status === DefSiteUser::STATUS_BLOCKED) {
+                if ($user->status !== DefSiteUser::STATUS_ACTIVE) {
                     throw new DataException($errorMsg);
                 }
             } catch (DataException $e) {

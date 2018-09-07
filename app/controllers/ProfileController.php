@@ -6,6 +6,7 @@ use app\components\AppMsg;
 use app\components\BaseDefinition;
 use app\models\forms\LoginForm;
 use app\models\forms\RegisterForm;
+use app\models\forms\TeamCreateForm;
 use app\models\SiteUser;
 use yii\captcha\CaptchaAction;
 use yii\easyii\components\helpers\LanguageHelper;
@@ -15,6 +16,7 @@ use yii\easyii\modules\news\api\News;
 use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
+use yii\web\Response;
 use yii\web\UploadedFile;
 use yii\widgets\ActiveForm;
 
@@ -309,7 +311,7 @@ class ProfileController extends Controller
 
         if ($model && $model->load(\Yii::$app->request->post())) {
             if (\Yii::$app->request->isAjax) {
-                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                \Yii::$app->response->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($model);
             }
 
@@ -331,6 +333,52 @@ class ProfileController extends Controller
         }
 
         return $this->render('update-profile', [
+            'model' => $model
+        ]);
+    }
+
+    /**
+     * @return array|bool|string|\yii\web\Response
+     * @throws \yii\web\HttpException
+     */
+    public function actionCreateTeam()
+    {
+        $status = $this->checkUserStatus();
+
+        if ($status !== true) {
+            return $status;
+        }
+
+        \Yii::$app->seo->setTitle('Створити команду');
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('Відкривай, Україну');
+
+        $model = new TeamCreateForm;
+
+        if ($model && $model->load(\Yii::$app->request->post())) {
+            if (\Yii::$app->request->isAjax) {
+                \Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
+            }
+
+            if (isset($_FILES)) {
+                $model->avatar = UploadedFile::getInstance($model, 'avatar');
+                if ($model->avatar && $model->validate(['avatar'])) {
+                    $model->avatar = Image::upload($model->avatar, 'team');
+                } else {
+                    $model->avatar = $model->oldAttributes['avatar'];
+                }
+            }
+
+            if ($model->createTeam()) {
+                $this->flash('success', \Yii::t('easyii', 'User updated'));
+            } else {
+                $this->flash('error', \Yii::t('easyii', 'Update error. {0}', $model->getErrors()));
+            }
+            return $this->refresh();
+        }
+
+        return $this->render('team-create', [
             'model' => $model
         ]);
     }

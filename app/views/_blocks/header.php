@@ -66,7 +66,25 @@ switch ($controller) {
                         </a>
                     </li>
                 <?php else: ?>
-
+                    <li class="last dropdown dropdown-velocity" id="toolbar-notifications">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-bell"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-content">
+                            <div class="dropdown-content-heading">
+                                Уведомления
+                            </div>
+                            <ul class="media-list media-list-linked width-350" id="toolbar-list-notifications">
+                                <li class="media">
+                                    <span class="media-link">
+                                        <div class="media-body">
+                                            Непрочитанные уведомления отсуствуют.
+                                        </div>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                 <?php endif; ?>
             </ul>
 
