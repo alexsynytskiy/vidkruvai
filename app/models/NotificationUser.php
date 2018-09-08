@@ -11,8 +11,8 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "notification_user".
  *
- * @property string $n_id
- * @property string $user_id
+ * @property int $n_id
+ * @property int $user_id
  * @property string $status
  *
  * @property Notification $notification

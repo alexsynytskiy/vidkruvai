@@ -30,6 +30,7 @@ class NotificationWriter extends Component
      */
     protected function addNotification($category, $type, $title, $message, $link = null)
     {
+
         Yii::$app->db->createCommand()
             ->insert(NotificationModel::tableName(), [
                 'category' => $category,
@@ -46,11 +47,11 @@ class NotificationWriter extends Component
     /**
      * Add notification for certain user
      *
-     * @param int|SiteUser $user - userId or User object
-     * @param          $category
-     * @param          $type
-     * @param          $link
-     * @param          $msgParams
+     * @param int|SiteUser $user - userId or SiteUser object
+     * @param              $category
+     * @param              $type
+     * @param              $link
+     * @param              $msgParams
      *
      * @return bool|int
      * @throws \Exception
@@ -58,7 +59,6 @@ class NotificationWriter extends Component
      */
     public function addToUser($user, $category, $type, $link = null, array $msgParams = [])
     {
-
         if ($user instanceof SiteUser) {
             $userLang = $user->language;
             $userId = $user->id;

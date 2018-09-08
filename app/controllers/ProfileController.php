@@ -126,6 +126,9 @@ class ProfileController extends Controller
             return $status;
         }
 
+        \Yii::$app->notification->addToUser(\Yii::$app->siteUser->identity, DefNotification::CATEGORY_ACCOUNT,
+            DefNotification::TYPE_HELLO_USER, null, []);
+
         \Yii::$app->seo->setTitle('Новини');
         \Yii::$app->seo->setDescription('Відкривай Україну');
         \Yii::$app->seo->setKeywords('Відкривай, Україну');

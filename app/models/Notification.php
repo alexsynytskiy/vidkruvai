@@ -3,7 +3,9 @@
 namespace app\models;
 
 use app\components\AppMsg;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "notification".
@@ -15,6 +17,7 @@ use yii\db\ActiveRecord;
  * @property string $target_link
  * @property string $type
  * @property string $created_at
+ * @property string $updated_at
  *
  * @property NotificationUser[] $notificationUsers
  * @property SiteUser[] $users
@@ -37,8 +40,22 @@ class Notification extends ActiveRecord
         return [
             [['category', 'message', 'type'], 'required'],
             [['category', 'message'], 'string'],
-            [['created_at'], 'safe'],
+            [['created_at', 'updated_at'], 'safe'],
             [['type'], 'string', 'max' => 50],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+                'value' => new Expression('NOW()'),
+            ],
         ];
     }
 

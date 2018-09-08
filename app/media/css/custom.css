@@ -262,7 +262,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     content: "";
     display: inline-block;
     position: absolute;
-    right: 5px;
+    right: 17px;
     margin-left: -60%;
     top: -11px;
 }
@@ -274,7 +274,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     content: "";
     display: inline-block;
     position: absolute;
-    right: 5px;
+    right: 17px;
     margin-left: -60%;
     top: -7px;
 }
@@ -716,6 +716,13 @@ article {
     border-top-left-radius: 3px;
 }
 
+.badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #FF4D00;
+}
+
 @media (max-width: 1199px) {
 
 }
@@ -886,7 +893,8 @@ article {
 
 @media (min-width: 768px) {
     .navbar-inverse .navbar-nav li:last-child a {
-        padding-right: 5px;
+        padding-right: 17px;
+        position: relative;
     }
 }
 
