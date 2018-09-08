@@ -79,6 +79,9 @@ $config = [
                 'name' => '_panelSiteUser',
             ]
         ],
+        'notification'     => [
+            'class' => 'app\components\notification\Notification',
+        ],
         'mutex' => [
             'class' => 'yii\mutex\FileMutex',
         ],

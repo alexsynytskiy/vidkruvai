@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\components\helpers\QuestionsSetter;
+use app\components\Controller;
 use app\components\helpers\StartBlock;
 use app\models\Answer;
 use app\models\Question;
@@ -10,7 +10,6 @@ use app\models\QuestionGroup;
 use app\models\SiteUser;
 use app\models\UserAnswer;
 use yii\web\BadRequestHttpException;
-use yii\web\Controller;
 use yii\web\Response;
 
 /**

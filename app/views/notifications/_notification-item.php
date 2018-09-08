@@ -1,14 +1,14 @@
 <?php
 use yii\helpers\ArrayHelper;
 use \yii\helpers\HtmlPurifier;
-use \acp\components\AcpMsg;
-use \acp\models\definitions\DefNotificationUser;
+use \app\components\AppMsg;
+use \app\models\definitions\DefNotificationUser;
 use yii\helpers\Url;
 
 /** @var array $notificationSettings */
-/** @var \acp\models\NotificationUser $model */
+/** @var \app\models\NotificationUser $model */
 
-/** @var \acp\models\Notification $notification */
+/** @var \app\models\Notification $notification */
 $notification = $model->notification;
 
 // Не понятно что это вообще такое (не используется)
@@ -69,14 +69,15 @@ if($rightLabelColor) {
             <h6 class="media-heading">
                 <?php
                 $title = HtmlPurifier::process($notification->title);
-                if($model->status == DefNotificationUser::STATUS_NEW || ($model->status != DefNotificationUser::STATUS_NEW && $notification->target_link)) {
-                    if($model->status == DefNotificationUser::STATUS_NEW) {
+                if($model->status === DefNotificationUser::STATUS_NEW ||
+                    ($model->status !== DefNotificationUser::STATUS_NEW && $notification->target_link)) {
+                    if($model->status === DefNotificationUser::STATUS_NEW) {
                         $link = ($notification->target_link ? Url::to(['/acp/notification/mn', 'id' => $notification->id]) : '#');
                     } else {
                         $link = ($notification->target_link ?: '#');
                     }
                     echo \yii\helpers\Html::a($title, $link, [
-                        'class'     => ($notification->target_link ? 'target_link' : ''),
+                        'class'     => $notification->target_link ? 'target_link' : '',
                         'data-pjax' => (int)$notification->target_link,
                     ]);
                 } else {
@@ -108,7 +109,7 @@ if($rightLabelColor) {
 <!--<li class="list-group-item <?= $notificationBg . $notificationCssClass; ?>" data-notification-id="<?= $notification->id; ?>">
     <div class="email-checkbox">
         <label>
-            <?php if($model->status != DefNotificationUser::STATUS_ARCHIVED): ?>
+            <?php if($model->status !== DefNotificationUser::STATUS_ARCHIVED): ?>
                 <i class="fa fa-square-o check-notification"></i>
                 <input type="checkbox" name="notification-ids[]" data-checked="notification-checkbox" value="<?= $notification->id; ?>"/>
             <?php endif; ?>
@@ -124,8 +125,9 @@ if($rightLabelColor) {
         <h5 class="email-title">
             <?php
             $title = HtmlPurifier::process($notification->title);
-            if($model->status == DefNotificationUser::STATUS_NEW || ($model->status != DefNotificationUser::STATUS_NEW && $notification->target_link)) {
-                if($model->status == DefNotificationUser::STATUS_NEW) {
+            if($model->status === DefNotificationUser::STATUS_NEW ||
+                ($model->status !== DefNotificationUser::STATUS_NEW && $notification->target_link)) {
+                if($model->status === DefNotificationUser::STATUS_NEW) {
                     $link = ($notification->target_link ? Url::to(['/acp/notification/mn', 'id' => $notification->id]) : '#');
                 } else {
                     $link = ($notification->target_link ?: '#');

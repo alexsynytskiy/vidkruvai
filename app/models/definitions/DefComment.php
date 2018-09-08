@@ -7,7 +7,7 @@ use app\components\BaseDefinition;
 
 /**
  * Class DefLandingComment
- * @package acp\models\definitions
+ * @package app\models\definitions
  */
 class DefComment extends BaseDefinition
 {

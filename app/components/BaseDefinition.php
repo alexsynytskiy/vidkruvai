@@ -4,7 +4,7 @@ namespace app\components;
 
 /**
  * Class BaseDefinition
- * @package acp\components
+ * @package app\components
  */
 class BaseDefinition
 {

@@ -1,14 +1,14 @@
 <?php
-namespace acp\controllers;
 
-use app\components\LogHelper;
-use acp\models\definitions\DefNotificationUser;
-use acp\models\Notification;
+namespace app\controllers;
+
+use app\components\Controller;
+use app\models\definitions\DefNotification;
+use app\models\definitions\DefNotificationUser;
+use app\models\Notification;
+use app\models\NotificationUser;
+use app\models\search\NotificationUserSearch;
 use Yii;
-use acp\models\definitions\DefNotification;
-use acp\models\NotificationUser;
-use acp\models\search\NotificationUserSearch;
-use acp\components\Controller;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
@@ -26,35 +26,30 @@ class NotificationController extends Controller
      *
      * @return string
      */
-    public function actionIndex($category = '', $status = '') {
+    public function actionIndex($category = '', $status = '')
+    {
         $listCategories = DefNotification::getListCategories();
 
-        if(empty($category) || !in_array($category, array_keys($listCategories))) {
+        if (empty($category) || !array_key_exists($category, $listCategories)) {
             $category = 'all';
         }
 
         $searchModel = new NotificationUserSearch();
 
-        if(Yii::$app->user->isInGroup('admin')) {
-            $userId = Yii::$app->request->get('userId') ?: Yii::$app->user->id;
-        } else {
-            $userId = Yii::$app->user->id;
-        }
-
-        $searchModel->userId = $userId;
-        $dataProvider        = $searchModel->search(Yii::$app->request->queryParams);
-        $userCategories      = NotificationUser::getUserCategories($userId);
+        $searchModel->userId = Yii::$app->siteUser->id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $userCategories = NotificationUser::getUserCategories(Yii::$app->siteUser->id);
 
         $data = [
-            'searchModel'    => $searchModel,
-            'dataProvider'   => $dataProvider,
-            'category'       => $category,
-            'status'         => $status,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'category' => $category,
+            'status' => $status,
             'userCategories' => $userCategories,
             'listCategories' => $listCategories,
         ];
 
-        if(Yii::$app->request->isAjax) {
+        if (Yii::$app->request->isAjax) {
             return $this->renderAjax('index', $data);
         }
 
@@ -65,25 +60,24 @@ class NotificationController extends Controller
      * @return array
      * @throws BadRequestHttpException
      */
-    public function actionMark() {
-        if(!Yii::$app->request->isAjax) {
+    public function actionMark()
+    {
+        if (!Yii::$app->request->isAjax) {
             throw new BadRequestHttpException('Bad request.');
         }
 
         ignore_user_abort(true);
 
-        $ids     = (array)ArrayHelper::getValue(Yii::$app->request->post(), 'ids', []);
-        $status  = ArrayHelper::getValue(Yii::$app->request->post(), 'status');
+        $ids = (array)ArrayHelper::getValue(Yii::$app->request->post(), 'ids', []);
+        $status = ArrayHelper::getValue(Yii::$app->request->post(), 'status');
         $markAll = ArrayHelper::getValue(Yii::$app->request->post(), 'mark_all');
-        $userId  = Yii::$app->user->id;
+        $userId = Yii::$app->siteUser->id;
 
         $notificationStatuses = DefNotificationUser::getListStatuses('keys');
 
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-        if((!$ids || !in_array($status, $notificationStatuses)) && !$markAll) {
-            Yii::warning("Пользователь пытался отметить уведомление. Но, либо не передал Notification IDs (" . print_r($ids, true) . "). Либо указал не существующий статус уведомления ({$status}).", LogHelper::CATEGORY_USER_HACK);
-
+        if ((!$ids || !in_array($status, $notificationStatuses, false)) && !$markAll) {
             return ['status' => 'error'];
         }
 
@@ -91,8 +85,8 @@ class NotificationController extends Controller
             $conditions = [
                 'user_id' => $userId,
             ];
-            if(!$markAll) {
-                $conditions['n_id']   = $ids;
+            if (!$markAll) {
+                $conditions['n_id'] = $ids;
                 $conditions['status'] = [DefNotificationUser::STATUS_NEW, DefNotificationUser::STATUS_READ];
             } else {
                 $status = DefNotificationUser::STATUS_READ;
@@ -101,10 +95,7 @@ class NotificationController extends Controller
             }
 
             NotificationUser::updateAll(['status' => $status], $conditions);
-        }
-        catch(\Exception $e) {
-            Yii::error("Ошибка при попытке изменить статус уведомления. Notification IDs (" . print_r($ids, true) . "), статус ({$status}), ошибка: " . $e->getMessage(), LogHelper::CATEGORY_DB);
-
+        } catch (\Exception $e) {
             return ['status' => 'error'];
         }
 
@@ -118,8 +109,10 @@ class NotificationController extends Controller
      *
      * @return \yii\web\Response
      */
-    public function actionMn($id) {
-        $userId       = Yii::$app->user->id;
+    public function actionMn($id)
+    {
+        $userId = Yii::$app->siteUser->id;
+
         $notification = (new Query)
             ->select(['n_id', 'target_link'])
             ->from(Notification::tableName())
@@ -130,21 +123,19 @@ class NotificationController extends Controller
             ->limit(1)
             ->one();
 
-        if($notification === false) {
+        if ($notification === false) {
             return $this->redirect(['/acp/dashboard']);
         }
 
         try {
-            Yii::$app->db->createCommand('UPDATE ' . NotificationUser::tableName() . ' SET status = :status WHERE n_id = :nId AND user_id = :userId', [
-                ':nId'    => $id,
+            Yii::$app->db->createCommand('UPDATE ' . NotificationUser::tableName() .
+                ' SET status = :status WHERE n_id = :nId AND user_id = :userId', [
+                ':nId' => $id,
                 ':userId' => $userId,
                 ':status' => DefNotificationUser::STATUS_READ,
             ])
                 ->execute();
-        }
-        catch(\Exception $e) {
-            Yii::error("Ошибка при попытке отметить прочитанным уведомление (ID {$id}). Error: " . $e->getMessage(), LogHelper::CATEGORY_DB);
-
+        } catch (\Exception $e) {
             return $this->redirect(['/acp/dashboard']);
         }
 
@@ -155,22 +146,20 @@ class NotificationController extends Controller
      * @return array
      * @throws BadRequestHttpException
      */
-    public function actionGetData() {
-        if(!Yii::$app->request->isAjax) {
+    public function actionGetData()
+    {
+        if (!Yii::$app->request->isAjax) {
             throw new BadRequestHttpException('Bad request.');
         }
 
-        //Disable debug-toolbar embedding into the view
-        Yii::$app->getModule('debug')->allowedIPs = [];
-
         $counters = $this->getUserNotificationCounters();
-        $content  = $this->renderAjax('_top-menu-notification-items');
+        $content = $this->renderAjax('_top-menu-notification-items');
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
         return [
             'counters' => $counters,
-            'content'  => $content,
+            'content' => $content,
         ];
     }
 }

@@ -6,7 +6,7 @@ use yii\helpers\ArrayHelper;
 
 /**
  * Class DateTimeHelper
- * @package acp\components\helpers
+ * @package app\components\helpers
  */
 class DateTimeHelper
 {

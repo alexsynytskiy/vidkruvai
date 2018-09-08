@@ -4,6 +4,7 @@ namespace app\models\definitions;
 
 use app\components\AppMsg;
 use app\components\BaseDefinition;
+use app\models\SiteUser;
 
 /**
  * Class DefSiteUser
@@ -32,5 +33,22 @@ class DefSiteUser extends BaseDefinition
         ];
 
         return static::getListDataByReturnType($list, $returnType);
+    }
+
+    /**
+     * @param string $returnType
+     *
+     * @see BaseDefinition::getListDataByReturnType()
+     *
+     * @return array
+     */
+    public static function getListUserRoles($returnType = 'key-value')
+    {
+        $roles = [
+            SiteUser::ROLE_PARTICIPANT => AppMsg::t('Учасник'),
+            SiteUser::ROLE_MENTOR => AppMsg::t('Ментор'),
+        ];
+
+        return static::getListDataByReturnType($roles, $returnType);
     }
 }

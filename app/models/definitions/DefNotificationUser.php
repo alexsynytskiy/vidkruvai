@@ -7,15 +7,15 @@ use app\components\BaseDefinition;
 
 /**
  * Class DefNotificationUser
- * @package acp\models\definitions
+ * @package app\models\definitions
  */
 class DefNotificationUser extends BaseDefinition
 {
     /**
      * Statuses
      */
-    const STATUS_NEW      = 'new';
-    const STATUS_READ     = 'read';
+    const STATUS_NEW = 'new';
+    const STATUS_READ = 'read';
     const STATUS_ARCHIVED = 'archived';
 
     /**
@@ -25,10 +25,11 @@ class DefNotificationUser extends BaseDefinition
      *
      * @return array
      */
-    public static function getListStatuses($returnType = 'key-value') {
+    public static function getListStatuses($returnType = 'key-value')
+    {
         $statuses = [
-            self::STATUS_NEW      => AppMsg::t('Нове'),
-            self::STATUS_READ     => AppMsg::t('Прочитано'),
+            self::STATUS_NEW => AppMsg::t('Нове'),
+            self::STATUS_READ => AppMsg::t('Прочитано'),
             self::STATUS_ARCHIVED => AppMsg::t('Архів'),
         ];
 

@@ -3,19 +3,12 @@
 namespace app\controllers;
 
 use app\components\AppMsg;
-use app\components\helpers\QuestionsSetter;
-use app\components\helpers\StartBlock;
-use app\models\Answer;
+use app\components\Controller;
 use app\models\definitions\DefNotificationUser;
-use app\models\Question;
-use app\models\QuestionGroup;
-use app\models\SiteUser;
-use app\models\UserAnswer;
 use yii\easyii\modules\news\api\NewsObject;
 use yii\easyii\modules\news\models\News;
 use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -30,26 +23,27 @@ class NewsController extends Controller
      * @throws BadRequestHttpException
      * @throws \yii\db\Exception
      */
-    public function actionMark() {
+    public function actionMark()
+    {
         if (!\Yii::$app->request->isPost || \Yii::$app->siteUser->isGuest) {
             throw new BadRequestHttpException();
         }
 
         ignore_user_abort(true);
 
-        $ids     = (array)ArrayHelper::getValue(\Yii::$app->request->post(), 'ids', []);
-        $status  = ArrayHelper::getValue(\Yii::$app->request->post(), 'status');
+        $ids = (array)ArrayHelper::getValue(\Yii::$app->request->post(), 'ids', []);
+        $status = ArrayHelper::getValue(\Yii::$app->request->post(), 'status');
         $markAll = ArrayHelper::getValue(\Yii::$app->request->post(), 'mark_all');
 
         $notificationStatuses = DefNotificationUser::getListStatuses('keys');
 
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-        if((!$ids || !in_array($status, $notificationStatuses, false)) && !$markAll) {
+        if ((!$ids || !in_array($status, $notificationStatuses, false)) && !$markAll) {
             return ['status' => 'error'];
         }
 
-        if($markAll) {
+        if ($markAll) {
             News::readAll();
         } else {
             News::readByIds($ids);
@@ -62,7 +56,8 @@ class NewsController extends Controller
      * @return array
      * @throws BadRequestHttpException
      */
-    public function actionCounter() {
+    public function actionCounter()
+    {
         if (\Yii::$app->siteUser->isGuest) {
             throw new BadRequestHttpException();
         }
@@ -82,14 +77,15 @@ class NewsController extends Controller
      * @throws NotFoundHttpException
      * @throws \yii\db\Exception
      */
-    public function actionRead($id) {
+    public function actionRead($id)
+    {
         $model = $this->findModel($id);
 
-        if(!$model) {
+        if (!$model) {
             throw new NotFoundHttpException(AppMsg::t('Страница не найдена.'));
         }
 
-        if($model->setRead()) {
+        if ($model->setRead()) {
             return true;
         }
 
@@ -100,7 +96,8 @@ class NewsController extends Controller
      * @return bool
      * @throws \yii\db\Exception
      */
-    public function actionReadall() {
+    public function actionReadall()
+    {
         return News::readAll();
     }
 
@@ -113,8 +110,9 @@ class NewsController extends Controller
      * @return NewsObject the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
-        if(($model = \yii\easyii\modules\news\api\News::get(['id' => $id])) !== null) {
+    protected function findModel($id)
+    {
+        if (($model = \yii\easyii\modules\news\api\News::get(['id' => $id])) !== null) {
             return $model;
         }
 

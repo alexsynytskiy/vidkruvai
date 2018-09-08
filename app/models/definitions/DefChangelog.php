@@ -7,7 +7,7 @@ use app\components\BaseDefinition;
 
 /**
  * Class DefChangelog
- * @package acp\models\definitions
+ * @package app\models\definitions
  */
 class DefChangelog extends BaseDefinition
 {

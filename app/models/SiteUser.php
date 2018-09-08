@@ -284,4 +284,20 @@ class SiteUser extends \yii\db\ActiveRecord implements IdentityInterface
             self::ROLE_MENTOR => 'Ментор',
         ];
     }
+
+    /**
+     * @param int    $userId
+     * @param string $language
+     *
+     * @return int
+     */
+    public static function updateUserPreferredLanguage($userId, $language) {
+        try {
+            return \Yii::$app->db->createCommand('UPDATE ' . static::tableName() .
+                ' SET language = :lang WHERE id = :userId', [':lang' => $language, ':userId' => $userId])->execute();
+        }
+        catch(\Exception $e) {
+            return 0;
+        }
+    }
 }

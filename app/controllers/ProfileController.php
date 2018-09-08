@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\components\AppMsg;
 use app\components\BaseDefinition;
+use app\components\Controller;
+use app\models\definitions\DefNotification;
 use app\models\forms\LoginForm;
 use app\models\forms\RegisterForm;
 use app\models\forms\TeamCreateForm;
@@ -15,7 +17,6 @@ use yii\easyii\models\Admin;
 use yii\easyii\modules\news\api\News;
 use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
-use yii\web\Controller;
 use yii\web\Response;
 use yii\web\UploadedFile;
 use yii\widgets\ActiveForm;
@@ -234,14 +235,14 @@ class ProfileController extends Controller
         if ($model->load(\Yii::$app->request->post()) && $model->register()) {
             \Yii::$app->siteUser->login($model->getUser(), BaseDefinition::getSessionExpiredTime());
 
-            \Yii::$app->siteUser->identity->updateLoginCount();
+            $user = \Yii::$app->siteUser->identity;
+            $user->updateLoginCount();
 
-            if (\Yii::$app->siteUser->identity->login_count === 1) {
-                //QuestionsSetter::setUserQuestions();
+            \Yii::$app->notification->addToUser($user, DefNotification::CATEGORY_ACCOUNT,
+                DefNotification::TYPE_HELLO_USER, null, []);
 
-                if (!\Yii::$app->siteUser->identity->agreement_read) {
-                    return $this->redirect('/rules');
-                }
+            if ($user->login_count === 1 && !$user->agreement_read) {
+                return $this->redirect('/rules');
             }
 
             return $this->redirect(['/profile']);
