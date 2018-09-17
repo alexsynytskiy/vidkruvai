@@ -4,6 +4,7 @@ namespace app\components\notification;
 
 use app\models\definitions\DefSiteUser;
 use app\models\SiteUser;
+use app\models\Team;
 use yii\base\Component;
 
 /**
@@ -33,10 +34,10 @@ class Notification extends Component
     /**
      * Adds notification to certain user
      *
-     * @param int|SiteUser $user - userId or User object
-     * @param          $category
-     * @param          $type
-     * @param          $link
+     * @param int|SiteUser $user - userId or SiteUser object
+     * @param              $category
+     * @param              $type
+     * @param              $link
      * @param array $msgParams
      *
      * @return bool
@@ -85,6 +86,26 @@ class Notification extends Component
         try {
             return $this->writer->addToGroup(DefSiteUser::getListUserRoles('keys'),
                 $category, $type, $link, $msgParams);
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Adds notification to all certain team members
+     *
+     * @param int|Team $team - TeamId or Team object
+     * @param          $category
+     * @param          $type
+     * @param          $link
+     * @param array $msgParams
+     *
+     * @return bool
+     */
+    public function addToTeam($team, $category, $type, $link = null, array $msgParams = [])
+    {
+        try {
+            return $this->writer->addToTeam($team, $category, $type, $link, $msgParams);
         } catch (\Exception $e) {
             return false;
         }

@@ -3,9 +3,9 @@
 /* @var $this yii\web\View */
 /* @var $name string */
 /* @var $email string */
-/* @var $showLoadMore bool */
 /* @var $news yii\easyii\modules\news\models\News[] */
 /* @var $tag string */
+/* @var bool $hasToLoadMore */
 
 $asset = \app\assets\AppAsset::register($this);
 
@@ -25,11 +25,28 @@ $baseUrl = $asset->baseUrl;
                         ['id' => 'mark-all-news-as-read', 'class' => 'no-spinner']) ?>
                 </div>
 
-                <?php $large = array_shift($news); ?>
-                <?= $this->render('news-item-first', ['item' => $large]) ?>
-                <?php foreach ($news as $item): ?>
-                    <?= $this->render('news-item', ['item' => $item]) ?>
-                <?php endforeach; ?>
+                <div id="news-list">
+                    <?php $large = array_shift($news); ?>
+                    <?= $this->render('news-item-first', ['item' => $large]) ?>
+                    <?php foreach ($news as $item): ?>
+                        <?= $this->render('news-item', ['item' => $item]) ?>
+                    <?php endforeach; ?>
+                </div>
+
+                <?php if ($hasToLoadMore): ?>
+                    <div class="row">
+                        <div class="col-lg-12">
+
+                            <a href="#"
+                               id="load-more-news"
+                               class="button"
+                               data-last-id="<?= $lastItemId ?>">
+                                <?= 'Показать больше новостей'; ?>
+                            </a>
+
+                        </div>
+                    </div>
+                <?php endif; ?>
             </div>
         </article>
     </div>

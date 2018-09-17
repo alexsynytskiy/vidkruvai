@@ -37,7 +37,7 @@ class NotificationSettings
                     ],
                 ],
                 DefNotification::TYPE_HELLO_USER => [
-                    'icon' => 'icon-info3',
+                    'icon' => 'fa fa-home',
                     'icon-border-color' => 'border-primary',
                     'icon-color' => 'text-primary',
                     'short-title' => 'Привет!',

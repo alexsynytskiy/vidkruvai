@@ -39,6 +39,39 @@ var News = function() {
                             });
                         });
                     }).catch(swal.noop);
+                }).on('click', '#load-more-news', function (e) {
+                    e.preventDefault();
+
+                    const $loadMore = $(this),
+                        lastId = parseInt($loadMore.attr('data-last-id'));
+
+                    $.post(
+                        '/news/load-more/',
+                        {
+                            lastId: lastId, _csrf: SiteCore.getCsrfToken()
+                        },
+                        function (response) {
+                            if (typeof response.items !== 'undefined') {
+                                $('#news-list').append(response.items);
+
+                                var screenW = $(document).width();
+                                SiteCore.windowSize(screenW);
+                            }
+
+                            if (response.items !== 'undefined' && response.items) {
+                                if (response.hasToLoadMore === true) {
+                                    $loadMore.attr('data-last-id', response.lastItemId);
+                                }
+                                else {
+                                    $loadMore.remove();
+                                }
+                            }
+                            else {
+                                $loadMore.remove();
+                            }
+                        }, 'json');
+
+                    $loadMore.blur();
                 });
 
             function _mark(newsIds, newsStatus, markAll) {

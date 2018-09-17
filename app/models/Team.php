@@ -19,6 +19,8 @@ use yii\easyii\components\ActiveRecord;
  * @property string $created_at
  * @property string $updated_at
  *
+ * @property TeamSiteUser[] $teamUsers
+ *
  * @package app\models
  */
 class Team extends ActiveRecord
@@ -72,5 +74,13 @@ class Team extends ActiveRecord
             'level_experience' => AppMsg::t('Досвід на поточному рівні'),
             'total_experience' => AppMsg::t('Загальний досвід'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeamUsers()
+    {
+        return $this->hasMany(TeamSiteUser::className(), ['team_id' => 'id']);
     }
 }

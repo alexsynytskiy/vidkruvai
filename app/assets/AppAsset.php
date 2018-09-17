@@ -24,7 +24,7 @@ class AppAsset extends \yii\web\AssetBundle
         'plugins/sweetalert/sweetalert2.min.css',
         'plugins/css/jquery.bxslider.css',
         'css/custom-questions.css?version=2',
-        'css/custom.css?version=2',
+        'css/custom.css?version=3',
     ];
 
     public $js = [
@@ -44,4 +44,6 @@ class AppAsset extends \yii\web\AssetBundle
         'js/ProfilePage.js',
         'js/RegisterPage.js',
     ];
+
+    public $publishOptions = ['forceCopy' => true];
 }

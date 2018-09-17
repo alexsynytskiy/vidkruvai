@@ -4,9 +4,10 @@ namespace app\controllers;
 
 use app\components\AppMsg;
 use app\components\Controller;
+use app\components\helpers\LanguageHelper;
 use app\models\definitions\DefNotificationUser;
+use yii\easyii\modules\news\api\News;
 use yii\easyii\modules\news\api\NewsObject;
-use yii\easyii\modules\news\models\News;
 use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
@@ -117,5 +118,60 @@ class NewsController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     * @return array
+     * @throws NotFoundHttpException
+     */
+    public function actionLoadMore()
+    {
+        if (!\Yii::$app->request->isPost || !\Yii::$app->request->isAjax) {
+            throw new NotFoundHttpException();
+        }
+
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $lastNewsId = (int)\Yii::$app->request->post('lastId');
+
+        if (!$lastNewsId) {
+            return [];
+        }
+
+        $tag = \Yii::$app->request->get('tag');
+
+        $queryParams = [
+            'limit' => \yii\easyii\modules\news\models\News::ITEMS_PER_PAGE + 1,
+            'where' => ['<', 'news_id', $lastNewsId],
+            'tags' => $tag,
+        ];
+
+        if (\Yii::$app->language !== LanguageHelper::LANG_UK) {
+            $queryParams = ArrayHelper::merge($queryParams, ['language' => LanguageHelper::LANG_EN]);
+        }
+
+        $olderNews = News::items($queryParams);
+        $hasToLoadMore = false;
+        $lastItemId = 0;
+
+        if (count($olderNews) > \yii\easyii\modules\news\models\News::ITEMS_PER_PAGE) {
+            $hasToLoadMore = true;
+            $lastItemId = $olderNews[count($olderNews) - 1]->id;
+
+            array_pop($olderNews);
+        }
+
+        $items = '';
+
+        foreach ($olderNews as $item) {
+            $items .= $this->renderPartial('/profile/news-item',
+                ['item' => $item]);
+        }
+
+        return [
+            'hasToLoadMore' => $hasToLoadMore,
+            'lastItemId' => $lastItemId,
+            'items' => $items,
+        ];
     }
 }

@@ -8,6 +8,7 @@ use app\components\AppMsg;
 use app\components\helpers\LanguageHelper;
 use app\models\definitions\DefNotificationUser;
 use app\models\SiteUser;
+use app\models\Team;
 use Yii;
 use yii\base\Component;
 use yii\db\Expression;
@@ -30,7 +31,6 @@ class NotificationWriter extends Component
      */
     protected function addNotification($category, $type, $title, $message, $link = null)
     {
-
         Yii::$app->db->createCommand()
             ->insert(NotificationModel::tableName(), [
                 'category' => $category,
@@ -124,5 +124,39 @@ class NotificationWriter extends Component
         }
 
         return true;
+    }
+
+    /**
+     * Add notification for team members
+     *
+     * @param int|Team $team - teamId or Team object
+     * @param          $category
+     * @param          $type
+     * @param          $link
+     * @param          $msgParams
+     *
+     * @throws \Exception
+     * @throws \yii\db\Exception
+     */
+    public function addToTeam($team, $category, $type, $link = null, array $msgParams = [])
+    {
+        if ($team instanceof Team) {
+            $members = $team->teamUsers;
+
+            foreach ($members as $member) {
+                $this->addToUser($member->user, $category, $type, $link, $msgParams);
+            }
+        } elseif (is_int($team)) {
+            $teamInstance = Team::findOne(['id' => $team]);
+            if($teamInstance) {
+                $members = $teamInstance->teamUsers;
+
+                foreach ($members as $member) {
+                    $this->addToUser($member->user, $category, $type, $link, $msgParams);
+                }
+            }
+        } else {
+            throw new \Exception('Unsupported $user value: ' . print_r($user, true));
+        }
     }
 }

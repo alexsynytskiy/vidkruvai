@@ -16,6 +16,8 @@ use yii\easyii\components\ActiveRecord;
  * @property string $created_at
  * @property string $updated_at
  *
+ * @property SiteUser $user
+ *
  * @package app\models
  */
 class TeamSiteUser extends ActiveRecord
@@ -58,12 +60,4 @@ class TeamSiteUser extends ActiveRecord
     {
         return $this->hasOne(SiteUser::className(), ['id' => 'site_user_id']);
     }
-
-//    /**
-//     * @return \yii\db\ActiveQuery
-//     */
-//    public function getNews()
-//    {
-//        return $this->hasOne(News::className(), ['id' => 'news_id']);
-//    }
 }

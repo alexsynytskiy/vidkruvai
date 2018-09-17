@@ -126,32 +126,39 @@ class ProfileController extends Controller
             return $status;
         }
 
-        \Yii::$app->notification->addToUser(\Yii::$app->siteUser->identity, DefNotification::CATEGORY_ACCOUNT,
-            DefNotification::TYPE_HELLO_USER, null, []);
+        //\Yii::$app->notification->addToUser(\Yii::$app->siteUser->identity, DefNotification::CATEGORY_ACCOUNT,
+           // DefNotification::TYPE_HELLO_USER, null, []);
 
         \Yii::$app->seo->setTitle('Новини');
         \Yii::$app->seo->setDescription('Відкривай Україну');
         \Yii::$app->seo->setKeywords('Відкривай, Україну');
 
-        $news = null;
+        $tag = \Yii::$app->request->get('tag');
+
+        $queryParams = [
+            'limit' => \yii\easyii\modules\news\models\News::ITEMS_PER_PAGE + 1,
+            'tags' => $tag,
+        ];
 
         if (\Yii::$app->language !== LanguageHelper::LANG_UA) {
-            $news = News::items(['limit' => 6, 'language' => 'en', 'tags' => \Yii::$app->request->get('tag')]);
-        } else {
-            $news = News::items(['limit' => 6, 'tags' => \Yii::$app->request->get('tag')]);
+            $queryParams = ArrayHelper::merge($queryParams, ['language' => LanguageHelper::LANG_EN]);
         }
 
-        $showLoadMore = false;
-        if (count($news) > 6) {
-            $showLoadMore = true;
+        $news = News::items($queryParams);
+        $hasToLoadMore = false;
+        $lastItemId = 0;
+
+        if (count($news) > \yii\easyii\modules\news\models\News::ITEMS_PER_PAGE) {
+            $hasToLoadMore = true;
+
             array_pop($news);
+            $lastItemId = $news[count($news) - 1]->id;
         }
-
-        $tag = \Yii::$app->request->get('tag');
 
         $params = ArrayHelper::merge($this->testDataUser(), [
             'news' => $news,
-            'showLoadMore' => $showLoadMore,
+            'hasToLoadMore' => $hasToLoadMore,
+            'lastItemId' => $lastItemId,
             'tag' => $tag,
         ]);
 

@@ -240,6 +240,16 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .dropdown-content-heading {
     font-weight: bold;
     color: #047afb;
+    padding-left: 12px;
+}
+
+#toolbar-notifications i.heading-icon {
+    font-size: 18px;
+}
+
+li.notification-item .media-annotation {
+    font-size: 11px;
+    color: #93A0A9;
 }
 
 .media-list {
@@ -248,11 +258,38 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 .media-list span {
-    color: #000 !important;
+    margin-bottom: 0;
 }
 
-#toolbar-notifications i {
-    font-size: 19px;
+#toolbar-notifications .media-link i {
+    font-size: 32px;
+    color: #ea4933;
+}
+
+.dropdown-content-footer a {
+    display: block;
+    padding: 7px;
+    text-align: center;
+    color: #333;
+}
+
+.icon-menu {
+    color: #3294fb;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    min-width: 1em;
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .dropdown-menu:before {
@@ -473,6 +510,7 @@ article {
 
 .content-left-fixed .news-item .information {
     float: right;
+    position: relative;
     width: 350px;
     padding: 32px;
     height: 350px;
@@ -498,8 +536,10 @@ article {
 
 .content-left-fixed .news-item .information .short.item-date {
     color: #93A0A9;
-    margin-bottom: 40px;
-    margin-bottom: 15px;
+    margin-bottom: 0;
+    position: absolute;
+    bottom: 72px;
+    left: 32px;
 }
 
 .content-left-fixed .news-item .information a.short.read-more {
@@ -512,6 +552,10 @@ article {
     -o-transition: all ease 0.5s;
     -ms-transition: all ease 0.5s;
     transition: all ease 0.5s;
+    position: absolute;
+    bottom: 32px;
+    left: 32px;
+    margin-bottom: 0;
 }
 
 .content-left-fixed .news-item .information a.short.read-more:hover {
@@ -566,7 +610,7 @@ article {
     margin-right: 50px;
 }
 
-.news-item.small:nth-child(2n) {
+.news-item.small:nth-child(2n + 1) {
     margin-right: 0;
 }
 
@@ -582,6 +626,7 @@ article {
 .content-left-fixed .news-item.small .information {
     float: none;
     display: block;
+    position: relative;
     width: 100%;
     min-height: 375px;
 }
@@ -682,6 +727,15 @@ article {
     margin-bottom: 40px;
 }
 
+#load-more-news {
+    padding: 11px;
+    font-size: 15px;
+    color: #fff;
+    background-color: #007BFF;
+    border: 2px solid #007BFF;
+    border-radius: 5px;
+}
+
 #mark-all-news-as-read {
     float: right;
     height: 100%;
@@ -695,7 +749,7 @@ article {
     position: relative;
 }
 
-#mark-all-news-as-read:hover {
+#mark-all-news-as-read:hover, #load-more-news:hover {
     cursor: pointer;
     background-color: #fff;
     color: #007BFF;

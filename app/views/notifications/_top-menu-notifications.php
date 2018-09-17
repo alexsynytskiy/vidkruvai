@@ -12,7 +12,7 @@ $notificationTitle = AppMsg::t('Уведомления (<span class="total-notif
 
 <li class="last dropdown dropdown-velocity" id="toolbar-notifications">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-        <i class="fa fa-bell"></i>
+        <i class="fa fa-bell heading-icon"></i>
         <span class="visible-xs-inline-block position-right"></span>
         <span class="badge bg-warning-400 total-notifications"><?= $notificationCounters['total'] ?: ''; ?></span>
     </a>
@@ -24,7 +24,7 @@ $notificationTitle = AppMsg::t('Уведомления (<span class="total-notif
             <?= $this->render('_top-menu-notification-items'); ?>
         </ul>
         <div class="dropdown-content-footer">
-            <?= Html::a('<i class="icon-menu display-block"></i>',
+            <?= Html::a('<i class="icon-menu display-block fa fa-ellipsis-h"></i>',
                 ['/profile/notifications'],
                 ['title' => AppMsg::t('Все уведомления'), 'data-acp-toggle' => 'tooltip']
             ); ?>

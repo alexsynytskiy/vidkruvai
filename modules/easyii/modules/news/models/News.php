@@ -40,6 +40,8 @@ class News extends ActiveRecord
     const STATUS_OFF = 0;
     const STATUS_ON = 1;
 
+    const ITEMS_PER_PAGE = 2;
+
     /**
      * @return MultilingualQuery
      */
