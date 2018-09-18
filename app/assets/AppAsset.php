@@ -39,6 +39,7 @@ class AppAsset extends \yii\web\AssetBundle
         'js/SiteCore.js',
         'js/ObserverList.js',
         'js/News.js',
+        'js/Notifications.js',
         'js/RulesPage.js',
         'js/AnswerPage.js',
         'js/ProfilePage.js',

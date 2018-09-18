@@ -24,13 +24,13 @@ class NotificationSettings
         if (empty(self::$_settings)) {
             self::$_settings = [
                 DefNotification::TYPE_USER_REGISTRATION => [
-                    'icon' => 'icon-user-plus', //Icon showed on notification page and at the top menu
+                    'icon' => 'fa fa-user', //Icon showed on notification page and at the top menu
                     'icon-border-color' => 'border-success', //Color of the icon border
                     'icon-color' => 'text-success', //Color of the icon
-                    'short-title' => 'Новый пользователь', //Short title will show at the top menu
-                    'title' => 'Регистрация нового пользователя', //Title will show on notification page
-                    'message' => 'В системе зарегистрировался новый пользователь {user_link}. 
-                                Дата регистрации {created_at}', //Message will show on notification page
+                    'short-title' => 'Новий користувач', //Short title will show at the top menu
+                    'title' => 'Реєстрація нового користувача', //Title will show on notification page
+                    'message' => 'В системі зареєстровано нового користувача {user_link}. 
+                                Дата реєстрації {created_at}', //Message will show on notification page
                     'scenario' => [
                         'sendIfNotRead' => false,
                         'sendPeriod' => 24,
@@ -40,9 +40,9 @@ class NotificationSettings
                     'icon' => 'fa fa-home',
                     'icon-border-color' => 'border-primary',
                     'icon-color' => 'text-primary',
-                    'short-title' => 'Привет!',
-                    'title' => 'Привет!',
-                    'message' => 'Это уведомления. Тут будет собрана вся важная информация по Вашему аккаунту',
+                    'short-title' => 'Привіт!',
+                    'title' => 'Привіт!',
+                    'message' => 'Це сповіщення. Тут будя вся важлива інформація для твого аккаунту',
                     'scenario' => [
                         'sendIfNotRead' => false,
                         'sendPeriod' => 24,
@@ -52,9 +52,9 @@ class NotificationSettings
                     'icon' => 'icon-newspaper',
                     'icon-border-color' => 'border-success',
                     'icon-color' => 'text-success',
-                    'short-title' => 'Добавлена новость',
-                    'title' => 'Добавлена новость',
-                    'message' => 'Ознакомиться с новостью {news_link}. Дата появления {created_at}',
+                    'short-title' => 'Нова новина',
+                    'title' => 'Додано нову новину',
+                    'message' => 'Ознайомитись з новиною {news_link}. Дата додавання {created_at}',
                     'scenario' => [
                         'sendIfNotRead' => false,
                         'sendPeriod' => 24,

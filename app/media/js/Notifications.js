@@ -7,7 +7,7 @@ var Notifications = function() {
     var reloadNotificationPage = function() {
         var pathname = window.location.pathname;
 
-        if(!/\/acp\/notification/.test(pathname)) {
+        if(!/\/notification/.test(pathname)) {
             return false;
         }
 
@@ -87,7 +87,7 @@ var Notifications = function() {
 
                     var notificationId = $(this).closest('li').data('notification-id');
 
-                    if(typeof notificationId == 'undefined') {
+                    if(typeof notificationId === 'undefined') {
                         return false;
                     }
 
@@ -237,7 +237,7 @@ var Notifications = function() {
         markAll = markAll || 0;
 
         return $.ajax({
-            url: '/acp/notification/mark',
+            url: '/notification/mark',
             dataType: 'json',
             method: 'POST',
             data: {ids: notificationIds, status: notificationStatus, mark_all: markAll},
@@ -299,7 +299,7 @@ var Notifications = function() {
     };
 
     var refreshToolbarNotifications = function() {
-        $.get('/acp/notification/get-data', function(result) {
+        $.get('/notification/get-data', function(result) {
             updateNotificationCounters(result.counters);
             $('#toolbar-list-notifications').html(result.content);
         }, 'json');

@@ -760,6 +760,7 @@ a {
 .has-error.checkbox label, .has-error.radio-inline label,
 .has-error.checkbox-inline label {
     color: #FF4D00;
+    font-size: 14px;
 }
 
 .field-registerform-captchauser img, .field-loginform-captchauser img {
@@ -787,7 +788,7 @@ a {
 }
 
 .user-form-edit {
-    padding: 64px;
+    padding: 50px 64px 23px;
     border-radius: 10px;
     box-shadow: 0 3px 15px 0 rgba(0, 60, 125, 0.15);
 }

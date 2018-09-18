@@ -50,8 +50,8 @@ switch ($controller) {
                     </a>
                 </li>
                 <li class="<?= $blog ?>">
-                    <a href="<?= Url::to(['/news']) ?>">
-                        Новини
+                    <a href="<?= Url::to(['/blog']) ?>">
+                        Блог
                     </a>
                 </li>
                 <?php if (\Yii::$app->siteUser->isGuest): ?>

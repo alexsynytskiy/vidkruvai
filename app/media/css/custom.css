@@ -273,6 +273,10 @@ li.notification-item .media-annotation {
     color: #333;
 }
 
+#toolbar-notifications .dropdown-content-footer a {
+    padding: 7px 7px 3px 7px !important;
+}
+
 .icon-menu {
     color: #3294fb;
     speak: none;
@@ -706,12 +710,60 @@ article {
     transition: all ease 0.5s;
 }
 
+.file-preview {
+    margin-bottom: 25px !important;
+}
+
 .read-news {
     float: left;
     font-size: 12px;
     padding: 7px;
     background-color: #007BFF;
     margin-bottom: 30px;
+}
+
+.media-left, .media-right, .media-body {
+    color: #000;
+    font-size: 14px;
+}
+
+#full-notification-block i {
+    font-size: 35px;
+    color: #ea4933;
+}
+
+#full-notification-block .list-group-item {
+    border: none;
+    text-align: left;
+}
+
+#full-notification-block .list-group-item .media-heading {
+    font-size: 19px;
+}
+
+#full-notification-block .list-group-item .media-heading .media-annotation {
+    color: #a8a4aa;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+#full-notification-block .list-group-item .label.bg-success {
+    background-color: #047afb;
+    padding: 7px 12px;
+}
+
+.notification-index .panel-footer {
+    border: none;
+    background: transparent;
+    font-size: 14px;
+}
+
+.notification-index .panel-footer span {
+    color: #047afb;
+}
+
+.notification-index .panel {
+    border: none;
 }
 
 .read-news:hover {
@@ -724,7 +776,12 @@ article {
 
 .helpers-header {
     display: block;
-    margin-bottom: 40px;
+    margin-top: 20px;
+}
+
+#notification-action-buttons .navbar-nav>li>a {
+    color: #047afb;
+    font-size: 14px;
 }
 
 #load-more-news {

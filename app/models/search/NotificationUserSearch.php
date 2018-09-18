@@ -1,10 +1,11 @@
 <?php
+
 namespace app\models\search;
 
 use app\models\definitions\DefNotificationUser;
+use app\models\NotificationUser;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\NotificationUser;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -25,7 +26,8 @@ class NotificationUserSearch extends NotificationUser
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['status'], 'safe'],
         ];
@@ -34,7 +36,8 @@ class NotificationUserSearch extends NotificationUser
     /**
      * @inheritdoc
      */
-    public function scenarios() {
+    public function scenarios()
+    {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -46,17 +49,16 @@ class NotificationUserSearch extends NotificationUser
      *
      * @return ActiveDataProvider
      */
-    public function search($params) {
+    public function search($params)
+    {
         $query = NotificationUser::find();
         $query->joinWith([
             'notification AS notif',
         ]);
 
-
         // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
-            'query'      => $query,
+            'query' => $query,
             'pagination' => [
                 'pageSize' => 15,
             ],
@@ -64,26 +66,26 @@ class NotificationUserSearch extends NotificationUser
 
         $this->load($params);
 
-        $this->status   = ArrayHelper::getValue($params, 'status');
+        $this->status = ArrayHelper::getValue($params, 'status');
         $this->category = ArrayHelper::getValue($params, 'category');
 
-        if($this->category === 'all') {
+        if ($this->category === 'all') {
             $this->category = null;
         }
 
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
         }
 
         $query->andFilterWhere([
-            'n_id'           => $this->n_id,
-            'user_id'        => $this->userId,
+            'n_id' => $this->n_id,
+            'user_id' => $this->userId,
             'notif.category' => $this->category,
         ]);
 
-        if($this->status === null) {
+        if ($this->status === null) {
             $query->andFilterWhere([
                 '!=', 'status', DefNotificationUser::STATUS_ARCHIVED,
             ]);

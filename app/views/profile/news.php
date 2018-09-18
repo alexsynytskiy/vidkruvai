@@ -6,6 +6,7 @@
 /* @var $news yii\easyii\modules\news\models\News[] */
 /* @var $tag string */
 /* @var bool $hasToLoadMore */
+/* @var int $lastItemId */
 
 $asset = \app\assets\AppAsset::register($this);
 
@@ -20,7 +21,7 @@ $baseUrl = $asset->baseUrl;
             </div>
             <div class="content-left-fixed">
                 <div class="helpers-header clearfix">
-                    <?= \yii\helpers\Html::a('<i class="fa fa-check"></i> Прочитати все',
+                    <?= \yii\helpers\Html::a('<i class="fa fa-check"></i>' . \app\components\AppMsg::t('Прочитати все'),
                         null,
                         ['id' => 'mark-all-news-as-read', 'class' => 'no-spinner']) ?>
                 </div>
@@ -41,7 +42,7 @@ $baseUrl = $asset->baseUrl;
                                id="load-more-news"
                                class="button"
                                data-last-id="<?= $lastItemId ?>">
-                                <?= 'Показать больше новостей'; ?>
+                                <?= \app\components\AppMsg::t('Більше новин') ?>
                             </a>
 
                         </div>

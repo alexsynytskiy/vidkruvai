@@ -53,7 +53,7 @@ if($rightLabelColor) {
     <span class="media-link">
 
         <div class="media-left media-middle">
-            <?php if($model->status != DefNotificationUser::STATUS_ARCHIVED): ?>
+            <?php if($model->status !== DefNotificationUser::STATUS_ARCHIVED): ?>
                 <input type="checkbox" class="styled" name="notification-ids[]" data-checked="notification-checkbox" value="<?= $notification->id; ?>"/>
             <?php endif; ?>
         </div>
@@ -103,46 +103,3 @@ if($rightLabelColor) {
 
     </span>
 </li>
-
-
-
-<!--<li class="list-group-item <?= $notificationBg . $notificationCssClass; ?>" data-notification-id="<?= $notification->id; ?>">
-    <div class="email-checkbox">
-        <label>
-            <?php if($model->status !== DefNotificationUser::STATUS_ARCHIVED): ?>
-                <i class="fa fa-square-o check-notification"></i>
-                <input type="checkbox" name="notification-ids[]" data-checked="notification-checkbox" value="<?= $notification->id; ?>"/>
-            <?php endif; ?>
-        </label>
-    </div>
-
-    <span class="email-user <?= ArrayHelper::getValue($notificationSettings[$notification->type], 'bg-color', ''); ?>">
-        <i class="fa <?= $notificationSettings[$notification->type]['icon']; ?> color-white"></i>
-    </span>
-
-    <div class="email-info">
-        <span class="email-time"><?= $notification->created_at; ?></span>
-        <h5 class="email-title">
-            <?php
-            $title = HtmlPurifier::process($notification->title);
-            if($model->status === DefNotificationUser::STATUS_NEW ||
-                ($model->status !== DefNotificationUser::STATUS_NEW && $notification->target_link)) {
-                if($model->status === DefNotificationUser::STATUS_NEW) {
-                    $link = ($notification->target_link ? Url::to(['/acp/notification/mn', 'id' => $notification->id]) : '#');
-                } else {
-                    $link = ($notification->target_link ?: '#');
-                }
-                echo \yii\helpers\Html::a($title, $link, [
-                    'class'     => ($notification->target_link ? 'target_link' : ''),
-                    'data-pjax' => (int)$notification->target_link,
-                ]);
-            } else {
-                echo $title;
-            }?>
-        </h5>
-
-        <p class="email-desc">
-            <?= HtmlPurifier::process($notification->message); ?>
-        </p>
-    </div>
-</li>-->

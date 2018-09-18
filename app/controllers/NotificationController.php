@@ -21,42 +21,6 @@ use yii\web\Response;
 class NotificationController extends Controller
 {
     /**
-     * @param string $category
-     * @param string $status
-     *
-     * @return string
-     */
-    public function actionIndex($category = '', $status = '')
-    {
-        $listCategories = DefNotification::getListCategories();
-
-        if (empty($category) || !array_key_exists($category, $listCategories)) {
-            $category = 'all';
-        }
-
-        $searchModel = new NotificationUserSearch();
-
-        $searchModel->userId = Yii::$app->siteUser->id;
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $userCategories = NotificationUser::getUserCategories(Yii::$app->siteUser->id);
-
-        $data = [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'category' => $category,
-            'status' => $status,
-            'userCategories' => $userCategories,
-            'listCategories' => $listCategories,
-        ];
-
-        if (Yii::$app->request->isAjax) {
-            return $this->renderAjax('index', $data);
-        }
-
-        return $this->render('index', $data);
-    }
-
-    /**
      * @return array
      * @throws BadRequestHttpException
      */

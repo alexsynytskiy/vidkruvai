@@ -22,7 +22,6 @@ class NewsController extends Controller
     /**
      * @return array
      * @throws BadRequestHttpException
-     * @throws \yii\db\Exception
      */
     public function actionMark()
     {

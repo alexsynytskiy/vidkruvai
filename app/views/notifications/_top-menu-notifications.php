@@ -6,7 +6,7 @@ use yii\helpers\Html;
 
 $notificationCounters = $this->context->getUserNotificationCounters();
 $lastNotification = $this->context->getUserLastNotifications();
-$notificationTitle = AppMsg::t('Уведомления (<span class="total-notifications">{0}</span>)',
+$notificationTitle = AppMsg::t('Сповіщення (<span class="total-notifications">{0}</span>)',
     $notificationCounters['total']);
 ?>
 
@@ -18,7 +18,7 @@ $notificationTitle = AppMsg::t('Уведомления (<span class="total-notif
     </a>
     <div class="dropdown-menu dropdown-content">
         <div class="dropdown-content-heading">
-            <?= AppMsg::t('Уведомления'); ?>
+            <?= AppMsg::t('Сповіщення'); ?>
         </div>
         <ul class="media-list media-list-linked width-350" id="toolbar-list-notifications">
             <?= $this->render('_top-menu-notification-items'); ?>
@@ -26,7 +26,7 @@ $notificationTitle = AppMsg::t('Уведомления (<span class="total-notif
         <div class="dropdown-content-footer">
             <?= Html::a('<i class="icon-menu display-block fa fa-ellipsis-h"></i>',
                 ['/profile/notifications'],
-                ['title' => AppMsg::t('Все уведомления'), 'data-acp-toggle' => 'tooltip']
+                ['title' => AppMsg::t('Всі сповіщення'), 'data-acp-toggle' => 'tooltip']
             ); ?>
         </div>
     </div>

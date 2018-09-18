@@ -16,11 +16,13 @@ use yii\easyii\helpers\Image;
 use yii\easyii\models\Admin;
 use yii\easyii\modules\news\api\News;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\Response;
 use yii\web\UploadedFile;
 use yii\widgets\ActiveForm;
-
+use app\models\NotificationUser;
+use app\models\search\NotificationUserSearch;
 /**
  * Class ProfileController
  * @package app\controllers
@@ -314,6 +316,12 @@ class ProfileController extends Controller
             return $status;
         }
 
+        if (!\Yii::$app->mutex->acquire('multiple-profile-update')) {
+            \Yii::info('Пользователь попытался несколько раз обновить профиль');
+
+            throw new BadRequestHttpException();
+        }
+
         \Yii::$app->seo->setTitle('Редагуати профіль');
         \Yii::$app->seo->setDescription('Відкривай Україну');
         \Yii::$app->seo->setKeywords('Відкривай, Україну');
@@ -349,7 +357,8 @@ class ProfileController extends Controller
     }
 
     /**
-     * @return array|bool|string|\yii\web\Response
+     * @return array|bool|string|Response
+     * @throws \yii\db\Exception
      * @throws \yii\web\HttpException
      */
     public function actionCreateTeam()
@@ -358,6 +367,12 @@ class ProfileController extends Controller
 
         if ($status !== true) {
             return $status;
+        }
+
+        if (!\Yii::$app->mutex->acquire('multiple-team-creation')) {
+            \Yii::info('Пользователь попытался несколько раз создать команду');
+
+            throw new BadRequestHttpException();
         }
 
         \Yii::$app->seo->setTitle('Створити команду');
@@ -417,6 +432,42 @@ class ProfileController extends Controller
             }
         }
         return $this->back();
+    }
+
+    /**
+     * @param string $category
+     * @param string $status
+     *
+     * @return string
+     */
+    public function actionNotifications($category = '', $status = '')
+    {
+        $listCategories = DefNotification::getListCategories();
+
+        if (empty($category) || !array_key_exists($category, $listCategories)) {
+            $category = 'all';
+        }
+
+        $searchModel = new NotificationUserSearch();
+
+        $searchModel->userId = \Yii::$app->siteUser->id;
+        $dataProvider = $searchModel->search(\Yii::$app->request->queryParams);
+        $userCategories = NotificationUser::getUserCategories(\Yii::$app->siteUser->id);
+
+        $data = [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'category' => $category,
+            'status' => $status,
+            'userCategories' => $userCategories,
+            'listCategories' => $listCategories,
+        ];
+
+        if (\Yii::$app->request->isAjax) {
+            return $this->renderAjax('/notifications/index', $data);
+        }
+
+        return $this->render('/notifications/index', $data);
     }
 
     /**

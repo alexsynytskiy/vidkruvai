@@ -116,7 +116,9 @@ class SiteUser extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return [
             [['created_at', 'updated_at', 'passwordRepeat', 'userPassword'], 'safe'],
-            [['password', 'email'], 'string', 'min' => 4, 'max' => 60],
+            [['password'], 'string', 'min' => 4, 'max' => 60],
+            [['email'], 'string', 'max' => 100],
+            [['email'], 'email'],
             [['userPassword'], 'string', 'min' => 4, 'max' => 60],
             [['name', 'class', 'school'], 'string', 'max' => 255],
             [['agreement_read', 'login_count', 'age'], 'integer'],
