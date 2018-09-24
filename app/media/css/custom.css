@@ -303,7 +303,7 @@ li.notification-item .media-annotation {
     content: "";
     display: inline-block;
     position: absolute;
-    right: 17px;
+    right: 0;
     margin-left: -60%;
     top: -11px;
 }
@@ -315,7 +315,7 @@ li.notification-item .media-annotation {
     content: "";
     display: inline-block;
     position: absolute;
-    right: 17px;
+    right: 0;
     margin-left: -60%;
     top: -7px;
 }
@@ -326,6 +326,7 @@ li.notification-item .media-annotation {
 
 .dropdown-menu > li > a:hover {
     color: #565454;
+    background-color: #F7F9FB;
 }
 
 .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
@@ -636,17 +637,21 @@ article {
 }
 
 .cabinet-menu .profile-info {
-    text-align: left;
-    margin-bottom: 20px;
-    padding-left: 56px;
+    margin: 0 auto 30px;
+    text-align: center;
+    color: #373737;
 }
 
 .cabinet-menu .profile-info img {
-    height: 120px;
-    width: 120px;
     display: block;
-    margin-bottom: 20px;
-    border-radius: 60px;
+    margin: 0 auto 10px;
+    border-radius: 50%;
+    max-width: 200px;
+}
+
+.cabinet-menu .profile-info .name {
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .sidebar-right-fixed-bottom-big {
@@ -747,9 +752,12 @@ article {
     font-weight: normal;
 }
 
-#full-notification-block .list-group-item .label.bg-success {
+#full-notification-block .list-group-item .label.bg-success,
+span.bg-success,
+.label-success {
     background-color: #047afb;
     padding: 7px 12px;
+    margin-left: 10px;
 }
 
 .notification-index .panel-footer {
@@ -776,7 +784,7 @@ article {
 
 .helpers-header {
     display: block;
-    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 #notification-action-buttons .navbar-nav>li>a {
@@ -832,6 +840,70 @@ article {
     top: 0;
     right: 0;
     background-color: #FF4D00;
+}
+
+#notification-filter-status .dropdown-menu a,
+#notification-filter-type .dropdown-menu a {
+    position: relative;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.empty-text span {
+    color: #047afb;
+    font-size: 14px;
+}
+
+.notification-page .navbar-nav > li > a {
+    margin: 0;
+    color: #373737;
+}
+
+.notification-page .navbar {
+    margin-bottom: 0;
+}
+
+.notification-page .navbar-nav > li.open > .dropdown-menu, .open .dropdown-menu {
+    top: 60px;
+}
+
+.notification-page .dropdown.open a.dropdown-toggle {
+    background-color: #fff;
+    box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.125);
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.notification-page .dropdown-menu:after, .notification-page .dropdown-menu:before {
+    right: 310px;
+}
+
+.notification-page .dropdown-menu .badge {
+    top: 11px;
+    right: 11px;
+}
+
+.notification-page .helpers-header {
+    margin-bottom: 0;
+    margin-left: 15px;
+}
+
+.content-left-fixed .profile-user-page {
+    border-radius: 10px;
+    box-shadow: 0 3px 15px 0 rgba(0, 60, 125, 0.15);
+    margin-bottom: 52px;
+}
+
+.content-left-fixed .profile-user-page .image {
+    display: block;
+    width: 100%;
+    height: 286px;
+    overflow: hidden;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background: url(/app/media/img/create-team.png) no-repeat center;
+    background-size: 850px 286px;
+    margin-bottom: 32px;
 }
 
 @media (max-width: 1199px) {
@@ -1004,7 +1076,7 @@ article {
 
 @media (min-width: 768px) {
     .navbar-inverse .navbar-nav li:last-child a {
-        padding-right: 17px;
+        padding-right: 0;
         position: relative;
     }
 }

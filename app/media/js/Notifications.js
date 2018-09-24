@@ -13,7 +13,6 @@ var Notifications = function() {
 
         $.get(pathname, function(html) {
             $('#full-notification-block').html($('#full-notification-block', html).html());
-            reInitStyledCheckboxes();
 
             $('.panel-heading .panel-title .text-light').remove();
         }, 'html');
@@ -28,8 +27,6 @@ var Notifications = function() {
         });
 
         $('#full-notification-block').on('pjax:compvare', function() {
-            reInitStyledCheckboxes();
-
             var pageNum = $('.pagination li.active a').data('page');
             $('.panel-heading .panel-title .text-light').remove();
 
@@ -70,7 +67,6 @@ var Notifications = function() {
                         checked = !$checkbox.prop('checked');
 
                     $checkbox.prop('checked', checked);
-                    $checkbox.uniform();
 
                     handleNotificationActionButtonStatus();
                 });
@@ -237,7 +233,7 @@ var Notifications = function() {
         markAll = markAll || 0;
 
         return $.ajax({
-            url: '/notification/mark',
+            url: '/notification/mark/',
             dataType: 'json',
             method: 'POST',
             data: {ids: notificationIds, status: notificationStatus, mark_all: markAll},
@@ -272,10 +268,6 @@ var Notifications = function() {
         }
     };
 
-    var reInitStyledCheckboxes = function() {
-        SiteCore.initStyledRadiosCheckboxes();
-    };
-
     var blockActionButtons = function(mode) {
         var $notificationPage = $('.notification-page'),
             $notificationButtons = $notificationPage.find('[data-notification-action]').closest('li'),
@@ -299,7 +291,7 @@ var Notifications = function() {
     };
 
     var refreshToolbarNotifications = function() {
-        $.get('/notification/get-data', function(result) {
+        $.get('/notification/get-data/', function(result) {
             updateNotificationCounters(result.counters);
             $('#toolbar-list-notifications').html(result.content);
         }, 'json');

@@ -13,7 +13,7 @@ $baseUrl = $asset->baseUrl;
     <div class="cabinet">
         <article>
             <div class="sidebar-right-fixed">
-                <?= $this->render('/_blocks/profile-header') ?>
+                <?= $this->render('/_blocks/profile-sidebar') ?>
             </div>
             <div class="content-left-fixed">
                 <div id="profile-info" class="clearfix">

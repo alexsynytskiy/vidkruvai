@@ -25,7 +25,7 @@ $config = [
         preg_match('/[^\/]+$/', $pathInfo, $matches);
 
         $startRedirect = ['admin', 'site', 'profile'];
-        $stopRedirect = ['items', 'edit', 'photos', 'settings', 'index', 'list', 'redactor'];
+        $stopRedirect = ['items', 'edit', 'photos', 'settings', 'index', 'list', 'redactor', 'all', 'account'];
 
         $redirect = false;
 
@@ -79,7 +79,7 @@ $config = [
                 'name' => '_panelSiteUser',
             ]
         ],
-        'notification'     => [
+        'notification' => [
             'class' => 'app\components\notification\Notification',
         ],
         'mutex' => [
@@ -91,10 +91,14 @@ $config = [
         ],
         'urlManager' => [
             'rules' => [
-                'register' =>'profile/register',
-                'login' =>'profile/login',
+                'register' => 'profile/register',
+                'login' => 'profile/login',
                 'comment/<channelId:\d+>/<action:[\w-]+>' => 'comment/default/<action>',
                 'comment/<action:[\w-]+>' => 'comment/default/<action>',
+
+                'profile/notifications/<category:[a-z\d-]+>/<status:[a-z\d-]+>' => 'profile/notifications',
+                'profile/notifications/<category:[a-z\d-]+>' => 'profile/notifications',
+
                 '<controller:\w+>/' => '<controller>/index',
                 '<controller:\w+>/<slug:[\w-]+>' => '<controller>/view',
                 '<controller:\w+>/<action:\w+>/' => '<controller>/<action>',

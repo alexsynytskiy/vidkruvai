@@ -216,7 +216,10 @@ class ProfileController extends Controller
         \Yii::$app->seo->setDescription('Intellias quiz');
         \Yii::$app->seo->setKeywords('intellias, quiz');
 
+
+
         $params = ArrayHelper::merge($this->testDataUser(), [
+
         ]);
 
         return $this->render('profile', $params);

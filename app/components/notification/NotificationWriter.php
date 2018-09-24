@@ -5,13 +5,13 @@ namespace app\components\notification;
 use app\models\Notification as NotificationModel;
 use app\models\NotificationUser;
 use app\components\AppMsg;
-use app\components\helpers\LanguageHelper;
 use app\models\definitions\DefNotificationUser;
 use app\models\SiteUser;
 use app\models\Team;
 use Yii;
 use yii\base\Component;
 use yii\db\Expression;
+use yii\easyii\components\helpers\LanguageHelper;
 
 /**
  * Class NotificationWriter
@@ -68,7 +68,7 @@ class NotificationWriter extends Component
             if ($userIdentity) {
                 $userLang = $userIdentity->language;
             } else {
-                $userLang = LanguageHelper::LANG_UK;
+                $userLang = LanguageHelper::LANG_UA;
             }
 
             $userId = $user;
@@ -107,7 +107,7 @@ class NotificationWriter extends Component
         $usersLanguage = [];
 
         $groups = (array)$groups;
-        $usersLanguage[] = LanguageHelper::LANG_UK;
+        $usersLanguage[] = LanguageHelper::LANG_UA;
 
         //$userLanguages is the array of user's languages in form [uk, en]
         foreach ($usersLanguage as $language) {

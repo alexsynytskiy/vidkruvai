@@ -16,7 +16,7 @@ use yii\web\Response;
 
 /**
  * Class NotificationController
- * @package acp\controllers
+ * @package app\controllers
  */
 class NotificationController extends Controller
 {
@@ -88,7 +88,7 @@ class NotificationController extends Controller
             ->one();
 
         if ($notification === false) {
-            return $this->redirect(['/acp/dashboard']);
+            return $this->redirect(['/profile']);
         }
 
         try {
@@ -100,7 +100,7 @@ class NotificationController extends Controller
             ])
                 ->execute();
         } catch (\Exception $e) {
-            return $this->redirect(['/acp/dashboard']);
+            return $this->redirect(['/profile']);
         }
 
         return $this->redirect($notification['target_link']);

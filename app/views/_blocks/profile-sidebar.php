@@ -5,12 +5,14 @@ $totalNews = $totalNews > 0 ? $totalNews : null;
 
 <div class="cabinet-menu nopadding">
     <div class="wrapper">
-        <div class="profile-info">
-            <img src="<?= \Yii::$app->siteUser->identity->avatar ?>" class="avatar">
-            <div class="name"><?= \Yii::$app->siteUser->identity->name . ' ' . \Yii::$app->siteUser->identity->surname ?></div>
-            <div class="school"><?= \Yii::$app->siteUser->identity->school ?></div>
-            <div class="rating">Рейтинг: <?= \Yii::$app->siteUser->identity->total_experience ?></div>
-        </div>
+        <a href="<?= \yii\helpers\Url::to('/profile') ?>">
+            <div class="profile-info">
+                <img src="<?= \Yii::$app->siteUser->identity->avatar ?>" class="avatar">
+                <div class="name"><?= \Yii::$app->siteUser->identity->name . ' ' . \Yii::$app->siteUser->identity->surname ?></div>
+                <div class="school"><?= \Yii::$app->siteUser->identity->school ?></div>
+                <div class="rating">Рейтинг: <?= \Yii::$app->siteUser->identity->total_experience ?></div>
+            </div>
+        </a>
 
         <div class="menu-link active">
             <div class="icon"></div>

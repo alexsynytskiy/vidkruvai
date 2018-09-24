@@ -4,10 +4,10 @@ namespace app\controllers;
 
 use app\components\AppMsg;
 use app\components\Controller;
-use app\components\helpers\LanguageHelper;
 use app\models\definitions\DefNotificationUser;
-use yii\easyii\modules\news\api\News;
+use yii\easyii\components\helpers\LanguageHelper;
 use yii\easyii\modules\news\api\NewsObject;
+use yii\easyii\modules\news\models\News;
 use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
@@ -22,6 +22,7 @@ class NewsController extends Controller
     /**
      * @return array
      * @throws BadRequestHttpException
+     * @throws \yii\db\Exception
      */
     public function actionMark()
     {
@@ -140,20 +141,20 @@ class NewsController extends Controller
         $tag = \Yii::$app->request->get('tag');
 
         $queryParams = [
-            'limit' => \yii\easyii\modules\news\models\News::ITEMS_PER_PAGE + 1,
+            'limit' => News::ITEMS_PER_PAGE + 1,
             'where' => ['<', 'news_id', $lastNewsId],
             'tags' => $tag,
         ];
 
-        if (\Yii::$app->language !== LanguageHelper::LANG_UK) {
+        if (\Yii::$app->language !== LanguageHelper::LANG_UA) {
             $queryParams = ArrayHelper::merge($queryParams, ['language' => LanguageHelper::LANG_EN]);
         }
 
-        $olderNews = News::items($queryParams);
+        $olderNews = \yii\easyii\modules\news\api\News::items($queryParams);
         $hasToLoadMore = false;
         $lastItemId = 0;
 
-        if (count($olderNews) > \yii\easyii\modules\news\models\News::ITEMS_PER_PAGE) {
+        if (count($olderNews) > News::ITEMS_PER_PAGE) {
             $hasToLoadMore = true;
             $lastItemId = $olderNews[count($olderNews) - 1]->id;
 

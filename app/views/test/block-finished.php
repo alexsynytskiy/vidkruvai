@@ -12,7 +12,7 @@ $baseUrl = $asset->baseUrl;
 ?>
 
 <div class="steps-block profile answer-block clearfix">
-    <?= $this->render('/_blocks/profile-header') ?>
+    <?= $this->render('/_blocks/profile-sidebar') ?>
 
     <div class="separator-space"></div>
 

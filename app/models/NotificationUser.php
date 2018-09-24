@@ -144,7 +144,7 @@ class NotificationUser extends ActiveRecord
      *
      * @return array
      */
-    public static function getUserLastNotifications($userId, $countLastNotifications = 10)
+    public static function getUserLastNotifications($userId, $countLastNotifications = 5)
     {
         $notifications = [];
         try {
