@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\components\AppMsg;
+use app\components\behaviors\AwardBehavior;
 use app\models\definitions\DefAchievements;
 use app\models\definitions\DefUserAchievement;
 use yii\db\ActiveRecord;
@@ -79,7 +80,7 @@ class Achievement extends ActiveRecord
     {
         return array_merge(parent::behaviors(), [
             [
-                'class' => AwardBehavior::class,
+                'class' => AwardBehavior::className(),
                 'junctionTable' => static::junctionAwardTable(),
                 'entityAttribute' => static::junctionAwardAttribute(),
             ],

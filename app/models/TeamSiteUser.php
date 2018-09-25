@@ -4,7 +4,7 @@ namespace app\models;
 
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
-use yii\easyii\components\ActiveRecord;
+use yii\db\ActiveRecord;
 
 /**
  * Class TeamSiteUser

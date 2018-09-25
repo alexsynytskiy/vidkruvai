@@ -41,7 +41,7 @@ use yii\web\IdentityInterface;
  * @property Level $level
  *
  */
-class SiteUser extends \yii\db\ActiveRecord implements IdentityInterface
+class SiteUser extends ActiveRecord implements IdentityInterface
 {
     const STATUS_ACTIVE = 'ACTIVE';
     const STATUS_UNCONFIRMED = 'UNCONFIRMED';

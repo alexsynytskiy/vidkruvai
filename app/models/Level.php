@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\components\AppMsg;
+use app\components\behaviors\AwardBehavior;
 use app\models\definitions\DefLevel;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -64,7 +65,7 @@ class Level extends ActiveRecord
     {
         return array_merge(parent::behaviors(), [
             [
-                'class' => AwardBehavior::class,
+                'class' => AwardBehavior::className(),
                 'junctionTable' => static::junctionAwardTable(),
                 'entityAttribute' => static::junctionAwardAttribute(),
             ],
@@ -81,7 +82,8 @@ class Level extends ActiveRecord
             [['group_id', 'required_experience', 'base_level', 'num'], 'integer'],
             [['base_level'], 'validateBaseLevel'],
             [['awardIDs'], 'safe'],
-            [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['group_id' => 'id']],
+            [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(),
+                'targetAttribute' => ['group_id' => 'id']],
         ];
     }
 
@@ -229,7 +231,7 @@ class Level extends ActiveRecord
         return static::find()
             ->alias('l')
             ->where([$selectType, 'l.num', $currentLevel])
-            ->andWhere(['l.archived' => parent::IS_NOT_ARCHIVED])
+            ->andWhere(['l.archived' => self::IS_NOT_ARCHIVED])
             ->limit($levelsCount)
             ->all();
     }
@@ -243,7 +245,7 @@ class Level extends ActiveRecord
     {
         return static::find()
             ->where(['<', 'required_experience', $exp])
-            ->andWhere(['archived' => parent::IS_NOT_ARCHIVED])
+            ->andWhere(['archived' => self::IS_NOT_ARCHIVED])
             ->orderBy('required_experience DESC')
             ->asArray()
             ->one();
@@ -256,7 +258,7 @@ class Level extends ActiveRecord
     {
         return static::find()
             ->where(['>', 'required_experience', $this->required_experience])
-            ->andWhere(['archived' => parent::IS_NOT_ARCHIVED])
+            ->andWhere(['archived' => self::IS_NOT_ARCHIVED])
             ->orderBy('required_experience ASC')
             ->one();
     }
