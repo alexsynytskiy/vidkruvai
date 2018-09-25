@@ -2,20 +2,19 @@
 
 namespace app\components\notification;
 
-use app\models\Notification as NotificationModel;
-use app\models\NotificationUser;
 use app\components\AppMsg;
 use app\models\definitions\DefNotificationUser;
+use app\models\Notification as NotificationModel;
+use app\models\NotificationUser;
 use app\models\SiteUser;
 use app\models\Team;
 use Yii;
 use yii\base\Component;
-use yii\db\Expression;
 use yii\easyii\components\helpers\LanguageHelper;
 
 /**
  * Class NotificationWriter
- * @package acp\components\notification
+ * @package app\components\notification
  */
 class NotificationWriter extends Component
 {
@@ -148,7 +147,7 @@ class NotificationWriter extends Component
             }
         } elseif (is_int($team)) {
             $teamInstance = Team::findOne(['id' => $team]);
-            if($teamInstance) {
+            if ($teamInstance) {
                 $members = $teamInstance->teamUsers;
 
                 foreach ($members as $member) {

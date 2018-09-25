@@ -25,18 +25,18 @@ var ObserverList = {
      * @param listener Function that will be attached to the event, and will be executed during event-firing, to single event may be attached multiple listeners
      * @param listenerArgs Arguments that will be passed to the listener during event-firing
      */
-    subscribe: function(eventName, listener, listenerArgs) {
+    subscribe: function (eventName, listener, listenerArgs) {
         listenerArgs = (typeof listenerArgs !== 'undefined' ? listenerArgs : []);
 
-        if(!this.listeners[eventName]) {
+        if (!this.listeners[eventName]) {
             this.listeners[eventName] = [];
         }
 
         this.listeners[eventName].push([listener, listenerArgs]);
     },
-    notify: function(eventName) {
-        if(this.listeners[eventName]) {
-            for(var i = 0; i < this.listeners[eventName].length; i++) {
+    notify: function (eventName) {
+        if (this.listeners[eventName]) {
+            for (var i = 0; i < this.listeners[eventName].length; i++) {
                 var func = this.listeners[eventName][i][0],
                     funcArgs = this.listeners[eventName][i][1];
 

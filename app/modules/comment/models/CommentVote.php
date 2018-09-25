@@ -2,7 +2,6 @@
 
 namespace app\modules\comment\models;
 
-use Yii;
 use yii\db\ActiveRecord;
 
 /**

@@ -5,14 +5,16 @@ use app\components\AppMsg;
 use app\components\notification\NotificationSettings;
 use yii\helpers\Url;
 
-$lastNotification     = $this->context->getUserLastNotifications();
+$lastNotification = $this->context->getUserLastNotifications();
 $notificationCounters = $this->context->getUserNotificationCounters();
 ?>
 
-<?php if($notificationCounters['total']): ?>
-    <?php foreach($lastNotification as $item): ?>
-        <li class="media notification-item<?= ($item['target_link'] ? ' target_link' : ''); ?>" data-notification-id="<?= $item['id']; ?>">
-            <a class="media-link" href="<?= ($item['target_link'] ? Url::to(['/acp/notification/mn', 'id' => $item['id']]) : '#'); ?>">
+<?php if ($notificationCounters['total']): ?>
+    <?php foreach ($lastNotification as $item): ?>
+        <li class="media notification-item<?= ($item['target_link'] ? ' target_link' : ''); ?>"
+            data-notification-id="<?= $item['id']; ?>">
+            <a class="media-link"
+               href="<?= ($item['target_link'] ? Url::to(['/notification/mn', 'id' => $item['id']]) : '#'); ?>">
                 <div class="media-left">
                     <span class="btn <?= NotificationSettings::getParam($item['type'] . '.icon-border-color') .
                     ' ' . NotificationSettings::getParam($item['type'] . '.icon-color'); ?> btn-flat btn-rounded btn-icon btn-sm">

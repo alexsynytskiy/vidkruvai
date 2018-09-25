@@ -2,8 +2,6 @@
 
 namespace app\modules\comment\components;
 
-use Yii;
-
 class CommentsVisualisationHelper
 {
     /**

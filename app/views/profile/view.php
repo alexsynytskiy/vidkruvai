@@ -4,7 +4,7 @@
 $asset = \app\assets\AppAsset::register($this);
 ?>
 
-<section  style="padding-top: 120px;"></section>
+<section style="padding-top: 120px;"></section>
 
 <section>
     <div class="container">
@@ -13,12 +13,12 @@ $asset = \app\assets\AppAsset::register($this);
                 <article>
                     <h2><?= $news->title ?></h2>
                     <time class="comment-date" datetime="1914-12-20 08:00"><?= date('d.m.Y', $news->time); ?></time>
-                    <?php if(isset($news->image)): ?>
+                    <?php if (isset($news->image)): ?>
                         <img class="img-responsive img-post" style="margin: 0 auto 40px;" src="<?= $news->image ?>">
                     <?php endif; ?>
                     <?= $news->text ?>
                 </article>
-                <?php if(count($news->tags) > 0): ?>
+                <?php if (count($news->tags) > 0): ?>
                     <div class="widget">
                         <div class="sidebar-title">
                             <h4>Теги</h4>

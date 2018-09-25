@@ -2,14 +2,14 @@
 
 namespace app\modules\comment\models;
 
+use app\components\AppMsg;
 use app\components\CommentQuery;
-use creocoder\nestedsets\NestedSetsBehavior;
-use app\models\definitions\DefComment;
 use app\models\CommentChannel;
+use app\models\definitions\DefComment;
 use app\models\SiteUser as User;
+use creocoder\nestedsets\NestedSetsBehavior;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
-use app\components\AppMsg;
 
 /**
  * This is the model class for table "site_comment".

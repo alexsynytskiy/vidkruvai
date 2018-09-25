@@ -7,7 +7,7 @@ use yii\helpers\ArrayHelper;
 
 /**
  * Class NotificationSettings
- * @package acp\components\notification
+ * @package app\components\notification
  */
 class NotificationSettings
 {

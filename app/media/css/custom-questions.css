@@ -916,8 +916,7 @@ button.fileinput-upload:hover {
 }
 
 .field-siteuser-avatar .btn-file:hover span,
-button.fileinput-upload:hover span
-{
+button.fileinput-upload:hover span {
     color: #047afb;
 }
 

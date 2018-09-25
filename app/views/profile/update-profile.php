@@ -80,8 +80,8 @@ $baseUrl = $asset->baseUrl;
 
                             <?php ActiveForm::end(); ?>
                         </div>
+                    </div>
                 </div>
-            </div>
         </article>
     </div>
 </div>

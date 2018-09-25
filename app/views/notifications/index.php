@@ -71,7 +71,7 @@ foreach ($userCategories as $cat) {
         'isActive' => $isActive,
         'link' => Html::a('<span class="badge badge-default pull-right total-' . $cat . '-notifications">' .
             $totalNotificationInCat . '</span>' . $listCategories[$cat]['title'],
-            ['notification/index/' . $cat],
+            ['profile/notifications/' . $cat],
             [
                 'data-status' => $dataStatus,
             ]

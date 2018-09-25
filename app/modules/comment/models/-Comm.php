@@ -3,7 +3,6 @@
 namespace app\modules\comment\models;
 
 use creocoder\nestedsets\NestedSetsBehavior;
-use Yii;
 use yii\db\Query;
 
 /**

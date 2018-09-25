@@ -3,7 +3,6 @@
 namespace app\models;
 
 use app\components\AppMsg;
-use Yii;
 use yii\behaviors\SluggableBehavior;
 use yii\db\ActiveRecord;
 

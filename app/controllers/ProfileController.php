@@ -2,13 +2,15 @@
 
 namespace app\controllers;
 
-use app\components\AppMsg;
 use app\components\BaseDefinition;
 use app\components\Controller;
+use app\components\events\UserRegisteredEvent;
 use app\models\definitions\DefNotification;
 use app\models\forms\LoginForm;
 use app\models\forms\RegisterForm;
 use app\models\forms\TeamCreateForm;
+use app\models\NotificationUser;
+use app\models\search\NotificationUserSearch;
 use app\models\SiteUser;
 use yii\captcha\CaptchaAction;
 use yii\easyii\components\helpers\LanguageHelper;
@@ -16,19 +18,22 @@ use yii\easyii\helpers\Image;
 use yii\easyii\models\Admin;
 use yii\easyii\modules\news\api\News;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\Response;
 use yii\web\UploadedFile;
 use yii\widgets\ActiveForm;
-use app\models\NotificationUser;
-use app\models\search\NotificationUserSearch;
+
 /**
  * Class ProfileController
  * @package app\controllers
  */
 class ProfileController extends Controller
 {
+    /**
+     * Event name, uses for triggering event when user is registered
+     */
+    const EVENT_USER_REGISTERED = 'app.controllers.on-user-registered';
+
     public function actions()
     {
         return [
@@ -129,7 +134,7 @@ class ProfileController extends Controller
         }
 
         //\Yii::$app->notification->addToUser(\Yii::$app->siteUser->identity, DefNotification::CATEGORY_ACCOUNT,
-           // DefNotification::TYPE_HELLO_USER, null, []);
+        // DefNotification::TYPE_HELLO_USER, null, []);
 
         \Yii::$app->seo->setTitle('Новини');
         \Yii::$app->seo->setDescription('Відкривай Україну');
@@ -217,9 +222,8 @@ class ProfileController extends Controller
         \Yii::$app->seo->setKeywords('intellias, quiz');
 
 
-
         $params = ArrayHelper::merge($this->testDataUser(), [
-
+            'showUserInfo' => false
         ]);
 
         return $this->render('profile', $params);
@@ -255,6 +259,11 @@ class ProfileController extends Controller
 
             \Yii::$app->notification->addToUser($user, DefNotification::CATEGORY_ACCOUNT,
                 DefNotification::TYPE_HELLO_USER, null, []);
+
+            $userEvent = new UserRegisteredEvent();
+            $userEvent->userId = $user->id;
+
+            //\Yii::$app->trigger(self::EVENT_USER_REGISTERED, $userEvent);
 
             if ($user->login_count === 1 && !$user->agreement_read) {
                 return $this->redirect('/rules');

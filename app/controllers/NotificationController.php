@@ -3,11 +3,9 @@
 namespace app\controllers;
 
 use app\components\Controller;
-use app\models\definitions\DefNotification;
 use app\models\definitions\DefNotificationUser;
 use app\models\Notification;
 use app\models\NotificationUser;
-use app\models\search\NotificationUserSearch;
 use Yii;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;

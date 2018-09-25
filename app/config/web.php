@@ -141,6 +141,9 @@ $config = [
         ],
         'db' => require(__DIR__ . '/db.php'),
     ],
+    'on app.components.AchievementComponent.on-achieved' => function ($event) {
+        //(new app\components\AwardEventHandler)->award($event);
+    },
     'params' => $params,
 ];
 

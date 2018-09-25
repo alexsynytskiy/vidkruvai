@@ -38,6 +38,7 @@ use yii\web\IdentityInterface;
  * user. `null` is returned if the user is not logged in (not authenticated).
  * @property string $passwordWithSalt
  * @property Answer[] $answers
+ * @property Level $level
  *
  */
 class SiteUser extends \yii\db\ActiveRecord implements IdentityInterface
@@ -277,6 +278,14 @@ class SiteUser extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLevel()
+    {
+        return $this->hasOne(Level::className(), ['id' => 'level_id']);
+    }
+
+    /**
      * @return array
      */
     public static function getRoles()
@@ -288,17 +297,17 @@ class SiteUser extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @param int    $userId
+     * @param int $userId
      * @param string $language
      *
      * @return int
      */
-    public static function updateUserPreferredLanguage($userId, $language) {
+    public static function updateUserPreferredLanguage($userId, $language)
+    {
         try {
             return \Yii::$app->db->createCommand('UPDATE ' . static::tableName() .
                 ' SET language = :lang WHERE id = :userId', [':lang' => $language, ':userId' => $userId])->execute();
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             return 0;
         }
     }
