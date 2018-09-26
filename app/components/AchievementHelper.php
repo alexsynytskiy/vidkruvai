@@ -104,23 +104,19 @@ class AchievementHelper
     }
 
     /**
-     * @param int $achievementCategoryId
      * @param int $awardValue
      * @param int $current
      * @param string $class
      *
      * @return array
      */
-    public static function getTransactionsDividedAward($achievementCategoryId, $awardValue, $current, $class)
+    public static function getTransactionsDividedAward($awardValue, $current, $class)
     {
         $expected = $current + $awardValue;
 
         $selectRule = (new Query())
             ->select('a.required_steps')
             ->from(Achievement::tableName() . ' a')
-            ->innerJoin(Category::tableName() . ' as c', 'c.id = a.category_id AND c.id = :category', [
-                'category' => $achievementCategoryId,
-            ])
             ->where([
                 'a.archived' => Achievement::IS_NOT_ARCHIVED,
                 'a.class_name' => $class,

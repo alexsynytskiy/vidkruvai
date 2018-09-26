@@ -20,7 +20,7 @@ class LevelComponent extends Component
     /**
      * Event name, uses when triggers unlock event
      */
-    const EVENT_UNLOCKED = 'landings.common.components.LandingLevel.on-unlocked';
+    const EVENT_UNLOCKED = 'app.components.LevelComponent.on-unlocked';
     /**
      * @var int
      */
@@ -38,7 +38,7 @@ class LevelComponent extends Component
         $user = SiteUser::find()->with('level')->where(['id' => $userId])->one();
 
         if (!$user) {
-            throw new \Exception("Landing user ({$userId}) is not found.");
+            throw new \Exception("User ({$userId}) is not found.");
         }
 
         return $user;
@@ -170,7 +170,6 @@ class LevelComponent extends Component
                 $awardEvent = new AwardEvent();
                 $awardEvent->objectId = $level['levelId'];
                 $awardEvent->userId = $userId;
-                $awardEvent->transactionId = static::$transactionId;
                 $awardEvent->senderClassName = static::className();
 
                 static::onUnlocked($awardEvent);

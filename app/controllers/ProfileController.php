@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\components\BaseDefinition;
 use app\components\Controller;
 use app\components\events\UserRegisteredEvent;
+use app\components\UserRegisteredEventHandler;
 use app\models\definitions\DefNotification;
 use app\models\forms\LoginForm;
 use app\models\forms\RegisterForm;
@@ -33,6 +34,13 @@ class ProfileController extends Controller
      * Event name, uses for triggering event when user is registered
      */
     const EVENT_USER_REGISTERED = 'app.controllers.on-user-registered';
+
+    public function init()
+    {
+        parent::init();
+
+        \Yii::$app->on(self::EVENT_USER_REGISTERED, [new UserRegisteredEventHandler(), 'handle']);
+    }
 
     public function actions()
     {
@@ -97,29 +105,23 @@ class ProfileController extends Controller
     /**
      * @return string
      */
-    public function actionHelp()
+    public function actionIndex()
     {
-        \Yii::$app->seo->setTitle('Техпідтримка');
-        \Yii::$app->seo->setDescription('Intellias quiz');
-        \Yii::$app->seo->setKeywords('intellias, quiz');
+        $status = $this->checkUserStatus();
 
-        return $this->render(\Yii::$app->siteUser->isGuest ? 'help-guest' : 'help-logged-in');
-    }
-
-    /**
-     * @return string
-     */
-    public function actionRules()
-    {
-        if (\Yii::$app->siteUser->isGuest) {
-            return $this->redirect('/login');
+        if ($status !== true) {
+            return $status;
         }
 
-        \Yii::$app->seo->setTitle('Правила');
-        \Yii::$app->seo->setDescription('Intellias quiz');
-        \Yii::$app->seo->setKeywords('intellias, quiz');
+        \Yii::$app->seo->setTitle('Профіль');
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('Відкривай, Україну');
 
-        return $this->render('rules');
+        $params = ArrayHelper::merge($this->testDataUser(), [
+            'showUserInfo' => false
+        ]);
+
+        return $this->render('profile', $params);
     }
 
     /**
@@ -132,9 +134,6 @@ class ProfileController extends Controller
         if ($status !== true) {
             return $status;
         }
-
-        //\Yii::$app->notification->addToUser(\Yii::$app->siteUser->identity, DefNotification::CATEGORY_ACCOUNT,
-        // DefNotification::TYPE_HELLO_USER, null, []);
 
         \Yii::$app->seo->setTitle('Новини');
         \Yii::$app->seo->setDescription('Відкривай Україну');
@@ -207,29 +206,6 @@ class ProfileController extends Controller
     }
 
     /**
-     * @return string
-     */
-    public function actionIndex()
-    {
-        $status = $this->checkUserStatus();
-
-        if ($status !== true) {
-            return $status;
-        }
-
-        \Yii::$app->seo->setTitle('Профіль');
-        \Yii::$app->seo->setDescription('Intellias quiz');
-        \Yii::$app->seo->setKeywords('intellias, quiz');
-
-
-        $params = ArrayHelper::merge($this->testDataUser(), [
-            'showUserInfo' => false
-        ]);
-
-        return $this->render('profile', $params);
-    }
-
-    /**
      * @return string|\yii\web\Response
      * @throws \yii\base\Exception
      */
@@ -262,8 +238,7 @@ class ProfileController extends Controller
 
             $userEvent = new UserRegisteredEvent();
             $userEvent->userId = $user->id;
-
-            //\Yii::$app->trigger(self::EVENT_USER_REGISTERED, $userEvent);
+            \Yii::$app->trigger(self::EVENT_USER_REGISTERED, $userEvent);
 
             if ($user->login_count === 1 && !$user->agreement_read) {
                 return $this->redirect('/rules');
@@ -480,6 +455,34 @@ class ProfileController extends Controller
         }
 
         return $this->render('/notifications/index', $data);
+    }
+
+    /**
+     * @return string
+     */
+    public function actionHelp()
+    {
+        \Yii::$app->seo->setTitle('Техпідтримка');
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('Відкривай, Україну');
+
+        return $this->render(\Yii::$app->siteUser->isGuest ? 'help-guest' : 'help-logged-in');
+    }
+
+    /**
+     * @return string
+     */
+    public function actionRules()
+    {
+        if (\Yii::$app->siteUser->isGuest) {
+            return $this->redirect('/login');
+        }
+
+        \Yii::$app->seo->setTitle('Правила');
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('Відкривай, Україну');
+
+        return $this->render('rules');
     }
 
     /**

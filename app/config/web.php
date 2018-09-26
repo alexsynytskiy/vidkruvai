@@ -53,7 +53,10 @@ $config = [
     'modules' => [
         'comment' => [
             'class' => "app\\modules\\comment\\Module",
-        ]
+        ],
+        'system' => [
+            'class' => "app\\modules\\events\\Module",
+        ],
     ],
     'components' => [
         'request' => [
@@ -142,7 +145,10 @@ $config = [
         'db' => require(__DIR__ . '/db.php'),
     ],
     'on app.components.AchievementComponent.on-achieved' => function ($event) {
-        //(new app\components\AwardEventHandler)->award($event);
+        (new app\components\AwardEventHandler)->award($event);
+    },
+    'on app.components.LevelComponent.on-unlocked' => function ($event) {
+        (new app\components\AwardEventHandler)->award($event);
     },
     'params' => $params,
 ];

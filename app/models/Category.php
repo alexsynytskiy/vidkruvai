@@ -107,22 +107,6 @@ class Category extends ActiveRecord
     }
 
     /**
-     * @inheritdoc
-     */
-    public function beforeSave($insert)
-    {
-        if (parent::beforeSave($insert)) {
-            if (empty($this->type)) {
-                $this->type = null;
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * @param array $except
      * @param array $params
      *

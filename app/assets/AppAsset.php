@@ -36,6 +36,7 @@ class AppAsset extends \yii\web\AssetBundle
         'js/js-translations.js',
         'plugins/pnotify/pnotify.min.js',
         'plugins/sweetalert/sweetalert2.min.js',
+        'plugins/js/jquery.knob.min.js',
         'js/SiteCore.js',
         'js/ObserverList.js',
         'js/News.js',

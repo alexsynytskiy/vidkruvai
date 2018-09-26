@@ -11,7 +11,7 @@ use app\components\BaseDefinition;
  */
 class DefAchievements extends BaseDefinition
 {
-    const NAMESPACE_RULES = 'app\achievement\\';
+    const NAMESPACE_RULES = 'app\components\achievement\\';
 
     /**
      * Statuses
@@ -20,13 +20,6 @@ class DefAchievements extends BaseDefinition
     const STATUS_ACHIEVED = 'achieved';
     const STATUS_AVAILABLE = 'available';
     const STATUS_IN_PROGRESS = 'inprogress';
-
-    /**
-     * Edit page achievements
-     */
-    const PROFILE_ACHIEVEMENTS = 'profile';
-    const TEAM_ACHIEVEMENTS = 'team';
-    const NOTIFICATIONS_ACHIEVEMENTS = 'notifications';
 
     /**
      * @param string $returnType

@@ -2,7 +2,7 @@
 
 namespace app\components\behaviors;
 
-use acp\models\CategoryEntity;
+use app\models\CategoryEntity;
 use app\models\Category;
 use yii\base\Behavior;
 use yii\db\ActiveQuery;
@@ -118,7 +118,7 @@ class CategoryBehavior extends Behavior
         $query = Category::find();
         $query->alias('t');
         $query->multiple = true;
-        $query->innerJoin(\app\models\CategoryEntity::tableName() . ' ce', 'ce.category_id = t.id');
+        $query->innerJoin(CategoryEntity::tableName() . ' ce', 'ce.category_id = t.id');
         $query->andWhere(['ce.entity_id' => $this->owner->{$object->attribute}, 'entity_type' => $object->type]);
 
         return $query;

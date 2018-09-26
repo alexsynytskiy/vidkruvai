@@ -140,7 +140,7 @@ class Achievement extends ActiveRecord
     public function getUserAchievementStatus($userId)
     {
         return $this->hasOne(UserAchievement::className(), ['achievement_id' => 'id'])
-            ->andOnCondition(['landing_user_id' => $userId]);
+            ->andOnCondition(['site_user_id' => $userId]);
     }
 
     /**
@@ -156,7 +156,7 @@ class Achievement extends ActiveRecord
      */
     public function getAwards()
     {
-        return $this->hasMany(Award::class, ['id' => 'award_id'])
+        return $this->hasMany(Award::className(), ['id' => 'award_id'])
             ->viaTable(static::junctionAwardTable(), [static::junctionAwardAttribute() => 'id']);
     }
 
@@ -165,7 +165,7 @@ class Achievement extends ActiveRecord
      */
     public function getGroup()
     {
-        return $this->hasOne(Category::class, ['id' => 'group_id']);
+        return $this->hasOne(Category::className(), ['id' => 'group_id']);
     }
 
     /**
@@ -180,7 +180,7 @@ class Achievement extends ActiveRecord
             ->alias('a')
             ->select(['a.*', 'u.done as userDone'])
             ->leftJoin(UserAchievement::tableName() . ' as u',
-                'u.achievement_id = a.id AND u.landing_user_id = :userId', ['userId' => $userId])
+                'u.achievement_id = a.id AND u.site_user_id = :userId', ['userId' => $userId])
             ->where(['a.class_name' => array_values($className)])
             ->all();
     }
@@ -198,7 +198,7 @@ class Achievement extends ActiveRecord
             ->alias('a')
             ->select(['a.*'])
             ->join($type, UserAchievement::tableName() . ' as u',
-                'u.achievement_id = a.id AND u.landing_user_id = :userId AND u.done != :done',
+                'u.achievement_id = a.id AND u.site_user_id = :userId AND u.done != :done',
                 ['userId' => $userId, 'done' => DefUserAchievement::IS_DONE])
             ->where([
                 'a.class_name' => $className,
@@ -269,7 +269,7 @@ class Achievement extends ActiveRecord
             ->alias('a')
             ->innerJoin(UserAchievement::tableName() . ' u', 'u.achievement_id = a.id')
             ->where(['u.done' => 0, 'a.archived' => self::IS_NOT_ARCHIVED])
-            ->andWhere(['u.landing_user_id' => $userId])
+            ->andWhere(['u.site_user_id' => $userId])
             ->orderBy('a.priority DESC')
             ->limit(3)
             ->all();
@@ -286,7 +286,7 @@ class Achievement extends ActiveRecord
         $started = (new \yii\db\Query())
             ->from(UserAchievement::tableName())
             ->select('achievement_id')
-            ->where(['landing_user_id' => $userId])
+            ->where(['site_user_id' => $userId])
             ->all();
 
         $records = static::find()
