@@ -1,9 +1,18 @@
 <?php
 
+use app\components\AppMsg;
+use app\components\helpers\StockHelper;
+use yii\helpers\Html;
+
 /* @var $this yii\web\View */
-/* @var $name string */
-/* @var $email string */
 /* @var $showUserInfo bool */
+/* @var $achievements array */
+/* @var $levelInfo array */
+/* @var $previousLevels array */
+/* @var $nextLevels array */
+/* @var $topInfo array */
+/* @var $preview boolean */
+/* @var array $userCredentials */
 
 $asset = \app\assets\AppAsset::register($this);
 
@@ -32,17 +41,121 @@ $user = \Yii::$app->siteUser->identity;
                                 <div class="school"><?= $user->school ?></div>
                                 <div class="rating">Рейтинг: <?= $user->total_experience ?></div>
 
-                                <div class="team-title">
-                                    Команда:
-                                </div>
-                                <div class="personal-achievements">
-                                    Досягнення:
+                                <?php if (count($previousLevels) || count($nextLevels) || !empty($levelInfo)): ?>
+                                    <div class="black-panel mb-50 pb-20 pt-20-i personal-levels">
+                                        <div class="progress-block pt-0 mt-0">
+                                            <div class="progress-top mb-0">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="progress-title level-title mb-10">
+                                                            <h3>
+                                                                <i class="fa fa-line-chart sidebar-icon"></i><?= AppMsg::t('Рівні'); ?>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="progress-items mb-0">
+                                                <div class="row">
+                                                    <?php StockHelper::renderLevelsList($this, $previousLevels) ?>
+
+                                                    <?php if (!empty($levelInfo)): ?>
+                                                        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                                                            <div class="progress-item">
+                                                                <div class="row">
+                                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+                                                                        <div class="knob-block">
+                                                                            <input type="text"
+                                                                                   value="<?= $levelInfo['currentLevelExp'] ?>"
+                                                                                   data-min="0"
+                                                                                   data-max="<?= $levelInfo['currentLevelMaxExpProfile'] ?>"
+                                                                                   class="dial">
+                                                                            <div class="counter">
+                                                                                <?= AppMsg::t('{currentExp} <span>/ {maxExp}</span><span class="descr">досвіду</span>', [
+                                                                                    'currentExp' => $levelInfo['currentLevelExp'],
+                                                                                    'maxExp' => $levelInfo['currentLevelMaxExpProfile'],
+                                                                                ]); ?>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                                        <div class="progress-descr <?= isset($levelInfo['currentLevelAward'][0]) ? '' : 'empty' ?>">
+                                                                            <h5><?= AppMsg::t('{num}-й рівень', ['num' => $levelInfo['currentLevel']]); ?></h5>
+                                                                            <?php if (isset($levelInfo['currentLevelAward'][0]) && $levelInfo['currentLevelAward'][0]->name): ?>
+                                                                                <p>
+                                                                                    <?= AppMsg::t('Награда: <span>{award}</span>', [
+                                                                                        'award' => Html::encode($levelInfo['currentLevelAward'][0]->name),
+                                                                                    ]); ?>
+                                                                                </p>
+                                                                            <?php endif; ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <?php endif; ?>
+
+                                                    <?php StockHelper::renderLevelsList($this, $nextLevels) ?>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <?= Html::a(AppMsg::t('Всі рівні'),
+                                                            [$preview ? "/profile/{$userCredentials['id']}/levels" : '/profile/levels'],
+                                                            [
+                                                                'class' => 'button m-0-auto-i',
+                                                            ]) ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if (count($achievements)): ?>
+                                <div class="black-panel mb-50 pb-20 pt-20-i personal-achievements">
+                                    <div class="progress-block pt-0 mt-0">
+                                        <div class="progress-top mb-0">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="progress-title mb-10">
+                                                        <h3>
+                                                            <?= AppMsg::t('Досягнення'); ?>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="progress-items mb-0">
+                                            <div class="row">
+                                                <?php foreach ($achievements as $achievement): ?>
+                                                    <?= $this->render('_achievement-item', [
+                                                        'model' => $achievement,
+                                                        'userId' => $preview ? $userCredentials['id'] : Yii::$app->siteUser->id,
+                                                    ]) ?>
+                                                <?php endforeach; ?>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <?= \yii\helpers\Html::a(AppMsg::t('Всі досягнення'),
+                                                        [$preview ? "/profile/{$userCredentials['id']}/achievements" : '/profile/achievements'],
+                                                        [
+                                                            'class' => 'button mt-0',
+                                                        ]) ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php endif; ?>
+
+                                    <div class="team-title">
+                                        Команда:
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </article>
     </div>
 </div>

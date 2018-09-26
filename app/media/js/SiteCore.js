@@ -141,6 +141,17 @@ var SiteCore = function (options) {
                     $sidebar.removeClass('sidebar-right-fixed-bottom-big');
                 }
             }
+        },
+        initKnobDial: function () {
+            $('.dial').knob({
+                readOnly: true,
+                width: 80,
+                height: 80,
+                displayInput: false,
+                fgColor: '#ff1e00',
+                bgColor: '#ffffff',
+                thickness: '.05'
+            });
         }
     }
 }();
@@ -162,4 +173,6 @@ $(document).ready(function () {
     $(window).scroll(function () {
         SiteCore.windowScroll();
     });
+
+    SiteCore.initKnobDial();
 });

@@ -6,10 +6,13 @@ use app\components\BaseDefinition;
 use app\components\Controller;
 use app\components\events\UserRegisteredEvent;
 use app\components\UserRegisteredEventHandler;
+use app\models\Achievement;
+use app\models\definitions\DefLevel;
 use app\models\definitions\DefNotification;
 use app\models\forms\LoginForm;
 use app\models\forms\RegisterForm;
 use app\models\forms\TeamCreateForm;
+use app\models\Level;
 use app\models\NotificationUser;
 use app\models\search\NotificationUserSearch;
 use app\models\SiteUser;
@@ -75,33 +78,6 @@ class ProfileController extends Controller
         return true;
     }
 
-    public function testDataUser()
-    {
-        $params = [
-            'name' => '',
-            'email' => '',
-        ];
-
-        if (!\Yii::$app->siteUser->isGuest) {
-            /** @var SiteUser|Admin $user */
-            $user = \Yii::$app->siteUser->identity ?: \Yii::$app->user->identity;
-
-            if ($user instanceof SiteUser) {
-                $params = [
-                    'name' => $user->name . ' ' . $user->surname,
-                    'email' => $user->email,
-                ];
-            } else {
-                $params = [
-                    'name' => $user->username,
-                    'email' => '',
-                ];
-            }
-        }
-
-        return $params;
-    }
-
     /**
      * @return string
      */
@@ -117,11 +93,44 @@ class ProfileController extends Controller
         \Yii::$app->seo->setDescription('Відкривай Україну');
         \Yii::$app->seo->setKeywords('Відкривай, Україну');
 
-        $params = ArrayHelper::merge($this->testDataUser(), [
-            'showUserInfo' => false
-        ]);
+        return $this->renderUserProfilePage(\Yii::$app->siteUser->identity);
+    }
 
-        return $this->render('profile', $params);
+    /**
+     * @param SiteUser $user
+     * @param bool $isPreview
+     *
+     * @return string
+     */
+    public function renderUserProfilePage($user, $isPreview = false)
+    {
+        $levelInfo = $user->getUserLevelInfo();
+
+        $previousLevels = [];
+        $nextLevels = Level::getLevels($user->level_id, DefLevel::NEXT_LEVELS);
+
+        if (count($nextLevels) < 2) {
+            $previousLevels = Level::getLevels($user->level_id, DefLevel::PREVIOUS_LEVELS, (2 - count($previousLevels)));
+        }
+
+        $achievements = Achievement::getAchievementsInProgress($user->id);
+
+        if (count($achievements) < 3) {
+            $achievementsToStart = Achievement::getAchievementsToStart($user->id, 3 - count($achievements));
+            $achievements = array_merge($achievements, $achievementsToStart);
+        }
+
+        return $this->render('profile',
+            [
+                'showUserInfo' => false,
+                'preview' => $isPreview,
+                'achievements' => $achievements,
+                'levelInfo' => $levelInfo,
+                'previousLevels' => $previousLevels,
+                'nextLevels' => $nextLevels,
+                'userCredentials' => SiteUser::getUserCredentials($user),
+            ]
+        );
     }
 
     /**
@@ -161,7 +170,8 @@ class ProfileController extends Controller
             $lastItemId = $news[count($news) - 1]->id;
         }
 
-        $params = ArrayHelper::merge($this->testDataUser(), [
+        $params = ArrayHelper::merge(SiteUser::getUserCredentials(\Yii::$app->siteUser ?
+            \Yii::$app->siteUser->identity : \Yii::$app->user->identity), [
             'news' => $news,
             'hasToLoadMore' => $hasToLoadMore,
             'lastItemId' => $lastItemId,

@@ -955,6 +955,103 @@ span.bg-success,
     margin-bottom: 32px;
 }
 
+.progress-block .progress-items .progress-item .knob-block {
+    position: relative;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.pt-0 {
+    padding-top: 0 !important;
+}
+
+.progress-block .progress-top .progress-title h3 {
+    font-size: 24px;
+    font-family: "Lato", sans-serif;
+    line-height: 1.2;
+    margin: 0;
+    padding-left: 40px;
+}
+
+.fa.sidebar-icon {
+    position: absolute;
+    top: 16px;
+    left: 53px;
+    font-size: 21px;
+    color: #ff1e00;
+}
+
+.profile-level .level-title .fa-line-chart,
+.profile-level .bal-history-title .fa-usd,
+.progress-block .fa-line-chart {
+    position: inherit;
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.progress-block .progress-items .progress-item {
+    padding: 35px 0;
+    position: relative;
+}
+
+.progress-block .progress-items .progress-item .knob-block {
+    position: relative;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.progress-block .progress-items .progress-item .knob-block .counter {
+    color: #ff1e00;
+    font-size: 15px;
+    font-family: "Lato", sans-serif;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.progress-block .progress-items .progress-item .knob-block .counter span {
+    color: #fff;
+}
+
+.progress-block .progress-items .progress-item .knob-block .counter .descr {
+    text-transform: uppercase;
+    font-size: 12px;
+    font-family: "Lato", sans-serif;
+    display: block;
+}
+
+.progress-block .progress-items .progress-item .progress-descr {
+    padding-top: 20px;
+}
+
+.progress-block .progress-items .progress-item .progress-descr h5 {
+    font-size: 16px;
+    font-family: "Lato", sans-serif;
+    line-height: 1.2;
+    margin: 0 0 7px;
+}
+
+.progress-block .progress-items .progress-item .progress-descr p {
+    font-size: 14px;
+    font-family: "Lato", sans-serif;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.progress-block .progress-items .progress-item .progress-descr p span {
+    font-family: "Lato", sans-serif;
+    color: #8634ff;
+}
+
 @media (max-width: 1199px) {
 
 }
