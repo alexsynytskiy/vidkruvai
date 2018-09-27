@@ -47,9 +47,9 @@ $user = \Yii::$app->siteUser->identity;
                                             <div class="progress-top mb-0">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <div class="progress-title level-title mb-10">
+                                                        <div class="progress-title level-title mt-30">
                                                             <h3>
-                                                                <i class="fa fa-line-chart sidebar-icon"></i><?= AppMsg::t('Рівні'); ?>
+                                                                <?= AppMsg::t('Рівні'); ?>
                                                             </h3>
                                                         </div>
                                                     </div>
@@ -83,7 +83,7 @@ $user = \Yii::$app->siteUser->identity;
                                                                             <h5><?= AppMsg::t('{num}-й рівень', ['num' => $levelInfo['currentLevel']]); ?></h5>
                                                                             <?php if (isset($levelInfo['currentLevelAward'][0]) && $levelInfo['currentLevelAward'][0]->name): ?>
                                                                                 <p>
-                                                                                    <?= AppMsg::t('Награда: <span>{award}</span>', [
+                                                                                    <?= AppMsg::t('Нагорода: <span>{award}</span>', [
                                                                                         'award' => Html::encode($levelInfo['currentLevelAward'][0]->name),
                                                                                     ]); ?>
                                                                                 </p>

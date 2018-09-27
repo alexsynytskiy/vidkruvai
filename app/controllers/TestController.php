@@ -16,25 +16,25 @@ class TestController extends Controller
 {
     public function actionGenerate()
     {
-//        $level = new Level;
-//        $level->group_id = 2;
-//        $level->num = 1;
-//        $level->required_experience = 10;
-//        $level->base_level = 1;
-//        $level->archived = 'no';
-//        $level->awardIDs = [1];
-//        $level->save();
+        $level = new Level;
+        $level->group_id = 2;
+        $level->num = 4;
+        $level->required_experience = 500;
+        $level->base_level = 0;
+        $level->archived = 'no';
+        $level->awardIDs = [3];
+        $level->save();
 
-        $achievement = new Achievement;
-        $achievement->group_id = 6;
-        $achievement->name = 'Командний гравець';
-        $achievement->description = '';
-        $achievement->class_name = 'ReachedExperience';
-        $achievement->priority = 1;
-        $achievement->required_steps = 3500;
-        $achievement->archived = 'no';
-        $achievement->awardIDs = [1];
-        $a = $achievement->save();
+//        $achievement = new Achievement;
+//        $achievement->group_id = 6;
+//        $achievement->name = 'Командний гравець';
+//        $achievement->description = '';
+//        $achievement->class_name = 'ReachedExperience';
+//        $achievement->priority = 1;
+//        $achievement->required_steps = 3500;
+//        $achievement->archived = 'no';
+//        $achievement->awardIDs = [1];
+//        $a = $achievement->save();
 
 //        $category = new Category;
 //        $category->name = 'Досягнення досвіду';

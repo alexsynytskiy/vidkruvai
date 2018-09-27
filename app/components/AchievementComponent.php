@@ -94,11 +94,13 @@ class AchievementComponent extends Component
 
             $userAchievement->updateAttributes(['performed_steps' => $preformedSteps]);
 
-            if (!empty($params['updateAchievementsGroup'])) {
+            if (array_key_exists('updateAchievementsGroup', $params) && $params['updateAchievementsGroup']) {
                 $achievementsToUpdate = Achievement::getAchievementsToUpdatePerformedSteps($achievementClass, $achievement->id);
 
                 /** @var Achievement $item */
                 foreach ($achievementsToUpdate as $item) {
+
+
                     /** @var UserAchievement $userStatus */
                     $userStatus = UserAchievement::getUserAchievementByID($item->class_name, $item->id, $userId);
                     $userStatus->updateAttributes(['performed_steps' => $preformedSteps]);

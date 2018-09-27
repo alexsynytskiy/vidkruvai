@@ -91,7 +91,7 @@ class AwardEventHandler
      */
     protected function giveExperience($award, $awardValue = null)
     {
-        $value = $awardValue ? $awardValue : $award->value;
+        $value = $awardValue ?: $award->value;
         LevelComponent::addUserExperience($this->event->userId, $value);
 
         return true;

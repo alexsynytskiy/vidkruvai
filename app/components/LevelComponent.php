@@ -60,7 +60,7 @@ class LevelComponent extends Component
             static::addUserExperienceInternal($user, $addExperience, $levelsData);
 
             if (!AchievementComponent::getLastAchievement() && AchievementComponent::isGoalAchieved(
-                ReachedExperience::CLASS_NAME, $userId)) {
+                ReachedExperience::CLASS_NAME, $userId, ['updateAchievementsGroup' => true])) {
                 AchievementComponent::achieveByUser(ReachedExperience::CLASS_NAME, $userId);
             }
 

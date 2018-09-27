@@ -22,6 +22,10 @@ if(!isset($model->awards) || count($model->awards) === 0) {
                                 'amount' => Html::encode($model->nextLevel->required_experience - $model->required_experience),
                             ]); ?>
                         </div>
+                    <?php else: ?>
+                        <div class="counter">
+                            <?= AppMsg::t('<span>останній рівень</span>'); ?>
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>
@@ -32,7 +36,7 @@ if(!isset($model->awards) || count($model->awards) === 0) {
                         ]); ?></h5>
                     <?php if(null === $awardEmpty): ?>
                         <p>
-                            <?= AppMsg::t('Награда: <span>{award}</span>', [
+                            <?= AppMsg::t('Нагорода: <span>{award}</span>', [
                                 'award' => Html::encode(implode(', ',
                                     \yii\helpers\ArrayHelper::getColumn((array)$model->awards, 'name'))),
                             ]); ?>

@@ -94,6 +94,7 @@ $config = [
         ],
         'urlManager' => [
             'rules' => [
+                'generate' => 'test/generate',
                 'register' => 'profile/register',
                 'login' => 'profile/login',
                 'comment/<channelId:\d+>/<action:[\w-]+>' => 'comment/default/<action>',

@@ -301,6 +301,23 @@ class Achievement extends ActiveRecord
     }
 
     /**
+     * @param int $userId
+     * @param int $limit
+     *
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public static function getAchievementsFinished($userId, $limit = 3)
+    {
+        return static::find()
+            ->alias('a')
+            ->innerJoin(UserAchievement::tableName() . ' u', 'u.achievement_id = a.id')
+            ->where(['u.site_user_id' => $userId, 'u.done' => 1, 'a.archived' => self::IS_NOT_ARCHIVED])
+            ->orderBy('a.priority DESC')
+            ->limit($limit)
+            ->all();
+    }
+
+    /**
      * @return int|string
      */
     public static function getAchievementsCount()

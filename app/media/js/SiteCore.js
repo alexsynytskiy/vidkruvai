@@ -148,9 +148,10 @@ var SiteCore = function (options) {
                 width: 80,
                 height: 80,
                 displayInput: false,
-                fgColor: '#ff1e00',
-                bgColor: '#ffffff',
-                thickness: '.05'
+                fgColor: '#FF4D00',
+                bgColor: '#047afb',
+                thickness: '.1',
+                linecap: 'round'
             });
         }
     }

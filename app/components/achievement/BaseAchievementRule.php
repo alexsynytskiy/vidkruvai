@@ -24,6 +24,6 @@ abstract class BaseAchievementRule implements IBaseAchievementRule
             ->andWhere(['>', 'required_steps', $params['required_steps']])
             ->one();
 
-        return $achievement || (!$achievement && $params['required_steps'] > $params['performed_steps']);
+        return !$achievement && $params['required_steps'] > $params['performed_steps'];
     }
 }

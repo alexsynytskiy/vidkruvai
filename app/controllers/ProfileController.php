@@ -19,7 +19,6 @@ use app\models\SiteUser;
 use yii\captcha\CaptchaAction;
 use yii\easyii\components\helpers\LanguageHelper;
 use yii\easyii\helpers\Image;
-use yii\easyii\models\Admin;
 use yii\easyii\modules\news\api\News;
 use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
@@ -110,7 +109,8 @@ class ProfileController extends Controller
         $nextLevels = Level::getLevels($user->level_id, DefLevel::NEXT_LEVELS);
 
         if (count($nextLevels) < 2) {
-            $previousLevels = Level::getLevels($user->level_id, DefLevel::PREVIOUS_LEVELS, (2 - count($previousLevels)));
+            $previousLevels = Level::getLevels($user->level_id, DefLevel::PREVIOUS_LEVELS,
+                2 - count($nextLevels));
         }
 
         $achievements = Achievement::getAchievementsInProgress($user->id);
@@ -118,6 +118,11 @@ class ProfileController extends Controller
         if (count($achievements) < 3) {
             $achievementsToStart = Achievement::getAchievementsToStart($user->id, 3 - count($achievements));
             $achievements = array_merge($achievements, $achievementsToStart);
+        }
+
+        if (count($achievements) < 3) {
+            $achievementsFinished = Achievement::getAchievementsFinished($user->id, 3 - count($achievements));
+            $achievements = array_merge($achievementsFinished, $achievements);
         }
 
         return $this->render('profile',
