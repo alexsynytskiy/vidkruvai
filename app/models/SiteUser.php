@@ -9,6 +9,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\web\IdentityInterface;
+use yii\web\NotFoundHttpException;
 
 /**
  * This is the model class for table "site_user".
@@ -212,6 +213,36 @@ class SiteUser extends ActiveRecord implements IdentityInterface
                 'name' => $user->username
             ];
         }
+
+        return $result;
+    }
+
+    /**
+     * @param $id
+     *
+     * @return mixed
+     * @throws \yii\web\NotFoundHttpException
+     */
+    public static function getUserRenderingInfo($id)
+    {
+        $userId = \Yii::$app->siteUser->id;
+        $user = \Yii::$app->siteUser->identity;
+        $preview = false;
+
+        if ($id && $user->id !== $id) {
+            $user = self::findIdentity($id);
+            $userId = $id;
+
+            if (!$user) {
+                throw new NotFoundHttpException();
+            }
+
+            $preview = true;
+        }
+
+        $result['id'] = $userId;
+        $result['user'] = $user;
+        $result['preview'] = $preview;
 
         return $result;
     }

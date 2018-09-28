@@ -35,7 +35,7 @@ $notificationCounters = $this->context->getUserNotificationCounters();
     <li class="media">
         <span class="media-link">
             <div class="media-body">
-                <?= AppMsg::t('Непрочитанные уведомления отсуствуют.'); ?>
+                <?= AppMsg::t('Нових сповіщень немає.'); ?>
             </div>
         </span>
     </li>

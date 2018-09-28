@@ -34,12 +34,16 @@ $user = \Yii::$app->siteUser->identity;
                         <div class="profile-info-main clearfix">
                             <div class="left-side">
                                 <img src="<?= $user->avatar ?>" class="avatar">
-                                <div class="status"></div>
+                                <div class="status"><?= $user->total_experience ?></div>
                             </div>
                             <div class="right-side">
-                                <div class="name"><?= $user->name . ' ' . $user->surname ?></div>
+                                <div class="clearfix">
+                                    <div class="name"><?= $user->name . ' ' . $user->surname ?></div>
+                                    <a href="<?= \yii\helpers\Url::to(['profile/update-profile']) ?>">
+                                        <div class="profile-edit"></div>
+                                    </a>
+                                </div>
                                 <div class="school"><?= $user->school ?></div>
-                                <div class="rating">Рейтинг: <?= $user->total_experience ?></div>
 
                                 <?php if (count($previousLevels) || count($nextLevels) || !empty($levelInfo)): ?>
                                     <div class="black-panel mb-50 pb-20 pt-20-i personal-levels">

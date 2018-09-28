@@ -39,4 +39,16 @@ class DefAchievements extends BaseDefinition
 
         return static::getListDataByReturnType($statuses, $returnType);
     }
+
+    public static function getStatus($key)
+    {
+        $statuses = [
+            self::STATUS_ALL => AppMsg::t('Всі'),
+            self::STATUS_ACHIEVED => AppMsg::t('Досягнуті'),
+            self::STATUS_AVAILABLE => AppMsg::t('Доступні'),
+            self::STATUS_IN_PROGRESS => AppMsg::t('В процесі'),
+        ];
+
+        return $statuses[$key];
+    }
 }

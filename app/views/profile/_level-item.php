@@ -24,7 +24,7 @@ if(!isset($model->awards) || count($model->awards) === 0) {
                         </div>
                     <?php else: ?>
                         <div class="counter">
-                            <?= AppMsg::t('<span>останній рівень</span>'); ?>
+                            <span><?= AppMsg::t('останній рівень'); ?></span>
                         </div>
                     <?php endif; ?>
                 </div>

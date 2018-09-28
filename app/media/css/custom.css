@@ -863,7 +863,9 @@ span.bg-success,
     margin-bottom: 0;
 }
 
-.notification-page .navbar-nav > li.open > .dropdown-menu, .open .dropdown-menu {
+.notification-page .navbar-nav > li.open > .dropdown-menu,
+.cabinet.achievements .progress-top .navbar-nav > li.open > .dropdown-menu,
+.open .dropdown-menu {
     top: 60px;
 }
 
@@ -874,7 +876,10 @@ span.bg-success,
     font-size: 14px;
 }
 
-.notification-page .dropdown-menu:after, .notification-page .dropdown-menu:before {
+.notification-page .dropdown-menu:after,
+.notification-page .dropdown-menu:before,
+.cabinet.achievements .dropdown-menu:before,
+.cabinet.achievements .dropdown-menu:after {
     right: 310px;
 }
 
@@ -917,12 +922,21 @@ span.bg-success,
     max-width: 150px;
 }
 
-.profile-info-main .left-side .status {
-    background-color: #777;
+.profile-info-main .left-side .status, .profile-info .rating {
+    background-color: #1c85f7;
     height: 40px;
     width: 40px;
     margin: 0 auto;
     border-radius: 50%;
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    line-height: 40px;
+}
+
+.profile-info .rating {
+    margin-top: 10px;
 }
 
 .profile-info-main .right-side {
@@ -942,8 +956,9 @@ span.bg-success,
     font-family: 'Lato', sans-serif;
     font-size: 18px;
     font-weight: bold;
-    margin-top: 23px;
-    margin-bottom: 16px;
+    float: left;
+    line-height: 17px;
+    margin-bottom: 5px;
 }
 
 .profile-info-main .team-title {
@@ -982,6 +997,7 @@ span.bg-success,
     font-size: 18px;
     font-weight: bold;
     margin-top: 23px;
+    text-align: left;
 }
 
 .fa.sidebar-icon {
@@ -1062,6 +1078,55 @@ span.bg-success,
 
 .dial {
     color: #FF4D00;
+}
+
+.levels-table-block {
+    padding: 10px 32px;
+}
+
+.pl-32 {
+    padding-left: 32px;
+}
+
+.current-level {
+    background-color: #F7F9FB;
+    border-left: 2px solid #1c85f7;
+}
+
+.profile-edit {
+    width: 30px;
+    height: 18px;
+    display: block;
+    float: left;
+    background: url(/app/media/img/edit.png) center no-repeat;
+    background-size: 18px;
+}
+
+.cabinet.achievements .progress-block {
+    padding: 0 32px;
+}
+
+#achievement-filter-form label {
+    font-family: 'Lato', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.achievement-group p {
+    font-family: 'Lato', sans-serif;
+    font-size: 18px;
+    font-weight: normal;
+    text-align: left;
+}
+
+.cabinet.achievements .progress-top .navbar-nav > li > a {
+    margin: 0;
+    border-radius: 5px;
+}
+
+.cabinet.achievements .progress-top .navbar-nav {
+    float: right;
 }
 
 @media (max-width: 1199px) {
