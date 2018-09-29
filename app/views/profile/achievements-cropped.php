@@ -51,13 +51,9 @@ $dropDownFilter = [
 
 $subTitle = '';
 $dropDownFilterLabel = '';
-$hasFilterSubtitle = false;
 foreach ($dropDownFilter as $key => $item) {
     if ($item['isActive']) {
-        if ($key !== 0) {
-            $subTitle .= '<span id="subtitle-filter-label"> - ' . \yii\helpers\Html::encode($item['label']) . '</span>';
-            $hasFilterSubtitle = true;
-        }
+        $subTitle .= '<span id="subtitle-filter-label"> - ' . \yii\helpers\Html::encode($item['label']) . '</span>';
 
         $dropDownFilterLabel = $item['label'];
         break;
@@ -145,7 +141,7 @@ foreach ($dropDownFilter as $key => $item) {
                                     </div>
                                 </div>
                             </div>
-                            <div class="progress-items" style="padding-top: 20px;">
+                            <div class="progress-items">
                                 <div class="row">
                                     <?php foreach ($groups as $group => $achievements) {
                                         $data = explode('__', $group);
@@ -199,4 +195,4 @@ foreach ($dropDownFilter as $key => $item) {
 
 <?php
 $achievementsPageOptions = \yii\helpers\Json::encode([]);
-$this->registerJs('AchievementsPreview(' . $achievementsPageOptions . ')');
+$this->registerJs('Achievements(' . $achievementsPageOptions . ')');

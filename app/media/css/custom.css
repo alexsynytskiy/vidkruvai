@@ -1129,6 +1129,31 @@ span.bg-success,
     float: right;
 }
 
+.empty .empty-block {
+    color: #047afb;
+    font-size: 14px;
+    margin-bottom: 32px;
+}
+
+.cabinet.achievements .progress-items {
+    padding-top: 20px;
+}
+
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+    background-color: #F7F9FB;
+}
+
+.dropdown-menu > .active > a {
+    background-color: #fff;
+    border: 2px solid #007BFF;
+}
+
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus {
+    background-color: #fff;
+    border: 2px solid #F7F9FB;
+}
+
 @media (max-width: 1199px) {
 
 }

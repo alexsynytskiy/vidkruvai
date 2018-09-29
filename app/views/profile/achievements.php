@@ -13,6 +13,7 @@ use yii\widgets\ListView;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
 use app\models\definitions\DefAchievements;
+use \yii\helpers\Html;
 
 $asset = \app\assets\AppAsset::register($this);
 $baseUrl = $asset->baseUrl;
@@ -20,7 +21,7 @@ $baseUrl = $asset->baseUrl;
 // Build type dropdown
 $dropDownFilter = [
     [
-        'isActive' => empty($status),
+        'isActive' => empty($status) || $status === DefAchievements::STATUS_ALL,
         'isAll' => true,
         'label' => DefAchievements::getStatus(DefAchievements::STATUS_ALL),
         'url' => '#',
@@ -54,19 +55,19 @@ $dropDownFilter = [
 
 $subTitle = '';
 $dropDownFilterLabel = '';
-$hasFilterSubtitle = false;
+
 foreach ($dropDownFilter as $key => $item) {
     if ($item['isActive']) {
-        if ($key !== 0) {
-            $subTitle .= '<span id="subtitle-filter-label"> - ' . \yii\helpers\Html::encode($item['label']) . '</span>';
-            $hasFilterSubtitle = true;
-        }
+        $subTitle .= '<span id="subtitle-filter-label"> - ' . \yii\helpers\Html::encode($item['label']) . '</span>';
 
         $dropDownFilterLabel = $item['label'];
         break;
     }
 }
 ?>
+
+<?= Html::beginForm('', 'get', ['id' => 'selected-achievements-filters']) ?>
+<?= Html::endForm() ?>
 
 <div class="steps-block profile clearfix">
     <div class="cabinet achievements">

@@ -45,8 +45,7 @@ class AppAsset extends \yii\web\AssetBundle
         'js/AnswerPage.js',
         'js/ProfilePage.js',
         'js/RegisterPage.js',
-        'js/Achievements.js',
-        'js/AchievementsPreview.js'
+        'js/Achievements.js'
     ];
 
     public $publishOptions = ['forceCopy' => true];
