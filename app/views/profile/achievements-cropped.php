@@ -121,7 +121,6 @@ foreach ($dropDownFilter as $key => $item) {
 
                                                     <ul class="dropdown-menu dropdown-menu-left">
                                                         <?php foreach ($dropDownFilter as $item): ?>
-                                                            <li<?= $item['isActive'] ? ' class="active"' : ''; ?>>
                                                             <li class="<?= $item['isActive'] ? 'active' : ''; ?>">
                                                                 <a href="<?= $item['url'] ?>"
                                                                    class="<?= array_key_exists('isAll', $item) ? ' all-list' : ''; ?>"

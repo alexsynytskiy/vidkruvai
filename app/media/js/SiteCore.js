@@ -148,8 +148,8 @@ var SiteCore = function (options) {
                 width: 80,
                 height: 80,
                 displayInput: false,
-                fgColor: '#FF4D00',
-                bgColor: '#047afb',
+                fgColor: '#047afb',
+                bgColor: '#FF4D00',
                 thickness: '.1',
                 linecap: 'round'
             });

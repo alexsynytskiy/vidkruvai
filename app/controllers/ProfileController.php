@@ -293,7 +293,7 @@ class ProfileController extends Controller
                     } else {
                         $position = null;
 
-                        if (!$groupDone && !$groupStarted || ($groupStarted && $groupStartedFirstPosition === 0)) {
+                        if ((!$groupDone && !$groupStarted) || ($groupStarted && $groupStartedFirstPosition === 0)) {
                             $position = 0;
                         } elseif ($groupDone || ($groupStarted && in_array($groupStartedFirstPosition,
                                     [$groupElements - 1, $groupElements - 2], false))) {

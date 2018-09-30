@@ -1,31 +1,50 @@
-var Achievements = function(options) {
-    var achievementList    = '.progress-items',
-        hiddenFormSelector = '#selected-achievements-filters',
-        pageURL            = window.location.pathname;
+var Achievements = function (options) {
+    var pageURL = window.location.pathname,
+        selectors = {
+        achievementList: '.progress-items',
+        hiddenFormSelector: '#selected-achievements-filters',
+        filterButton: '#filter-btn-title',
+        filterItem: '#notification-filter-status li'
+    };
 
     $('body').on('click', '#notification-filter-status .dropdown-menu a', function (e) {
         e.preventDefault();
 
-        $(hiddenFormSelector + ' #type').remove();
+        $(selectors.hiddenFormSelector + ' #type').remove();
 
         $('<input>').attr({
             type: 'hidden',
             name: 'AchievementSearch[filterAchievementType]',
             id: 'type',
             value: $(this).data('status')
-        }).appendTo(hiddenFormSelector);
+        }).appendTo(selectors.hiddenFormSelector);
 
-        var url = pageURL + "?" + $(hiddenFormSelector).serialize();
+        var url = pageURL + "?" + $(selectors.hiddenFormSelector).serialize();
 
         history.replaceState(null, null, url);
 
-        $.get(url, function(html) {
-            $(achievementList).html($(html).find(achievementList).html());
-
+        $.when(
+            $.get(url, function (html) {
+                $(selectors.achievementList).html($(html).find(selectors.achievementList).html());
+            })
+        ).then(function (data, textStatus, jqXHR) {
             SiteCore.initKnobDial();
+
+            var screenW = $(document).width();
+            SiteCore.windowSize(screenW);
         });
 
-        $('#filter-btn-title').text($(this).text());
+        $(selectors.filterButton).text($(this).text());
+
+        var $items = $(selectors.filterItem);
+
+        ($items) && $.each($items, function (index, value) {
+            if ($(value).hasClass('active')) {
+                $(value).removeClass('active');
+            }
+        });
+
+        $(this).parent().addClass('active');
     })
         .on('click', 'a.show-full-group', function (e) {
             e.preventDefault();

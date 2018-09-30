@@ -1027,7 +1027,7 @@ span.bg-success,
     margin: 0 auto;
 }
 
-.progress-block .progress-items .progress-item .knob-block .counter {
+.cabinet .progress-block .progress-items .progress-item .knob-block .counter {
     color: #FF4D00;
     font-size: 13px;
     line-height: 15px;
@@ -1040,6 +1040,10 @@ span.bg-success,
     -webkit-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
+}
+
+.cabinet.achievements .progress-block .progress-items .progress-item .knob-block .counter {
+    top: calc(50% - 7px);
 }
 
 .progress-block .progress-items .progress-item .knob-block .counter span {
