@@ -152,146 +152,149 @@ if (($page = ArrayHelper::getValue($_GET, 'page', 0)) > 1) {
                 <?= $this->render('/_blocks/profile-sidebar') ?>
             </div>
             <div class="content-left-fixed">
-                <div class="notification-index notification-page">
-                    <!-- Content area -->
-                    <div class="content">
+                <div class="project-info-page-description">
+                    <div class="profile-user-page">
+                        <div class="image"></div>
 
-                        <div class="navbar navbar-default navbar-component navbar-xs navbar-second">
-                            <ul class="nav navbar-nav no-border visible-xs-block">
-                                <li>
-                                    <a class="text-center collapsed" data-toggle="collapse"
-                                       data-target="#navbar-second">
-                                        <i class="icon-circle-down2"></i></a>
-                                </li>
-                            </ul>
-                            <div class="navbar-collapse collapse" id="navbar-second">
-                                <ul class="nav navbar-nav">
+                        <div class="notification-index notification-page">
+                            <!-- Content area -->
+                            <div class="content">
 
-                                    <li class="dropdown dropdown-velocity" id="notification-filter-status">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            <i class="icon-eye position-left"></i>
-                                            <?= AppMsg::t('Показать:') ?>
-                                            <span class="label label-success label-inline label-rounded position-right"
-                                                  id="filter-btn-title"><?= $dropDownFilterLabel; ?></span>
-                                            <span class="caret"></span>
-                                        </a>
-
-                                        <ul class="dropdown-menu dropdown-menu-left">
-                                            <?php foreach ($dropDownFilter as $item): ?>
-                                                <li<?= $item['isActive'] ? ' class="active"' : ''; ?>>
-                                                <li class="<?= ($item['isActive'] ? 'active' : ''); ?>">
-                                                    <a href="<?= $item['url'] ?>"
-                                                       class="<?= (isset($item['isAll']) ? ' all-list' : ''); ?>"
-                                                       id="<?= (isset($item['status']) ? $item['status'] : ''); ?>">
-                                                        <?= $item['label']; ?>
-                                                    </a>
-                                                </li>
-                                            <?php endforeach ?>
-                                        </ul>
-                                    </li>
-
-                                    <li class="dropdown dropdown-velocity" id="notification-filter-type">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            <i class="icon-list2 position-left"></i> <?= AppMsg::t('Категория:'); ?>
-                                            <span class="label bg-<?= $userCategoriesLabelColor; ?> label-inline label-rounded position-right"><?= $userCategoriesLabel; ?></span>
-                                            <span class="caret"></span>
-                                        </a>
-
-                                        <ul class="dropdown-menu dropdown-menu-left">
-                                            <?php foreach ($categoriesMenu as $item): ?>
-                                                <li<?= $item['isActive'] ? ' class="active"' : ''; ?>>
-                                                    <?= $item['link']; ?>
-                                                </li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                    </li>
-
-                                </ul>
-
-                                <div class="navbar-right" id="notification-action-buttons">
-                                    <ul class="nav navbar-nav">
+                                <div class="navbar navbar-default navbar-component navbar-xs navbar-second">
+                                    <ul class="nav navbar-nav no-border visible-xs-block">
                                         <li>
-                                            <?= \yii\helpers\Html::a(\app\components\AppMsg::t('Відмітити як прочитані'),
-                                                '#',
-                                                ['data-notification-action' => 'read', 'class' => 'hide']) ?>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-notification-action="new" class="hide"
-                                               data-acp-toggle="tooltip"
-                                               title="<?= AppMsg::t('Отметить как непрочитанные'); ?>">
-                                                <i class="fa fa-clock-o"></i>
-                                                <span class="visible-xs-inline-block position-right">
-                                                        <?= AppMsg::t('Отметить как непрочитанные'); ?>
-                                                    </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-notification-action="archived" class="hide"
-                                               data-acp-toggle="tooltip" title="<?= AppMsg::t('Архивировать'); ?>">
-                                                <i class="fa fa-trash"></i>
-                                                <span class="visible-xs-inline-block position-right">
-                                                        <?= AppMsg::t('Архивировать'); ?>
-                                                    </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <div class="helpers-header clearfix">
-                                                <?= \yii\helpers\Html::a('<i class="fa fa-check"></i>' . \app\components\AppMsg::t('Прочитати все'),
-                                                    null,
-                                                    ['id' => 'mark-all-news-as-read', 'class' => 'no-spinner']) ?>
-                                            </div>
+                                            <a class="text-center collapsed" data-toggle="collapse"
+                                               data-target="#navbar-second">
+                                                <i class="icon-circle-down2"></i></a>
                                         </li>
                                     </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /navbar -->
+                                    <div class="navbar-collapse collapse" id="navbar-second">
+                                        <ul class="nav navbar-nav">
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="panel panel-flat">
-                                    <div id="full-notification-block">
-                                        <?php Pjax::begin(['id' => 'full-notification-block']); ?>
-                                        <div id="list-notifications">
-                                            <?= \yii\widgets\ListView::widget([
-                                                'dataProvider' => $dataProvider,
-                                                'itemView' => '_notification-item',
-                                                'layout' => '{items}',
-                                                'emptyText' => '<span class="media-link">' . AppMsg::t('Уведомления отсутствуют.') . '</span>',
-                                                'emptyTextOptions' => [
-                                                    'tag' => 'li',
-                                                    'class' => 'media empty-text text-center',
-                                                ],
-                                                'viewParams' => [
-                                                    'notificationSettings' => $notificationSettings,
-                                                    'listCategories' => $listCategories,
-                                                ],
-                                                'options' => [
-                                                    'tag' => 'ul',
-                                                    'class' => 'media-list media-list-linked media-list-bordered',
-                                                ],
-                                                'itemOptions' => [
-                                                    'tag' => false,
-                                                ],
-                                            ]); ?>
+                                            <li class="dropdown dropdown-velocity" id="notification-filter-status">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                    <i class="icon-eye position-left"></i>
+                                                    <?= AppMsg::t('Показати:') ?>
+                                                    <span class="label label-success label-inline label-rounded position-right"
+                                                          id="filter-btn-title"><?= $dropDownFilterLabel; ?></span>
+                                                    <span class="caret"></span>
+                                                </a>
+
+                                                <ul class="dropdown-menu dropdown-menu-left">
+                                                    <?php foreach ($dropDownFilter as $item): ?>
+                                                        <li class="<?= ($item['isActive'] ? 'active' : ''); ?>">
+                                                            <a href="<?= $item['url'] ?>"
+                                                               class="<?= (isset($item['isAll']) ? ' all-list' : ''); ?>"
+                                                               id="<?= (isset($item['status']) ? $item['status'] : ''); ?>">
+                                                                <?= $item['label']; ?>
+                                                            </a>
+                                                        </li>
+                                                    <?php endforeach ?>
+                                                </ul>
+                                            </li>
+
+                                            <li class="dropdown dropdown-velocity" id="notification-filter-type">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                    <i class="icon-list2 position-left"></i> <?= AppMsg::t('Категорія:'); ?>
+                                                    <span class="label bg-<?= $userCategoriesLabelColor; ?> label-inline label-rounded position-right"><?= $userCategoriesLabel; ?></span>
+                                                    <span class="caret"></span>
+                                                </a>
+
+                                                <ul class="dropdown-menu dropdown-menu-left">
+                                                    <?php foreach ($categoriesMenu as $item): ?>
+                                                        <li<?= $item['isActive'] ? ' class="active"' : ''; ?>>
+                                                            <?= $item['link']; ?>
+                                                        </li>
+                                                    <?php endforeach; ?>
+                                                </ul>
+                                            </li>
+
+                                        </ul>
+
+                                        <div class="navbar-right" id="notification-action-buttons">
+                                            <ul class="nav navbar-nav">
+                                                <li>
+                                                    <?= \yii\helpers\Html::a(\app\components\AppMsg::t('Відмітити як прочитані'),
+                                                        '#',
+                                                        ['data-notification-action' => 'read', 'class' => 'hide']) ?>
+                                                </li>
+                                                <li>
+                                                    <a href="#" data-notification-action="new" class="hide"
+                                                       data-acp-toggle="tooltip"
+                                                       title="<?= AppMsg::t('Відмітити як непрочитані'); ?>">
+                                                        <i class="fa fa-clock-o"></i>
+                                                        <span class="visible-xs-inline-block position-right">
+                                                        <?= AppMsg::t('Отметить как непрочитанные'); ?>
+                                                    </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" data-notification-action="archived" class="hide"
+                                                       data-acp-toggle="tooltip" title="<?= AppMsg::t('Архівувати'); ?>">
+                                                        <i class="fa fa-trash"></i>
+                                                        <span class="visible-xs-inline-block position-right">
+                                                        <?= AppMsg::t('Архівувати'); ?>
+                                                    </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <div class="helpers-header clearfix">
+                                                        <?= \yii\helpers\Html::a('<i class="fa fa-check"></i>' . \app\components\AppMsg::t('Прочитати все'),
+                                                            null,
+                                                            ['id' => 'mark-all-news-as-read', 'class' => 'no-spinner']) ?>
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         </div>
-                                        <div class="panel-footer">
-                                            <div class="heading-elements">
+                                    </div>
+                                </div>
+                                <!-- /navbar -->
 
-                                                <?php if (($notificationCount = $dataProvider->getTotalCount())) : ?>
-                                                    <span class="heading-text text-semibold">
-                                                        <?= AppMsg::t('{notificationCount, plural, one{# сповіщення} few{# сповіщень} many{# сповіщень} other{# сповіщень} }',
-                                                            ['notificationCount' => $notificationCount]); ?></span>
-                                                <?php endif; ?>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="panel panel-flat">
+                                            <?php Pjax::begin(['id' => 'full-notification-block']); ?>
+                                            <div id="list-notifications">
+                                                <?= \yii\widgets\ListView::widget([
+                                                    'dataProvider' => $dataProvider,
+                                                    'itemView' => '_notification-item',
+                                                    'layout' => '{items}',
+                                                    'emptyText' => '<span class="media-link">' . AppMsg::t('Сповіщень немає.') . '</span>',
+                                                    'emptyTextOptions' => [
+                                                        'tag' => 'li',
+                                                        'class' => 'media empty-text text-center',
+                                                    ],
+                                                    'viewParams' => [
+                                                        'notificationSettings' => $notificationSettings,
+                                                        'listCategories' => $listCategories,
+                                                    ],
+                                                    'options' => [
+                                                        'tag' => 'ul',
+                                                        'class' => 'media-list media-list-linked media-list-bordered',
+                                                    ],
+                                                    'itemOptions' => [
+                                                        'tag' => false,
+                                                    ],
+                                                ]); ?>
+                                            </div>
+                                            <div class="panel-footer">
+                                                <div class="heading-elements">
 
-                                                <div class="pull-right">
-                                                    <?= \yii\widgets\LinkPager::widget([
-                                                            'pagination' => $dataProvider->getPagination(),
-                                                        ] + $pagerSettings) ?>
+                                                    <?php if (($notificationCount = $dataProvider->getTotalCount())) : ?>
+                                                        <span class="heading-text text-semibold">
+                                                    <?= AppMsg::t('{notificationCount, plural, one{# сповіщення} few{# сповіщень} many{# сповіщень} other{# сповіщень} }',
+                                                        ['notificationCount' => $notificationCount]); ?></span>
+                                                    <?php endif; ?>
+
+                                                    <div class="pull-right">
+                                                        <?= \yii\widgets\LinkPager::widget([
+                                                                'pagination' => $dataProvider->getPagination(),
+                                                            ] + $pagerSettings) ?>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <?php Pjax::end(); ?>
                                         </div>
-                                        <?php Pjax::end(); ?>
                                     </div>
                                 </div>
                             </div>
@@ -302,6 +305,8 @@ if (($page = ArrayHelper::getValue($_GET, 'page', 0)) > 1) {
         </article>
     </div>
 </div>
+
+
 
 <?php
 $this->registerJs('Notifications.NotificationPage().init()');

@@ -16,69 +16,78 @@ $baseUrl = $asset->baseUrl;
                 <?= $this->render('/_blocks/profile-sidebar') ?>
             </div>
             <div class="content-left-fixed">
-                <div id="profile-info" class="clearfix">
-                    <div class="step-title"><?= 'Редагування профілю' ?></div>
-                    <div class="user-form-edit">
-                        <div class="row">
-                            <?php
-                            $form = ActiveForm::begin([
-                                'id' => 'user-form',
-                                'options' => [
-                                    'class' => 'link-form',
-                                    'enctype' => 'multipart/form-data',
-                                ],
-                                'fieldConfig' => [
-                                    'template' => "{input}\n{error}",
-                                ],
-                            ]);
-                            ?>
+                <div class="project-info-page-description">
+                    <div class="profile-user-page">
+                        <div class="image"></div>
 
-                            <div class="col-md-12 form-z-index">
-                                <div class="form-group clearfix">
-                                    <?= $form->field($model, 'email')->textInput([
-                                        'maxlength' => true,
-                                        'placeholder' => AppMsg::t('E-Mail')
-                                    ]) ?>
-                                </div>
-
-                                <div class="form-group clearfix">
-                                    <?= $form->field($model, 'avatar')->widget(\kartik\file\FileInput::className(), [
+                        <div id="profile-info" class="clearfix">
+                            <div class="user-form-edit">
+                                <div class="step-title"><?= 'Редагування профілю' ?></div>
+                                <?php
+                                    $form = ActiveForm::begin([
+                                        'id' => 'user-form',
                                         'options' => [
-                                            'accept' => 'image/*'
+                                            'class' => 'link-form clearfix',
+                                            'enctype' => 'multipart/form-data',
                                         ],
-                                        'pluginOptions' => [
-                                            'showRemove' => false,
-                                            'initialPreview' => [
-                                                isset($model->avatar) ? \yii\easyii\helpers\Image::thumb($model->avatar, 240) : null
+                                        'fieldConfig' => [
+                                            'template' => "{input}\n{error}",
+                                        ],
+                                    ]);
+                                ?>
+
+                                <div class="col-md-12 form-z-index">
+                                    <div class="form-group clearfix">
+                                        <?= $form->field($model, 'email')->textInput([
+                                            'maxlength' => true,
+                                            'placeholder' => AppMsg::t('E-Mail')
+                                        ]) ?>
+                                    </div>
+
+                                    <div class="form-group clearfix">
+                                        <?= $form->field($model, 'avatar')->widget(\kartik\file\FileInput::className(), [
+                                            'options' => [
+                                                'accept' => 'image/*',
+                                                'multiple' => false
                                             ],
-                                            'initialPreviewAsData' => true,
-                                            'initialPreviewConfig' => [
-                                                [
-                                                    'url' => \yii\helpers\Url::to(['/profile/clear-image/' . $model->primaryKey . '/']),
+                                            'pluginOptions' => $model->avatar ? [
+                                                'showRemove' => false,
+                                                'initialPreview' => [
+                                                    isset($model->avatar) ? \yii\easyii\helpers\Image::thumb($model->avatar, 240) : null
                                                 ],
-                                            ],
-                                        ]
-                                    ]); ?>
+                                                'initialPreviewAsData' => true,
+                                                'initialPreviewConfig' => [
+                                                    [
+                                                        'url' => \yii\helpers\Url::to(['/profile/clear-image/' . $model->primaryKey . '/']),
+                                                    ],
+                                                ],
+                                            ] :
+                                                [
+                                                    'showRemove' => false,
+                                                    'initialPreviewAsData' => true,
+                                                ]
+                                        ]); ?>
+                                    </div>
+
+                                    <div class="form-group clearfix">
+                                        <?= $form->field($model, 'userPassword')->passwordInput([
+                                            'maxlength' => true,
+                                            'placeholder' => AppMsg::t('Новый пароль'),
+                                        ]) ?>
+                                    </div>
+
+                                    <div class="form-group clearfix">
+                                        <?= $form->field($model, 'passwordRepeat')->passwordInput([
+                                            'maxlength' => true,
+                                            'placeholder' => AppMsg::t('Повторіть новий пароль'),
+                                        ]) ?>
+                                    </div>
+
+                                    <?= \yii\helpers\Html::submitButton(AppMsg::t('Зберегти'), ['class' => 'link-button']) ?>
                                 </div>
 
-                                <div class="form-group clearfix">
-                                    <?= $form->field($model, 'userPassword')->passwordInput([
-                                        'maxlength' => true,
-                                        'placeholder' => AppMsg::t('Новый пароль'),
-                                    ]) ?>
-                                </div>
-
-                                <div class="form-group clearfix">
-                                    <?= $form->field($model, 'passwordRepeat')->passwordInput([
-                                        'maxlength' => true,
-                                        'placeholder' => AppMsg::t('Повторіть новий пароль'),
-                                    ]) ?>
-                                </div>
-
-                                <?= \yii\helpers\Html::submitButton(AppMsg::t('Зберегти'), ['class' => 'link-button']) ?>
+                                <?php ActiveForm::end(); ?>
                             </div>
-
-                            <?php ActiveForm::end(); ?>
                         </div>
                     </div>
                 </div>

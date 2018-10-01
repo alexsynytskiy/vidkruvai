@@ -258,6 +258,7 @@ li.notification-item .media-annotation {
 
 .media-list span {
     margin-bottom: 0;
+    padding-left: 0;
 }
 
 #toolbar-notifications .media-link i {
@@ -500,7 +501,7 @@ article {
 .content-left-fixed .news-item {
     border-radius: 10px;
     box-shadow: 0 3px 15px 0 rgba(0, 60, 125, 0.15);
-    margin-bottom: 52px;
+    margin-bottom: 32px;
 }
 
 .content-left-fixed .news-item .image {
@@ -609,9 +610,9 @@ article {
 }
 
 .news-item.small {
-    width: 400px;
+    width: 409px;
     float: left;
-    margin-right: 50px;
+    margin-right: 32px;
 }
 
 .news-item.small:nth-child(2n + 1) {
@@ -620,7 +621,7 @@ article {
 
 .content-left-fixed .news-item.small .image {
     float: none;
-    max-width: 400px;
+    max-width: 409px;
     max-height: 280px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -740,6 +741,7 @@ article {
 #full-notification-block .list-group-item {
     border: none;
     text-align: left;
+    padding: 0;
 }
 
 #full-notification-block .list-group-item .media-heading {
@@ -758,6 +760,18 @@ span.bg-success,
     background-color: #047afb;
     padding: 7px 12px;
     margin-left: 10px;
+}
+
+#full-notification-block, .notification-index  #navbar-second {
+    padding: 0 32px;
+}
+
+.notification-page .navbar-nav:first-child > li > a:first-child {
+    padding-left: 0;
+}
+
+.notification-page #notification-action-buttons.navbar-right {
+    margin-right: 0 !important;
 }
 
 .notification-index .panel-footer {
@@ -967,6 +981,10 @@ span.bg-success,
 
 .profile-info-main .personal-achievements {
     margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.profile-info-main .personal-team {
     margin-bottom: 32px;
 }
 
@@ -1158,6 +1176,33 @@ span.bg-success,
     border: 2px solid #F7F9FB;
 }
 
+.cabinet.news .helpers-header {
+    margin-bottom: 32px;
+}
+
+#team-members-emails .col-md-6,
+#team-members-emails .col-md-12 {
+    padding: 0;
+}
+
+#team-members-emails .col-md-6 {
+    width: calc(50% - 12px);
+}
+
+#team-members-emails .col-md-6:nth-child(2n + 1) {
+    margin-right: 24px;
+}
+
+#team-members-emails .col-md-6:nth-child(2n + 1) {
+    margin-right: 24px;
+}
+
+#team-members-emails .col-md-6:last-child .form-group,
+#team-members-emails .col-md-6:last-child(-1) .form-group
+{
+    margin-bottom: 24px;
+}
+
 @media (max-width: 1199px) {
 
 }
@@ -1328,7 +1373,6 @@ span.bg-success,
 
 @media (min-width: 768px) {
     .navbar-inverse .navbar-nav li:last-child a {
-        padding-right: 0;
         position: relative;
     }
 }

@@ -788,9 +788,8 @@ a {
 }
 
 .user-form-edit {
-    padding: 50px 64px 23px;
+    padding: 10px 32px 16px;
     border-radius: 10px;
-    box-shadow: 0 3px 15px 0 rgba(0, 60, 125, 0.15);
 }
 
 .media-right {
@@ -881,7 +880,9 @@ a {
     margin: 0;
 }
 
-.field-siteuser-avatar .btn-file, button.fileinput-upload {
+.field-siteuser-avatar .btn-file,
+button.fileinput-upload,
+.field-teamcreateform-avatar .btn-file {
     height: 44px !important;
     border-top-right-radius: 5px !important;
     border-bottom-right-radius: 5px !important;
@@ -904,7 +905,8 @@ button.fileinput-upload {
 }
 
 .field-siteuser-avatar .btn-file:hover,
-button.fileinput-upload:hover {
+button.fileinput-upload:hover,
+.field-teamcreateform-avatar .btn-file:hover {
     background-color: #fff !important;
     border: 2px solid #047afb !important;
     color: #047afb !important;
@@ -916,11 +918,12 @@ button.fileinput-upload:hover {
 }
 
 .field-siteuser-avatar .btn-file:hover span,
+.field-teamcreateform-avatar .btn-file:hover span,
 button.fileinput-upload:hover span {
     color: #047afb;
 }
 
-.field-siteuser-avatar span {
+.field-siteuser-avatar span, .field-teamcreateform-avatar span {
     color: #fff;
 }
 

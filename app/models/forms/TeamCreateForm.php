@@ -21,7 +21,7 @@ class TeamCreateForm extends Model
     /**
      * @var string
      */
-    private $name;
+    public $name;
     /**
      * @var string
      */

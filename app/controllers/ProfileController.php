@@ -589,7 +589,7 @@ class ProfileController extends Controller
             return $this->refresh();
         }
 
-        return $this->render('team-create', [
+        return $this->render('create-team', [
             'model' => $model
         ]);
     }

@@ -40,6 +40,7 @@ use yii\web\NotFoundHttpException;
  * @property string $passwordWithSalt
  * @property Answer[] $answers
  * @property Level $level
+ * @property Team $team
  *
  */
 class SiteUser extends ActiveRecord implements IdentityInterface
@@ -77,6 +78,14 @@ class SiteUser extends ActiveRecord implements IdentityInterface
     public static function answersTableName()
     {
         return 'question_answer_user';
+    }
+
+    /**
+     * @return string
+     */
+    public static function teamParticipationTableName()
+    {
+        return TeamSiteUser::tableName();
     }
 
     /**
@@ -359,6 +368,15 @@ class SiteUser extends ActiveRecord implements IdentityInterface
     {
         return $this->hasMany(Answer::className(), ['id' => 'answer_id'])
             ->viaTable(static::answersTableName(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeam()
+    {
+        return $this->hasOne(Team::className(), ['id' => 'team_id'])
+            ->viaTable(static::teamParticipationTableName(), ['site_user_id' => 'id']);
     }
 
     /**

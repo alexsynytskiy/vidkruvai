@@ -12,6 +12,7 @@ use yii\db\ActiveRecord;
  * @property integer $site_user_id
  * @property integer $team_id
  * @property string $email
+ * @property string $role
  * @property string $status
  * @property string $created_at
  * @property string $updated_at
@@ -22,7 +23,8 @@ use yii\db\ActiveRecord;
  */
 class TeamSiteUser extends ActiveRecord
 {
-    const STATUS_ACTIVE = 'ACTIVE';
+    const STATUS_DECLINED = 'DECLINED';
+    const STATUS_CONFIRMED = 'CONFIRMED';
     const STATUS_UNCONFIRMED = 'UNCONFIRMED';
 
     public static function tableName()
@@ -34,7 +36,7 @@ class TeamSiteUser extends ActiveRecord
     {
         return [
             [['site_user_id', 'team_id'], 'integer'],
-            [['email', 'status'], 'string', 'max' => 255],
+            [['email', 'status', 'role'], 'string', 'max' => 255],
             [['created_at', 'updated_at'], 'safe'],
         ];
     }

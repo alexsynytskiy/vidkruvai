@@ -116,44 +116,75 @@ $user = \Yii::$app->siteUser->identity;
                                 <?php endif; ?>
 
                                 <?php if (count($achievements)): ?>
-                                <div class="black-panel mb-50 pb-20 pt-20-i personal-achievements">
+                                    <div class="black-panel mb-50 pb-20 pt-20-i personal-achievements">
+                                        <div class="progress-block pt-0 mt-0">
+                                            <div class="progress-top mb-0">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="progress-title mb-10">
+                                                            <h3>
+                                                                <?= AppMsg::t('Досягнення'); ?>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="progress-items mb-0">
+                                                <div class="row">
+                                                    <?php foreach ($achievements as $achievement): ?>
+                                                        <?= $this->render('_achievement-item', [
+                                                            'model' => $achievement,
+                                                            'userId' => $preview ? $userCredentials['id'] : Yii::$app->siteUser->id,
+                                                        ]) ?>
+                                                    <?php endforeach; ?>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <?= \yii\helpers\Html::a(AppMsg::t('Всі досягнення'),
+                                                            [$preview ? "/profile/{$userCredentials['id']}/achievements" : '/profile/achievements'],
+                                                            [
+                                                                'class' => 'button mt-0',
+                                                            ]) ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+
+                                <div class="black-panel mb-50 pb-20 pt-20-i personal-team">
                                     <div class="progress-block pt-0 mt-0">
                                         <div class="progress-top mb-0">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="progress-title mb-10">
                                                         <h3>
-                                                            <?= AppMsg::t('Досягнення'); ?>
+                                                            <?= AppMsg::t('Команда'); ?>
                                                         </h3>
                                                     </div>
                                                 </div>
 
                                             </div>
                                         </div>
-                                        <div class="progress-items mb-0">
+                                        <div class="team-items mb-0">
                                             <div class="row">
-                                                <?php foreach ($achievements as $achievement): ?>
-                                                    <?= $this->render('_achievement-item', [
-                                                        'model' => $achievement,
-                                                        'userId' => $preview ? $userCredentials['id'] : Yii::$app->siteUser->id,
-                                                    ]) ?>
-                                                <?php endforeach; ?>
+                                                <?php if ($user->team): ?>
+                                                1
+                                                <?php endif; ?>
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-12">
-                                                    <?= \yii\helpers\Html::a(AppMsg::t('Всі досягнення'),
-                                                        [$preview ? "/profile/{$userCredentials['id']}/achievements" : '/profile/achievements'],
-                                                        [
-                                                            'class' => 'button mt-0',
-                                                        ]) ?>
+                                                    <?php if (!$user->team && !$preview): ?>
+                                                        <?= \yii\helpers\Html::a(AppMsg::t('Створити команду'),
+                                                            ['/profile/create-team'],
+                                                            [
+                                                                'class' => 'button mt-0',
+                                                            ]) ?>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <?php endif; ?>
-
-                                    <div class="team-title">
-                                        Команда:
                                     </div>
                                 </div>
                             </div>

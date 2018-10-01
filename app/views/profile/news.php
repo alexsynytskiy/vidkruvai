@@ -14,7 +14,7 @@ $baseUrl = $asset->baseUrl;
 ?>
 
     <div class="steps-block profile clearfix">
-        <div class="cabinet">
+        <div class="cabinet news">
             <article>
                 <div class="sidebar-right-fixed">
                     <?= $this->render('/_blocks/profile-sidebar') ?>
