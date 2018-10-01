@@ -79,6 +79,7 @@ form#user-register, form#user-login {
 form input.form-control,
 #registerform-captchauser,
 #loginform-captchauser,
+#teamcreateform-captchateam,
 .kv-fileinput-caption {
     height: 44px;
     border-radius: 5px;
@@ -141,11 +142,11 @@ form .already a:hover {
     padding: 0;
 }
 
-#registerform-captchauser, #loginform-captchauser {
+#registerform-captchauser, #loginform-captchauser, #teamcreateform-captchateam {
     width: 230px;
 }
 
-#registerform-captchauser::placeholder, #loginform-captchauser::placeholder {
+#registerform-captchauser::placeholder, #loginform-captchauser::placeholder, #teamcreateform-captchateam::placeholder {
     color: #93A0A9;
 }
 
@@ -763,8 +764,16 @@ a {
     font-size: 14px;
 }
 
-.field-registerform-captchauser img, .field-loginform-captchauser img {
+.field-registerform-captchauser img, .field-loginform-captchauser img, .field-teamcreateform-captchateam img {
     margin: 0;
+}
+
+.field-teamcreateform-captchateam .help-block {
+    text-align: left;
+}
+
+.field-teamcreateform-captchateam .media-body {
+    width: 230px;
 }
 
 .block-left {
@@ -802,14 +811,16 @@ a {
 
 .form-control:hover,
 #registerform-captchauser:hover,
-#loginform-captchauser:hover {
+#loginform-captchauser:hover,
+#teamcreateform-captchateam:hover {
     background-color: #fff;
     border: 2px solid #F7F9FB;
 }
 
 .form-control:focus,
 #registerform-captchauser:focus,
-#loginform-captchauser:focus {
+#loginform-captchauser:focus,
+#teamcreateform-captchateam:focus{
     border: 2px solid #007BFF;
     box-shadow: none;
     background-color: #fff;
@@ -820,7 +831,10 @@ a {
 .has-error #registerform-captchauser:focus,
 .has-error #loginform-captchauser:focus,
 .has-error #registerform-captchauser,
-.has-error #loginform-captchauser {
+.has-error #loginform-captchauser,
+.has-error #teamcreateform-captchateam,
+.has-error #teamcreateform-captchateam:focus
+{
     border: 2px solid #FF6B00;
     box-shadow: none;
     background-color: #fff;
@@ -996,7 +1010,7 @@ button.fileinput-upload:hover span {
         max-width: 313px;
     }
 
-    #registerform-captchauser, #loginform-captchauser {
+    #registerform-captchauser, #loginform-captchauser, #teamcreateform-captchateam {
         width: 200px;
     }
 

@@ -1,35 +1,40 @@
 <?php
+
+use yii\helpers\Url;
+
 /* @var $showUserInfo bool */
 
 $totalNews = \yii\easyii\modules\news\models\News::getUserNewsCounters();
 $totalNews = $totalNews > 0 ? $totalNews : null;
 
 $showUserInfo = isset($showUserInfo) ? $showUserInfo : true;
+$user = \Yii::$app->siteUser->identity;
 ?>
 
 <div class="cabinet-menu nopadding">
     <div class="wrapper">
         <?php if ($showUserInfo): ?>
-            <a href="<?= \yii\helpers\Url::to('/profile') ?>">
+            <a href="<?= Url::to('/profile') ?>">
                 <div class="profile-info">
-                    <img src="<?= \Yii::$app->siteUser->identity->avatar ?>" class="avatar">
-                    <div class="name"><?= \Yii::$app->siteUser->identity->name . ' ' .
-                        \Yii::$app->siteUser->identity->surname ?></div>
-                    <div class="school"><?= \Yii::$app->siteUser->identity->school ?></div>
-                    <div class="rating"><?= \Yii::$app->siteUser->identity->total_experience ?></div>
+                    <img src="<?= $user->avatar ?>" class="avatar">
+                    <div class="name"><?= $user->name . ' ' . $user->surname ?></div>
+                    <div class="school"><?= $user->school ?></div>
+                    <div class="rating"><?= $user->total_experience ?></div>
                 </div>
             </a>
         <?php endif; ?>
 
         <div class="menu-link">
             <div class="icon"></div>
-            <a href="<?= \yii\helpers\Url::to(['profile/']) ?>">
+            <a href="<?= Url::to(['profile/']) ?>">
                 <div class="text">Профіль</div>
             </a>
         </div>
         <div class="menu-link">
             <div class="icon"></div>
-            <div class="text">Команда</div>
+            <a href="<?= Url::to([$user->team ? 'profile/team' : '/profile/create-team']) ?>">
+                <div class="text">Команда</div>
+            </a>
         </div>
         <div class="menu-link active">
             <div class="icon"></div>
@@ -44,13 +49,13 @@ $showUserInfo = isset($showUserInfo) ? $showUserInfo : true;
                 <?php if ($totalNews): ?>
                     <div class="new-count news-unread"><?= $totalNews ?></div><?php endif; ?>
             </div>
-            <a href="<?= \yii\helpers\Url::to(['profile/news']) ?>">
+            <a href="<?= Url::to(['profile/news']) ?>">
                 <div class="text">Новини</div>
             </a>
         </div>
         <div class="menu-link">
             <div class="icon"></div>
-            <a href="<?= \yii\helpers\Url::to(['profile/logout']) ?>">
+            <a href="<?= Url::to(['profile/logout']) ?>">
                 <div class="text">Вихід</div>
             </a>
         </div>

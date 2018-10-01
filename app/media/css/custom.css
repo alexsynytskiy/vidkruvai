@@ -1161,7 +1161,9 @@ span.bg-success,
     padding-top: 20px;
 }
 
-.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+.nav .open > a,
+.nav .open > a:hover,
+.nav .open > a:focus {
     background-color: #F7F9FB;
 }
 
@@ -1193,14 +1195,21 @@ span.bg-success,
     margin-right: 24px;
 }
 
-#team-members-emails .col-md-6:nth-child(2n + 1) {
-    margin-right: 24px;
-}
-
-#team-members-emails .col-md-6:last-child .form-group,
-#team-members-emails .col-md-6:last-child(-1) .form-group
+#team-members-emails .col-md-12 .col-md-6:last-child .form-group,
+#team-members-emails .col-md-12 .col-md-6:last-child(-1) .form-group
 {
     margin-bottom: 24px;
+}
+
+#main-menu #toolbar-notifications .dropdown-menu:before,
+#main-menu #toolbar-notifications .dropdown-menu:after
+{
+    right: 14px;
+}
+
+.krajee-default .file-caption-info,
+.krajee-default .file-size-info {
+    height: 18px !important;
 }
 
 @media (max-width: 1199px) {

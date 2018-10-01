@@ -10,7 +10,7 @@ $baseUrl = $asset->baseUrl;
 ?>
 
 <div class="steps-block profile clearfix">
-    <div class="cabinet">
+    <div class="cabinet create-team">
         <article>
             <div class="sidebar-right-fixed">
                 <?= $this->render('/_blocks/profile-sidebar') ?>
@@ -62,17 +62,40 @@ $baseUrl = $asset->baseUrl;
 
                                     <div class="form-group clearfix" id="team-members-emails">
                                         <div class="col-md-12">
-                                            <?php for ($i = 1; $i <= 10; $i++): ?>
-                                                <div class="col-md-6">
-                                                    <?= $form->field($model, 'emails[]')->textInput([
-                                                        'placeholder' => AppMsg::t('Учасник ') . $i
-                                                    ]) ?>
-                                                </div>
-                                            <?php endfor; ?>
+                                            <?php if($model->isNewRecord): ?>
+                                                <?php for ($i = 1; $i <= 10; $i++): ?>
+                                                    <div class="col-md-6">
+                                                        <?= $form->field($model, 'emails[]')->textInput([
+                                                            'placeholder' => AppMsg::t('Учасник ') . $i
+                                                        ]) ?>
+                                                    </div>
+                                                <?php endfor; ?>
+                                            <?php else: ?>
+                                                <?php foreach ($model->emails as $email): ?>
+                                                    <div class="col-md-6">
+                                                        <?= $form->field($model, 'emails[]')->textInput() ?>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
 
-                                    <?= \yii\helpers\Html::submitButton(AppMsg::t('Підтвердити та створити команду'), ['class' => 'link-button']) ?>
+                                    <?= $form->field($model, 'captchaTeam')->widget(\yii\captcha\Captcha::className(), [
+                                        'captchaAction' => 'profile/captcha',
+                                        'options' => [
+                                            'placeholder' => 'Код перевірки',
+                                            'autocomplete' => 'off',
+                                        ],
+                                        'imageOptions' => [
+                                            'data-toggle' => "tooltip",
+                                            'data-placement' => "top",
+                                            'title' => 'Оновити картинку',
+                                        ],
+                                        'template' => '<div class="media-body"><div class="pl-0" style="padding-right: 10px;">{input}</div></div><div class="media-right">{image}</div>',
+                                    ]) ?>
+
+                                    <?= \yii\helpers\Html::submitButton(AppMsg::t('Підтвердити та створити команду'),
+                                        ['class' => 'link-button', 'style' => ['float' => 'left']]) ?>
                                 </div>
 
                                 <?php ActiveForm::end(); ?>

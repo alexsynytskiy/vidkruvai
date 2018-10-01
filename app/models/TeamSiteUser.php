@@ -2,9 +2,11 @@
 
 namespace app\models;
 
+use yii\base\Security;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 use yii\db\ActiveRecord;
+use yii\helpers\StringHelper;
 
 /**
  * Class TeamSiteUser
@@ -12,7 +14,7 @@ use yii\db\ActiveRecord;
  * @property integer $site_user_id
  * @property integer $team_id
  * @property string $email
- * @property string $role
+ * @property string $hash
  * @property string $status
  * @property string $created_at
  * @property string $updated_at
@@ -39,6 +41,25 @@ class TeamSiteUser extends ActiveRecord
             [['email', 'status', 'role'], 'string', 'max' => 255],
             [['created_at', 'updated_at'], 'safe'],
         ];
+    }
+
+    /**
+     * @param bool $insert
+     * @return bool
+     * @throws \yii\base\Exception
+     */
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($insert) {
+                $this->status = self::STATUS_UNCONFIRMED;
+                $this->hash = (new Security)->generateRandomString();
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     public function behaviors()

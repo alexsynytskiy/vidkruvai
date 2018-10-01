@@ -3,7 +3,9 @@
 namespace app\models\forms;
 
 use app\models\Team;
+use app\models\TeamSiteUser;
 use yii\base\Model;
+use yii\helpers\ArrayHelper;
 
 /**
  * Login form
@@ -30,6 +32,14 @@ class TeamCreateForm extends Model
      * @var Team
      */
     private $_team;
+    /**
+     * @var TeamSiteUser[]
+     */
+    private $_teamMembers;
+    /**
+     * @var bool
+     */
+    public $isNewRecord;
 
     /**
      * @inheritdoc
@@ -38,6 +48,7 @@ class TeamCreateForm extends Model
     {
         return [
             [['emails', 'avatar', 'captchaTeam', 'name'], 'required'],
+            ['emails', 'each', 'rule' => ['email']],
             ['captchaTeam', 'captcha', 'captchaAction' => '/profile/captcha'],
         ];
     }
@@ -56,9 +67,17 @@ class TeamCreateForm extends Model
     }
 
     /**
+     * @return TeamSiteUser[]
+     */
+    public function getMembers()
+    {
+        return $this->_teamMembers;
+    }
+
+    /**
      * @return Team
      */
-    public function getTeam()
+    public function getTeamUsers()
     {
         return $this->_team;
     }
@@ -72,7 +91,10 @@ class TeamCreateForm extends Model
     public function createTeam()
     {
         $team = new Team;
-
+        $team->name = $this->name;
+        $team->avatar = $this->avatar;
+        $team->status = Team::STATUS_UNCONFIRMED;
+        $team->level_id = 1;
 
         $this->_team = $team;
 
@@ -80,7 +102,20 @@ class TeamCreateForm extends Model
             $transaction = \Yii::$app->db->beginTransaction();
 
             try {
-                $team->save(false);
+                if($team->save(false)) {
+                    foreach ($this->emails as $email) {
+                        $teamMember = new TeamSiteUser;
+                        $teamMember->team_id = $team->id;
+                        $teamMember->email = $email;
+                        $teamMember->status = TeamSiteUser::STATUS_UNCONFIRMED;
+
+                        if(!$team->save()) {
+                            $this->addErrors($teamMember->getErrors());
+                        }
+
+                        $this->_teamMembers = ArrayHelper::merge($this->_teamMembers, [$teamMember]);
+                    }
+                }
 
                 $transaction->commit();
             } catch (\Throwable $e) {

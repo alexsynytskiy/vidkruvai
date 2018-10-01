@@ -10,7 +10,7 @@ $baseUrl = $asset->baseUrl;
 ?>
 
 <div class="steps-block profile clearfix">
-    <div class="cabinet">
+    <div class="cabinet update-profile">
         <article>
             <div class="sidebar-right-fixed">
                 <?= $this->render('/_blocks/profile-sidebar') ?>
@@ -68,6 +68,10 @@ $baseUrl = $asset->baseUrl;
                                                 ]
                                         ]); ?>
                                     </div>
+
+                                    <?php if(isset($model->avatar)): ?>
+                                        <?= '<div id="preview"></div>' ?>
+                                    <?php endif; ?>
 
                                     <div class="form-group clearfix">
                                         <?= $form->field($model, 'userPassword')->passwordInput([

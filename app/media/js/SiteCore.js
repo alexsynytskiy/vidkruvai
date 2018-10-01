@@ -131,11 +131,9 @@ var SiteCore = function (options) {
                 }
 
                 if ($(window).scrollTop() + 120 > $(document).height() - $(window).height()) {
-                    console.log('add');
                     $(sidebarClass).addClass(classToAdd);
                 }
                 else {
-                    console.log('remove');
                     var $sidebar = $(sidebarClass);
                     $sidebar.removeClass('sidebar-right-fixed-bottom-small');
                     $sidebar.removeClass('sidebar-right-fixed-bottom-big');

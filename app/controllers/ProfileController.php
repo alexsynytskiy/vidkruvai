@@ -565,6 +565,7 @@ class ProfileController extends Controller
         \Yii::$app->seo->setKeywords('Відкривай, Україну');
 
         $model = new TeamCreateForm;
+        $model->isNewRecord = true;
 
         if ($model && $model->load(\Yii::$app->request->post())) {
             if (\Yii::$app->request->isAjax) {
@@ -586,6 +587,7 @@ class ProfileController extends Controller
             } else {
                 $this->flash('error', \Yii::t('easyii', 'Update error. {0}', $model->getErrors()));
             }
+
             return $this->refresh();
         }
 
