@@ -71,6 +71,16 @@ $config = [
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => false,//set this property to false to send mails to real email addresses
+            //comment the following array to send mail using php's mail function
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host'  => 'mx1.mirohost.net',
+                'username' => 'alexsynytskiy@coukraine.org',
+                'password' => 'z91XRQpzgqXA',
+                'port'     => 25,
+                'encryption' => 'tls',
+            ],
         ],
         'siteUser' => [
             'class' => 'yii\web\User',

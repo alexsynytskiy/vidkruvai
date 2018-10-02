@@ -583,12 +583,14 @@ class ProfileController extends Controller
             }
 
             if ($model->createTeam()) {
-                $this->flash('success', \Yii::t('easyii', 'User updated'));
+                $this->flash('success', \Yii::t('easyii', 'Team created'));
             } else {
-                $this->flash('error', \Yii::t('easyii', 'Update error. {0}', $model->getErrors()));
+                $this->flash('error', \Yii::t('easyii', 'Create error.'));
             }
 
-            return $this->refresh();
+            return $this->render('update-team', [
+                'model' => $model
+            ]);
         }
 
         return $this->render('create-team', [

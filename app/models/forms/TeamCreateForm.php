@@ -2,13 +2,16 @@
 
 namespace app\models\forms;
 
+use app\components\AppMsg;
+use app\models\definitions\DefTeam;
+use app\models\definitions\DefTeamSiteUser;
 use app\models\Team;
 use app\models\TeamSiteUser;
 use yii\base\Model;
-use yii\helpers\ArrayHelper;
 
 /**
- * Login form
+ * Class TeamCreateForm
+ * @package app\models\forms
  */
 class TeamCreateForm extends Model
 {
@@ -47,10 +50,26 @@ class TeamCreateForm extends Model
     public function rules()
     {
         return [
-            [['emails', 'avatar', 'captchaTeam', 'name'], 'required'],
+            [['avatar', 'captchaTeam', 'name'], 'required'],
             ['emails', 'each', 'rule' => ['email']],
+            ['emails', 'checkcount'],
             ['captchaTeam', 'captcha', 'captchaAction' => '/profile/captcha'],
         ];
+    }
+
+    /**
+     * @param $attribute
+     * @param $params
+     */
+    public function checkcount($attribute, $params)
+    {
+        if (count($this->emails) < 2) {
+            $this->addError('emails', AppMsg::t('Кількість учасників має бути більша за 2'));
+        }
+
+        if (count($this->emails) > 10) {
+            $this->addError('emails', AppMsg::t('Кількість учасників має бути не більша за 10'));
+        }
     }
 
     /**
@@ -93,7 +112,7 @@ class TeamCreateForm extends Model
         $team = new Team;
         $team->name = $this->name;
         $team->avatar = $this->avatar;
-        $team->status = Team::STATUS_UNCONFIRMED;
+        $team->status = DefTeam::STATUS_UNCONFIRMED;
         $team->level_id = 1;
 
         $this->_team = $team;
@@ -102,19 +121,30 @@ class TeamCreateForm extends Model
             $transaction = \Yii::$app->db->beginTransaction();
 
             try {
-                if($team->save(false)) {
+                if ($team->save()) {
                     foreach ($this->emails as $email) {
-                        $teamMember = new TeamSiteUser;
-                        $teamMember->team_id = $team->id;
-                        $teamMember->email = $email;
-                        $teamMember->status = TeamSiteUser::STATUS_UNCONFIRMED;
+                        if (!empty($email)) {
+                            $teamMember = new TeamSiteUser;
+                            $teamMember->team_id = $team->id;
+                            $teamMember->email = $email;
+                            $teamMember->role = DefTeamSiteUser::ROLE_MEMBER;
+                            $teamMember->status = DefTeamSiteUser::STATUS_UNCONFIRMED;
 
-                        if(!$team->save()) {
-                            $this->addErrors($teamMember->getErrors());
+                            if ($teamMember->email === \Yii::$app->siteUser->identity->email) {
+                                $teamMember->site_user_id = \Yii::$app->siteUser->identity->id;
+                                $teamMember->role = DefTeamSiteUser::ROLE_CAPTAIN;
+                                $teamMember->status = DefTeamSiteUser::STATUS_CONFIRMED;
+                            }
+
+                            if (!$teamMember->save()) {
+                                $this->addErrors($teamMember->getErrors());
+                            }
+
+                            $this->_teamMembers[] = $teamMember;
                         }
-
-                        $this->_teamMembers = ArrayHelper::merge($this->_teamMembers, [$teamMember]);
                     }
+
+                    //$team->mailAdmin();
                 }
 
                 $transaction->commit();

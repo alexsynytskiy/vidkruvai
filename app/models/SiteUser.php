@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\components\AppMsg;
 use app\models\definitions\DefSiteUser;
+use app\models\definitions\DefTeamSiteUser;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -396,6 +397,21 @@ class SiteUser extends ActiveRecord implements IdentityInterface
             self::ROLE_PARTICIPANT => 'Учасник',
             self::ROLE_MENTOR => 'Ментор',
         ];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCaptain() {
+        return self::find()
+            ->alias('su')
+            ->innerJoin(TeamSiteUser::tableName() . ' tsu', 'tsu.site_user_id = su.id')
+            ->where([
+                'tsu.team_id' => $this->team->id,
+                'tsu.role' => DefTeamSiteUser::ROLE_CAPTAIN,
+                'tsu.site_user_id' => $this->id,
+            ])
+            ->exists();
     }
 
     /**

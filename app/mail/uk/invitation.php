@@ -1,5 +1,9 @@
 <?php
 
+/** @var string $subject */
+/** @var string $captainName */
+
+$this->title = $subject;
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -3826,9 +3830,9 @@
                                             <tr>
                                                 <th>
                                                     <a href="/"> <img src="http://vidkruvai.loc/assets/3e8f2a86/img/logo.png" class="text-center" style="margin: 0 0 20px 0;"></a>
-                                                    <p style="margin:0;">Привіт! Тебе запрошено до команди {teamName} капітаном {teamLead} <br>
+                                                    <p style="margin:0;">Привіт! Тебе запрошено до команди <?= $teamName ?> капітаном <?= $teamLead ?> <br>
                                                         <br>Реєстрація команд на проект <b>Відкривай Україну</b> стартувала! Зараз формуються команди, учасники підтверджують свою участь, після чого ми верифікуємо кожну команду згідно з правилами. <br>
-                                                        <br>Вже зареєстровано <b>{teamsTotalCount}</b> команд - поспішай, не втрачай моливість зробити світ навколо трохи кращим! <br>
+                                                        <br>Вже зареєстровано <b><?= $teamsTotalCount ?></b> команд - поспішай, не втрачай моливість зробити світ навколо трохи кращим! <br>
                                                         <br><b>Твоя команда вже чекає на тебе!</b> </p>
                                                     <br>
                                                     <br>
@@ -3836,8 +3840,8 @@
                                                         <tr>
                                                             <td>
                                                                 <!--[if mso]>
-                                                                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="{registrationLink}" style="height:35px;v-text-anchor:middle;width:150px;" arcsize="50%" strokecolor="#f8d732" fillcolor="#f8d732"> <center style="color:#000;font-family:sans-serif;font-size:16px;font-weight:bold;">Реєстрація</center> </v:roundrect> <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="{siteLink}" style="height:35px;v-text-anchor:middle;width:150px;" arcsize="50%" strokecolor="#f8d732" fillcolor="#f8d732"> <center style="color:#000;font-family:sans-serif;font-size:16px;font-weight:bold;">Сайт</center> </v:roundrect>
-                                                                <![endif]--> <a target="_blank" class="link-action" href="{registrationLink}" style="background-color:#2088f7;border-radius:18px;color:#fff;display:inline-block;font-family:sans-serif;font-size:14px;font-weight:bold;line-height:36px;text-align:center;text-decoration:none;width:150px;margin-right:5px;margin-bottom:25px;-webkit-text-size-adjust:none;mso-hide:all;">Реєстрація</a> <a target="_blank" class="link-action" href="{siteLink}" style="background-color:#2088f7;border-radius:18px;color:#fff;display:inline-block;font-family:sans-serif;font-size:14px;font-weight:bold;line-height:36px;text-align:center;text-decoration:none;width:150px;-webkit-text-size-adjust:none;margin-right: 5px;">Сайт</a> <a target="_blank" class="link-action" href="{notParticipantLink}" style="background-color:#f7931d;border-radius:18px;color:#fff;display:inline-block;font-family:sans-serif;font-size:14px;font-weight:bold;line-height:36px;text-align:center;text-decoration:none;width:150px;-webkit-text-size-adjust:none;">Я не учасник</a></td>
+                                                                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="<?= $registrationLink ?>" style="height:35px;v-text-anchor:middle;width:150px;" arcsize="50%" strokecolor="#f8d732" fillcolor="#f8d732"> <center style="color:#000;font-family:sans-serif;font-size:16px;font-weight:bold;">Реєстрація</center> </v:roundrect> <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="<?= $siteLink ?>" style="height:35px;v-text-anchor:middle;width:150px;" arcsize="50%" strokecolor="#f8d732" fillcolor="#f8d732"> <center style="color:#000;font-family:sans-serif;font-size:16px;font-weight:bold;">Сайт</center> </v:roundrect>
+                                                                <![endif]--> <a target="_blank" class="link-action" href="<?= $registrationLink ?>" style="background-color:#2088f7;border-radius:18px;color:#fff;display:inline-block;font-family:sans-serif;font-size:14px;font-weight:bold;line-height:36px;text-align:center;text-decoration:none;width:150px;margin-right:5px;margin-bottom:25px;-webkit-text-size-adjust:none;mso-hide:all;">Реєстрація</a> <a target="_blank" class="link-action" href="<?= $siteLink ?>" style="background-color:#2088f7;border-radius:18px;color:#fff;display:inline-block;font-family:sans-serif;font-size:14px;font-weight:bold;line-height:36px;text-align:center;text-decoration:none;width:150px;-webkit-text-size-adjust:none;margin-right: 5px;">Сайт</a> <a target="_blank" class="link-action" href="<?= $notParticipantLink ?>" style="background-color:#f7931d;border-radius:18px;color:#fff;display:inline-block;font-family:sans-serif;font-size:14px;font-weight:bold;line-height:36px;text-align:center;text-decoration:none;width:150px;-webkit-text-size-adjust:none;">Я не учасник</a></td>
                                                         </tr>
                                                     </table>
                                                 </th> <th class="expander"></th> </tr>
@@ -3858,7 +3862,7 @@
                                     <th class="small-12 large-12 columns first last" style="padding-bottom:0;"> <table>
                                             <tr>
                                                 <th> <p class="text-center footercopy" style="margin:0;color:#777777 !important;">
-                                                        <a href="{unsubscribeLink}">Я отримав цього листа помилково</a>
+                                                        <a href="<?= $unsubscribeLink ?>">Я отримав цього листа помилково</a>
                                                     </p>
                                                 </th> <th class="expander"></th> </tr>
                                         </table>

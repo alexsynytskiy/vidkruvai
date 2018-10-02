@@ -1037,6 +1037,7 @@ span.bg-success,
 .progress-block .progress-items .progress-item {
     padding: 15px 0;
     position: relative;
+    text-align: left;
 }
 
 .progress-block .progress-items .progress-item .knob-block {
@@ -1191,7 +1192,7 @@ span.bg-success,
     width: calc(50% - 12px);
 }
 
-#team-members-emails .col-md-6:nth-child(2n + 1) {
+#team-members-emails .col-md-6:nth-child(2n) {
     margin-right: 24px;
 }
 
@@ -1210,6 +1211,43 @@ span.bg-success,
 .krajee-default .file-caption-info,
 .krajee-default .file-size-info {
     height: 18px !important;
+}
+
+.field-captain-id .help-block {
+    margin: 0;
+}
+
+.field-captain-id {
+    margin: 0;
+}
+
+.profile-team-preview {
+    padding-bottom: 5px;
+    padding-top: 23px;
+}
+
+.profile-team-preview .team-status {
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    float: left;
+    line-height: 17px;
+    margin-bottom: 5px;
+    color: #878787;
+    margin-left: 5px;
+}
+
+.profile-team-preview .member-item .col-md-6 {
+    padding-left: 0;
+}
+
+.profile-team-preview .member-item img {
+    margin: 0;
+    border-radius: 50%;
+}
+
+.profile-team-preview .progress-block .progress-top .progress-title h3 {
+    margin-bottom: 30px;
 }
 
 @media (max-width: 1199px) {

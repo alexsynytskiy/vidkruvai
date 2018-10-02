@@ -2,11 +2,14 @@
 
 namespace app\models;
 
+use app\components\AppMsg;
+use app\models\definitions\DefTeamSiteUser;
 use yii\base\Security;
 use yii\behaviors\TimestampBehavior;
-use yii\db\Expression;
 use yii\db\ActiveRecord;
-use yii\helpers\StringHelper;
+use yii\db\Expression;
+use yii\easyii\helpers\Mail;
+use yii\easyii\models\Setting;
 
 /**
  * Class TeamSiteUser
@@ -14,6 +17,7 @@ use yii\helpers\StringHelper;
  * @property integer $site_user_id
  * @property integer $team_id
  * @property string $email
+ * @property string $role
  * @property string $hash
  * @property string $status
  * @property string $created_at
@@ -25,10 +29,6 @@ use yii\helpers\StringHelper;
  */
 class TeamSiteUser extends ActiveRecord
 {
-    const STATUS_DECLINED = 'DECLINED';
-    const STATUS_CONFIRMED = 'CONFIRMED';
-    const STATUS_UNCONFIRMED = 'UNCONFIRMED';
-
     public static function tableName()
     {
         return 'team_site_user';
@@ -52,7 +52,7 @@ class TeamSiteUser extends ActiveRecord
     {
         if (parent::beforeSave($insert)) {
             if ($insert) {
-                $this->status = self::STATUS_UNCONFIRMED;
+                $this->status = DefTeamSiteUser::STATUS_UNCONFIRMED;
                 $this->hash = (new Security)->generateRandomString();
             }
 
@@ -62,6 +62,22 @@ class TeamSiteUser extends ActiveRecord
         return false;
     }
 
+    /**
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if ($insert) {
+            //$this->mailInvitedUsers();
+        }
+    }
+
+    /**
+     * @return array
+     */
     public function behaviors()
     {
         return [
@@ -74,6 +90,35 @@ class TeamSiteUser extends ActiveRecord
                 'value' => new Expression('NOW()'),
             ],
         ];
+    }
+
+    /**
+     * @return bool
+     */
+    public function mailInvitedUsers()
+    {
+        $unsubscribeLink = '';
+        $registrationLink = '';
+        $teamName = '';
+        $teamLead = '';
+        $teamsTotalCount = '';
+        $siteLink = '';
+        $notParticipantLink = '';
+
+        return Mail::send(
+            Setting::get('admin_email'),
+            AppMsg::t('Запрошення у команду'),
+            '@app/mail/uk/invitation',
+            [
+                'unsubscribeLink' => $unsubscribeLink,
+                'registrationLink' => $registrationLink,
+                'teamName' => $teamName,
+                'teamLead' => $teamLead,
+                'teamsTotalCount' => $teamsTotalCount,
+                'siteLink' => $siteLink,
+                'notParticipantLink' => $notParticipantLink,
+            ]
+        );
     }
 
     /**

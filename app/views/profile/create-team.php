@@ -63,7 +63,9 @@ $baseUrl = $asset->baseUrl;
                                     <div class="form-group clearfix" id="team-members-emails">
                                         <div class="col-md-12">
                                             <?php if($model->isNewRecord): ?>
-                                                <?php for ($i = 1; $i <= 10; $i++): ?>
+                                                <?= $form->field($model, 'emails[]')->hiddenInput([
+                                                        'value' => Yii::$app->siteUser->identity->email, 'id' => 'captain-id']) ?>
+                                                <?php for ($i = 1; $i <= 9; $i++): ?>
                                                     <div class="col-md-6">
                                                         <?= $form->field($model, 'emails[]')->textInput([
                                                             'placeholder' => AppMsg::t('Учасник ') . $i
