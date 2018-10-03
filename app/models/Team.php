@@ -87,7 +87,7 @@ class Team extends ActiveRecord
             AppMsg::t('Створено нову команду'),
             '@app/mail/uk/admin_team_created',
             [
-                'captainName' => $captain->name . ' ' . $captain->surname,
+                'captainName' => $captain->getFullName(),
                 'link' => Url::to([
                     '/admin/team/a/view',
                     'id' => $this->primaryKey

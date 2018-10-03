@@ -40,7 +40,7 @@ $user = \Yii::$app->siteUser->identity;
                                 </div>
                                 <div class="right-side">
                                     <div class="clearfix">
-                                        <div class="name"><?= $user->name . ' ' . $user->surname ?></div>
+                                        <div class="name"><?= $user->getFullName() ?></div>
                                         <a href="<?= \yii\helpers\Url::to(['profile/update-profile']) ?>">
                                             <div class="profile-edit"></div>
                                         </a>

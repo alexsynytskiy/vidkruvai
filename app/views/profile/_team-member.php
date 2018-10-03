@@ -21,7 +21,7 @@ $memberInstance = $member->user;
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <div class="progress-descr">
-                        <h5><?= Html::encode($memberInstance->name . ' ' . $memberInstance->surname) ?></h5>
+                        <h5><?= Html::encode($memberInstance->getFullName()) ?></h5>
                         <p>
                             <?= DefTeamSiteUser::getRoleText($member->role, $memberInstance->role) ?>
                         </p>

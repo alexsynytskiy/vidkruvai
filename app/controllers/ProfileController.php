@@ -448,7 +448,7 @@ class ProfileController extends Controller
 
                     \Yii::$app->notification->addToUser($captain, DefNotification::CATEGORY_TEAM,
                         DefNotification::TYPE_TEAM_USER_ACCEPTED, null,
-                        ['team_member' => $model->name . ' ' . $model->surname, 'created_at' => date('d-M-Y H:i:s')]);
+                        ['team_member' => $user->getFullName(), 'created_at' => date('d-M-Y H:i:s')]);
                 }
             }
 

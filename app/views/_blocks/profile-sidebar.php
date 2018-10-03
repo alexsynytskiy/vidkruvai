@@ -48,7 +48,7 @@ switch ($controller) {
             <a href="<?= Url::to('/profile') ?>">
                 <div class="profile-info">
                     <img src="<?= $user->avatar ?>" class="avatar">
-                    <div class="name"><?= $user->name . ' ' . $user->surname ?></div>
+                    <div class="name"><?= $user->getFullName() ?></div>
                     <div class="school"><?= $user->school ?></div>
                     <div class="rating"><?= $user->total_experience ?></div>
                 </div>
