@@ -324,6 +324,10 @@ class SiteUser extends ActiveRecord implements IdentityInterface
         return md5($this->id . self::HASH_ID_SALT);
     }
 
+    public function getFullName() {
+        return $this->name . ' ' . $this->surname;
+    }
+
     /**
      * @param $hash
      *

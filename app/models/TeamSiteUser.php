@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\components\AppMsg;
+use app\models\definitions\DefTeam;
 use app\models\definitions\DefTeamSiteUser;
 use yii\base\Security;
 use yii\behaviors\TimestampBehavior;
@@ -10,6 +11,7 @@ use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\easyii\helpers\Mail;
 use yii\easyii\models\Setting;
+use yii\helpers\Url;
 
 /**
  * Class TeamSiteUser
@@ -97,13 +99,15 @@ class TeamSiteUser extends ActiveRecord
      */
     public function mailInvitedUsers()
     {
-        $unsubscribeLink = '';
-        $registrationLink = '';
-        $teamName = '';
-        $teamLead = '';
-        $teamsTotalCount = '';
+        $team = $this->team;
+
+        $unsubscribeLink = Url::to('/unsubscribe', ['hash' => $this->hash]);
+        $registrationLink = Url::to('/register', ['hash' => $this->hash]);
+        $teamName = $team->name;
+        $teamLead = $team->teamCaptain() ? $team->teamCaptain()->getFullName() : '';
+        $teamsTotalCount = Team::find()->where(['status' => DefTeam::STATUS_ACTIVE])->count();
         $siteLink = '';
-        $notParticipantLink = '';
+        $notParticipantLink = Url::to('/decline', ['hash' => $this->hash]);;
 
         return Mail::send(
             Setting::get('admin_email'),

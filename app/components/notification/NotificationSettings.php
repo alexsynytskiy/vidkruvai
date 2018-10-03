@@ -83,6 +83,18 @@ class NotificationSettings
                         'sendIfNotRead' => false,
                         'sendPeriod' => 24,
                     ],
+                ],
+                DefNotification::TYPE_TEAM_USER_CANCELLED => [
+                    'icon' => 'fa fa-users',
+                    'icon-border-color' => 'border-failure',
+                    'icon-color' => 'text-failure',
+                    'short-title' => 'Користувач відхилив участь',
+                    'title' => 'Користувач відхилив запрошення у команду',
+                    'message' => 'Користувач {team_member} відхилив свою участь у команді! Дата відхилення {created_at}',
+                    'scenario' => [
+                        'sendIfNotRead' => false,
+                        'sendPeriod' => 24,
+                    ],
                 ]
             ];
         }
