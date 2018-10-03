@@ -48,5 +48,5 @@ class AppAsset extends \yii\web\AssetBundle
         'js/Achievements.js'
     ];
 
-    public $publishOptions = ['forceCopy' => true];
+    //public $publishOptions = ['forceCopy' => true];
 }

@@ -16,6 +16,10 @@ use yii\base\Model;
 class TeamCreateForm extends Model
 {
     /**
+     * @var integer
+     */
+    public $id;
+    /**
      * @var array
      */
     public $emails;
@@ -96,9 +100,29 @@ class TeamCreateForm extends Model
     /**
      * @return Team
      */
-    public function getTeamUsers()
+    public function getTeam()
     {
         return $this->_team;
+    }
+
+    /**
+     * @param Team $team
+     */
+    public function setTeam($team)
+    {
+        $this->_team = $team;
+        $this->_teamMembers = $team->teamUsers;
+
+        $this->id = $team->id;
+        $this->avatar = $team->avatar;
+        $this->name = $team->name;
+
+        foreach ($this->_teamMembers as $member) {
+            if ($member->role !== DefTeamSiteUser::ROLE_CAPTAIN) {
+                $this->emails[] = $member->email;
+            }
+
+        }
     }
 
     /**
@@ -156,6 +180,79 @@ class TeamCreateForm extends Model
         }
 
         $this->addErrors($this->_team->getErrors());
+
+        return false;
+    }
+
+    /**
+     * Updates team
+     *
+     * @return bool
+     * @throws \yii\db\Exception
+     */
+    public function updateTeam()
+    {
+        $team = Team::findOne(['id' => $this->id]);
+
+        if ($team) {
+            $team->name = $this->name;
+            $team->avatar = $this->avatar;
+            $team->status = DefTeam::STATUS_UNCONFIRMED;
+
+            $this->_team = $team;
+
+            if ($this->validate() && $team->validate()) {
+                $transaction = \Yii::$app->db->beginTransaction();
+
+                try {
+                    if ($team->update()) {
+                        $oldTeamMembers = TeamSiteUser::find()
+                            ->where(['team_id' => $team->id, 'role' => DefTeamSiteUser::ROLE_MEMBER])
+                            ->all();
+
+                        /** @var TeamSiteUser $oldTeamMember */
+                        foreach ($oldTeamMembers as $oldTeamMember) {
+                            if (!in_array($oldTeamMember->email, $this->emails, false)) {
+                                $oldTeamMember->status = DefTeamSiteUser::STATUS_REMOVED;
+                                $oldTeamMember->update();
+                            }
+                        }
+
+                        foreach ($this->emails as $email) {
+                            if (!empty($email)) {
+                                $teamMember = TeamSiteUser::find()
+                                    ->where(['email' => $email, 'team_id' => $team->id])
+                                    ->andWhere(['in', 'status',
+                                        [DefTeamSiteUser::STATUS_CONFIRMED, DefTeamSiteUser::STATUS_UNCONFIRMED]])
+                                    ->exists();
+
+                                if (!$teamMember) {
+                                    $teamMember = new TeamSiteUser;
+                                    $teamMember->team_id = $team->id;
+                                    $teamMember->email = $email;
+                                    $teamMember->role = DefTeamSiteUser::ROLE_MEMBER;
+                                    $teamMember->status = DefTeamSiteUser::STATUS_UNCONFIRMED;
+
+                                    if (!$teamMember->save()) {
+                                        $this->addErrors($teamMember->getErrors());
+                                    }
+
+                                    $this->_teamMembers[] = $teamMember;
+                                }
+                            }
+                        }
+                    }
+
+                    $transaction->commit();
+                } catch (\Throwable $e) {
+                    $transaction->rollBack();
+                }
+
+                return true;
+            }
+
+            $this->addErrors($this->_team->getErrors());
+        }
 
         return false;
     }

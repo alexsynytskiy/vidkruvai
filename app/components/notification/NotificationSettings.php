@@ -60,6 +60,30 @@ class NotificationSettings
                         'sendPeriod' => 24,
                     ],
                 ],
+                DefNotification::TYPE_TEAM_CREATED => [
+                    'icon' => 'fa fa-users',
+                    'icon-border-color' => 'border-success',
+                    'icon-color' => 'text-success',
+                    'short-title' => 'Команду створено',
+                    'title' => 'Створено нову команду',
+                    'message' => 'Створено команду {team_name}, очікуй на підтвердження учасників та верифікацію. Дата створення {created_at}',
+                    'scenario' => [
+                        'sendIfNotRead' => false,
+                        'sendPeriod' => 24,
+                    ],
+                ],
+                DefNotification::TYPE_TEAM_USER_ACCEPTED => [
+                    'icon' => 'fa fa-users',
+                    'icon-border-color' => 'border-success',
+                    'icon-color' => 'text-success',
+                    'short-title' => 'Користувач підтвердив участь',
+                    'title' => 'Користувач тепер у команді',
+                    'message' => 'Користувач {team_member} підтвердив свою участь у команді! Дата підтвердження {created_at}',
+                    'scenario' => [
+                        'sendIfNotRead' => false,
+                        'sendPeriod' => 24,
+                    ],
+                ]
             ];
         }
     }

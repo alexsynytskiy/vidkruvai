@@ -22,58 +22,6 @@ class QuizController extends Controller
      * @return array
      * @throws \Throwable
      */
-    public function actionAgreement()
-    {
-        $errorResponse = ['status' => 'error', 'message' => 'Щось пішло не так..'];
-
-        if (!\Yii::$app->mutex->acquire('multiple-agreement')) {
-            \Yii::info('Пользователь попытался выполнить несколько раз подряд вход');
-
-            return $errorResponse;
-        }
-
-        try {
-            \Yii::$app->response->format = Response::FORMAT_JSON;
-
-            if (!\Yii::$app->request->isPost || \Yii::$app->siteUser->isGuest) {
-                throw new BadRequestHttpException();
-            }
-
-            $request = \Yii::$app->request;
-            $token = $request->post(\Yii::$app->request->csrfParam, '');
-
-            if (!\Yii::$app->request->validateCsrfToken($token)) {
-                throw new BadRequestHttpException();
-            }
-
-            $userId = \Yii::$app->siteUser->identity->id;
-            $user = SiteUser::findOne($userId);
-
-            if ($user && !$user->agreement_read) {
-//                if (!$user->answers || count($user->answers) !== 6) {
-//                    UserAnswer::deleteAll(['user_id' => $userId]);
-//                    QuestionsSetter::setUserQuestions();
-//                }
-
-                $user->agreement_read = SiteUser::AGREEMENT_READ;
-                if (!$user->update()) {
-                    return $errorResponse;
-                }
-            }
-
-            return ['status' => 'success', 'profileUrl' => '/profile'];
-        } catch (BadRequestHttpException $exception) {
-            return $errorResponse;
-        } catch (\Exception $exception) {
-            return $errorResponse;
-        }
-    }
-
-
-    /**
-     * @return array
-     * @throws \Throwable
-     */
     public function actionStartBlock()
     {
         $errorResponse = ['status' => 'error', 'message' => 'Щось пішло не так..'];
@@ -186,7 +134,7 @@ class QuizController extends Controller
                         $user = SiteUser::findOne(\Yii::$app->siteUser->identity->id);
 
                         if ($user) {
-                            $user->total_smart += $userAnswer->question->reward;
+                            $user->total_experience += $userAnswer->question->reward;
 
                             if (!$user->update()) {
                                 return ['status' => 'error', 'message' => 'Смарти не зараховано'];

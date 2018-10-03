@@ -10,6 +10,7 @@ use app\models\Achievement;
 use app\models\definitions\DefAchievements;
 use app\models\definitions\DefLevel;
 use app\models\definitions\DefNotification;
+use app\models\definitions\DefTeamSiteUser;
 use app\models\definitions\DefUserAchievement;
 use app\models\forms\LoginForm;
 use app\models\forms\RegisterForm;
@@ -20,6 +21,8 @@ use app\models\search\AchievementSearch;
 use app\models\search\LevelSearch;
 use app\models\search\NotificationUserSearch;
 use app\models\SiteUser;
+use app\models\Team;
+use app\models\TeamSiteUser;
 use app\models\UserAchievement;
 use yii\captcha\CaptchaAction;
 use yii\easyii\components\helpers\LanguageHelper;
@@ -49,6 +52,9 @@ class ProfileController extends Controller
         \Yii::$app->on(self::EVENT_USER_REGISTERED, [new UserRegisteredEventHandler(), 'handle']);
     }
 
+    /**
+     * @return array
+     */
     public function actions()
     {
         return [
@@ -62,24 +68,6 @@ class ProfileController extends Controller
                 'minLength' => 4,
             ],
         ];
-    }
-
-    /**
-     * @return bool|\yii\web\Response
-     */
-    private function checkUserStatus()
-    {
-        $user = \Yii::$app->siteUser;
-
-        if ($user->isGuest) {
-            return $this->redirect('/login');
-        }
-
-        if (!$user->identity->agreement_read) {
-            return $this->redirect('/rules');
-        }
-
-        return true;
     }
 
     /**
@@ -404,10 +392,12 @@ class ProfileController extends Controller
     }
 
     /**
-     * @return string|\yii\web\Response
-     * @throws \yii\base\Exception
+     * @param string $hash
+     *
+     * @return string|Response
+     * @throws \Throwable
      */
-    public function actionRegister()
+    public function actionRegister($hash = '')
     {
         if (!\Yii::$app->siteUser->isGuest) {
             return $this->redirect(['/profile']);
@@ -425,6 +415,17 @@ class ProfileController extends Controller
 
         $model = new RegisterForm();
 
+        $invitationRegistration = false;
+        $userTeamItem = null;
+        if($hash) {
+            $userTeamItem = TeamSiteUser::findOne(['hash' => $hash]);
+
+            if($userTeamItem) {
+                $model->email = $userTeamItem->email;
+                $invitationRegistration = true;
+            }
+        }
+
         if ($model->load(\Yii::$app->request->post()) && $model->register()) {
             \Yii::$app->siteUser->login($model->getUser(), BaseDefinition::getSessionExpiredTime());
 
@@ -438,6 +439,19 @@ class ProfileController extends Controller
             $userEvent->userId = $user->id;
             \Yii::$app->trigger(self::EVENT_USER_REGISTERED, $userEvent);
 
+            if($invitationRegistration && $userTeamItem) {
+                $userTeamItem->site_user_id = $user->id;
+                $userTeamItem->status = DefTeamSiteUser::STATUS_CONFIRMED;
+
+                if($userTeamItem->update()) {
+                    $captain = $userTeamItem->team->teamCaptain();
+
+                    \Yii::$app->notification->addToUser($captain, DefNotification::CATEGORY_TEAM,
+                        DefNotification::TYPE_TEAM_USER_ACCEPTED, null,
+                        ['team_member' => $model->name . ' ' . $model->surname, 'created_at' => date('d-M-Y H:i:s')]);
+                }
+            }
+
             if ($user->login_count === 1 && !$user->agreement_read) {
                 return $this->redirect('/rules');
             }
@@ -447,6 +461,7 @@ class ProfileController extends Controller
 
         return $this->render('register', [
             'model' => $model,
+            'invitation' => $invitationRegistration,
         ]);
     }
 
@@ -477,7 +492,10 @@ class ProfileController extends Controller
         $model = new LoginForm();
 
         if ($model->load(\Yii::$app->request->post()) && $model->login()) {
-            if (\Yii::$app->siteUser->identity->agreement_read) {
+            $user = \Yii::$app->siteUser->identity;
+            $user->updateLoginCount();
+
+            if ($user->agreement_read) {
                 return $this->redirect(['/profile']);
             }
 
@@ -539,88 +557,6 @@ class ProfileController extends Controller
         return $this->render('update-profile', [
             'model' => $model
         ]);
-    }
-
-    /**
-     * @return array|bool|string|Response
-     * @throws \yii\db\Exception
-     * @throws \yii\web\HttpException
-     */
-    public function actionCreateTeam()
-    {
-        $status = $this->checkUserStatus();
-
-        if ($status !== true) {
-            return $status;
-        }
-
-        if (!\Yii::$app->mutex->acquire('multiple-team-creation')) {
-            \Yii::info('Пользователь попытался несколько раз создать команду');
-
-            throw new BadRequestHttpException();
-        }
-
-        \Yii::$app->seo->setTitle('Створити команду');
-        \Yii::$app->seo->setDescription('Відкривай Україну');
-        \Yii::$app->seo->setKeywords('Відкривай, Україну');
-
-        $model = new TeamCreateForm;
-        $model->isNewRecord = true;
-
-        if ($model && $model->load(\Yii::$app->request->post())) {
-            if (\Yii::$app->request->isAjax) {
-                \Yii::$app->response->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($model);
-            }
-
-            if (isset($_FILES)) {
-                $model->avatar = UploadedFile::getInstance($model, 'avatar');
-                if ($model->avatar && $model->validate(['avatar'])) {
-                    $model->avatar = Image::upload($model->avatar, 'team');
-                } else {
-                    $model->avatar = $model->oldAttributes['avatar'];
-                }
-            }
-
-            if ($model->createTeam()) {
-                $this->flash('success', \Yii::t('easyii', 'Team created'));
-            } else {
-                $this->flash('error', \Yii::t('easyii', 'Create error.'));
-            }
-
-            return $this->render('update-team', [
-                'model' => $model
-            ]);
-        }
-
-        return $this->render('create-team', [
-            'model' => $model
-        ]);
-    }
-
-    /**
-     * @param $id
-     * @return \yii\web\Response
-     * @throws \Exception
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
-    public function actionClearImage($id)
-    {
-        $model = SiteUser::findOne($id);
-
-        if ($model === null) {
-            $this->flash('error', \Yii::t('easyii', 'Not found'));
-        } else {
-            $model->avatar = '';
-            if ($model->update()) {
-                @unlink(\Yii::getAlias('@webroot') . $model->avatar);
-                $this->flash('success', \Yii::t('easyii', 'Image cleared'));
-            } else {
-                $this->flash('error', \Yii::t('easyii', 'Update error. {0}', $model->getErrors()));
-            }
-        }
-        return $this->back();
     }
 
     /**
@@ -688,27 +624,57 @@ class ProfileController extends Controller
     }
 
     /**
+     * @return array
+     * @throws \Throwable
+     */
+    public function actionAgreement()
+    {
+        $errorResponse = ['status' => 'error', 'message' => 'Щось пішло не так..'];
+
+        if (!\Yii::$app->mutex->acquire('multiple-agreement')) {
+            \Yii::info('Пользователь попытался выполнить несколько раз подряд вход');
+
+            return $errorResponse;
+        }
+
+        try {
+            \Yii::$app->response->format = Response::FORMAT_JSON;
+
+            if (!\Yii::$app->request->isPost || \Yii::$app->siteUser->isGuest) {
+                throw new BadRequestHttpException();
+            }
+
+            $request = \Yii::$app->request;
+            $token = $request->post(\Yii::$app->request->csrfParam, '');
+
+            if (!\Yii::$app->request->validateCsrfToken($token)) {
+                throw new BadRequestHttpException();
+            }
+
+            $user = \Yii::$app->siteUser->identity;
+
+            if ($user && !$user->agreement_read) {
+                $user->agreement_read = SiteUser::AGREEMENT_READ;
+                if (!$user->update()) {
+                    return $errorResponse;
+                }
+            }
+
+            return ['status' => 'success', 'profileUrl' => '/profile'];
+        } catch (BadRequestHttpException $exception) {
+            return $errorResponse;
+        } catch (\Exception $exception) {
+            return $errorResponse;
+        }
+    }
+
+    /**
      * @return \yii\web\Response
      */
     public function actionLogout()
     {
         \Yii::$app->siteUser->logout();
 
-        return $this->redirect(['site/index']);
-    }
-
-    /**
-     * Write in sessions alert messages
-     * @param string $type error or success
-     * @param string $message alert body
-     */
-    public function flash($type, $message)
-    {
-        \Yii::$app->getSession()->setFlash($type === 'error' ? 'danger' : $type, $message);
-    }
-
-    public function back()
-    {
-        return $this->redirect(\Yii::$app->request->referrer);
+        return $this->redirect(['/']);
     }
 }

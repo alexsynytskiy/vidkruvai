@@ -175,7 +175,7 @@ $user = \Yii::$app->siteUser->identity;
                                                         <div class="col-lg-12">
                                                             <?php if (!$user->team && !$preview): ?>
                                                                 <?= \yii\helpers\Html::a(AppMsg::t('Створити команду'),
-                                                                    ['/profile/create-team'],
+                                                                    ['/team/create-team'],
                                                                     [
                                                                         'class' => 'button mt-0',
                                                                     ]) ?>
@@ -206,7 +206,7 @@ $user = \Yii::$app->siteUser->identity;
                                                 </div>
                                             <?php endif; ?>
                                             <?php if ($user->isCaptain()): ?>
-                                                <a href="<?= \yii\helpers\Url::to(['profile/update-team']) ?>">
+                                                <a href="<?= \yii\helpers\Url::to(['team/update-team']) ?>">
                                                     <div class="profile-edit"></div>
                                                 </a>
                                             <?php endif; ?>

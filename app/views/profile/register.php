@@ -1,5 +1,6 @@
 <?php
 /** @var \app\models\forms\RegisterForm $model */
+/** @var bool $invitation */
 
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
@@ -10,7 +11,10 @@ $asset = \app\assets\AppAsset::register($this);
     <div class="steps-block login clearfix">
         <div class="block-left">
             <div class="step-title"><?= 'Реєстрація на проект' ?></div>
-            <div class="step-subtitle"><?= 'Заповніть форму реєстрації та створіть захищений пароль. Усі поля обов’язкові для заповнення.' ?></div>
+            <div class="step-subtitle">
+                <?= $invitation ?
+                    'Зареєструйся та разом з командою розпочни свій шлях у проекті!' :
+                    'Заповніть форму реєстрації та створіть захищений пароль. Усі поля обов’язкові для заповнення.' ?></div>
             <div class="social-items clearfix">
                 <?php
                 $form = ActiveForm::begin([
@@ -27,6 +31,12 @@ $asset = \app\assets\AppAsset::register($this);
                 ?>
 
                 <div class="col-md-12 form-z-index clearfix">
+                    <?= $form->field($model, 'email')->textInput(['maxlength' => true, 'placeholder' => 'Електронна пошта']) ?>
+
+                    <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => "Ім'я"]) ?>
+
+                    <?= $form->field($model, 'surname')->textInput(['maxlength' => true, 'placeholder' => 'Прізвище']) ?>
+
                     <div class="custom-option clearfix">
                         <?php foreach (\app\models\SiteUser::getRoles() as $value => $role): ?>
                             <div class="item" data-value="<?= $value ?>"><?= $role ?></div>
@@ -35,17 +45,11 @@ $asset = \app\assets\AppAsset::register($this);
 
                     <?= $form->field($model, 'role')->hiddenInput(['maxlength' => true]) ?>
 
-                    <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => "Ім'я"]) ?>
-
-                    <?= $form->field($model, 'surname')->textInput(['maxlength' => true, 'placeholder' => 'Прізвище']) ?>
-
                     <?= $form->field($model, 'age')->textInput(['maxlength' => true, 'placeholder' => 'Вік']) ?>
 
                     <?= $form->field($model, 'class')->textInput(['maxlength' => true, 'placeholder' => 'Клас']) ?>
 
                     <?= $form->field($model, 'school')->textInput(['maxlength' => true, 'placeholder' => 'Школа']) ?>
-
-                    <?= $form->field($model, 'email')->textInput(['maxlength' => true, 'placeholder' => 'Електронна пошта']) ?>
 
                     <?= $form->field($model, 'userPassword')->passwordInput(['maxlength' => true, 'placeholder' => 'Пароль']) ?>
 

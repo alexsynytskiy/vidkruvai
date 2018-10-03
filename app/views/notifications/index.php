@@ -214,14 +214,14 @@ if (($page = ArrayHelper::getValue($_GET, 'page', 0)) > 1) {
                                         <div class="navbar-right" id="notification-action-buttons">
                                             <ul class="nav navbar-nav">
                                                 <li>
-                                                    <?= \yii\helpers\Html::a(\app\components\AppMsg::t('Відмітити як прочитані'),
+                                                    <?= \yii\helpers\Html::a(\app\components\AppMsg::t('Прочитано'),
                                                         '#',
                                                         ['data-notification-action' => 'read', 'class' => 'hide']) ?>
                                                 </li>
                                                 <li>
                                                     <a href="#" data-notification-action="new" class="hide"
                                                        data-acp-toggle="tooltip"
-                                                       title="<?= AppMsg::t('Відмітити як непрочитані'); ?>">
+                                                       title="<?= AppMsg::t('Відмітити як нові'); ?>">
                                                         <i class="fa fa-clock-o"></i>
                                                         <span class="visible-xs-inline-block position-right">
                                                         <?= AppMsg::t('Отметить как непрочитанные'); ?>

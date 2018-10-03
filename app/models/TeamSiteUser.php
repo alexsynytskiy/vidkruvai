@@ -23,6 +23,7 @@ use yii\easyii\models\Setting;
  * @property string $created_at
  * @property string $updated_at
  *
+ * @property Team $team
  * @property SiteUser $user
  *
  * @package app\models
@@ -52,7 +53,6 @@ class TeamSiteUser extends ActiveRecord
     {
         if (parent::beforeSave($insert)) {
             if ($insert) {
-                $this->status = DefTeamSiteUser::STATUS_UNCONFIRMED;
                 $this->hash = (new Security)->generateRandomString();
             }
 
@@ -119,6 +119,14 @@ class TeamSiteUser extends ActiveRecord
                 'notParticipantLink' => $notParticipantLink,
             ]
         );
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeam()
+    {
+        return $this->hasOne(Team::className(), ['id' => 'team_id']);
     }
 
     /**

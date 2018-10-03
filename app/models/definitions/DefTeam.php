@@ -27,7 +27,7 @@ class DefTeam extends BaseDefinition
     {
         $statuses = [
             self::STATUS_ACTIVE => AppMsg::t('Підтверджено'),
-            self::STATUS_UNCONFIRMED => AppMsg::t('Непідтверджено'),
+            self::STATUS_UNCONFIRMED => AppMsg::t('Не підтверджено'),
             self::STATUS_BANNED => AppMsg::t('Заблоковано'),
             self::STATUS_DISABLED => AppMsg::t('Відключено'),
         ];
@@ -43,7 +43,7 @@ class DefTeam extends BaseDefinition
     {
         $statuses = [
             self::STATUS_ACTIVE => AppMsg::t('Підтверджено'),
-            self::STATUS_UNCONFIRMED => AppMsg::t('Непідтверджено'),
+            self::STATUS_UNCONFIRMED => AppMsg::t('Не підтверджено'),
             self::STATUS_BANNED => AppMsg::t('Заблоковано'),
             self::STATUS_DISABLED => AppMsg::t('Відключено'),
         ];

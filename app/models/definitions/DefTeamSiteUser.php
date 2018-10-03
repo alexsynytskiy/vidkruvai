@@ -15,6 +15,7 @@ class DefTeamSiteUser extends BaseDefinition
     const STATUS_DECLINED = 'DECLINED';
     const STATUS_CONFIRMED = 'CONFIRMED';
     const STATUS_UNCONFIRMED = 'UNCONFIRMED';
+    const STATUS_REMOVED = 'REMOVED';
 
     const ROLE_MEMBER = 'member';
     const ROLE_CAPTAIN = 'captain';

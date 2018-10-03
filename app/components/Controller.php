@@ -129,4 +129,65 @@ class Controller extends \yii\web\Controller
 
         return true;
     }
+
+    /**
+     * @return bool|\yii\web\Response
+     */
+    public function checkUserStatus()
+    {
+        $user = \Yii::$app->siteUser;
+
+        if ($user->isGuest) {
+            return $this->redirect('/login');
+        }
+
+        if (!$user->identity->agreement_read) {
+            return $this->redirect('/rules');
+        }
+
+        return true;
+    }
+
+    /**
+     * Write in sessions alert messages
+     * @param string $type error or success
+     * @param string $message alert body
+     */
+    public function flash($type, $message)
+    {
+        \Yii::$app->getSession()->setFlash($type === 'error' ? 'danger' : $type, $message);
+    }
+
+    /**
+     * @return Response
+     */
+    public function back()
+    {
+        return $this->redirect(\Yii::$app->request->referrer);
+    }
+
+    /**
+     * @param int $id
+     * @param string $className
+     *
+     * @return \yii\web\Response
+     * @throws \Throwable
+     */
+    public function actionClearImage($id, $className)
+    {
+        $model = $className::findOne($id);
+
+        if ($model === null) {
+            $this->flash('error', \Yii::t('easyii', 'Not found'));
+        } else {
+            $model->avatar = '';
+            if ($model->update()) {
+                @unlink(\Yii::getAlias('@webroot') . $model->avatar);
+                $this->flash('success', \Yii::t('easyii', 'Image cleared'));
+            } else {
+                $this->flash('error', \Yii::t('easyii', 'Update error. {0}', $model->getErrors()));
+            }
+        }
+        return $this->back();
+    }
 }

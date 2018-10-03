@@ -17,39 +17,6 @@ $config = [
     'timeZone' => 'Europe/Kiev',
     'runtimePath' => $webroot . '/runtime',
     'vendorPath' => $webroot . '/vendor',
-    'on beforeRequest' => function () use (&$config) {
-        $app = Yii::$app;
-        $pathInfo = $app->request->pathInfo;
-
-        $getParam = $app->request->get('parent');
-        preg_match('/[^\/]+$/', $pathInfo, $matches);
-
-        $startRedirect = ['admin', 'site', 'profile'];
-        $stopRedirect = ['items', 'edit', 'photos', 'settings', 'index', 'list', 'redactor', 'all', 'account'];
-
-        $redirect = false;
-
-        if (empty($getParam) && (isset($matches[0]) && !is_numeric($matches[0]))) {
-            foreach ($startRedirect as $startItem) {
-                if (strpos($pathInfo, $startItem) !== false) {
-                    $redirect = true;
-                    break;
-                }
-            }
-
-            foreach ($stopRedirect as $stopItem) {
-                if (strpos($pathInfo, $stopItem) !== false) {
-                    $redirect = false;
-                    break;
-                }
-            }
-        }
-
-        if (!$app->request->post() && $redirect && !empty($pathInfo) && substr($pathInfo, -1) !== '/') {
-            $app->response->redirect('/' . rtrim($pathInfo) . '/', 301);
-            $app->end();
-        }
-    },
     'modules' => [
         'comment' => [
             'class' => "app\\modules\\comment\\Module",
@@ -105,17 +72,26 @@ $config = [
         'urlManager' => [
             'rules' => [
                 'generate' => 'test/generate',
-                'register' => 'profile/register',
                 'login' => 'profile/login',
+                'rules' => 'profile/rules',
+
                 'comment/<channelId:\d+>/<action:[\w-]+>' => 'comment/default/<action>',
                 'comment/<action:[\w-]+>' => 'comment/default/<action>',
 
                 'profile/notifications/<category:[a-z\d-]+>/<status:[a-z\d-]+>' => 'profile/notifications',
                 'profile/notifications/<category:[a-z\d-]+>' => 'profile/notifications',
 
-                '<controller:\w+>/' => '<controller>/index',
+                'register/<hash:[\w-]+>' => 'profile/register',
+                'register' => 'profile/register',
+
+                'profile/clear-image/<id:[\d+]+>/<className:[\w+]+>' => 'profile/clear-image',
+                'team/clear-image/<id:[\d+]+>/<className:[\w+]+>' => 'team/clear-image',
+
+                'profile/create-team' => 'team/create-team',
+
+                '<controller:\w+>' => '<controller>/index',
                 '<controller:\w+>/<slug:[\w-]+>' => '<controller>/view',
-                '<controller:\w+>/<action:\w+>/' => '<controller>/<action>',
+                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
                 '<controller:\w+>/cat/<slug:[\w-]+>' => '<controller>/cat',
             ],
         ],
@@ -144,6 +120,18 @@ $config = [
                 ],
             ],
         ],
+        'i18n' => [
+            'translations' => [
+                'app' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'sourceLanguage' => 'uk',
+                    'basePath' => '@app/messages',
+                    'fileMap' => [
+                        'app' => 'translations.php',
+                    ]
+                ]
+            ],
+        ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -160,6 +148,9 @@ $config = [
     },
     'on app.components.LevelComponent.on-unlocked' => function ($event) {
         (new app\components\AwardEventHandler)->award($event);
+    },
+    'on beforeRequest' => function () {
+        (new \app\components\TrailingSlashHelper)->redirectSlash();
     },
     'params' => $params,
 ];

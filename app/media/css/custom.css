@@ -259,6 +259,7 @@ li.notification-item .media-annotation {
 .media-list span {
     margin-bottom: 0;
     padding-left: 0;
+    border-radius: 0;
 }
 
 #toolbar-notifications .media-link i {
@@ -583,6 +584,7 @@ article {
     font-size: 16px;
     line-height: 40px;
     margin-bottom: 14px;
+    padding-left: 16px;
 }
 
 .cabinet-menu .icon {
@@ -760,14 +762,11 @@ span.bg-success,
     background-color: #047afb;
     padding: 7px 12px;
     margin-left: 10px;
+    border-radius: 5px;
 }
 
 #full-notification-block, .notification-index  #navbar-second {
     padding: 0 32px;
-}
-
-.notification-page .navbar-nav:first-child > li > a:first-child {
-    padding-left: 0;
 }
 
 .notification-page #notification-action-buttons.navbar-right {
@@ -1248,6 +1247,22 @@ span.bg-success,
 
 .profile-team-preview .progress-block .progress-top .progress-title h3 {
     margin-bottom: 30px;
+}
+
+.cabinet.rules .progress-block {
+    padding: 15px 96px;
+    font-size: 15px;
+    text-align: justify;
+}
+
+.cabinet.rules .button.link-button {
+    margin: 23px auto 10px;
+    display: block;
+}
+
+.cabinet-menu .menu-link.active {
+    border-left: 2px solid #007BFF;
+    border-radius: 5px;
 }
 
 @media (max-width: 1199px) {

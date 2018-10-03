@@ -31,6 +31,8 @@ class DefNotification extends BaseDefinition
     const TYPE_HELLO_USER = 'hello-user';
     const TYPE_TEAM_CREATED = 'team-created';
     const TYPE_TEAM_ACTIVATED = 'team-activated';
+    const TYPE_TEAM_USER_ACCEPTED = 'team-user-accepted';
+    const TYPE_TEAM_USER_CANCELLED = 'team-user-cancelled';
     const TYPE_TASK_RECEIVED = 'task-received';
 
     /**
@@ -80,6 +82,8 @@ class DefNotification extends BaseDefinition
             self::TYPE_HELLO_USER => AppMsg::t('Привітання користувачу'),
             self::TYPE_TEAM_CREATED => AppMsg::t('Команду створено'),
             self::TYPE_TEAM_ACTIVATED => AppMsg::t('Команду активовано'),
+            self::TYPE_TEAM_USER_ACCEPTED => AppMsg::t('Учасник прийняв запрошення у команду'),
+            self::TYPE_TEAM_USER_CANCELLED => AppMsg::t('Учасник відхилив запрошення у команду'),
             self::TYPE_TASK_RECEIVED => AppMsg::t('Отримано завдання'),
         ];
 
