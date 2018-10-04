@@ -54,10 +54,10 @@ class TeamCreateForm extends Model
     public function rules()
     {
         return [
-            [['avatar', 'captchaTeam', 'name'], 'required'],
+            [['captchaTeam', 'name'], 'required'],
             ['emails', 'each', 'rule' => ['email']],
             ['emails', 'checkcount'],
-            ['captchaTeam', 'captcha', 'captchaAction' => '/profile/captcha'],
+            ['captchaTeam', 'captcha', 'captchaAction' => '/team/captcha'],
         ];
     }
 

@@ -38,6 +38,36 @@ class DefTeamSiteUser extends BaseDefinition
     }
 
     /**
+     * @param string $key
+     * @return mixed
+     */
+    public static function getStatusText($key)
+    {
+        $types = [
+            self::STATUS_DECLINED => AppMsg::t('Запрошення відхилено'),
+            self::STATUS_CONFIRMED => AppMsg::t('Підтверджено'),
+            self::STATUS_UNCONFIRMED => AppMsg::t('Очікує підтвердження'),
+            self::STATUS_REMOVED => AppMsg::t('Видалено'),
+        ];
+
+        return $types[$key];
+    }
+
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    public static function getSimpleRole($key)
+    {
+        $types = [
+            self::ROLE_MEMBER => AppMsg::t('Учасник'),
+            self::ROLE_CAPTAIN => AppMsg::t('Капітан'),
+        ];
+
+        return $types[$key];
+    }
+
+    /**
      * @param string $teamRole
      * @param string $userRole
      * @return mixed

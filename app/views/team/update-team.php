@@ -24,7 +24,8 @@ $baseUrl = $asset->baseUrl;
                             <div class="user-form-edit">
                                 <div class="step-title"><?= 'Редагувати команду' ?></div>
 
-                                <?= $this->render('_form', ['model' => $model]) ?>
+                                <?= $this->render('_form', ['model' => $model,
+                                    'button' => AppMsg::t('Оновити команду')]) ?>
                             </div>
                         </div>
                     </div>

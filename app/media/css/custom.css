@@ -1265,6 +1265,34 @@ span.bg-success,
     border-radius: 5px;
 }
 
+.error .content-left-fixed.container {
+    width: 1140px;
+}
+
+.error .error-text-bold {
+    font-weight: bold;
+    display: inline-block;
+}
+
+.error .error-text {
+    display: inline-block;
+    margin-bottom: 64px;
+    font-size: 22px;
+    margin-top: 32px;
+}
+
+.error .content-left-fixed .profile-user-page {
+    margin-bottom: 0;
+}
+
+.cabinet.profile .personal-team .progress-descr p {
+    font-size: 12px;
+}
+
+.cabinet.profile .personal-team .team-items .col-md-6 {
+    margin-bottom: 16px;
+}
+
 @media (max-width: 1199px) {
 
 }
@@ -1278,18 +1306,68 @@ span.bg-success,
 }
 
 @media (max-width: 991px) {
+    .sidebar-right-fixed {
+        position: initial;
+        width: 100%;
+        margin-top: 16px;
+    }
+
+    .content-left-fixed {
+        margin-top: 16px;
+        width: 100%;
+    }
+
+    .profile-info-main .left-side {
+        width: 100%;
+    }
+
+    .profile-info-main .right-side {
+        width: 100%;
+        text-align: center;
+        margin-top: 16px;
+        padding: 0 16px;
+    }
+
+    #main-menu .badge {
+        margin-right: auto;
+        margin-left: auto;
+        left: 29px;
+        height: 18px;
+        width: 19px;
+    }
+
+    .progress-block .progress-top .progress-title h3 {
+        text-align: center;
+    }
+
     .form-control {
         font-size: 16px;
     }
 
+    .progress-block .progress-items .progress-item .knob-block {
+        float: right;
+    }
+
+    .member-item .progress-descr h5 {
+        margin-top: 0;
+    }
+
+    .block-title-dynamic {
+
+    }
+
+    .steps-block {
+        position: relative;
+    }
+
     footer {
-        padding-top: 60px;
-        padding-bottom: 50px;
+        padding-top: 32px;
+        padding-bottom: 22px;
         background-color: #F7F9FB;
-        position: absolute;
-        bottom: 0;
+        position: relative;
         z-index: 1000;
         float: none;
+        margin-top: 64px;
     }
 
     .footer-main {
@@ -1315,12 +1393,12 @@ span.bg-success,
         color: #93A0A9;
         font-size: 14px;
         text-align: center;
-        margin-right: 15px;
+        margin-right: 12px;
         float: none;
     }
 
     footer .footer-logo {
-        height: 60px;
+        height: 42px;
         margin-top: 0;
         display: block;
     }
@@ -1371,6 +1449,61 @@ span.bg-success,
 
     footer .links-block a:last-child {
         margin-right: 0;
+    }
+
+    #team-members-emails .col-xs-12 {
+        width: 100%;
+    }
+
+    #teamcreateform-captchateam {
+        width: 230px;
+    }
+
+    .content-left-fixed .news-item.small .image, .news-item.small {
+        width: 100%;
+    }
+
+    .content-left-fixed .news-item .image {
+        width: 100%;
+        border-bottom-left-radius: 0;
+        border-top-right-radius: 10px;
+    }
+
+    .levels-table-block table tr, #case-grid table tr {
+        margin-bottom: 10px;
+        display: block;
+        border-bottom: 2px solid #ddd;
+    }
+
+    .levels-table-block table thead {
+        display: none;
+    }
+
+    .levels-table-block .table > tbody > tr > td {
+        padding: 4px;
+        border: none;
+    }
+
+    .levels-table-block .table tbody tr td:last-child {
+        padding-bottom: 16px;
+    }
+
+    .levels-table-block table {
+        border: 0;
+    }
+
+    .levels-table-block table td:before {
+        content: attr(data-label);
+        float: left;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    .levels-table-block table td {
+        display: block;
+        text-align: right;
+        font-size: 13px;
+        border-bottom: 1px dotted #ccc;
     }
 }
 

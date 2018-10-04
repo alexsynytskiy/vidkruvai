@@ -410,8 +410,8 @@ class SiteUser extends ActiveRecord implements IdentityInterface
         return self::find()
             ->alias('su')
             ->innerJoin(TeamSiteUser::tableName() . ' tsu', 'tsu.site_user_id = su.id')
+            ->innerJoin(Team::tableName() . ' t', 'tsu.team_id = t.id')
             ->where([
-                'tsu.team_id' => $this->team->id,
                 'tsu.role' => DefTeamSiteUser::ROLE_CAPTAIN,
                 'tsu.site_user_id' => $this->id,
             ])

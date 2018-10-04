@@ -76,49 +76,50 @@ var SiteCore = function (options) {
             return result;
         },
         windowSize: function (width) {
-            var biggestHeight = 0;
+            if (width > 991) {
+                var biggestHeight = 0;
 
-            var isCabinet = $('.cabinet').size(),
-                searchBlock = '.steps-block > div',
-                isEdit = $('.user-form-edit').size();
+                var isCabinet = $('.cabinet').size(),
+                    searchBlock = '.steps-block > div',
+                    isEdit = $('.user-form-edit').size();
 
-            if (isCabinet) {
-                searchBlock = '.cabinet article > div';
-            }
-
-            $(searchBlock).each(function () {
-                if (width < 768) {
-                    biggestHeight += $(this).height();
+                if (isCabinet) {
+                    searchBlock = '.cabinet article > div';
                 }
-                else {
+
+                $(searchBlock).each(function () {
                     if ($(this).height() > biggestHeight) {
                         biggestHeight = $(this).height();
                     }
+                });
+
+                $(".steps-block").height(biggestHeight);
+
+                var height = 80 + biggestHeight + 332;
+
+                if (isEdit) {
+                    height += 320;
                 }
-            });
 
-            $(".steps-block").height(biggestHeight);
+                if (isCabinet) {
+                    height += 83;
+                }
 
-            var height = 80 + biggestHeight + 300;
+                if (width < 768) {
+                    height = 80 + biggestHeight + 410;
+                }
 
-            if (isEdit) {
-                height += 320;
+                if (height < $(window).height()) {
+                    height = '100vh';
+                }
+                else {
+                    height += 'px';
+                }
+
+                $('body').css({
+                    'min-height': height
+                });
             }
-
-            if (width < 768) {
-                height = 80 + biggestHeight + 410;
-            }
-
-            if (height < $(window).height()) {
-                height = '100vh';
-            }
-            else {
-                height += 'px';
-            }
-
-            $('body').css({
-                'min-height': height
-            });
         },
         windowScroll: function () {
             var sidebarClass = '.sidebar-right-fixed';

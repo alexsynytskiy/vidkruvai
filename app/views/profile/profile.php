@@ -11,7 +11,6 @@ use \app\models\definitions\DefTeam;
 /* @var $levelInfo array */
 /* @var $previousLevels array */
 /* @var $nextLevels array */
-/* @var $topInfo array */
 /* @var $preview boolean */
 /* @var array $userCredentials */
 
@@ -23,7 +22,7 @@ $user = \Yii::$app->siteUser->identity;
 ?>
 
 <div class="steps-block profile clearfix">
-    <div class="cabinet">
+    <div class="cabinet profile">
         <article>
             <div class="sidebar-right-fixed">
                 <?= $this->render('/_blocks/profile-sidebar', ['showUserInfo' => $showUserInfo]) ?>
@@ -39,7 +38,7 @@ $user = \Yii::$app->siteUser->identity;
                                     <div class="status"><?= $user->total_experience ?></div>
                                 </div>
                                 <div class="right-side">
-                                    <div class="clearfix">
+                                    <div class="clearfix block-title-dynamic">
                                         <div class="name"><?= $user->getFullName() ?></div>
                                         <a href="<?= \yii\helpers\Url::to(['profile/update-profile']) ?>">
                                             <div class="profile-edit"></div>
@@ -231,7 +230,7 @@ $user = \Yii::$app->siteUser->identity;
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <?php foreach ($user->team->teamUsers as $member): ?>
-                                                                <?= $this->render('_team-member', [
+                                                                <?= $this->render('/_blocks/_team-member', [
                                                                     'member' => $member,
                                                                 ]) ?>
                                                             <?php endforeach; ?>
@@ -243,7 +242,7 @@ $user = \Yii::$app->siteUser->identity;
                                     </div>
                                 </div>
                             <?php endif; ?>
-                        </>
+                        </div>
                     </div>
                 </div>
         </article>

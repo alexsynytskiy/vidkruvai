@@ -11,7 +11,7 @@
             <?= $item->title ?>
         </div>
         <div class="short">
-            <?= $item->short ?>
+            <?= \yii\helpers\StringHelper::truncate($item->short, 150) ?>
         </div>
         <div class="short item-date">
             <?= date('d.m.Y', $item->time); ?>

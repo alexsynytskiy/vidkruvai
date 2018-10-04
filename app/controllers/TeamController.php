@@ -36,6 +36,26 @@ class TeamController extends Controller
         ];
     }
 
+
+
+    /**
+     * @return string
+     */
+    public function actionIndex()
+    {
+        $status = $this->checkUserStatus();
+
+        if ($status !== true) {
+            return $status;
+        }
+
+        \Yii::$app->seo->setTitle('Команда');
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('Відкривай, Україну');
+
+        return $this->render('index');
+    }
+
     /**
      * @return array|bool|string|Response
      * @throws \yii\db\Exception
@@ -53,6 +73,10 @@ class TeamController extends Controller
             \Yii::info('Пользователь попытался несколько раз создать команду');
 
             throw new BadRequestHttpException();
+        }
+
+        if(\Yii::$app->siteUser->identity->team) {
+            $this->redirect('/team');
         }
 
         \Yii::$app->seo->setTitle('Створити команду');
@@ -115,6 +139,10 @@ class TeamController extends Controller
             \Yii::info('Пользователь попытался несколько раз обновить команду');
 
             throw new BadRequestHttpException();
+        }
+
+        if(!\Yii::$app->siteUser->identity->isCaptain()) {
+            $this->redirect('/team');
         }
 
         \Yii::$app->seo->setTitle('Редагувати команду');

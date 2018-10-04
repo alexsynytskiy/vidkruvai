@@ -23,4 +23,18 @@ class SiteController extends Controller
 
         ]);
     }
+
+    /**
+     * @return string
+     */
+    public function actionError()
+    {
+        \Yii::$app->seo->setTitle('Проблема');
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('відкривай, україну');
+
+        return $this->render('error', [
+
+        ]);
+    }
 }

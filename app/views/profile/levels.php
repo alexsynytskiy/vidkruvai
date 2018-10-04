@@ -41,21 +41,21 @@ $baseUrl = $asset->baseUrl;
                                         <thead>
                                         <tr>
                                             <td class="col-lg-2 col-md-2"><?= AppMsg::t('Рівень'); ?></td>
-                                            <td class="col-lg-2 col-md-2"><?= AppMsg::t('Ранг'); ?></td>
+                                            <td class="col-lg-2 col-md-2"><?= AppMsg::t('Група'); ?></td>
                                             <td class="col-lg-2 col-md-2"><?= AppMsg::t('Досвіду потрібно'); ?></td>
                                             <td class="col-lg-3 col-md-3"><?= AppMsg::t('Завершено на (%)'); ?></td>
-                                            <td class="col-lg-3 col-md-3"><?= AppMsg::t('Приз'); ?></td>
+                                            <td class="col-lg-3 col-md-3"><?= AppMsg::t('Нагорода'); ?></td>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <?php foreach($data as $level):
                                             /* @var $level \app\models\Level */ ?>
                                             <tr class="<?= ($level->num === $userCurrentLevel) ? 'current-level' : '' ?>">
-                                                <td class="col-lg-1 col-md-1"><?= Html::encode($level->num) ?></td>
-                                                <td class="col-lg-2 col-md-2 <?= Html::encode($level->levelgroup->slug) ?>">
+                                                <td class="col-lg-1 col-md-1" data-label="Рівень"><?= Html::encode($level->num) ?></td>
+                                                <td class="col-lg-2 col-md-2 <?= Html::encode($level->levelgroup->slug) ?>" data-label="Група">
                                                     <?= Html::encode($level->levelgroup->name) ?>
                                                 </td>
-                                                <td class="col-lg-2 col-md-2"><?= Html::encode($level->required_experience) ?></td>
+                                                <td class="col-lg-2 col-md-2" data-label="Досвіду потрібно"><?= Html::encode($level->required_experience) ?></td>
 
                                                 <?php
                                                     if($level->num < $userCurrentLevel) {
@@ -73,8 +73,8 @@ $baseUrl = $asset->baseUrl;
                                                         $done = '';
                                                     }
                                                 ?>
-                                                <td class="col-lg-3 col-md-3"><?= $done ?></td>
-                                                <td class="col-lg-3 col-md-3"><?= $level->landingAwardsString ?></td>
+                                                <td class="col-lg-3 col-md-3 clearfix" data-label="Завершено на (%)"><?= $done ?></td>
+                                                <td class="col-lg-3 col-md-3" data-label="Нагорода"><?= $level->landingAwardsString ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                         </tbody>

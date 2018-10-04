@@ -1,5 +1,6 @@
 <?php
 /** @var \app\models\forms\TeamCreateForm $model */
+/** @var string $button */
 
 use app\components\AppMsg;
 use yii\widgets\ActiveForm;
@@ -19,6 +20,8 @@ $form = ActiveForm::begin([
     'fieldConfig' => [
         'template' => "{input}\n{error}",
     ],
+    'enableAjaxValidation'   => true,
+    'enableClientValidation' => false,
 ]);
 ?>
 
@@ -54,12 +57,12 @@ $form = ActiveForm::begin([
         </div>
 
         <div class="form-group clearfix" id="team-members-emails">
-            <div class="col-md-12">
+            <div class="col-md-12 col-xs-12">
                 <?php if($model->isNewRecord): ?>
                     <?= $form->field($model, 'emails[]')->hiddenInput([
                         'value' => Yii::$app->siteUser->identity->email, 'id' => 'captain-id']) ?>
                     <?php for ($i = 1; $i <= 9; $i++): ?>
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-xs-12">
                             <?= $form->field($model, 'emails[]')->textInput([
                                 'placeholder' => AppMsg::t('Учасник ') . $i
                             ]) ?>
@@ -68,12 +71,12 @@ $form = ActiveForm::begin([
                 <?php else: ?>
                     <?= $form->field($model, 'emails[]')->hiddenInput() ?>
                     <?php foreach ($model->emails as $email): ?>
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-xs-12">
                             <?= $form->field($model, 'emails[]')->textInput(['value' => $email]) ?>
                         </div>
                     <?php endforeach; ?>
                     <?php for ($i = 1 + count($model->emails); $i <= 9; $i++): ?>
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-xs-12">
                             <?= $form->field($model, 'emails[]')->textInput([
                                 'placeholder' => AppMsg::t('Учасник ') . $i
                             ]) ?>
@@ -97,8 +100,7 @@ $form = ActiveForm::begin([
             'template' => '<div class="media-body"><div class="pl-0" style="padding-right: 10px;">{input}</div></div><div class="media-right">{image}</div>',
         ]) ?>
 
-        <?= \yii\helpers\Html::submitButton(AppMsg::t('Підтвердити та створити команду'),
-            ['class' => 'link-button', 'style' => ['float' => 'left']]) ?>
+        <?= \yii\helpers\Html::submitButton($button, ['class' => 'link-button', 'style' => ['float' => 'left']]) ?>
     </div>
 
 <?php ActiveForm::end(); ?>
