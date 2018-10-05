@@ -7,24 +7,20 @@ use app\components\Controller;
 use app\components\events\UserRegisteredEvent;
 use app\components\UserRegisteredEventHandler;
 use app\models\Achievement;
-use app\models\definitions\DefAchievements;
 use app\models\definitions\DefLevel;
 use app\models\definitions\DefNotification;
 use app\models\definitions\DefTeamSiteUser;
 use app\models\definitions\DefUserAchievement;
 use app\models\forms\LoginForm;
 use app\models\forms\RegisterForm;
-use app\models\forms\TeamCreateForm;
 use app\models\Level;
 use app\models\NotificationUser;
 use app\models\search\AchievementSearch;
 use app\models\search\LevelSearch;
 use app\models\search\NotificationUserSearch;
 use app\models\SiteUser;
-use app\models\Team;
 use app\models\TeamSiteUser;
 use app\models\UserAchievement;
-use yii\captcha\CaptchaAction;
 use yii\easyii\components\helpers\LanguageHelper;
 use yii\easyii\helpers\Image;
 use yii\easyii\modules\news\api\News;
@@ -60,12 +56,6 @@ class ProfileController extends Controller
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => CaptchaAction::className(),
-                'height' => 50,
-                'maxLength' => 4,
-                'minLength' => 4,
             ],
         ];
     }
@@ -358,11 +348,11 @@ class ProfileController extends Controller
     }
 
     /**
-     * @param null $slug
+     * @param string $slug
      * @return bool|string|\yii\web\Response
      * @throws \yii\db\Exception
      */
-    public function actionNewsItem($slug = null)
+    public function actionNewsItem($slug = '')
     {
         $status = $this->checkUserStatus();
 
@@ -370,17 +360,11 @@ class ProfileController extends Controller
             return $status;
         }
 
-        if (!$slug) {
+        if (empty($slug)) {
             return $this->redirect(['news/']);
         }
 
-        $news = null;
-
-        if (\Yii::$app->language !== LanguageHelper::LANG_UA) {
-            $news = News::get([$slug, 'en']);
-        } else {
-            $news = News::get([$slug]);
-        }
+        $news = News::get([$slug]);
 
         \yii\easyii\modules\news\models\News::readByIds([$news->id]);
 
@@ -388,7 +372,7 @@ class ProfileController extends Controller
         isset($news->seo->description) ? \Yii::$app->seo->setDescription($news->seo->description) : null;
         isset($news->seo->keywords) ? \Yii::$app->seo->setKeywords($news->seo->keywords) : null;
 
-        return $this->render('view', ['news' => $news]);
+        return $this->render('news-view', ['newsItem' => $news]);
     }
 
     /**
@@ -417,10 +401,10 @@ class ProfileController extends Controller
 
         $invitationRegistration = false;
         $userTeamItem = null;
-        if($hash) {
+        if ($hash) {
             $userTeamItem = TeamSiteUser::findOne(['hash' => $hash]);
 
-            if($userTeamItem) {
+            if ($userTeamItem) {
                 $model->email = $userTeamItem->email;
                 $invitationRegistration = true;
             }
@@ -439,11 +423,11 @@ class ProfileController extends Controller
             $userEvent->userId = $user->id;
             \Yii::$app->trigger(self::EVENT_USER_REGISTERED, $userEvent);
 
-            if($invitationRegistration && $userTeamItem) {
+            if ($invitationRegistration && $userTeamItem) {
                 $userTeamItem->site_user_id = $user->id;
                 $userTeamItem->status = DefTeamSiteUser::STATUS_CONFIRMED;
 
-                if($userTeamItem->update()) {
+                if ($userTeamItem->update()) {
                     $captain = $userTeamItem->team->teamCaptain();
 
                     \Yii::$app->notification->addToUser($captain, DefNotification::CATEGORY_TEAM,
@@ -463,6 +447,42 @@ class ProfileController extends Controller
             'model' => $model,
             'invitation' => $invitationRegistration,
         ]);
+    }
+
+    /**
+     * @param string $hash
+     * @param string $type
+     *
+     * @return string|Response
+     * @throws \Throwable
+     */
+    public function actionDecline($type = '', $hash = '')
+    {
+        if (!\Yii::$app->siteUser->isGuest) {
+            return $this->redirect(['/profile']);
+        }
+
+        if (!\Yii::$app->mutex->acquire('multiple-unsubscribe')) {
+            \Yii::info('Пользователь попытался отказаться от приглашения несколько раз');
+
+            throw new BadRequestHttpException();
+        }
+
+        \Yii::$app->seo->setTitle('Відхилити запрошення');
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('відкривай, україну');
+
+        if ($hash && $type) {
+            $userTeamItem = TeamSiteUser::findOne(['hash' => $hash, 'status' => DefTeamSiteUser::STATUS_UNCONFIRMED]);
+
+            if ($userTeamItem) {
+                return $this->render($type, [
+                    'user' => $userTeamItem,
+                ]);
+            }
+        }
+
+        return $this->redirect(['/']);
     }
 
     /**

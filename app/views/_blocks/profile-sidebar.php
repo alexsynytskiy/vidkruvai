@@ -21,7 +21,7 @@ $news = '';
 
 switch ($controller) {
     case 'profile':
-        if($currentPage === 'news') {
+        if($currentPage === 'news' || $currentPage === 'news-item') {
             $news = 'active';
         }
         else {

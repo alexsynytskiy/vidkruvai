@@ -2,10 +2,10 @@
 
 namespace app\controllers;
 
+use app\components\AppMsg;
 use app\components\Controller;
 use app\models\definitions\DefNotification;
 use app\models\forms\TeamCreateForm;
-use yii\captcha\CaptchaAction;
 use yii\easyii\helpers\Image;
 use yii\web\BadRequestHttpException;
 use yii\web\Response;
@@ -26,17 +26,9 @@ class TeamController extends Controller
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => CaptchaAction::className(),
-                'height' => 50,
-                'maxLength' => 4,
-                'minLength' => 4,
-            ],
+            ]
         ];
     }
-
-
 
     /**
      * @return string
@@ -107,9 +99,9 @@ class TeamController extends Controller
                     DefNotification::TYPE_TEAM_CREATED, null,
                     ['team_name' => $model->name, 'created_at' => date('d-M-Y H:i:s')]);
 
-                $this->flash('success', \Yii::t('easyii', 'Team created'));
+                $this->flash('success', AppMsg::t('Команду створено'));
             } else {
-                $this->flash('error', \Yii::t('easyii', 'Create error.'));
+                $this->flash('error', AppMsg::t('Проблема при створенні команди'));
             }
 
             return $this->render('update-team', [
@@ -170,9 +162,9 @@ class TeamController extends Controller
             }
 
             if ($model->updateTeam()) {
-                $this->flash('success', \Yii::t('easyii', 'Team updated'));
+                $this->flash('success', AppMsg::t('Команду оновлено'));
             } else {
-                $this->flash('error', \Yii::t('easyii', 'Create updated.'));
+                $this->flash('error', AppMsg::t('Проблема при оновленні команди..'));
             }
         }
 

@@ -57,7 +57,7 @@ class TeamCreateForm extends Model
             [['captchaTeam', 'name'], 'required'],
             ['emails', 'each', 'rule' => ['email']],
             ['emails', 'checkcount'],
-            ['captchaTeam', 'captcha', 'captchaAction' => '/team/captcha'],
+            ['captchaTeam', 'captcha', 'captchaAction' => '/validation/captcha'],
         ];
     }
 

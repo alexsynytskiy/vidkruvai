@@ -56,7 +56,7 @@ $asset = \app\assets\AppAsset::register($this);
                     <?= $form->field($model, 'passwordRepeat')->passwordInput(['maxlength' => true, 'placeholder' => 'Повторіть пароль']) ?>
 
                     <?= $form->field($model, 'captchaUser')->widget(\yii\captcha\Captcha::className(), [
-                        'captchaAction' => 'profile/captcha',
+                        'captchaAction' => 'validation/captcha/',
                         'options' => [
                             'placeholder' => 'Код перевірки',
                             'autocomplete' => 'off',

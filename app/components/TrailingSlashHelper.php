@@ -3,6 +3,7 @@
 namespace app\components;
 
 use yii\base\Object;
+use yii\rest\Serializer;
 
 /**
  * Class TrailingSlashHelper
@@ -22,7 +23,8 @@ class TrailingSlashHelper extends Object
         preg_match('/[^\/]+$/', $pathInfo, $matches);
 
         $startRedirect = ['admin', 'site', 'profile', 'team'];
-        $stopRedirect = ['items', 'edit', 'photos', 'settings', 'index', 'list', 'redactor', 'all', 'account'];
+        $stopRedirect = ['items', 'edit', 'photos', 'settings', 'index',
+            'list', 'redactor', 'all', 'account', 'news-item'];
 
         $redirect = false;
 

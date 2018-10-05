@@ -48,7 +48,7 @@ $asset = \app\assets\AppAsset::register($this);
                 ]) ?>
 
                 <?= $form->field($model, 'captchaUser')->widget(\yii\captcha\Captcha::className(), [
-                    'captchaAction' => 'profile/captcha',
+                    'captchaAction' => 'validation/captcha',
                     'options' => [
                         'placeholder' => 'Код перевірки',
                         'autocomplete' => 'off',

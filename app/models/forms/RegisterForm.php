@@ -64,7 +64,7 @@ class RegisterForm extends Model
         return [
             [['name', 'surname', 'passwordRepeat', 'userPassword', 'captchaUser', 'role', 'age', 'class',
                 'school', 'email'], 'required'],
-            ['captchaUser', 'captcha', 'captchaAction' => '/profile/captcha'],
+            ['captchaUser', 'captcha', 'captchaAction' => '/validation/captcha'],
             ['userPassword', 'string', 'min' => 6],
             [['name', 'surname', 'role', 'age', 'class', 'school'], 'uniqueSiteUser'],
             ['passwordRepeat', 'compare', 'compareAttribute' => 'userPassword'],

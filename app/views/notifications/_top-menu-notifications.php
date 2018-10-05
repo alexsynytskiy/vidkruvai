@@ -10,7 +10,7 @@ $notificationTitle = AppMsg::t('Сповіщення (<span class="total-notific
     $notificationCounters['total']);
 ?>
 
-<li class="last dropdown dropdown-velocity" id="toolbar-notifications">
+<li class="dropdown dropdown-velocity" id="toolbar-notifications">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
         <i class="fa fa-bell heading-icon"></i>
         <span class="visible-xs-inline-block position-right"></span>

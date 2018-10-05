@@ -82,12 +82,16 @@ $config = [
                 'profile/notifications/<category:[a-z\d-]+>' => 'profile/notifications',
 
                 'register/<hash:[\w-]+>' => 'profile/register',
+                'profile/news-item/<slug:[\w-]+>' => 'profile/news-item',
+
                 'register' => 'profile/register',
 
                 'profile/clear-image/<id:[\d+]+>/<className:[\w+]+>' => 'profile/clear-image',
                 'team/clear-image/<id:[\d+]+>/<className:[\w+]+>' => 'team/clear-image',
 
                 'profile/create-team' => 'team/create-team',
+
+                '<alias:\w+>' => 'validation/<alias>',
 
                 '<controller:\w+>' => '<controller>/index',
                 '<controller:\w+>/<slug:[\w-]+>' => '<controller>/view',

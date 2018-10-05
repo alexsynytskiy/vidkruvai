@@ -31,7 +31,7 @@ var SiteCore = function (options) {
             }).trigger('resize');
         },
         initPNotify: function () {
-            var $flashMessages = $('#module-flash-messages').find('.message');
+            var $flashMessages = $('#flash-messages').find('.message');
 
             if ($flashMessages.length) {
                 $flashMessages.each(function (i) {

@@ -38,7 +38,7 @@ class LoginForm extends Model
     {
         return [
             [['email', 'password', 'captchaUser'], 'required'],
-            ['captchaUser', 'captcha', 'captchaAction' => '/profile/captcha'],
+            ['captchaUser', 'captcha', 'captchaAction' => '/validation/captcha'],
             ['password', 'validatePassword'],
         ];
     }

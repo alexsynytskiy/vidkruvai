@@ -16,7 +16,7 @@
         <div class="short item-date">
             <?= date('d.m.Y', $item->time); ?>
         </div>
-        <a class="short read-more" href="<?= \yii\helpers\Url::to(['news/' . $item->slug]) ?>">Читати далі</a>
+        <a class="short read-more" href="<?= \yii\helpers\Url::to(['/profile/news-item/' . $item->slug]) ?>">Читати далі</a>
 
         <div class="heading-elements" data-news-id="<?= $item->id; ?>">
             <?php if ($item->read): ?>

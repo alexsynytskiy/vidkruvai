@@ -67,6 +67,11 @@ switch ($controller) {
                     </li>
                 <?php else: ?>
                     <?= $this->render('/notifications/_top-menu-notifications') ?>
+                    <li class="last">
+                        <a href="<?= Url::to(['/profile']) ?>">
+                            <?= \Yii::$app->siteUser->identity->getFullName() ?>
+                        </a>
+                    </li>
                 <?php endif; ?>
             </ul>
         </div>

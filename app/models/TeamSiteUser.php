@@ -106,8 +106,8 @@ class TeamSiteUser extends ActiveRecord
         $teamName = $team->name;
         $teamLead = $team->teamCaptain() ? $team->teamCaptain()->getFullName() : '';
         $teamsTotalCount = Team::find()->where(['status' => DefTeam::STATUS_ACTIVE])->count();
-        $siteLink = '';
-        $notParticipantLink = Url::to('/decline', ['hash' => $this->hash]);;
+        $siteLink = Url::to('/');
+        $notParticipantLink = Url::to('/decline', ['hash' => $this->hash]);
 
         return Mail::send(
             Setting::get('admin_email'),

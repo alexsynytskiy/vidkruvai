@@ -20,8 +20,7 @@ $form = ActiveForm::begin([
     'fieldConfig' => [
         'template' => "{input}\n{error}",
     ],
-    'enableAjaxValidation'   => true,
-    'enableClientValidation' => false,
+    'enableClientValidation' => true,
 ]);
 ?>
 
@@ -87,7 +86,7 @@ $form = ActiveForm::begin([
         </div>
 
         <?= $form->field($model, 'captchaTeam')->widget(\yii\captcha\Captcha::className(), [
-            'captchaAction' => 'team/captcha',
+            'captchaAction' => 'validation/captcha',
             'options' => [
                 'placeholder' => 'Код перевірки',
                 'autocomplete' => 'off',
