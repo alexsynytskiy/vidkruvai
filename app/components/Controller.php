@@ -4,6 +4,7 @@ namespace app\components;
 
 use app\models\NotificationUser;
 use app\models\SiteUser;
+use app\models\Team;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
@@ -175,7 +176,19 @@ class Controller extends \yii\web\Controller
      */
     public function actionClearImage($id, $className)
     {
-        $model = $className::findOne($id);
+        if (\Yii::$app->siteUser->isGuest) {
+            throw new BadRequestHttpException();
+        }
+
+        $classNameFull = '';
+
+        if ($className === 'siteuser') {
+            $classNameFull = SiteUser::className();
+        } elseif ($className === 'team') {
+            $classNameFull = Team::className();
+        }
+        /** @var SiteUser|Team $model */
+        $model = $classNameFull::findOne($id);
 
         if ($model === null) {
             $this->flash('error', \Yii::t('easyii', 'Not found'));
@@ -183,9 +196,9 @@ class Controller extends \yii\web\Controller
             $model->avatar = '';
             if ($model->update()) {
                 @unlink(\Yii::getAlias('@webroot') . $model->avatar);
-                $this->flash('success', \Yii::t('easyii', 'Image cleared'));
+                $this->flash('success', AppMsg::t('Зображення видалено'));
             } else {
-                $this->flash('error', \Yii::t('easyii', 'Update error. {0}', $model->getErrors()));
+                $this->flash('error', AppMsg::t('Зображення не видалено через внутрішню помлку'));
             }
         }
         return $this->back();

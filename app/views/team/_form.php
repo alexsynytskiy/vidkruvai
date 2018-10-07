@@ -46,8 +46,8 @@ $form = ActiveForm::begin([
                     'initialPreviewAsData' => true,
                     'initialPreviewConfig' => [
                         [
-                            'url' => \yii\helpers\Url::to(['/team/clear-image/',
-                                ['id' => $model->id, 'className' => \app\models\Team::className()]
+                            'url' => \yii\helpers\Url::to([
+                                    '/team/clear-image/' . $model->id . '/team/'
                             ]),
                         ],
                     ],

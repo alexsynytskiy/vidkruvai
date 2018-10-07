@@ -510,6 +510,9 @@ class ProfileController extends Controller
                 }
             }
         }
+        else {
+            $this->flash('error', AppMsg::t('Недостатньо параметрів'));
+        }
 
         return $this->redirect(['/']);
     }
@@ -557,8 +560,10 @@ class ProfileController extends Controller
     }
 
     /**
-     * @return array|bool|string|\yii\web\Response
-     * @throws \yii\web\HttpException
+     * @return array|bool|string|Response
+     *
+     * @throws BadRequestHttpException
+     * @throws \Throwable
      */
     public function actionUpdateProfile()
     {
@@ -595,10 +600,10 @@ class ProfileController extends Controller
                 }
             }
 
-            if ($model->save()) {
-                $this->flash('success', \Yii::t('easyii', 'User updated'));
+            if ($model->update()) {
+                $this->flash('success', AppMsg::t('Профайл користувача змінено'));
             } else {
-                $this->flash('error', \Yii::t('easyii', 'Update error. {0}', $model->getErrors()));
+                $this->flash('error', AppMsg::t('Профайл не змінено через внутрішню помилку'));
             }
             return $this->refresh();
         }

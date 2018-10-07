@@ -592,9 +592,20 @@ article {
     width: 40px;
     float: left;
     margin-right: 16px;
-    background-color: #E4E9EC;
-    border-radius: 20px;
     position: relative;
+}
+
+.cabinet-menu .icon .fa {
+    font-size: 32px;
+    display: block;
+    margin: 0 auto;
+    width: 22px;
+    line-height: 40px;
+    color: #93A0A9;
+}
+
+.cabinet-menu .menu-link.active .fa {
+    color: #3195FF;
 }
 
 .cabinet-menu .icon .new-count {
@@ -1390,7 +1401,7 @@ span.bg-success,
 .steps-block.index .brand-tags {
     text-align: left;
     color: #F3BD00;
-    margin-bottom: 32px;
+    margin-bottom: 48px;
     font-size: 21px;
     font-weight: bold;
     line-height: 23px;
@@ -1454,6 +1465,11 @@ span.bg-success,
     line-height: 25px;
 }
 
+.rules-to-profile {
+    margin: 0 auto 16px;
+    display: block;
+}
+
 @media (max-width: 1199px) {
 
 }
@@ -1473,7 +1489,6 @@ span.bg-success,
 
     .steps-block.index .block-right {
         width: 100%;
-        background-size: 100%;
     }
 }
 

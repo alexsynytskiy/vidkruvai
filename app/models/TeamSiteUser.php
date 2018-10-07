@@ -101,13 +101,15 @@ class TeamSiteUser extends ActiveRecord
     {
         $team = $this->team;
 
-        $unsubscribeLink = Url::to('/unsubscribe', ['hash' => $this->hash]);
+        $unsubscribeLink = Url::to('/decline',
+            ['type' => DefTeamSiteUser::RESPONSE_REMOVED, 'hash' => $this->hash]);
         $registrationLink = Url::to('/register', ['hash' => $this->hash]);
         $teamName = $team->name;
         $teamLead = $team->teamCaptain() ? $team->teamCaptain()->getFullName() : '';
         $teamsTotalCount = Team::find()->where(['status' => DefTeam::STATUS_ACTIVE])->count();
         $siteLink = Url::to('/');
-        $notParticipantLink = Url::to('/decline', ['hash' => $this->hash]);
+        $notParticipantLink = Url::to('/decline',
+            ['type' => DefTeamSiteUser::RESPONSE_DECLINED, 'hash' => $this->hash]);
 
         return Mail::send(
             Setting::get('admin_email'),

@@ -81,6 +81,8 @@ $config = [
                 'profile/notifications/<category:[a-z\d-]+>/<status:[a-z\d-]+>' => 'profile/notifications',
                 'profile/notifications/<category:[a-z\d-]+>' => 'profile/notifications',
 
+                'decline/<type:[a-z\d-]+>/<hash:[\w-]+>' => 'profile/decline',
+
                 'register/<hash:[\w-]+>' => 'profile/register',
                 'profile/news-item/<slug:[\w-]+>' => 'profile/news-item',
                 'profile/news/<tag:[\w-]+>' => 'profile/news',

@@ -24,16 +24,16 @@ $baseUrl = $asset->baseUrl;
                             <div class="user-form-edit">
                                 <div class="step-title"><?= 'Редагування профілю' ?></div>
                                 <?php
-                                    $form = ActiveForm::begin([
-                                        'id' => 'user-form',
-                                        'options' => [
-                                            'class' => 'link-form clearfix',
-                                            'enctype' => 'multipart/form-data',
-                                        ],
-                                        'fieldConfig' => [
-                                            'template' => "{input}\n{error}",
-                                        ],
-                                    ]);
+                                $form = ActiveForm::begin([
+                                    'id' => 'user-form',
+                                    'options' => [
+                                        'class' => 'link-form clearfix',
+                                        'enctype' => 'multipart/form-data',
+                                    ],
+                                    'fieldConfig' => [
+                                        'template' => "{input}\n{error}",
+                                    ],
+                                ]);
                                 ?>
 
                                 <div class="col-md-12 form-z-index">
@@ -53,13 +53,15 @@ $baseUrl = $asset->baseUrl;
                                             'pluginOptions' => $model->avatar ? [
                                                 'showRemove' => false,
                                                 'initialPreview' => [
-                                                    isset($model->avatar) ? \yii\easyii\helpers\Image::thumb($model->avatar, 240) : null
+                                                    isset($model->avatar) ?
+                                                        \yii\easyii\helpers\Image::thumb($model->avatar, 240) :
+                                                        null
                                                 ],
                                                 'initialPreviewAsData' => true,
                                                 'initialPreviewConfig' => [
                                                     [
-                                                        'url' => \yii\helpers\Url::to(['/profile/clear-image/',
-                                                            ['id' => $model->primaryKey, 'className' => \app\models\SiteUser::className()]
+                                                        'url' => \yii\helpers\Url::to([
+                                                            '/profile/clear-image/' . $model->primaryKey . '/siteuser/'
                                                         ]),
                                                     ],
                                                 ],
@@ -71,7 +73,7 @@ $baseUrl = $asset->baseUrl;
                                         ]); ?>
                                     </div>
 
-                                    <?php if(isset($model->avatar)): ?>
+                                    <?php if (isset($model->avatar)): ?>
                                         <?= '<div id="preview"></div>' ?>
                                     <?php endif; ?>
 

@@ -20,6 +20,9 @@ class DefTeamSiteUser extends BaseDefinition
     const ROLE_MEMBER = 'member';
     const ROLE_CAPTAIN = 'captain';
 
+    const RESPONSE_DECLINED = 'declined';
+    const RESPONSE_REMOVED = 'removed';
+
     /**
      * @param string $returnType
      *
@@ -59,8 +62,8 @@ class DefTeamSiteUser extends BaseDefinition
      */
     public static function getStatusByType($type) {
         $types = [
-            'declined' => self::STATUS_DECLINED,
-            'removed' => self::STATUS_REMOVED,
+            self::RESPONSE_DECLINED => self::STATUS_DECLINED,
+            self::RESPONSE_REMOVED => self::STATUS_REMOVED,
         ];
 
         return $types[$type];

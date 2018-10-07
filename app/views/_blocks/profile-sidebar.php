@@ -56,36 +56,48 @@ switch ($controller) {
         <?php endif; ?>
 
         <div class="menu-link <?= $profile ?>">
-            <div class="icon"></div>
+            <div class="icon">
+                <i class="fa fa-user"></i>
+            </div>
             <a href="<?= Url::to(['profile/']) ?>">
                 <div class="text">Профіль</div>
             </a>
         </div>
         <div class="menu-link <?= $team ?>">
-            <div class="icon"></div>
+            <div class="icon">
+                <i class="fa fa-users" style="font-size: 24px;"></i>
+            </div>
             <a href="<?= Url::to([$user->team ? '/team' : '/team/create-team']) ?>">
                 <div class="text">Команда</div>
             </a>
         </div>
         <div class="menu-link <?= $tasks ?>">
-            <div class="icon"></div>
+            <div class="icon">
+                <i class="fa fa-list" style="font-size: 26px;"></i>
+            </div>
             <div class="text">Завдання</div>
         </div>
         <div class="menu-link <?= $messages ?>">
-            <div class="icon"></div>
+            <div class="icon">
+                <i class="fa fa-comments" style="font-size: 26px;"></i>
+            </div>
             <div class="text">Повідомлення</div>
         </div>
         <div class="menu-link <?= $news ?>">
             <div class="icon">
+                <i class="fa fa-newspaper-o" style="font-size: 23px;"></i>
                 <?php if ($totalNews): ?>
-                    <div class="new-count news-unread"><?= $totalNews ?></div><?php endif; ?>
+                    <div class="new-count news-unread"><?= $totalNews ?></div>
+                <?php endif; ?>
             </div>
             <a href="/profile/news/">
                 <div class="text">Новини</div>
             </a>
         </div>
         <div class="menu-link">
-            <div class="icon"></div>
+            <div class="icon">
+                <i class="fa fa-sign-out" style="font-size: 28px;"></i>
+            </div>
             <a href="<?= Url::to(['profile/logout']) ?>">
                 <div class="text">Вихід</div>
             </a>
