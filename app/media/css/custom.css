@@ -476,11 +476,11 @@ article {
 }
 
 .sidebar-right-fixed {
-    width: 255px;
+    width: 195px;
     position: fixed;
     z-index: 1;
     top: 145px;
-    left: 172px;
+    left: 145px;
     margin-left: auto;
     margin-right: auto;
     background: #fff;
@@ -642,7 +642,6 @@ article {
     margin: 0 auto 30px;
     text-align: center;
     color: #373737;
-    padding-right: 23px;
 }
 
 .cabinet-menu .profile-info img {
@@ -761,7 +760,6 @@ span.bg-success,
 .label-success {
     background-color: #047afb;
     padding: 7px 12px;
-    margin-left: 10px;
     border-radius: 5px;
 }
 
@@ -1350,6 +1348,112 @@ span.bg-success,
     padding-right: 32px;
 }
 
+.tags {
+    margin: 0;
+    list-style: none;
+}
+
+.tags li {
+    float: left;
+}
+
+.tags li a {
+    background-color: #007BFF;
+    border-radius: 5px;
+    color: #fff;
+    padding: 8px 12px;
+    margin-right: 16px;
+    font-size: 16px;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+    border: 2px solid #007BFF;
+}
+
+.tags li a:hover {
+    color: #007BFF;
+    background-color: #fff;
+    border: 2px solid #007BFF;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+}
+
+.cabinet.news-item .simple-news-page h4 {
+    text-align: left;
+}
+
+.steps-block.index .brand-tags {
+    text-align: left;
+    color: #F3BD00;
+    margin-bottom: 32px;
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 23px;
+}
+
+.steps-block.index .slogan {
+    font-weight: bold;
+    font-size: 44px;
+    line-height: 50px;
+    text-align: left;
+    margin-bottom: 40px;
+}
+
+.steps-block.index .block-left {
+    width: 380px;
+    float: right;
+    margin-left: 40px;
+    margin-right: 0;
+}
+
+.steps-block.index .link-button.register {
+    background-color: #007BFF;
+    border: none;
+    height: 44px;
+    border-radius: 5px;
+    color: #fff;
+    line-height: 44px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    margin-top: 8px;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+    display: block;
+}
+
+.steps-block.index .link-button.register:hover {
+    background-color: #3195FF;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+}
+
+.steps-block.index .already {
+    color: #41505c;
+    font-family: 'Lato', sans-serif;
+    font-weight: normal;
+    font-size: 14px;
+}
+
+.steps-block.index .already a {
+    color: #007BFF;
+}
+
+.steps-block.index .step-subtitle {
+    line-height: 25px;
+}
+
 @media (max-width: 1199px) {
 
 }
@@ -1360,6 +1464,17 @@ span.bg-success,
 
 @media (min-width: 992px) {
 
+}
+
+@media (max-width: 1050px) {
+    .steps-block.index .block-left {
+        width: 100%;
+    }
+
+    .steps-block.index .block-right {
+        width: 100%;
+        background-size: 100%;
+    }
 }
 
 @media (max-width: 991px) {
@@ -1629,8 +1744,63 @@ span.bg-success,
     }
 }
 
-@media (max-width: 636px) {
+@media (max-width: 1270px) and (min-width: 991px) {
+    .cabinet .sidebar-right-fixed {
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 25%;
+    }
 
+    .cabinet .content-left-fixed {
+        width: 74%;
+    }
+
+    .steps-block.profile {
+        max-width: 970px;
+    }
+
+    .profile-info-main .left-side img {
+        max-width: 130px;
+    }
+
+    .profile-info-main .left-side {
+        width: 25%;
+    }
+
+    .profile-info-main .right-side {
+        width: 70%;
+    }
+
+    footer .links-block a {
+        margin-right: 16px;
+        font-size: 16px;
+    }
+
+    .content-left-fixed .news-item .image {
+        width: 50%;
+    }
+
+    .content-left-fixed .news-item .information {
+        width: 50%;
+    }
+
+    .news-item.small {
+        width: calc(50% - 16px);
+    }
+
+    .content-left-fixed .news-item.small .image {
+        width: 100%;
+    }
+
+    .content-left-fixed .news-item .information .short {
+        max-height: 115px;
+        overflow: hidden;
+    }
+
+    .content-left-fixed .news-item .information .short.item-date {
+        bottom: 65px;
+    }
 }
 
 @media (min-width: 637px) {

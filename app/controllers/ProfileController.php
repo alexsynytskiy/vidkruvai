@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\AppMsg;
 use app\components\BaseDefinition;
 use app\components\Controller;
 use app\components\events\UserRegisteredEvent;
@@ -299,9 +300,10 @@ class ProfileController extends Controller
     }
 
     /**
-     * @return string
+     * @param string $tag
+     * @return bool|string|Response
      */
-    public function actionNews()
+    public function actionNews($tag = '')
     {
         $status = $this->checkUserStatus();
 
@@ -312,8 +314,6 @@ class ProfileController extends Controller
         \Yii::$app->seo->setTitle('Новини');
         \Yii::$app->seo->setDescription('Відкривай Україну');
         \Yii::$app->seo->setKeywords('Відкривай, Україну');
-
-        $tag = \Yii::$app->request->get('tag');
 
         $queryParams = [
             'limit' => \yii\easyii\modules\news\models\News::ITEMS_PER_PAGE + 1,
@@ -402,9 +402,33 @@ class ProfileController extends Controller
         $invitationRegistration = false;
         $userTeamItem = null;
         if ($hash) {
-            $userTeamItem = TeamSiteUser::findOne(['hash' => $hash]);
+            $userTeamItem = TeamSiteUser::findOne(['hash' => $hash, 'status' => DefTeamSiteUser::STATUS_UNCONFIRMED]);
 
             if ($userTeamItem) {
+                $userExistsAsUnit = SiteUser::findOne(['email' => $userTeamItem->email]);
+                if ($userExistsAsUnit) {
+                    $userTeamItem->site_user_id = $userExistsAsUnit->id;
+                    $userTeamItem->status = DefTeamSiteUser::STATUS_CONFIRMED;
+
+                    if ($userTeamItem->update()) {
+                        $captain = $userTeamItem->team->teamCaptain();
+
+                        \Yii::$app->notification->addToUser($captain, DefNotification::CATEGORY_TEAM,
+                            DefNotification::TYPE_TEAM_USER_ACCEPTED, null,
+                            ['team_member' => $userExistsAsUnit->getFullName(), 'created_at' => date('d-M-Y H:i:s')]);
+
+                        if (\Yii::$app->siteUser->isGuest) {
+                            \Yii::$app->siteUser->login($userExistsAsUnit, BaseDefinition::getSessionExpiredTime());
+                        }
+
+                        if ($userExistsAsUnit->agreement_read) {
+                            return $this->redirect(['/profile']);
+                        }
+
+                        return $this->redirect('/rules');
+                    }
+                }
+
                 $model->email = $userTeamItem->email;
                 $invitationRegistration = true;
             }
@@ -476,9 +500,14 @@ class ProfileController extends Controller
             $userTeamItem = TeamSiteUser::findOne(['hash' => $hash, 'status' => DefTeamSiteUser::STATUS_UNCONFIRMED]);
 
             if ($userTeamItem) {
-                return $this->render($type, [
-                    'user' => $userTeamItem,
-                ]);
+                $userTeamItem->status = DefTeamSiteUser::getStatusByType($type);
+
+                if ($userTeamItem->update()) {
+                    $this->flash('success', AppMsg::t('Запрошення успішно відхилено! Статус: ' .
+                        DefTeamSiteUser::getStatusText($userTeamItem->status)));
+                } else {
+                    $this->flash('error', AppMsg::t('Щось пішло не так..'));
+                }
             }
         }
 

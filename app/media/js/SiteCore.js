@@ -76,7 +76,9 @@ var SiteCore = function (options) {
             return result;
         },
         windowSize: function (width) {
-            if (width > 991) {
+            var isMain = $('.steps-block.index').size();
+
+            if (width > 991 || (isMain && width > 1050)) {
                 var biggestHeight = 0;
 
                 var isCabinet = $('.cabinet').size(),
@@ -99,6 +101,10 @@ var SiteCore = function (options) {
 
                 if (isEdit) {
                     height += 320;
+                }
+
+                if (isMain) {
+                    height += 70;
                 }
 
                 if (isCabinet) {

@@ -83,6 +83,7 @@ $config = [
 
                 'register/<hash:[\w-]+>' => 'profile/register',
                 'profile/news-item/<slug:[\w-]+>' => 'profile/news-item',
+                'profile/news/<tag:[\w-]+>' => 'profile/news',
 
                 'register' => 'profile/register',
 

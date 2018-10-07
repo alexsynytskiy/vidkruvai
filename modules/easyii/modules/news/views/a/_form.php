@@ -62,6 +62,10 @@ $module = $this->context->module->id;
 
     <?= $form->field($model, 'time')->widget(DateTimePicker::className()); ?>
 
+<?php if($this->context->module->settings['enableTags']) : ?>
+    <?= $form->field($model, 'tagNames')->widget(\yii\easyii\widgets\TagsInput::className()) ?>
+<?php endif; ?>
+
 <?php if (IS_ROOT) : ?>
     <?= $form->field($model, 'slug') ?>
     <?= SeoForm::widget(['model' => $model]) ?>

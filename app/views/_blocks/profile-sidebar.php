@@ -80,7 +80,7 @@ switch ($controller) {
                 <?php if ($totalNews): ?>
                     <div class="new-count news-unread"><?= $totalNews ?></div><?php endif; ?>
             </div>
-            <a href="<?= Url::to(['profile/news']) ?>">
+            <a href="/profile/news/">
                 <div class="text">Новини</div>
             </a>
         </div>

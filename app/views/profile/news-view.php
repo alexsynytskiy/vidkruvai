@@ -45,6 +45,19 @@ $baseUrl = $asset->baseUrl;
 
                                 <?= $newsItem->text ?>
                             </div>
+
+                            <?php if(count($newsItem->tags)): ?>
+                                <h4 class="pl-32">Теги</h4>
+                                <ul class="tags pl-32 clearfix">
+                                    <?php foreach ($newsItem->tags as $tag): ?>
+                                        <li>
+                                            <a href="<?= \yii\helpers\Url::to(['/profile/news/' . $tag->name]) ?>">
+                                                <?= $tag->name ?>
+                                            </a>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>

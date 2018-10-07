@@ -54,6 +54,19 @@ class DefTeamSiteUser extends BaseDefinition
     }
 
     /**
+     * @param $type
+     * @return mixed
+     */
+    public static function getStatusByType($type) {
+        $types = [
+            'declined' => self::STATUS_DECLINED,
+            'removed' => self::STATUS_REMOVED,
+        ];
+
+        return $types[$type];
+    }
+
+    /**
      * @param string $key
      * @return mixed
      */

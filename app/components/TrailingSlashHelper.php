@@ -24,7 +24,7 @@ class TrailingSlashHelper extends Object
 
         $startRedirect = ['admin', 'site', 'profile', 'team'];
         $stopRedirect = ['items', 'edit', 'photos', 'settings', 'index',
-            'list', 'redactor', 'all', 'account', 'news-item'];
+            'list', 'redactor', 'all', 'account', 'news-item', 'news'];
 
         $redirect = false;
 
