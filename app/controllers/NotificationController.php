@@ -115,7 +115,7 @@ class NotificationController extends Controller
         }
 
         $counters = $this->getUserNotificationCounters();
-        $content = $this->renderAjax('_top-menu-notification-items');
+        $content = $this->renderAjax('/notifications/_top-menu-notification-items');
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 

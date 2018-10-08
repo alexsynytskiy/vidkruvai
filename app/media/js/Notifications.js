@@ -222,6 +222,8 @@ var Notifications = function () {
                 ObserverList.subscribe(ObserverList.EVENT_ON_NOTIFICATION_AFTER_STATUS_CHANGE, blockActionButtons, [false]);
                 ObserverList.subscribe(ObserverList.EVENT_ON_NOTIFICATION_AFTER_STATUS_CHANGE, handleNotificationActionButtonStatus, [true]);
 
+                ObserverList.subscribe(ObserverList.EVENT_ON_NOTIFICATION_AFTER_STATUS_CHANGE, refreshToolbarNotifications);
+
                 handleNotificationCheckboxChecked();
                 handleNotificationChangeStatus();
                 filterNotificationsByStatus();
@@ -259,6 +261,8 @@ var Notifications = function () {
         $('.total-notifications').text(isTotalPositive ? total : '');
 
         isTotalPositive ? totalNotificationsBadge.removeClass('hide') : totalNotificationsBadge.addClass('hide');
+
+        isTotalPositive ? $('#mark-all-news-as-read').removeClass('disabled') : $('#mark-all-news-as-read').addClass('disabled');
 
         for (var el in counters) {
             if (el == 'total') {

@@ -1518,6 +1518,16 @@ span.bg-success,
     font-size: 42px;
 }
 
+.btn-kv {
+    margin-bottom: 10px;
+    background-color: #d85a45;
+    border: none;
+}
+
+.kv-fileinput-error {
+    display: none !important;
+}
+
 @media (max-width: 1199px) {
 
 }
