@@ -18,7 +18,7 @@ class DefNotification extends BaseDefinition
     const CATEGORY_ACCOUNT_COLOR = 'info';
     const CATEGORY_NEWS = 'news';
     const CATEGORY_NEWS_COLOR = 'orange';
-    const CATEGORY_TEAM = 'team';
+    const CATEGORY_TEAM = 'team-notifications';
     const CATEGORY_TEAM_COLOR = 'info';
     const CATEGORY_TASK = 'task';
     const CATEGORY_TASK_COLOR = 'info';

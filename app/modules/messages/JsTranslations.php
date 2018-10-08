@@ -1,19 +1,19 @@
 <?php
 return [
-    'cancel' => 'Отменить',
-    'statusSuccess' => 'Успех!',
+    'cancel' => 'Відмінити',
+    'statusSuccess' => 'Успіх!',
     'statusFail' => 'Проблема...',
-    'serverError' => 'Произошла ошибка на сервере',
+    'serverError' => 'Сталась помилка на сервері',
 
     'notification' => [
-        'markAllConfirm' => 'Вы действительно хотите отметить все уведомления как прочитанные?',
-        'statusChangeSuccessfully' => 'Статус уведомлений успешно обновлен.',
-        'allHaveBeenRead' => 'Все уведомления отмечены как прочитанные.',
-        'pageCaption' => 'страница: {pageNum}',
+        'markAllConfirm' => 'Ви дійсно хочете відмітити всі сповіщення як прочитані?',
+        'statusChangeSuccessfully' => 'Статус сповіщень оновлено',
+        'allHaveBeenRead' => 'Всі сповіщення відмічено як прочитані',
+        'pageCaption' => 'сторінка: {pageNum}',
     ],
 
     'news' => [
-        'markAllConfirm' => 'Вы действительно хотите отметить все новости как прочитанные?',
-        'allHaveBeenRead' => 'Все новости отмечены как прочитанные.',
+        'markAllConfirm' => 'Ви дійсно хочете відмітити всі новини як прочитані?',
+        'allHaveBeenRead' => 'Всі новини відмічено як прочитані',
     ],
 ];

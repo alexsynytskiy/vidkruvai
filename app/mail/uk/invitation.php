@@ -3818,7 +3818,7 @@ $this->title = $subject;
                                 <tr>
                                     <th class="small-12 large-12 columns first last" style="padding-right: 0;"> <table>
                                             <tr>
-                                                <th> <center> <a href="/"> <img src="http://vidkruvai.loc/app/media/img/create-team.png" class="text-center" alt="e-mail-01.png"></a> </center> </th> <th class="expander"></th> </tr>
+                                                <th> <center> <a href="/"> <img src="<?= $siteLink ?>app/media/img/create-team.png" class="text-center" alt="e-mail-01.png"></a> </center> </th> <th class="expander"></th> </tr>
                                         </table>
                                     </th> </tr>
                                 </tbody>
@@ -3829,10 +3829,10 @@ $this->title = $subject;
                                     <th class="small-12 large-12 columns first last padding-main"> <table>
                                             <tr>
                                                 <th>
-                                                    <a href="/"> <img src="http://vidkruvai.loc/assets/3e8f2a86/img/logo.png" class="text-center" style="margin: 0 0 20px 0;"></a>
+                                                    <a href="/"> <img src="<?= $siteLink ?>app/media/img/logo.png" class="text-center" style="margin: 0 0 20px 0;"></a>
                                                     <p style="margin:0;">Привіт! Тебе запрошено до команди <?= $teamName ?> капітаном <?= $teamLead ?> <br>
                                                         <br>Реєстрація команд на проект <b>Відкривай Україну</b> стартувала! Зараз формуються команди, учасники підтверджують свою участь, після чого ми верифікуємо кожну команду згідно з правилами. <br>
-                                                        <br>Вже зареєстровано <b><?= $teamsTotalCount ?></b> команд - поспішай, не втрачай моливість зробити світ навколо трохи кращим! <br>
+                                                        <br>Поспішай, не втрачай моливість зробити світ навколо трохи кращим! <br>
                                                         <br><b>Твоя команда вже чекає на тебе!</b> </p>
                                                     <br>
                                                     <br>

@@ -119,7 +119,7 @@ var Notifications = function () {
                     }
 
                 })
-                .on('click', '#mark-all-as-read', function () {
+                .on('click', '#mark-all-news-as-read', function () {
                     if ($(this).hasClass('disabled')) {
                         return false;
                     }
@@ -129,11 +129,13 @@ var Notifications = function () {
                         type: 'question',
                         showCancelButton: true,
                         cancelButtonText: SiteCore.t('cancel')
-                    }).then(function () {
-                        _mark([], null, 1).then(function () {
-                            showNotify(SiteCore.t('notification.allHaveBeenRead'));
-                        });
-                    }).catch(swal.noop);
+                    }).then(function (result) {
+                        if (result.value) {
+                            _mark([], null, 1).then(function () {
+                                showNotify(SiteCore.t('notification.allHaveBeenRead'));
+                            });
+                        }
+                    });
                 });
 
             function _mark(notificationIds, notificationStatus, markAll) {
@@ -204,7 +206,7 @@ var Notifications = function () {
 
         var showNotify = function (msg) {
             new PNotify({
-                title: '',
+                title: 'Виконано!',
                 text: msg,
                 type: 'success',
                 delay: 2000 //Show the notification 2sec
@@ -272,7 +274,7 @@ var Notifications = function () {
         var $notificationPage = $('.notification-page'),
             $notificationButtons = $notificationPage.find('[data-notification-action]').closest('li'),
             $notificationTitle = $notificationPage.find('.list-group-item.status-new .media-heading a'),
-            $markAllBtn = $notificationPage.find('#mark-all-as-read').closest('.btn-group').find('> button');
+            $markAllBtn = $notificationPage.find('#mark-all-news-as-read').closest('.btn-group').find('> button');
 
         if (mode) {
             $notificationButtons.addClass('disabled');

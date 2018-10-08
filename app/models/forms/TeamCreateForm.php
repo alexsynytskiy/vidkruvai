@@ -119,7 +119,7 @@ class TeamCreateForm extends Model
 
         foreach ($this->_teamMembers as $member) {
             if ($member->role !== DefTeamSiteUser::ROLE_CAPTAIN) {
-                $this->emails[] = $member->email;
+                $this->emails[$member->status] = $member->email;
             }
 
         }
@@ -168,7 +168,7 @@ class TeamCreateForm extends Model
                         }
                     }
 
-                    //$team->mailAdmin();
+                    $team->mailAdmin();
                 }
 
                 $transaction->commit();
@@ -213,8 +213,7 @@ class TeamCreateForm extends Model
                         /** @var TeamSiteUser $oldTeamMember */
                         foreach ($oldTeamMembers as $oldTeamMember) {
                             if (!in_array($oldTeamMember->email, $this->emails, false)) {
-                                $oldTeamMember->status = DefTeamSiteUser::STATUS_REMOVED;
-                                $oldTeamMember->update();
+                                $oldTeamMember->delete();
                             }
                         }
 
@@ -222,8 +221,6 @@ class TeamCreateForm extends Model
                             if (!empty($email)) {
                                 $teamMember = TeamSiteUser::find()
                                     ->where(['email' => $email, 'team_id' => $team->id])
-                                    ->andWhere(['in', 'status',
-                                        [DefTeamSiteUser::STATUS_CONFIRMED, DefTeamSiteUser::STATUS_UNCONFIRMED]])
                                     ->exists();
 
                                 if (!$teamMember) {

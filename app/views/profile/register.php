@@ -79,7 +79,7 @@ $asset = \app\assets\AppAsset::register($this);
             </div>
             <div class="profile-header clearfix">
                 <div class="profile-navigation">
-                    <a href='<?= \yii\helpers\Url::to(['/site/help']) ?>' class="link-additional">
+                    <a href='<?= \yii\helpers\Url::to(['/contacts']) ?>' class="link-additional">
                         <div class="link-icon">
                             <div class="help"></div>
                         </div>

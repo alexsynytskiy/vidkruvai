@@ -59,7 +59,7 @@ $baseUrl = $asset->baseUrl;
 
                                                 <?php
                                                     if($level->num < $userCurrentLevel) {
-                                                        $done = '<i class=\"fa fa-check\" style=\"font-size: 16px;\"></i>';
+                                                        $done = '<i class="fa fa-check" style="font-size: 16px;"></i>';
                                                     } elseif($level->num === $userCurrentLevel) {
                                                         $percent = 100;
 

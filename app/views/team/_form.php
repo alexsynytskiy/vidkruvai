@@ -69,9 +69,14 @@ $form = ActiveForm::begin([
                     <?php endfor; ?>
                 <?php else: ?>
                     <?= $form->field($model, 'emails[]')->hiddenInput() ?>
-                    <?php foreach ($model->emails as $email): ?>
+                    <?php foreach ($model->emails as $status => $email): ?>
                         <div class="col-md-6 col-xs-12">
-                            <?= $form->field($model, 'emails[]')->textInput(['value' => $email]) ?>
+                            <?= $form->field($model, 'emails[]')->textInput([
+                                'value' => $email,
+                                'class' => 'form-control ' . $status,
+                                'readonly' => in_array($status, [\app\models\definitions\DefTeamSiteUser::STATUS_DECLINED,
+                                \app\models\definitions\DefTeamSiteUser::STATUS_REMOVED], false),
+                            ]) ?>
                         </div>
                     <?php endforeach; ?>
                     <?php for ($i = 1 + count($model->emails); $i <= 9; $i++): ?>

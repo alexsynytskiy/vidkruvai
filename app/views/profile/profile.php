@@ -34,7 +34,7 @@ $user = \Yii::$app->siteUser->identity;
                         <div class="profile-info-main clearfix">
                             <div class="profile-personal-preview clearfix">
                                 <div class="left-side">
-                                    <img src="<?= $user->avatar ?>" class="avatar">
+                                    <img src="<?= $user->avatar ?: $baseUrl . '/img/default-avatar.png' ?>" class="avatar">
                                     <div class="status"><?= $user->total_experience ?></div>
                                 </div>
                                 <div class="right-side">

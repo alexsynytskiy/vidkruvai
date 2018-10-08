@@ -10,6 +10,7 @@ use app\components\UserRegisteredEventHandler;
 use app\models\Achievement;
 use app\models\definitions\DefLevel;
 use app\models\definitions\DefNotification;
+use app\models\definitions\DefTeam;
 use app\models\definitions\DefTeamSiteUser;
 use app\models\definitions\DefUserAchievement;
 use app\models\forms\LoginForm;
@@ -20,6 +21,7 @@ use app\models\search\AchievementSearch;
 use app\models\search\LevelSearch;
 use app\models\search\NotificationUserSearch;
 use app\models\SiteUser;
+use app\models\Team;
 use app\models\TeamSiteUser;
 use app\models\UserAchievement;
 use yii\easyii\components\helpers\LanguageHelper;
@@ -402,7 +404,16 @@ class ProfileController extends Controller
         $invitationRegistration = false;
         $userTeamItem = null;
         if ($hash) {
-            $userTeamItem = TeamSiteUser::findOne(['hash' => $hash, 'status' => DefTeamSiteUser::STATUS_UNCONFIRMED]);
+            /** @var TeamSiteUser $userTeamItem */
+            $userTeamItem = TeamSiteUser::find()
+                ->alias('tsu')
+                ->innerJoin(Team::tableName() . ' t', 't.id = tsu.team_id')
+                ->where([
+                    'tsu.hash' => $hash,
+                    'tsu.status' => DefTeamSiteUser::STATUS_UNCONFIRMED
+                ])
+                ->andWhere(['t.status' => [DefTeam::STATUS_UNCONFIRMED, DefTeam::STATUS_ACTIVE]])
+                ->one();
 
             if ($userTeamItem) {
                 $userExistsAsUnit = SiteUser::findOne(['email' => $userTeamItem->email]);
@@ -415,7 +426,8 @@ class ProfileController extends Controller
 
                         \Yii::$app->notification->addToUser($captain, DefNotification::CATEGORY_TEAM,
                             DefNotification::TYPE_TEAM_USER_ACCEPTED, null,
-                            ['team_member' => $userExistsAsUnit->getFullName(), 'created_at' => date('d-M-Y H:i:s')]);
+                            ['team_member' => $userExistsAsUnit->getFullName(),
+                                'created_at' => date('d-M-Y H:i:s')]);
 
                         if (\Yii::$app->siteUser->isGuest) {
                             \Yii::$app->siteUser->login($userExistsAsUnit, BaseDefinition::getSessionExpiredTime());
@@ -492,22 +504,34 @@ class ProfileController extends Controller
             throw new BadRequestHttpException();
         }
 
-        \Yii::$app->seo->setTitle('Відхилити запрошення');
-        \Yii::$app->seo->setDescription('Відкривай Україну');
-        \Yii::$app->seo->setKeywords('відкривай, україну');
-
         if ($hash && $type) {
-            $userTeamItem = TeamSiteUser::findOne(['hash' => $hash, 'status' => DefTeamSiteUser::STATUS_UNCONFIRMED]);
+            $userTeamItem = TeamSiteUser::find()
+                ->alias('tsu')
+                ->innerJoin(Team::tableName() . ' t', 't.id = tsu.team_id')
+                ->where([
+                    'tsu.hash' => $hash,
+                    'tsu.status' => DefTeamSiteUser::STATUS_UNCONFIRMED
+                ])
+                ->andWhere(['t.status' => [DefTeam::STATUS_UNCONFIRMED, DefTeam::STATUS_ACTIVE]])
+                ->one();
 
             if ($userTeamItem) {
                 $userTeamItem->status = DefTeamSiteUser::getStatusByType($type);
 
                 if ($userTeamItem->update()) {
-                    $this->flash('success', AppMsg::t('Запрошення успішно відхилено! Статус: ' .
-                        DefTeamSiteUser::getStatusText($userTeamItem->status)));
+                    $captain = $userTeamItem->team->teamCaptain();
+
+                    \Yii::$app->notification->addToUser($captain, DefNotification::CATEGORY_TEAM,
+                        DefNotification::TYPE_TEAM_USER_CANCELLED, null,
+                        ['team_member' => $userTeamItem->email, 'created_at' => date('d-M-Y H:i:s')]);
+
+                    $this->flash('success', AppMsg::t('Запрошення успішно відхилено!'));
                 } else {
                     $this->flash('error', AppMsg::t('Щось пішло не так..'));
                 }
+            }
+            else {
+                $this->flash('error', AppMsg::t('Запрошення для користувача не існує'));
             }
         }
         else {

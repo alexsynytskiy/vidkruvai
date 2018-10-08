@@ -173,7 +173,7 @@ if (($page = ArrayHelper::getValue($_GET, 'page', 0)) > 1) {
 
                                             <li class="dropdown dropdown-velocity" id="notification-filter-status">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="icon-eye position-left"></i>
+                                                    <i class="fa fa-eye position-left"></i>
                                                     <?= AppMsg::t('Показати:') ?>
                                                     <span class="label label-success label-inline label-rounded position-right"
                                                           id="filter-btn-title"><?= $dropDownFilterLabel; ?></span>
@@ -195,8 +195,8 @@ if (($page = ArrayHelper::getValue($_GET, 'page', 0)) > 1) {
 
                                             <li class="dropdown dropdown-velocity" id="notification-filter-type">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="icon-list2 position-left"></i> <?= AppMsg::t('Категорія:'); ?>
-                                                    <span class="label bg-<?= $userCategoriesLabelColor; ?> label-inline label-rounded position-right"><?= $userCategoriesLabel; ?></span>
+                                                    <i class="fa fa-bars position-left"></i> <?= AppMsg::t('Категорія:'); ?>
+                                                    <span class="label label-<?= $userCategoriesLabelColor; ?> label-inline label-rounded position-right"><?= $userCategoriesLabel; ?></span>
                                                     <span class="caret"></span>
                                                 </a>
 
@@ -241,7 +241,7 @@ if (($page = ArrayHelper::getValue($_GET, 'page', 0)) > 1) {
                                                     <div class="helpers-header clearfix">
                                                         <?= \yii\helpers\Html::a('<i class="fa fa-check"></i>' . \app\components\AppMsg::t('Прочитати все'),
                                                             null,
-                                                            ['id' => 'mark-all-news-as-read', 'class' => 'no-spinner']) ?>
+                                                            ['id' => 'mark-all-news-as-read', 'class' => $totalNotifications ? 'no-spinner' : 'disabled']) ?>
                                                     </div>
                                                 </li>
                                             </ul>

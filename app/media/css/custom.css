@@ -782,13 +782,13 @@ span.bg-success,
     margin-right: 0 !important;
 }
 
-.notification-index .panel-footer {
+.notification-index .panel-footer, .steps-block.profile .panel-footer {
     border: none;
     background: transparent;
     font-size: 14px;
 }
 
-.notification-index .panel-footer span {
+.notification-index .panel-footer span, .steps-block.profile .panel-footer span {
     color: #047afb;
 }
 
@@ -812,6 +812,7 @@ span.bg-success,
 #notification-action-buttons .navbar-nav > li > a {
     color: #047afb;
     font-size: 14px;
+    padding: 15px 11px;
 }
 
 #load-more-news {
@@ -1274,8 +1275,11 @@ span.bg-success,
     border-radius: 5px;
 }
 
-.error .content-left-fixed.container {
-    width: 1140px;
+.error .content-left-fixed.container,
+.questions .content-left-fixed.container {
+    width: 100%;
+    padding: 0;
+    max-width: 1170px;
 }
 
 .error .error-text-bold {
@@ -1401,7 +1405,7 @@ span.bg-success,
 .steps-block.index .brand-tags {
     text-align: left;
     color: #F3BD00;
-    margin-bottom: 48px;
+    margin-bottom: 24px;
     font-size: 21px;
     font-weight: bold;
     line-height: 23px;
@@ -1412,7 +1416,7 @@ span.bg-success,
     font-size: 44px;
     line-height: 50px;
     text-align: left;
-    margin-bottom: 40px;
+    margin-bottom: 24px;
 }
 
 .steps-block.index .block-left {
@@ -1470,6 +1474,50 @@ span.bg-success,
     display: block;
 }
 
+.questions .content-left-fixed .profile-user-page {
+    margin-bottom: 0;
+    padding: 32px;
+    text-align: justify;
+}
+
+.questions .questions-text-bold {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.questions .questions-text {
+    font-size: 17px;
+    line-height: 32px;
+    margin-top: 25px;
+}
+
+.questions img {
+    max-width: 150px;
+    border-radius: 50%;
+    display: block;
+}
+
+.questions .text-bold {
+    font-weight: bold;
+}
+
+.notification-page .navbar-nav > li > a .fa {
+    margin-right: 5px;
+}
+
+#notification-filter-status .label-success, #notification-filter-type  .label-success {
+    margin-left: 5px;
+}
+
+.DECLINED.form-control, .REMOVED.form-control {
+    background-color: #fff;
+    border-color: red;
+}
+
+#full-notification-block i.fa.fa-home {
+    font-size: 42px;
+}
+
 @media (max-width: 1199px) {
 
 }
@@ -1493,6 +1541,11 @@ span.bg-success,
 }
 
 @media (max-width: 991px) {
+    .error .content-left-fixed.container,
+    .questions .content-left-fixed.container {
+        max-width: 770px;
+    }
+
     .sidebar-right-fixed {
         position: initial;
         width: 100%;

@@ -20,25 +20,31 @@ var News = function () {
                     $(this).remove();
                 })
                 .on('click', '#mark-all-news-as-read', function () {
+                    if ($(this).hasClass('disabled')) {
+                        return false;
+                    }
+
                     swal({
                         text: SiteCore.t('news.markAllConfirm'),
                         type: 'question',
                         showCancelButton: true,
                         cancelButtonText: SiteCore.t('cancel')
-                    }).then(function () {
-                        _mark([], null, 1).then(function () {
-                            $('.read-news').remove();
-                            updateNewsCounters();
+                    }).then(function (result) {
+                        if (result.value) {
+                            _mark([], null, 1).then(function () {
+                                $('.read-news').remove();
+                                updateNewsCounters();
 
-                            new PNotify({
-                                title: 'Успіх!',
-                                text: SiteCore.t('news.allHaveBeenRead'),
-                                icon: '',
-                                type: 'success',
-                                delay: 3000 //Show the notification 4sec
+                                new PNotify({
+                                    title: 'Успіх!',
+                                    text: SiteCore.t('news.allHaveBeenRead'),
+                                    icon: '',
+                                    type: 'success',
+                                    delay: 3000 //Show the notification 4sec
+                                });
                             });
-                        });
-                    }).catch(swal.noop);
+                        }
+                    });
                 }).on('click', '#load-more-news', function (e) {
                 e.preventDefault();
 

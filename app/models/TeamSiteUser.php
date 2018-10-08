@@ -72,8 +72,8 @@ class TeamSiteUser extends ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
-        if ($insert) {
-            //$this->mailInvitedUsers();
+        if ($insert && $this->role !== DefTeamSiteUser::ROLE_CAPTAIN) {
+            $this->mailInvitedUser();
         }
     }
 
@@ -97,22 +97,21 @@ class TeamSiteUser extends ActiveRecord
     /**
      * @return bool
      */
-    public function mailInvitedUsers()
+    public function mailInvitedUser()
     {
         $team = $this->team;
 
-        $unsubscribeLink = Url::to('/decline',
-            ['type' => DefTeamSiteUser::RESPONSE_REMOVED, 'hash' => $this->hash]);
-        $registrationLink = Url::to('/register', ['hash' => $this->hash]);
+        $unsubscribeLink =  Url::to('/', true) .
+            'decline/' .  DefTeamSiteUser::RESPONSE_REMOVED . '/' . $this->hash;
+        $registrationLink = Url::to('/register', true) . '/' . $this->hash;
         $teamName = $team->name;
         $teamLead = $team->teamCaptain() ? $team->teamCaptain()->getFullName() : '';
-        $teamsTotalCount = Team::find()->where(['status' => DefTeam::STATUS_ACTIVE])->count();
-        $siteLink = Url::to('/');
-        $notParticipantLink = Url::to('/decline',
-            ['type' => DefTeamSiteUser::RESPONSE_DECLINED, 'hash' => $this->hash]);
+        $siteLink = Url::to('/', true);
+        $notParticipantLink = Url::to('/', true) .
+            'decline/' .  DefTeamSiteUser::RESPONSE_DECLINED . '/' . $this->hash;
 
         return Mail::send(
-            Setting::get('admin_email'),
+            $this->email,
             AppMsg::t('Запрошення у команду'),
             '@app/mail/uk/invitation',
             [
@@ -120,7 +119,6 @@ class TeamSiteUser extends ActiveRecord
                 'registrationLink' => $registrationLink,
                 'teamName' => $teamName,
                 'teamLead' => $teamLead,
-                'teamsTotalCount' => $teamsTotalCount,
                 'siteLink' => $siteLink,
                 'notParticipantLink' => $notParticipantLink,
             ]

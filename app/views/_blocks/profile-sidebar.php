@@ -4,6 +4,9 @@ use yii\helpers\Url;
 
 /* @var $showUserInfo bool */
 
+$asset = \app\assets\AppAsset::register($this);
+$baseUrl = $asset->baseUrl;
+
 $totalNews = \yii\easyii\modules\news\models\News::getUserNewsCounters();
 $totalNews = $totalNews > 0 ? $totalNews : null;
 
@@ -47,7 +50,7 @@ switch ($controller) {
         <?php if ($showUserInfo): ?>
             <a href="<?= Url::to('/profile') ?>">
                 <div class="profile-info">
-                    <img src="<?= $user->avatar ?>" class="avatar">
+                    <img src="<?= $user->avatar ?: $baseUrl . '/img/default-avatar.png' ?>" class="avatar">
                     <div class="name"><?= $user->getFullName() ?></div>
                     <div class="school"><?= $user->school ?></div>
                     <div class="rating"><?= $user->total_experience ?></div>

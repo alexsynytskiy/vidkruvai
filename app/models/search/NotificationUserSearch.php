@@ -56,6 +56,8 @@ class NotificationUserSearch extends NotificationUser
             'notification AS notif',
         ]);
 
+        $query->orderBy('id DESC');
+
         // add conditions that should always apply here
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

@@ -26,7 +26,7 @@ $user = \Yii::$app->siteUser->identity;
                             <?php if ($user->team): ?>
                                 <div class="profile-team-preview clearfix">
                                     <div class="left-side">
-                                        <img src="<?= $user->team->avatar ?>" class="avatar">
+                                        <img src="<?= $user->team->avatar ?: $baseUrl . '/img/default-avatar.png' ?>" class="avatar">
                                         <div class="status"><?= $user->team->total_experience ?></div>
                                     </div>
                                     <div class="right-side">
@@ -84,7 +84,7 @@ $user = \Yii::$app->siteUser->identity;
                                                 <div class="progress-top mb-0">
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                            <div class="progress-title mb-10">
+                                                            <div class="progress-title mb-10 pl-32">
                                                                 <h3>
                                                                     <?= AppMsg::t('Команда'); ?>
                                                                 </h3>
@@ -93,7 +93,7 @@ $user = \Yii::$app->siteUser->identity;
 
                                                     </div>
                                                 </div>
-                                                <div class="team-items mb-0">
+                                                <div class="team-items mb-0 pl-32">
                                                     <div class="row">
                                                         <div class="col-lg-12">
                                                             <?php if (!$user->team && !$preview): ?>

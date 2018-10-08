@@ -44,7 +44,7 @@ switch ($controller) {
         </div>
         <div class="navbar-collapse collapse navbar-right" id="navbar">
             <ul class="nav navbar-nav">
-                <li class="<?= $blog ?>">
+                <!-- <li class="<?= $blog ?>">
                     <a href="<?= Url::to(['/lections']) ?>">
                         Освітні Лекції
                     </a>
@@ -53,7 +53,7 @@ switch ($controller) {
                     <a href="<?= Url::to(['/blog']) ?>">
                         Блог
                     </a>
-                </li>
+                </li> -->
                 <?php if (\Yii::$app->siteUser->isGuest): ?>
                     <li class="<?= $contact ?>">
                         <a href="<?= Url::to(['/register']) ?>">

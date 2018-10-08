@@ -73,7 +73,10 @@ $config = [
             'rules' => [
                 'generate' => 'test/generate',
                 'login' => 'profile/login',
+                'register' => 'profile/register',
                 'rules' => 'profile/rules',
+                'questions' => 'site/questions',
+                'contacts' => 'site/contacts',
 
                 'comment/<channelId:\d+>/<action:[\w-]+>' => 'comment/default/<action>',
                 'comment/<action:[\w-]+>' => 'comment/default/<action>',
@@ -87,12 +90,8 @@ $config = [
                 'profile/news-item/<slug:[\w-]+>' => 'profile/news-item',
                 'profile/news/<tag:[\w-]+>' => 'profile/news',
 
-                'register' => 'profile/register',
-
                 'profile/clear-image/<id:[\d+]+>/<className:[\w+]+>' => 'profile/clear-image',
                 'team/clear-image/<id:[\d+]+>/<className:[\w+]+>' => 'team/clear-image',
-
-                'profile/create-team' => 'team/create-team',
 
                 '<alias:\w+>' => 'validation/<alias>',
 

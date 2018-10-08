@@ -16,6 +16,8 @@ class TestController extends Controller
 {
     public function actionGenerate()
     {
+        return $this->redirect(['/']);
+
         $level = new Level;
         $level->group_id = 2;
         $level->num = 4;

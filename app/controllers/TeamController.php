@@ -88,8 +88,6 @@ class TeamController extends Controller
                 $model->avatar = UploadedFile::getInstance($model, 'avatar');
                 if ($model->avatar && $model->validate(['avatar'])) {
                     $model->avatar = Image::upload($model->avatar, 'team');
-                } else {
-                    $model->avatar = $model->oldAttributes['avatar'];
                 }
             }
 
@@ -104,9 +102,7 @@ class TeamController extends Controller
                 $this->flash('error', AppMsg::t('Проблема при створенні команди'));
             }
 
-            return $this->render('update-team', [
-                'model' => $model
-            ]);
+            return $this->render('index');
         }
 
         return $this->render('create-team', [
@@ -156,8 +152,6 @@ class TeamController extends Controller
                 $model->avatar = UploadedFile::getInstance($model, 'avatar');
                 if ($model->avatar && $model->validate(['avatar'])) {
                     $model->avatar = Image::upload($model->avatar, 'team');
-                } else {
-                    $model->avatar = $model->oldAttributes['avatar'];
                 }
             }
 
@@ -166,6 +160,8 @@ class TeamController extends Controller
             } else {
                 $this->flash('error', AppMsg::t('Внутрішня проблема при оновленні команди'));
             }
+
+            return $this->render('index');
         }
 
         return $this->render('update-team', [

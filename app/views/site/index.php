@@ -10,17 +10,16 @@ $baseUrl = $asset->baseUrl;
 ?>
 
 <div class="steps-block index clearfix">
-    <div class="brand-tags">бренд теги</div>
-    <div class="slogan">Слоган проекту в декілька слів та ключових тегів</div>
+    <div class="brand-tags">Стань супергероєм - зміни своє місто!</div>
+    <div class="slogan">«Відкривай Україну» - освітній проект для учнів 7-11 класів з усієї України</div>
     <div class="block-right"></div>
     <div class="block-left">
         <div class="step-subtitle">
-            <?= 'Короткий опис проекту. Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.' ?>
+            <?= 'Мета проекту - створити середовище для розвитку підлітків малих міст України, у якому вони набудуть 
+            неохідних вмінь та отримають можливість реалізувати командою власну ідею у школі, а згодом - у місті.' ?>
             <br><br>
-            <?= 'Короткий опис проекту. Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-            sed do eiusmod tempor incididunt ut .' ?></div>
+            <?= 'Навчальний процес буде проходити на геймифікованій онлайн-платформі, яка містить інтерактивні 
+            інструкції, навчальні матеріали, надихаючі історії успіху та багато іншого!' ?></div>
 
         <?= Html::a('Реєстрація', \yii\helpers\Url::to(['/register']), ['class' => 'link-button register']) ?>
         <div class="already">

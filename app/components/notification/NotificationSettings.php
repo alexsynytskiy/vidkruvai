@@ -49,7 +49,7 @@ class NotificationSettings
                     ],
                 ],
                 DefNotification::TYPE_NEWS_ADDED => [
-                    'icon' => 'icon-newspaper',
+                    'icon' => 'fa fa-newspaper-o',
                     'icon-border-color' => 'border-success',
                     'icon-color' => 'text-success',
                     'short-title' => 'Нова новина',
@@ -73,7 +73,7 @@ class NotificationSettings
                     ],
                 ],
                 DefNotification::TYPE_TEAM_USER_ACCEPTED => [
-                    'icon' => 'fa fa-users',
+                    'icon' => 'fa fa-user-plus',
                     'icon-border-color' => 'border-success',
                     'icon-color' => 'text-success',
                     'short-title' => 'Користувач підтвердив участь',
@@ -85,7 +85,7 @@ class NotificationSettings
                     ],
                 ],
                 DefNotification::TYPE_TEAM_USER_CANCELLED => [
-                    'icon' => 'fa fa-users',
+                    'icon' => 'fa fa-user-times',
                     'icon-border-color' => 'border-failure',
                     'icon-color' => 'text-failure',
                     'short-title' => 'Користувач відхилив участь',

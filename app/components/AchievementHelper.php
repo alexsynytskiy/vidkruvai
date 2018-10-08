@@ -48,11 +48,11 @@ class AchievementHelper
      */
     public static function achievementPassedUserNotification($achievement)
     {
-        $message = 'Поздраляем! Вы выполнили достижение {achievementName}';
-        $msgParams = ['achievementName' => Html::a(Html::encode($achievement->name), '/profile')];
+        $message = 'Вітаємо! Ви виконали досягнення {achievementName}';
+        $msgParams = ['achievementName' => Html::a(Html::encode($achievement->name), '/profile/achievements')];
 
         if (count($achievement->awards) > 0) {
-            $message = 'Поздраляем! Вы выполнили достижение {achievementName} и получили <span class="bold">{awards}</span>';
+            $message = 'Вітаємо! Ви виконали досягнення {achievementName} та отримали <span class="bold">{awards}</span>';
             $awardsNames = '';
 
             foreach ($achievement->awards as $award) {
@@ -79,14 +79,14 @@ class AchievementHelper
             ->where(['id' => $levelId])
             ->scalar();
 
-        $message = 'Вы перешли на {levelLink}';
+        $message = 'Ви перейшли на {levelLink}';
         $msgParams = [
-            'levelLink' => Html::a(AppMsg::t('уровень {levelNum}', ['levelNum' => $levelNum]),
+            'levelLink' => Html::a(AppMsg::t('рівень {levelNum}', ['levelNum' => $levelNum]),
                 '/profile/levels', ['class' => 'bold']),
         ];
 
         if (count($awards) > 0) {
-            $message = 'Вы перешли на {levelLink} и получили <span class="bold">{awards}</span>';
+            $message = 'Ви перейшли на {levelLink} та отримали <span class="bold">{awards}</span>';
             $awardsNames = '';
 
             foreach ($awards as $award) {
@@ -98,9 +98,7 @@ class AchievementHelper
             $msgParams['awards'] = $awardsNames;
         }
 
-        AppMsg::t($message, $msgParams);
-
-        static::setFlashArray($message);
+        static::setFlashArray(AppMsg::t($message, $msgParams));
     }
 
     /**

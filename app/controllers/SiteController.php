@@ -27,6 +27,34 @@ class SiteController extends Controller
     /**
      * @return string
      */
+    public function actionQuestions()
+    {
+        \Yii::$app->seo->setTitle('Поширені питання');
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('відкривай, україну');
+
+        return $this->render('questions', [
+
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function actionContacts()
+    {
+        \Yii::$app->seo->setTitle('Контакти');
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('відкривай, україну');
+
+        return $this->render('contacts', [
+
+        ]);
+    }
+
+    /**
+     * @return string
+     */
     public function actionError()
     {
         \Yii::$app->seo->setTitle('Проблема');

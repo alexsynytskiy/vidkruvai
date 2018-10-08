@@ -3,7 +3,6 @@
 namespace app\components;
 
 use yii\base\Object;
-use yii\rest\Serializer;
 
 /**
  * Class TrailingSlashHelper
@@ -24,7 +23,7 @@ class TrailingSlashHelper extends Object
 
         $startRedirect = ['admin', 'site', 'profile', 'team'];
         $stopRedirect = ['items', 'edit', 'photos', 'settings', 'index',
-            'list', 'redactor', 'all', 'account', 'news-item', 'news', 'clear-image'];
+            'list', 'redactor', 'all', 'account', 'news-item', 'news', 'clear-image', 'team-notifications'];
 
         $redirect = false;
 
@@ -42,6 +41,11 @@ class TrailingSlashHelper extends Object
                     break;
                 }
             }
+        }
+
+
+        if (substr($pathInfo, -strlen('admin/news')) === 'admin/news') {
+            $redirect = true;
         }
 
         if (!$app->request->post() && $redirect && !empty($pathInfo) && substr($pathInfo, -1) !== '/') {

@@ -11,18 +11,18 @@ $asset = \app\assets\AppAsset::register($this);
             <div class="col-md-12 footer-main">
                 <div class="col-md-6 nopadding socials">
                     <div class="links-block">
-                        <a class="link" href="#">
+                        <a class="link" href="<?= \yii\helpers\Url::to(['/questions']) ?>">
                             Поширені питання
                         </a>
-                        <a class="link" href="#">
-                            Контакт
+                        <a class="link" href="<?= \yii\helpers\Url::to(['/contacts']) ?>">
+                            Контакти
                         </a>
-                        <a class="link" href="#">
+                        <!--<a class="link" href="#">
                             Партнери
                         </a>
                         <a class="link" href="#">
                             Про проект
-                        </a>
+                        </a> -->
                     </div>
                     <div class="footer-logo">
                         <img class="svg" src="<?= $asset->baseUrl ?>/img/logo-grey.png">
@@ -32,16 +32,16 @@ $asset = \app\assets\AppAsset::register($this);
                     <div class="social-block">
                         <div class="social-icon-pack">
 
-                            <a class="social-icon" href="#">
+                            <a class="social-icon" href="mailto:vu.proekt@gmail.com">
                                 <img class="svg" src="<?= $asset->baseUrl ?>/img/mail.png">
                             </a>
-                            <a class="social-icon" href="#">
+                            <a class="social-icon" href="https://www.instagram.com/vidkruvai.ukrainu/">
                                 <img class="svg" src="<?= $asset->baseUrl ?>/img/instagram.png">
                             </a>
-                            <a class="social-icon" href="#">
+                            <a class="social-icon" href="http://bit.ly/2DQebVI">
                                 <img class="svg" src="<?= $asset->baseUrl ?>/img/youtube.png">
                             </a>
-                            <a class="social-icon" href="#">
+                            <a class="social-icon" href="https://www.facebook.com/vidkruvai.ukrainu/">
                                 <img class="svg" src="<?= $asset->baseUrl ?>/img/facebook.png">
                             </a>
                         </div>
