@@ -43,8 +43,8 @@ $config = [
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
                 'host'  => 'mx1.mirohost.net',
-                'username' => 'alexsynytskiy@coukraine.org',
-                'password' => 'z91XRQpzgqXA',
+                'username' => 'info@vidkruvai.com.ua',
+                'password' => 'f28W8NVpKHTh',
                 'port'     => 25,
                 'encryption' => 'tls',
             ],
@@ -85,6 +85,8 @@ $config = [
                 'profile/notifications/<category:[a-z\d-]+>' => 'profile/notifications',
 
                 'decline/<type:[a-z\d-]+>/<hash:[\w-]+>' => 'profile/decline',
+
+                'notification/mn/<id:\d+>' => 'notification/mn',
 
                 'register/<hash:[\w-]+>' => 'profile/register',
                 'profile/news-item/<slug:[\w-]+>' => 'profile/news-item',

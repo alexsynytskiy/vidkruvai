@@ -76,12 +76,12 @@ class NotificationController extends Controller
         $userId = Yii::$app->siteUser->id;
 
         $notification = (new Query)
-            ->select(['n_id', 'target_link'])
-            ->from(Notification::tableName())
-            ->innerJoin(NotificationUser::tableName(), 'id = n_id AND user_id = :userId', [
+            ->select(['nu.n_id', 'n.target_link'])
+            ->from(Notification::tableName() . ' n')
+            ->innerJoin(NotificationUser::tableName() . ' nu', 'n.id = nu.n_id AND nu.user_id = :userId', [
                 ':userId' => $userId,
             ])
-            ->where(['n_id' => $id])
+            ->where(['nu.n_id' => $id])
             ->limit(1)
             ->one();
 

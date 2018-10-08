@@ -3,14 +3,13 @@
 namespace app\models;
 
 use app\components\AppMsg;
-use app\models\definitions\DefTeam;
+use app\models\definitions\DefNotification;
 use app\models\definitions\DefTeamSiteUser;
 use yii\base\Security;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\easyii\helpers\Mail;
-use yii\easyii\models\Setting;
 use yii\helpers\Url;
 
 /**
@@ -101,14 +100,23 @@ class TeamSiteUser extends ActiveRecord
     {
         $team = $this->team;
 
-        $unsubscribeLink =  Url::to('/', true) .
-            'decline/' .  DefTeamSiteUser::RESPONSE_REMOVED . '/' . $this->hash;
+        $unsubscribeLink = Url::to('/', true) .
+            'decline/' . DefTeamSiteUser::RESPONSE_REMOVED . '/' . $this->hash;
         $registrationLink = Url::to('/register', true) . '/' . $this->hash;
         $teamName = $team->name;
         $teamLead = $team->teamCaptain() ? $team->teamCaptain()->getFullName() : '';
         $siteLink = Url::to('/', true);
         $notParticipantLink = Url::to('/', true) .
-            'decline/' .  DefTeamSiteUser::RESPONSE_DECLINED . '/' . $this->hash;
+            'decline/' . DefTeamSiteUser::RESPONSE_DECLINED . '/' . $this->hash;
+
+        $user = SiteUser::findOne(['email' => $this->email]);
+        if ($user) {
+            \Yii::$app->notification->addToUser($user, DefNotification::CATEGORY_TEAM,
+                DefNotification::TYPE_TEAM_INVITATION, $registrationLink,
+                ['team_captain' => $teamLead,
+                    'team_name' => $teamName,
+                    'created_at' => date('d-M-Y H:i:s')]);
+        }
 
         return Mail::send(
             $this->email,

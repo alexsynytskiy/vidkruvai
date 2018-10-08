@@ -26,21 +26,21 @@ class NotificationWriter extends Component
      * @param null $link
      *
      * @return string
-     * @throws \yii\db\Exception
      */
     protected function addNotification($category, $type, $title, $message, $link = null)
     {
-        Yii::$app->db->createCommand()
-            ->insert(NotificationModel::tableName(), [
-                'category' => $category,
-                'title' => $title,
-                'message' => $message,
-                'target_link' => $link,
-                'type' => $type,
-            ])
-            ->execute();
+        $notification = new NotificationModel;
+        $notification->category = $category;
+        $notification->title = $title;
+        $notification->message = $message;
+        $notification->target_link = $link;
+        $notification->type = $type;
 
-        return Yii::$app->db->getLastInsertID();
+        if($notification->save()) {
+            return $notification->id;
+        }
+        
+        return false;
     }
 
     /**

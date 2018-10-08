@@ -95,6 +95,18 @@ class NotificationSettings
                         'sendIfNotRead' => false,
                         'sendPeriod' => 24,
                     ],
+                ],
+                DefNotification::TYPE_TEAM_INVITATION => [
+                    'icon' => 'fa fa-envelope-o',
+                    'icon-border-color' => 'border-failure',
+                    'icon-color' => 'text-failure',
+                    'short-title' => 'Отримано запрошення у команду',
+                    'title' => 'Вам надійшло запрошення у команду',
+                    'message' => 'Капітан {team_captain} надіслав вам запрошення у команду {team_name}! Дата отримання {created_at}',
+                    'scenario' => [
+                        'sendIfNotRead' => false,
+                        'sendPeriod' => 24,
+                    ],
                 ]
             ];
         }

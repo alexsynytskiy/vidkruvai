@@ -385,7 +385,7 @@ class ProfileController extends Controller
      */
     public function actionRegister($hash = '')
     {
-        if (!\Yii::$app->siteUser->isGuest) {
+        if (!\Yii::$app->siteUser->isGuest && $hash === '') {
             return $this->redirect(['/profile']);
         }
 
@@ -417,6 +417,7 @@ class ProfileController extends Controller
 
             if ($userTeamItem) {
                 $userExistsAsUnit = SiteUser::findOne(['email' => $userTeamItem->email]);
+
                 if ($userExistsAsUnit) {
                     $userTeamItem->site_user_id = $userExistsAsUnit->id;
                     $userTeamItem->status = DefTeamSiteUser::STATUS_CONFIRMED;
@@ -433,8 +434,10 @@ class ProfileController extends Controller
                             \Yii::$app->siteUser->login($userExistsAsUnit, BaseDefinition::getSessionExpiredTime());
                         }
 
+                        $this->flash('success', AppMsg::t('Запрошення успішно прийнято!'));
+
                         if ($userExistsAsUnit->agreement_read) {
-                            return $this->redirect(['/profile']);
+                            return $this->redirect(['/team']);
                         }
 
                         return $this->redirect('/rules');

@@ -12,10 +12,11 @@ use app\models\SiteUser;
  */
 class DefTeamSiteUser extends BaseDefinition
 {
-    const STATUS_DECLINED = 'DECLINED';
-    const STATUS_CONFIRMED = 'CONFIRMED';
-    const STATUS_UNCONFIRMED = 'UNCONFIRMED';
-    const STATUS_REMOVED = 'REMOVED';
+    const STATUS_DECLINED = 'declined';
+    const STATUS_CONFIRMED = 'confirmed';
+    const STATUS_UNCONFIRMED = 'unconfirmed';
+    const STATUS_UNSUBSCRIBED = 'unsubscribed';
+    const STATUS_REMOVED = 'removed';
 
     const ROLE_MEMBER = 'member';
     const ROLE_CAPTAIN = 'captain';

@@ -11,10 +11,10 @@ use app\components\BaseDefinition;
  */
 class DefTeam extends BaseDefinition
 {
-    const STATUS_ACTIVE = 'ACTIVE';
-    const STATUS_UNCONFIRMED = 'UNCONFIRMED';
-    const STATUS_BANNED = 'BANNED';
-    const STATUS_DISABLED = 'DISABLED';
+    const STATUS_ACTIVE = 'active';
+    const STATUS_UNCONFIRMED = 'unconfirmed';
+    const STATUS_BANNED = 'banned';
+    const STATUS_DISABLED = 'disabled';
 
     /**
      * @param string $returnType
