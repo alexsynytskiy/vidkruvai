@@ -45,11 +45,13 @@ $asset = \app\assets\AppAsset::register($this);
 
                     <?= $form->field($model, 'role')->hiddenInput(['maxlength' => true]) ?>
 
-                    <?= $form->field($model, 'age')->textInput(['maxlength' => true, 'placeholder' => 'Вік']) ?>
+                    <?= $form->field($model, 'state')->textInput(['maxlength' => true, 'placeholder' => 'Місто']) ?>
+
+                    <?= $form->field($model, 'school')->textInput(['maxlength' => true, 'placeholder' => 'Школа']) ?>
 
                     <?= $form->field($model, 'class')->textInput(['maxlength' => true, 'placeholder' => 'Клас']) ?>
 
-                    <?= $form->field($model, 'school')->textInput(['maxlength' => true, 'placeholder' => 'Школа']) ?>
+                    <?= $form->field($model, 'age')->textInput(['maxlength' => true, 'placeholder' => 'Вік']) ?>
 
                     <?= $form->field($model, 'userPassword')->passwordInput(['maxlength' => true, 'placeholder' => 'Пароль']) ?>
 

@@ -4,14 +4,14 @@
 
 ?>
 
-<div class="news-item clearfix">
+<div class="news-item first clearfix">
     <div class="image" style="background: url(<?= $item->image ?>);background-size: cover;"></div>
     <div class="information">
         <div class="title">
             <?= $item->title ?>
         </div>
         <div class="short">
-            <?= \yii\helpers\StringHelper::truncate($item->short, 120, '..') ?>
+            <?= \yii\helpers\StringHelper::truncate($item->short, 110, '..') ?>
         </div>
         <div class="short item-date">
             <?= date('d.m.Y', $item->time); ?>

@@ -2,14 +2,19 @@
 
 namespace yii\easyii\modules\news\controllers;
 
+use app\models\SiteUser;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\db\Query;
 use yii\easyii\behaviors\SortableDateController;
 use yii\easyii\behaviors\StatusController;
 use yii\easyii\components\Controller;
 use yii\easyii\components\helpers\CategoryHelper;
 use yii\easyii\helpers\Image;
 use yii\easyii\modules\news\models\News;
+use yii\easyii\modules\news\models\NewsUser;
+use yii\helpers\ArrayHelper;
+use yii\helpers\VarDumper;
 use yii\web\UploadedFile;
 use yii\widgets\ActiveForm;
 
@@ -63,12 +68,27 @@ class AController extends Controller
                     }
                 }
                 if ($model->save()) {
+                    $siteUsers = ArrayHelper::getColumn((new Query)->select('id')
+                        ->from(SiteUser::tableName())
+                        ->where(['status' => SiteUser::STATUS_ACTIVE])->all(), 'id');
+
+                    foreach ($siteUsers as $userId) {
+                        $newsUser = new NewsUser();
+                        $newsUser->site_user_id = $userId;
+                        $newsUser->news_id = $model->news_id;
+
+                        if(!$newsUser->save()) {
+                            $this->flash('error', Yii::t('easyii/news',
+                                'Notifications not sent :' . VarDumper::export($newsUser->getErrors())));
+                        }
+                    }
+
                     $this->flash('success', Yii::t('easyii/news', 'News created'));
                     return $this->redirect(['/admin/' . $this->module->id]);
-                } else {
-                    $this->flash('error', Yii::t('easyii', 'Create error. {0}', $model->formatErrors()));
-                    return $this->refresh();
                 }
+
+                $this->flash('error', Yii::t('easyii', 'Create error. {0}', $model->formatErrors()));
+                return $this->refresh();
             }
         } else {
             return $this->render('create', [

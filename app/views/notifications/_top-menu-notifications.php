@@ -24,7 +24,7 @@ $notificationTitle = AppMsg::t('Сповіщення (<span class="total-notific
             <?= $this->render('_top-menu-notification-items'); ?>
         </ul>
         <div class="dropdown-content-footer">
-            <?= Html::a('<i class="icon-menu display-block fa fa-ellipsis-h"></i>',
+            <?= Html::a('Всі сповіщення',
                 ['/profile/notifications'],
                 ['title' => AppMsg::t('Всі сповіщення'), 'data-acp-toggle' => 'tooltip']
             ); ?>

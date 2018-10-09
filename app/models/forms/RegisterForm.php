@@ -39,6 +39,8 @@ class RegisterForm extends Model
      * @var string
      */
     public $school;
+
+    public $state;
     /**
      * @var string
      */
@@ -63,11 +65,11 @@ class RegisterForm extends Model
     {
         return [
             [['name', 'surname', 'passwordRepeat', 'userPassword', 'captchaUser', 'role', 'age',
-                'school', 'email'], 'required'],
+                'school', 'email', 'state'], 'required'],
             ['captchaUser', 'captcha', 'captchaAction' => '/validation/captcha'],
             ['userPassword', 'string', 'min' => 6],
             [['role', 'class'], 'userClass'],
-            [['name', 'surname', 'role', 'age', 'class', 'school'], 'uniqueSiteUser'],
+            [['name', 'surname', 'role', 'age', 'class', 'school', 'state'], 'uniqueSiteUser'],
             ['passwordRepeat', 'compare', 'compareAttribute' => 'userPassword'],
         ];
     }
@@ -88,6 +90,7 @@ class RegisterForm extends Model
             'age' => $this->age,
             'school' => $this->school,
             'email' => $this->email,
+            'state' => $this->state,
         ]);
 
         if ($userExists) {
@@ -108,6 +111,7 @@ class RegisterForm extends Model
             'age' => 'Вік',
             'class' => 'Клас',
             'school' => 'Школа',
+            'state' => 'Місто',
             'nickname' => 'Логін/Нік',
             'userPassword' => 'Пароль',
             'passwordRepeat' => 'Пароль ще раз',
@@ -137,6 +141,7 @@ class RegisterForm extends Model
         $user->age = $this->age;
         $user->class = $this->class;
         $user->school = $this->school;
+        $user->state = $this->state;
         $user->email = $this->email;
         $user->userPassword = $this->userPassword;
         $user->passwordRepeat = $this->passwordRepeat;

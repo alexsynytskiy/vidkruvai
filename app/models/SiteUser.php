@@ -22,6 +22,7 @@ use yii\web\NotFoundHttpException;
  * @property string $avatar
  * @property string $role
  * @property string $age
+ * @property string $state
  * @property string $class
  * @property string $school
  * @property string $password
@@ -132,7 +133,7 @@ class SiteUser extends ActiveRecord implements IdentityInterface
             [['email'], 'string', 'max' => 100],
             [['email'], 'email'],
             [['userPassword'], 'string', 'min' => 4, 'max' => 60],
-            [['name', 'class', 'school'], 'string', 'max' => 255],
+            [['name', 'class', 'school', 'state'], 'string', 'max' => 255],
             [['agreement_read', 'login_count', 'age'], 'integer'],
             [['name', 'surname'], 'unique', 'targetAttribute' => ['name', 'surname']],
             ['passwordRepeat', 'compare', 'compareAttribute' => 'userPassword'],
@@ -153,6 +154,7 @@ class SiteUser extends ActiveRecord implements IdentityInterface
             'updated_at' => AppMsg::t('Обновлено'),
             'login_count' => AppMsg::t('Количество авторизаций'),
             'status' => AppMsg::t('Статус'),
+            'state' => AppMsg::t('Город'),
             'language' => AppMsg::t('Язык'),
             'level_id' => AppMsg::t('ID Уровня'),
             'level_experience' => AppMsg::t('Опыта на уровне'),
@@ -289,7 +291,7 @@ class SiteUser extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByEmail($email)
     {
-        return static::findOne(['email' => $email]);
+        return static::findOne(['email' => $email, 'status' => [self::STATUS_ACTIVE, self::STATUS_UNCONFIRMED]]);
     }
 
     /**

@@ -276,6 +276,21 @@ li.notification-item .media-annotation {
 
 #toolbar-notifications .dropdown-content-footer a {
     padding: 7px 7px 3px 7px !important;
+    color: #007BFF;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+}
+
+#toolbar-notifications .dropdown-content-footer a:hover {
+    color: #3294fb;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
 }
 
 .icon-menu {
@@ -522,6 +537,15 @@ article {
     height: 350px;
 }
 
+.content-left-fixed .news-item.first .image {
+    height: 380px;
+}
+
+.content-left-fixed .news-item.first .information {
+    height: 380px;
+    padding-bottom: 0;
+}
+
 .content-left-fixed .news-item .information .title {
     font-family: 'Lato', sans-serif;
     font-size: 24px;
@@ -548,6 +572,10 @@ article {
     left: 32px;
 }
 
+.content-left-fixed .news-item.first .information .short.item-date {
+    bottom: 50px;
+}
+
 .content-left-fixed .news-item .information a.short.read-more {
     font-weight: bold;
     color: #007BFF;
@@ -562,6 +590,10 @@ article {
     bottom: 32px;
     left: 32px;
     margin-bottom: 0;
+}
+
+.content-left-fixed .news-item.first .information a.short.read-more {
+    bottom: 24px;
 }
 
 .content-left-fixed .news-item .information a.short.read-more:hover {
@@ -1364,19 +1396,16 @@ span.bg-success,
 }
 
 .tags {
-    margin: 0;
+    margin: 0 0 8px 0;
     list-style: none;
 }
 
 .tags li {
     float: left;
+    font-size: 0;
 }
 
 .tags li a {
-    background-color: #007BFF;
-    border-radius: 5px;
-    color: #fff;
-    padding: 8px 12px;
     margin-right: 16px;
     font-size: 16px;
     -webkit-transition: all ease 0.5s;
@@ -1384,13 +1413,10 @@ span.bg-success,
     -o-transition: all ease 0.5s;
     -ms-transition: all ease 0.5s;
     transition: all ease 0.5s;
-    border: 2px solid #007BFF;
 }
 
 .tags li a:hover {
-    color: #007BFF;
-    background-color: #fff;
-    border: 2px solid #007BFF;
+    color: #047afb;
     -webkit-transition: all ease 0.5s;
     -moz-transition: all ease 0.5s;
     -o-transition: all ease 0.5s;

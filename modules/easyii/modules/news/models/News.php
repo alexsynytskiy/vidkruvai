@@ -144,31 +144,6 @@ class News extends ActiveRecord
     }
 
     /**
-     * @param bool $insert
-     * @param array $changedAttributes
-     * @return bool
-     */
-    public function afterSave($insert, $changedAttributes)
-    {
-        parent::afterSave($insert, $changedAttributes);
-
-        $siteUsers = ArrayHelper::getColumn((new Query)->select('id')
-            ->from(SiteUser::tableName())->where(['status' => SiteUser::STATUS_ACTIVE])->all(), 'id');
-
-        foreach ($siteUsers as $userId) {
-            $newsUser = new NewsUser();
-            $newsUser->site_user_id = $userId;
-            $newsUser->news_id = $this->news_id;
-
-            if(!$newsUser->save()) {
-                print_r($newsUser->getErrors()); die;
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * @throws \yii\db\Exception
      */
     public function afterDelete()
