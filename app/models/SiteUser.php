@@ -46,10 +46,10 @@ use yii\web\NotFoundHttpException;
  */
 class SiteUser extends ActiveRecord implements IdentityInterface
 {
-    const STATUS_ACTIVE = 'ACTIVE';
-    const STATUS_UNCONFIRMED = 'UNCONFIRMED';
-    const STATUS_BANNED = 'BANNED';
-    const STATUS_DISABLED = 'DISABLED';
+    const STATUS_ACTIVE = 'active';
+    const STATUS_UNCONFIRMED = 'unconfirmed';
+    const STATUS_BANNED = 'banned';
+    const STATUS_DISABLED = 'disabled';
 
     const ROLE_MENTOR = 'mentor';
     const ROLE_PARTICIPANT = 'participant';

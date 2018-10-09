@@ -67,13 +67,9 @@ if ($rightLabelColor) {
             <h6 class="media-heading">
                 <?php
                 $title = HtmlPurifier::process($notification->title);
-                if ($model->status === DefNotificationUser::STATUS_NEW ||
-                    ($model->status !== DefNotificationUser::STATUS_NEW && $notification->target_link)) {
-                    if ($model->status === DefNotificationUser::STATUS_NEW) {
-                        $link = ($notification->target_link ? Url::to(['/notification/mn', 'id' => $notification->id]) : '#');
-                    } else {
-                        $link = ($notification->target_link ?: '#');
-                    }
+                if ($model->status === DefNotificationUser::STATUS_NEW && $notification->target_link) {
+                    $link = ($notification->target_link ? Url::to(['/notification/mn', 'id' => $notification->id]) : '#');
+
                     echo \yii\helpers\Html::a($title, $link, [
                         'class' => $notification->target_link ? 'target_link' : '',
                         'data-pjax' => (int)$notification->target_link,

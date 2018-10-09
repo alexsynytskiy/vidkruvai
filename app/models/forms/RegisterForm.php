@@ -62,13 +62,21 @@ class RegisterForm extends Model
     public function rules()
     {
         return [
-            [['name', 'surname', 'passwordRepeat', 'userPassword', 'captchaUser', 'role', 'age', 'class',
+            [['name', 'surname', 'passwordRepeat', 'userPassword', 'captchaUser', 'role', 'age',
                 'school', 'email'], 'required'],
             ['captchaUser', 'captcha', 'captchaAction' => '/validation/captcha'],
             ['userPassword', 'string', 'min' => 6],
+            [['role', 'class'], 'userClass'],
             [['name', 'surname', 'role', 'age', 'class', 'school'], 'uniqueSiteUser'],
             ['passwordRepeat', 'compare', 'compareAttribute' => 'userPassword'],
         ];
+    }
+
+    public function userClass($attribute, $params, $validator)
+    {
+        if($this->role === SiteUser::ROLE_PARTICIPANT && (!$this->class || $this->class === '')) {
+            $this->addError($attribute, "Учасник обов'язково має вказати клас");
+        }
     }
 
     public function uniqueSiteUser($attribute, $params, $validator)

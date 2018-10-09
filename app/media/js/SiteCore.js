@@ -104,7 +104,7 @@ var SiteCore = function (options) {
                 }
 
                 if (isMain) {
-                    height += 70;
+                    height += 140;
                 }
 
                 if (isCabinet) {

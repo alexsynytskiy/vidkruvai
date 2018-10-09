@@ -1635,7 +1635,8 @@ span.bg-success,
     footer .links-block, footer .social-icon-pack {
         position: static;
         top: 0;
-        margin: 0;
+        margin: 0 auto;
+        width: 200px;
         height: 100%;
     }
 
