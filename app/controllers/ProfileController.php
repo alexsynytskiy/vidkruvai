@@ -390,8 +390,8 @@ class ProfileController extends Controller
             return $this->redirect(['/profile']);
         }
 
-        if (!\Yii::$app->mutex->acquire('multiple-registration')) {
-            \Yii::info('Пользователь попытался выполнить несколько раз подряд регистрацию');
+        if (!\Yii::$app->mutex->acquire('multiple-school-add')) {
+            \Yii::info('Пользователь попытался несколько раз подряд добавить школу');
 
             throw new BadRequestHttpException();
         }
@@ -521,6 +521,9 @@ class ProfileController extends Controller
 
                         return $this->redirect('/rules');
                     }
+
+                    $this->flash('error', AppMsg::t('Не вдалось оновити інформацію про запрошення'));
+                    return $this->redirect(['/']);
                 }
 
                 $model->email = $userTeamItem->email;
@@ -551,6 +554,22 @@ class ProfileController extends Controller
                     \Yii::$app->notification->addToUser($captain, DefNotification::CATEGORY_TEAM,
                         DefNotification::TYPE_TEAM_USER_ACCEPTED, null,
                         ['team_member' => $user->getFullName(), 'created_at' => date('d-M-Y H:i:s')]);
+                }
+            }
+            else {
+                /** @var TeamSiteUser $existsInvitation */
+                $existsInvitation = TeamSiteUser::find()
+                    ->alias('tsu')
+                    ->innerJoin(Team::tableName() . ' t', 't.id = tsu.team_id')
+                    ->where([
+                        'tsu.email' => $user->email,
+                        'tsu.status' => DefTeamSiteUser::STATUS_UNCONFIRMED
+                    ])
+                    ->andWhere(['t.status' => [DefTeam::STATUS_UNCONFIRMED, DefTeam::STATUS_ACTIVE]])
+                    ->one();
+
+                if($existsInvitation) {
+                    $existsInvitation->getDataInvitedUser();
                 }
             }
 

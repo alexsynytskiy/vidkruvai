@@ -93,10 +93,7 @@ class TeamSiteUser extends ActiveRecord
         ];
     }
 
-    /**
-     * @return bool
-     */
-    public function mailInvitedUser()
+    public function getDataInvitedUser()
     {
         $team = $this->team;
 
@@ -118,18 +115,26 @@ class TeamSiteUser extends ActiveRecord
                     'created_at' => date('d-M-Y H:i:s')]);
         }
 
+        return [
+            'unsubscribeLink' => $unsubscribeLink,
+            'registrationLink' => $registrationLink,
+            'teamName' => $teamName,
+            'teamLead' => $teamLead,
+            'siteLink' => $siteLink,
+            'notParticipantLink' => $notParticipantLink,
+        ];
+    }
+
+    /**
+     * @return bool
+     */
+    public function mailInvitedUser()
+    {
         return Mail::send(
             $this->email,
             AppMsg::t('Запрошення у команду'),
             '@app/mail/uk/invitation',
-            [
-                'unsubscribeLink' => $unsubscribeLink,
-                'registrationLink' => $registrationLink,
-                'teamName' => $teamName,
-                'teamLead' => $teamLead,
-                'siteLink' => $siteLink,
-                'notParticipantLink' => $notParticipantLink,
-            ]
+            $this->getDataInvitedUser()
         );
     }
 
