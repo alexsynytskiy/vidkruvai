@@ -74,6 +74,7 @@ $config = [
                 'generate' => 'test/generate',
                 'login' => 'profile/login',
                 'register' => 'profile/register',
+                'add-school' => 'profile/add-school',
                 'rules' => 'profile/rules',
                 'questions' => 'site/questions',
                 'contacts' => 'site/contacts',

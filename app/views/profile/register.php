@@ -10,11 +10,17 @@ $asset = \app\assets\AppAsset::register($this);
 
     <div class="steps-block login clearfix">
         <div class="block-left">
-            <div class="step-title"><?= 'Реєстрація на проект' ?></div>
+            <div class="step-title"><?= \app\components\AppMsg::t('Реєстрація на проект') ?></div>
             <div class="step-subtitle">
                 <?= $invitation ?
                     'Зареєструйся та разом з командою розпочни свій шлях у проекті!' :
-                    'Заповніть форму реєстрації та створіть захищений пароль. Усі поля обов’язкові для заповнення.' ?></div>
+                    'Заповніть форму реєстрації та створіть захищений пароль. Усі поля обов’язкові для заповнення.' ?>
+            <br><br>
+                <?= $invitation ?
+                    'Не знайшов свою школу? Перепитай у капітана, він зареєструвався - а отже твоя школа є у нашому списку!' :
+                    'Не знайшов свою школу? ' .
+                    Html::a('Додати школу', \yii\helpers\Url::to(['/add-school']), ['class' => 'link-button']) ?>
+            </div>
             <div class="social-items clearfix">
                 <?php
                 $form = ActiveForm::begin([
@@ -45,9 +51,14 @@ $asset = \app\assets\AppAsset::register($this);
 
                     <?= $form->field($model, 'role')->hiddenInput(['maxlength' => true]) ?>
 
-                    <?= $form->field($model, 'state')->textInput(['maxlength' => true, 'placeholder' => 'Місто']) ?>
-
-                    <?= $form->field($model, 'school')->textInput(['maxlength' => true, 'placeholder' => 'Школа']) ?>
+                    <?= $form->field($model, 'school_id')->widget(\kartik\select2\Select2::className(), [
+                        'data' => \app\models\School::getList(),
+                        'language' => Yii::$app->language,
+                        'options' => ['placeholder' => \app\components\AppMsg::t('Школа')],
+                        'pluginOptions' => [
+                            'allowClear' => true
+                        ],
+                    ]); ?>
 
                     <?= $form->field($model, 'class')->textInput(['maxlength' => true, 'placeholder' => 'Клас']) ?>
 
@@ -95,7 +106,7 @@ $asset = \app\assets\AppAsset::register($this);
 
 <?php
 $pageOptions = \yii\helpers\Json::encode([
-
+    'mentorValue' => \app\models\SiteUser::ROLE_MENTOR,
 ]);
 
 $this->registerJs('RegisterPage(' . $pageOptions . ')');

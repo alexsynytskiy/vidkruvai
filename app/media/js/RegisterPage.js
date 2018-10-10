@@ -1,5 +1,7 @@
 var RegisterPage = function (options) {
-    var pageOptions = $.extend(true, {}, options);
+    var pageOptions = $.extend(true, {
+        mentorValue: ''
+    }, options);
 
     var selectors = {
         customOption: '.custom-option',
@@ -34,6 +36,13 @@ var RegisterPage = function (options) {
             $(this).addClass('selected');
 
             $(selectors.roleInput).val($(this).data('value'));
+        }
+
+        if($(this).data('value') === pageOptions.mentorValue) {
+            $('.field-registerform-class').hide();
+        }
+        else {
+            $('.field-registerform-class').show();
         }
     });
 };

@@ -80,6 +80,7 @@ form input.form-control,
 #registerform-captchauser,
 #loginform-captchauser,
 #teamcreateform-captchateam,
+#addschoolform-captchauser,
 .kv-fileinput-caption {
     height: 44px;
     border-radius: 5px;
@@ -142,11 +143,14 @@ form .already a:hover {
     padding: 0;
 }
 
-#registerform-captchauser, #loginform-captchauser, #teamcreateform-captchateam {
+#registerform-captchauser, #loginform-captchauser, #teamcreateform-captchateam,
+#addschoolform-captchauser
+{
     width: 230px;
 }
 
-#registerform-captchauser::placeholder, #loginform-captchauser::placeholder, #teamcreateform-captchateam::placeholder {
+#registerform-captchauser::placeholder, #loginform-captchauser::placeholder, #teamcreateform-captchateam::placeholder,
+#addschoolform-captchauser::placeholder {
     color: #93A0A9;
 }
 
@@ -764,7 +768,9 @@ a {
     font-size: 14px;
 }
 
-.field-registerform-captchauser img, .field-loginform-captchauser img, .field-teamcreateform-captchateam img {
+.field-registerform-captchauser img, .field-loginform-captchauser img, .field-teamcreateform-captchateam img,
+.field-addschoolform-captchauser img
+{
     margin: 0;
 }
 

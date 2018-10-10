@@ -22,9 +22,8 @@ use yii\web\NotFoundHttpException;
  * @property string $avatar
  * @property string $role
  * @property string $age
- * @property string $state
  * @property string $class
- * @property string $school
+ * @property integer $school_id
  * @property string $password
  * @property integer $login_count
  * @property integer $agreement_read
@@ -43,7 +42,7 @@ use yii\web\NotFoundHttpException;
  * @property Answer[] $answers
  * @property Level $level
  * @property Team $team
- *
+ * @property School $school
  */
 class SiteUser extends ActiveRecord implements IdentityInterface
 {
@@ -133,8 +132,8 @@ class SiteUser extends ActiveRecord implements IdentityInterface
             [['email'], 'string', 'max' => 100],
             [['email'], 'email'],
             [['userPassword'], 'string', 'min' => 4, 'max' => 60],
-            [['name', 'class', 'school', 'state'], 'string', 'max' => 255],
-            [['agreement_read', 'login_count', 'age'], 'integer'],
+            [['name', 'class'], 'string', 'max' => 255],
+            [['agreement_read', 'login_count', 'age', 'school_id'], 'integer'],
             [['name', 'surname'], 'unique', 'targetAttribute' => ['name', 'surname']],
             ['passwordRepeat', 'compare', 'compareAttribute' => 'userPassword'],
         ];
@@ -154,7 +153,7 @@ class SiteUser extends ActiveRecord implements IdentityInterface
             'updated_at' => AppMsg::t('Обновлено'),
             'login_count' => AppMsg::t('Количество авторизаций'),
             'status' => AppMsg::t('Статус'),
-            'state' => AppMsg::t('Город'),
+            'school_id' => AppMsg::t('Школа'),
             'language' => AppMsg::t('Язык'),
             'level_id' => AppMsg::t('ID Уровня'),
             'level_experience' => AppMsg::t('Опыта на уровне'),
@@ -384,6 +383,14 @@ class SiteUser extends ActiveRecord implements IdentityInterface
     {
         return $this->hasOne(Team::className(), ['id' => 'team_id'])
             ->viaTable(static::teamParticipationTableName(), ['site_user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSchool()
+    {
+        return $this->hasOne(School::className(), ['id' => 'school_id']);
     }
 
     /**

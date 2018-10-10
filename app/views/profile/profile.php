@@ -44,7 +44,7 @@ $user = \Yii::$app->siteUser->identity;
                                             <div class="profile-edit"></div>
                                         </a>
                                     </div>
-                                    <div class="school"><?= $user->school ?></div>
+                                    <div class="school"><?= $user->school->getFullName() ?></div>
 
                                     <?php if (count($previousLevels) || count($nextLevels) || !empty($levelInfo)): ?>
                                         <div class="black-panel mb-50 pb-20 pt-20-i personal-levels">

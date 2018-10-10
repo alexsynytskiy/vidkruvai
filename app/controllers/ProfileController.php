@@ -13,6 +13,7 @@ use app\models\definitions\DefNotification;
 use app\models\definitions\DefTeam;
 use app\models\definitions\DefTeamSiteUser;
 use app\models\definitions\DefUserAchievement;
+use app\models\forms\AddSchoolForm;
 use app\models\forms\LoginForm;
 use app\models\forms\RegisterForm;
 use app\models\Level;
@@ -375,6 +376,40 @@ class ProfileController extends Controller
         isset($news->seo->keywords) ? \Yii::$app->seo->setKeywords($news->seo->keywords) : null;
 
         return $this->render('news-view', ['newsItem' => $news]);
+    }
+
+    /**
+     * @return string|Response
+     * @throws BadRequestHttpException
+     * @throws \yii\base\Exception
+     */
+    public function actionAddSchool()
+    {
+        if (!\Yii::$app->siteUser->isGuest) {
+            return $this->redirect(['/profile']);
+        }
+
+        if (!\Yii::$app->mutex->acquire('multiple-registration')) {
+            \Yii::info('Пользователь попытался выполнить несколько раз подряд регистрацию');
+
+            throw new BadRequestHttpException();
+        }
+
+        \Yii::$app->seo->setTitle('Додати школу');
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('відкривай, україну');
+
+        $model = new AddSchoolForm();
+
+        if ($model->load(\Yii::$app->request->post()) && $model->add()) {
+            $this->flash('success', AppMsg::t('Школу успішно додано!'));
+
+            return $this->redirect(['/register']);
+        }
+
+        return $this->render('add-school', [
+            'model' => $model,
+        ]);
     }
 
     /**

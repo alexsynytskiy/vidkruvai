@@ -7,7 +7,7 @@ $asset = \app\assets\AppAsset::register($this);
 $baseUrl = $asset->baseUrl;
 ?>
 
-<div class="steps-block profile clearfix">
+<div class="steps-block error clearfix">
     <div class="cabinet error">
         <article>
             <div class="content-left-fixed container">
