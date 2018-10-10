@@ -7,12 +7,12 @@ use yii\helpers\Html;
 $asset = \app\assets\AppAsset::register($this);
 ?>
 
-    <div class="steps-block login clearfix">
+    <div class="steps-block add-school login clearfix">
         <div class="block-left">
-            <div class="step-title"><?= \app\components\AppMsg::t('Додавання школи') ?></div>
+            <div class="step-title"><?= \app\components\AppMsg::t('Додати школу') ?></div>
             <div class="step-subtitle">
                 <?= 'Якщо ти не знайшов свою школу у списку при реєстрації - не біда! 
-                Додавай скоріше, та спробуй зареєструватись ще раз.' ?>
+                Додай, та спробуй зареєструватись ще раз.' ?>
             </div>
             <div class="social-items clearfix">
                 <?php
@@ -39,9 +39,35 @@ $asset = \app\assets\AppAsset::register($this);
                         ],
                     ]); ?>
 
-                    <?= $form->field($model, 'school_number')->textInput(['maxlength' => true, 'placeholder' => '№ Школи']) ?>
+                    <?= $form->field($model, 'city_id')->widget(\kartik\select2\Select2::className(), [
+                        'data' => [],
+                        'language' => Yii::$app->language,
+                        'options' => ['class' => 'hidden', 'placeholder' => \app\components\AppMsg::t('Місто')],
+                        'pluginOptions' => [
+                            'allowClear' => true
+                        ],
+                    ]); ?>
 
-                    <?= $form->field($model, 'school_name')->textInput(['maxlength' => true, 'placeholder' => 'Назва школи']) ?>
+                    <?= Html::a('Не знайшов своє місто? Натисни і додай!', '#',
+                        ['id' => 'add-new-city', 'class' => 'hidden-link']) ?>
+
+                    <div class="create-new-city-form">
+                        <div class="info">Назва міста/села(без уточнюючих аббревіатур м, с, село, і тд.), назва району також не потрібна</div>
+                        <?= $form->field($model, 'city_name')->textInput(['maxlength' => true, 'placeholder' => 'Назва міста/села']) ?>
+                    </div>
+
+                    <?= $form->field($model, 'type_id')->widget(\kartik\select2\Select2::className(), [
+                        'data' => \app\models\SchoolType::getList(),
+                        'language' => Yii::$app->language,
+                        'options' => ['placeholder' => \app\components\AppMsg::t('Тип учбового закладу')],
+                        'pluginOptions' => [
+                            'allowClear' => true
+                        ],
+                    ]); ?>
+
+                    <?= $form->field($model, 'school_number')->textInput(['maxlength' => true, 'placeholder' => '№ Учбового закладу']) ?>
+
+                    <?= $form->field($model, 'school_name')->textInput(['maxlength' => true, 'placeholder' => 'Назва учбового закладу']) ?>
 
                     <?= $form->field($model, 'captchaUser')->widget(\yii\captcha\Captcha::className(), [
                         'captchaAction' => 'validation/captcha/',
@@ -81,7 +107,7 @@ $asset = \app\assets\AppAsset::register($this);
 
 <?php
 $pageOptions = \yii\helpers\Json::encode([
-
+    'getStateCitiesUrl' => '/profile/get-state-cities/',
 ]);
 
 $this->registerJs('AddSchoolPage(' . $pageOptions . ')');

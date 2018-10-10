@@ -57,10 +57,11 @@ class AddSchoolForm extends Model
     public function rules()
     {
         return [
-            [['state_id', 'city_id', 'type_id'], 'required'],
+            [['state_id', 'type_id', 'captchaUser'], 'required'],
             ['captchaUser', 'captcha', 'captchaAction' => '/validation/captcha'],
             [['school_number', 'school_name', 'city_name'], 'string'],
             [['school_number', 'school_name'], 'notEmptySchoolData'],
+            [['city_id', 'city_name'], 'notEmptyCityData'],
             [['state_id', 'city_id', 'type_id', 'school_number', 'school_name'], 'uniqueSchool'],
         ];
     }
@@ -72,21 +73,33 @@ class AddSchoolForm extends Model
         }
     }
 
+    public function notEmptyCityData($attribute, $params, $validator)
+    {
+        if (!$this->city_id && !$this->city_name) {
+            $this->addError($attribute, 'Необхідно або вибрати місто зі списку, або додати нове');
+        }
+    }
+
     public function uniqueSchool($attribute, $params, $validator)
     {
-        $schoolExists = School::find()
+        $schoolExistsQuery = School::find()
             ->alias('s')
-            ->innerJoin(City::tableName() . ' c', 'c.id = s.city_id')
-            ->innerJoin(State::tableName() . ' st', 'st.id = c.state_id')
             ->where([
-                'city_id' => $this->city_id,
-                'type_id' => $this->type_id,
-                'number' => $this->school_number,
-                'name' => $this->school_name,
-            ])
-            ->exists();
+                's.type_id' => $this->type_id,
+                's.number' => $this->school_number,
+                's.name' => $this->school_name,
+            ]);
 
-        if ($schoolExists) {
+        if($this->city_id) {
+            $schoolExistsQuery
+                ->innerJoin(City::tableName() . ' c', 'c.id = s.city_id')
+                ->innerJoin(State::tableName() . ' st', 'st.id = c.state_id')
+                ->andWhere([
+                    'c.state_id' => $this->state_id,
+                ]);
+        }
+
+        if ($schoolExistsQuery ->exists()) {
             $this->addError($attribute, "Така школа вже існує ({$this->school_number} {$this->school_name})");
         }
     }
@@ -130,7 +143,24 @@ class AddSchoolForm extends Model
      */
     public function add()
     {
+        if(!$this->city_id && $this->city_name) {
+            $city = new City();
+            $city->city = $this->city_name;
+            $city->state_id = $this->state_id;
+
+            if(!$city->save()) {
+                $this->addErrors($this->_city->getErrors());
+                return false;
+            }
+
+            $this->city_id = $city->id;
+        }
+
         $school = new School();
+        $school->city_id = $this->city_id;
+        $school->type_id = $this->type_id;
+        $school->name = $this->school_name;
+        $school->number = $this->school_number;
 
         $this->_school = $school;
 

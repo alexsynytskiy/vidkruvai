@@ -83,7 +83,8 @@ var SiteCore = function (options) {
 
                 var isCabinet = $('.cabinet').size(),
                     searchBlock = '.steps-block > div',
-                    isEdit = $('.user-form-edit').size();
+                    isEdit = $('.user-form-edit').size(),
+                    isSchoolAdd = $('.steps-block.add-school').size();
 
                 if (isCabinet) {
                     searchBlock = '.cabinet article > div';
@@ -101,6 +102,10 @@ var SiteCore = function (options) {
 
                 if (isEdit) {
                     height += 320;
+                }
+
+                if (isSchoolAdd) {
+                    height += 225;
                 }
 
                 if (isMain) {

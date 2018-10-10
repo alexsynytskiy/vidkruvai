@@ -1643,6 +1643,28 @@ span.bg-success,
     border: none;
 }
 
+.field-addschoolform-city_id, #add-new-city.hidden-link, .create-new-city-form {
+    display: none;
+}
+
+#add-new-city:focus {
+    color: #007BFF;
+}
+
+.create-new-city-form .info {
+    margin-bottom: 10px;
+    text-align: left;
+    font-size: 13px;
+    line-height: 18px;
+    margin-top: 5px;
+}
+
+#add-new-city {
+    display: block;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
 @media (max-width: 1199px) {
 
 }

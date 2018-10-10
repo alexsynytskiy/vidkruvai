@@ -43,4 +43,21 @@ class SchoolType extends ActiveRecord
             'name' => AppMsg::t('Тип'),
         ];
     }
+
+    /**
+     * @return array
+     */
+    public static function getList()
+    {
+        $names = [];
+
+        /** @var SchoolType[] $types */
+        $types = self::find()->all();
+
+        foreach ($types as $type) {
+            $names[$type->id] = $type->name;
+        }
+
+        return $names;
+    }
 }

@@ -8,6 +8,7 @@ use app\components\Controller;
 use app\components\events\UserRegisteredEvent;
 use app\components\UserRegisteredEventHandler;
 use app\models\Achievement;
+use app\models\City;
 use app\models\definitions\DefLevel;
 use app\models\definitions\DefNotification;
 use app\models\definitions\DefTeam;
@@ -410,6 +411,49 @@ class ProfileController extends Controller
         return $this->render('add-school', [
             'model' => $model,
         ]);
+    }
+
+    /**
+     * @return array
+     * @throws \Throwable
+     */
+    public function actionGetStateCities()
+    {
+        $errorResponse = ['status' => 'error', 'message' => 'Щось пішло не так..'];
+
+        if (!\Yii::$app->mutex->acquire('multiple-state-select')) {
+            \Yii::info('Пользователь попытался выполнить несколько раз подряд вход');
+
+            return $errorResponse;
+        }
+
+        try {
+            \Yii::$app->response->format = Response::FORMAT_JSON;
+
+            if (!\Yii::$app->request->isPost) {
+                throw new BadRequestHttpException();
+            }
+
+            $request = \Yii::$app->request;
+            $token = $request->post(\Yii::$app->request->csrfParam);
+
+            if (!\Yii::$app->request->validateCsrfToken($token)) {
+                throw new BadRequestHttpException();
+            }
+
+            $stateId = \Yii::$app->request->post('stateId');
+            $cities = City::getList($stateId);
+
+            if($cities) {
+                return ['status' => 'success', 'cities' => $cities];
+            }
+
+            return ['status' => 'error', 'message' => 'Користувача не знайдено'];
+        } catch (BadRequestHttpException $exception) {
+            return $errorResponse;
+        } catch (\Exception $exception) {
+            return $errorResponse;
+        }
     }
 
     /**

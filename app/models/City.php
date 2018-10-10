@@ -55,4 +55,26 @@ class City extends ActiveRecord
     {
         return $this->hasOne(State::className(), ['id' => 'state_id']);
     }
+
+    /**
+     * @param $stateId
+     * @return array
+     */
+    public static function getList($stateId)
+    {
+        $names = [];
+
+        /** @var City[] $cities */
+        $cities = self::find()
+            ->alias('c')
+            ->innerJoin(State::tableName() . ' s', 's.id = c.state_id')
+            ->where(['s.id' => $stateId])
+            ->all();
+
+        foreach ($cities as $city) {
+            $names[$city->id] = 'м.' . $city->city;
+        }
+
+        return $names;
+    }
 }
