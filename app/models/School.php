@@ -97,7 +97,7 @@ class School extends ActiveRecord
      */
     public function getFullName()
     {
-        return $this->city->state->name . ' обл, м. ' . $this->city->city . ' ' .
+        return $this->city->state->name . ' обл, ' . $this->city->city . ' ' .
             ($this->type ? $this->type->name : '') . ' ' .
             ((int)$this->number > 0 || (int)$this->number <= 1000 ? '№' . $this->number : '') . ' ' .
             $this->name;

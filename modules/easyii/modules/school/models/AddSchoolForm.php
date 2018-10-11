@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\forms;
+namespace yii\easyii\modules\school\models;
 
 use app\models\City;
 use app\models\School;
@@ -10,7 +10,7 @@ use yii\base\Model;
 
 /**
  * Class AddSchoolForm
- * @package app\models\forms
+ * @package yii\easyii\modules\school\models
  */
 class AddSchoolForm extends Model
 {
@@ -39,10 +39,6 @@ class AddSchoolForm extends Model
      */
     public $school_name;
     /**
-     * @var string
-     */
-    public $captchaUser;
-    /**
      * @var School
      */
     private $_school;
@@ -57,8 +53,7 @@ class AddSchoolForm extends Model
     public function rules()
     {
         return [
-            [['state_id', 'type_id', 'captchaUser'], 'required'],
-            ['captchaUser', 'captcha', 'captchaAction' => '/validation/captcha'],
+            [['state_id', 'type_id'], 'required'],
             [['school_number', 'school_name', 'city_name'], 'string'],
             [['school_number', 'school_name'], 'notEmptySchoolData'],
             [['city_id', 'city_name'], 'notEmptyCityData'],
@@ -82,7 +77,7 @@ class AddSchoolForm extends Model
 
     public function uniqueSchool($attribute, $params, $validator)
     {
-        if($this->city_id) {
+        if ($this->city_id) {
             $schoolExistsQuery = School::find()
                 ->alias('s')
                 ->where([
@@ -115,7 +110,6 @@ class AddSchoolForm extends Model
             'school_number' => '№ Школи',
             'school_name' => 'Назва школи',
             'city_name' => 'Назва міста',
-            'captchaUser' => 'Капча',
         ];
     }
 
@@ -125,6 +119,21 @@ class AddSchoolForm extends Model
     public function getSchool()
     {
         return $this->_school;
+    }
+
+    /**
+     * @param School $school
+     */
+    public function setSchool($school)
+    {
+        $this->state_id = $school->city->state_id;
+        $this->city_id = $school->city_id;
+        $this->type_id = $school->type_id;
+        $this->school_number = $school->number;
+        $this->school_name = $school->name;
+
+        $this->_school = $school;
+        $this->_city = $school->city;
     }
 
     /**
@@ -142,12 +151,12 @@ class AddSchoolForm extends Model
      */
     public function add()
     {
-        if(!$this->city_id && $this->city_name) {
+        if (!$this->city_id && $this->city_name) {
             $city = new City();
             $city->city = $this->city_name;
             $city->state_id = $this->state_id;
 
-            if($city->validate() && !$city->save()) {
+            if ($city->validate() && !$city->save()) {
                 $this->addErrors($this->_city->getErrors());
                 return false;
             }
@@ -178,6 +187,56 @@ class AddSchoolForm extends Model
         }
 
         $this->addErrors($this->_school->getErrors());
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     * @throws \yii\db\Exception
+     */
+    public function update()
+    {
+        if (!$this->city_id && $this->city_name) {
+            $city = new City();
+            $city->city = $this->city_name;
+            $city->state_id = $this->state_id;
+
+            if ($city->validate() && !$city->save()) {
+                $this->addErrors($this->_city->getErrors());
+                return false;
+            }
+
+            $this->city_id = $city->id;
+        }
+
+        $school = School::findOne($this->_school->id);
+
+        if ($school) {
+            $school->city_id = $this->city_id;
+            $school->type_id = $this->type_id;
+            $school->name = $this->school_name;
+            $school->number = $this->school_number;
+
+            $this->_school = $school;
+
+            if ($this->validate() && $school->validate()) {
+                $transaction = Yii::$app->db->beginTransaction();
+
+                try {
+                    $school->update(false);
+
+                    $transaction->commit();
+                } catch (\Throwable $e) {
+                    $transaction->rollBack();
+                }
+
+                return true;
+            }
+
+            $this->addErrors($this->_school->getErrors());
+        }
+
 
         return false;
     }

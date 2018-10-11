@@ -51,4 +51,18 @@ class DefSiteUser extends BaseDefinition
 
         return static::getListDataByReturnType($roles, $returnType);
     }
+
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    public static function getUserRoleText($key)
+    {
+        $roles = [
+            SiteUser::ROLE_PARTICIPANT => AppMsg::t('Учасник'),
+            SiteUser::ROLE_MENTOR => AppMsg::t('Ментор'),
+        ];
+
+        return $roles[$key];
+    }
 }

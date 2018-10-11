@@ -24,6 +24,8 @@ $module = $this->context->module->id;
             <th><?= Yii::t('easyii', 'Имя') ?></th>
             <th><?= Yii::t('easyii', 'Фамилия') ?></th>
             <th><?= Yii::t('easyii', 'E-Mail') ?></th>
+            <th><?= Yii::t('easyii', 'Роль') ?></th>
+            <th><?= Yii::t('easyii', 'Школа') ?></th>
             <th width="100"><?= Yii::t('easyii', 'Status') ?></th>
         </tr>
         </thead>
@@ -36,6 +38,8 @@ $module = $this->context->module->id;
                 <td><?= $item->name ?></td>
                 <td><?= $item->surname ?></td>
                 <td><?= $item->email ?></td>
+                <td><?= \app\models\definitions\DefSiteUser::getUserRoleText($item->role) ?></td>
+                <td><?= $item->school ? $item->school->getFullName() : '' ?></td>
                 <td class="status">
                     <?= Html::checkbox('', $item->status === \app\models\SiteUser::STATUS_ACTIVE, [
                         'class' => 'switch',

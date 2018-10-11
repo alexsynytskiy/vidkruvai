@@ -52,7 +52,7 @@ switch ($controller) {
                 <div class="profile-info">
                     <img src="<?= $user->avatar ?: $baseUrl . '/img/default-avatar.png' ?>" class="avatar">
                     <div class="name"><?= $user->getFullName() ?></div>
-                    <div class="school"><?= $user->school->getFullName() ?></div>
+                    <div class="school"><?= $user->school ? $user->school->getFullName() : '' ?></div>
                     <div class="rating"><?= $user->total_experience ?></div>
                 </div>
             </a>

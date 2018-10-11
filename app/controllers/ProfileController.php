@@ -482,6 +482,7 @@ class ProfileController extends Controller
 
         $invitationRegistration = false;
         $userTeamItem = null;
+
         if ($hash) {
             /** @var TeamSiteUser $userTeamItem */
             $userTeamItem = TeamSiteUser::find()

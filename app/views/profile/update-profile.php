@@ -73,6 +73,28 @@ $baseUrl = $asset->baseUrl;
                                         ]); ?>
                                     </div>
 
+                                    <?php if(!$model->school_id): ?>
+                                        <div class="school-not-found">Школу, вказану при реєстрації не знайдено!</div>
+                                    <?php endif; ?>
+
+                                    <?= $form->field($model, 'school_id')->widget(\kartik\select2\Select2::className(), [
+                                        'data' => \app\models\School::getList(),
+                                        'language' => Yii::$app->language,
+                                        'options' => ['placeholder' => \app\components\AppMsg::t('Школа')],
+                                        'pluginOptions' => [
+                                            'allowClear' => true
+                                        ],
+                                    ]); ?>
+
+                                    <?php if(!$model->school_id): ?>
+                                        <div class="create-new-school">
+                                            Якщо ти не знайшов свою школу у списку - переходь за посиланням та створи її, після цього повернись,
+                                            та спробуй знайти ще раз.
+                                            <?= \yii\helpers\Html::a('Додати школу',
+                                                \yii\helpers\Url::to(['/add-school']), ['class' => 'link-button']) ?>
+                                        </div>
+                                    <?php endif; ?>
+
                                     <?php if (isset($model->avatar)): ?>
                                         <?= '<div id="preview"></div>' ?>
                                     <?php endif; ?>
