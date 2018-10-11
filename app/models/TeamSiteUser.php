@@ -10,6 +10,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\easyii\helpers\Mail;
+use yii\helpers\Html;
 use yii\helpers\Url;
 
 /**
@@ -109,9 +110,11 @@ class TeamSiteUser extends ActiveRecord
         $user = SiteUser::findOne(['email' => $this->email]);
         if ($user) {
             \Yii::$app->notification->addToUser($user, DefNotification::CATEGORY_TEAM,
-                DefNotification::TYPE_TEAM_INVITATION, $registrationLink,
+                DefNotification::TYPE_TEAM_INVITATION, null,
                 ['team_captain' => $teamLead,
                     'team_name' => $teamName,
+                    'accept' => Html::a('сюди', $registrationLink, ['class' => 'link-button']),
+                    'decline' => Html::a('сюди', $notParticipantLink, ['class' => 'link-button']),
                     'created_at' => date('d-M-Y H:i:s')]);
         }
 

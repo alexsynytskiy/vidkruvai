@@ -36,6 +36,8 @@ class DefNotification extends BaseDefinition
     const TYPE_TEAM_USER_CANCELLED = 'team-user-cancelled';
     const TYPE_TASK_RECEIVED = 'task-received';
 
+    const TYPE_USER_PROFILE_PROBLEM = 'user=profile-problem';
+
     /**
      * @param string $returnType
      *
@@ -87,6 +89,7 @@ class DefNotification extends BaseDefinition
             self::TYPE_TEAM_USER_CANCELLED => AppMsg::t('Учасник відхилив запрошення у команду'),
             self::TYPE_TASK_RECEIVED => AppMsg::t('Отримано завдання'),
             self::TYPE_TEAM_INVITATION => AppMsg::t('Отримано запрошення у команду'),
+            self::TYPE_USER_PROFILE_PROBLEM => AppMsg::t('Виникла помилка профілю!'),
         ];
 
         return static::getListDataByReturnType($types, $returnType);

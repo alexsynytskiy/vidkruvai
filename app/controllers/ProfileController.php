@@ -596,10 +596,6 @@ class ProfileController extends Controller
      */
     public function actionDecline($type = '', $hash = '')
     {
-        if (!\Yii::$app->siteUser->isGuest) {
-            return $this->redirect(['/profile']);
-        }
-
         if (!\Yii::$app->mutex->acquire('multiple-unsubscribe')) {
             \Yii::info('Пользователь попытался отказаться от приглашения несколько раз');
 
@@ -640,7 +636,7 @@ class ProfileController extends Controller
             $this->flash('error', AppMsg::t('Недостатньо параметрів'));
         }
 
-        return $this->redirect(['/']);
+        return \Yii::$app->siteUser->isGuest ? $this->redirect(['/']) : $this->redirect(['/profile']);
     }
 
     /**
@@ -747,6 +743,12 @@ class ProfileController extends Controller
      */
     public function actionNotifications($category = '', $status = '')
     {
+        $status = $this->checkUserStatus();
+
+        if ($status !== true) {
+            return $status;
+        }
+
         $listCategories = DefNotification::getListCategories();
 
         if (empty($category) || !array_key_exists($category, $listCategories)) {
@@ -778,22 +780,12 @@ class ProfileController extends Controller
     /**
      * @return string
      */
-    public function actionHelp()
-    {
-        \Yii::$app->seo->setTitle('Техпідтримка');
-        \Yii::$app->seo->setDescription('Відкривай Україну');
-        \Yii::$app->seo->setKeywords('Відкривай, Україну');
-
-        return $this->render(\Yii::$app->siteUser->isGuest ? 'help-guest' : 'help-logged-in');
-    }
-
-    /**
-     * @return string
-     */
     public function actionRules()
     {
-        if (\Yii::$app->siteUser->isGuest) {
-            return $this->redirect('/login');
+        $status = $this->checkUserStatus();
+
+        if ($status !== true) {
+            return $status;
         }
 
         \Yii::$app->seo->setTitle('Правила');

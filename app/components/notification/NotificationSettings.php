@@ -102,7 +102,21 @@ class NotificationSettings
                     'icon-color' => 'text-failure',
                     'short-title' => 'Отримано запрошення у команду',
                     'title' => 'Вам надійшло запрошення у команду',
-                    'message' => 'Капітан {team_captain} надіслав вам запрошення у команду {team_name}! Дата отримання {created_at}',
+                    'message' => 'Капітан {team_captain} надіслав вам запрошення у команду {team_name}! 
+                        Щоб прийняти запрошення тисни {accept}, щоб відхилити тисни {decline}. 
+                        Дата отримання {created_at}',
+                    'scenario' => [
+                        'sendIfNotRead' => false,
+                        'sendPeriod' => 24,
+                    ],
+                ],
+                DefNotification::TYPE_USER_PROFILE_PROBLEM => [
+                    'icon' => 'fa fa-user-md',
+                    'icon-border-color' => 'border-failure',
+                    'icon-color' => 'text-failure',
+                    'short-title' => 'Виникла помилка профілю!',
+                    'title' => 'Виникла помилка профілю! Терміново внесіть зміни',
+                    'message' => 'Було виявлено помилку профілю! Перейди за посиланням, та виправ якомога швидше. Дата отримання {created_at}',
                     'scenario' => [
                         'sendIfNotRead' => false,
                         'sendPeriod' => 24,

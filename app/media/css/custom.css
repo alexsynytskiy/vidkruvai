@@ -968,10 +968,17 @@ span.bg-success,
     height: 286px;
     overflow: hidden;
     border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
     background: url(/app/media/img/create-team.png) no-repeat center;
     background-size: 850px 286px;
     margin-bottom: 32px;
+}
+
+.cabinet.create-team .content-left-fixed .image,
+.cabinet.profile.team .content-left-fixed .image {
+    background: url(/app/media/img/team.jpg) no-repeat center;
+    background-size: 850px 286px;
+    margin-bottom: 12px;
 }
 
 .profile-info-main .left-side {
@@ -1680,6 +1687,11 @@ span.bg-success,
     font-size: 15px;
     line-height: 18px;
     margin-top: 5px;
+}
+
+#list-notifications .fa.fa-user-md {
+    font-size: 46px;
+    padding-left: 2px;
 }
 
 @media (max-width: 1199px) {

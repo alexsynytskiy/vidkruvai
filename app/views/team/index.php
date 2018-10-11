@@ -13,7 +13,7 @@ $user = \Yii::$app->siteUser->identity;
 ?>
 
 <div class="steps-block profile clearfix">
-    <div class="cabinet profile">
+    <div class="cabinet profile team">
         <article>
             <div class="sidebar-right-fixed">
                 <?= $this->render('/_blocks/profile-sidebar') ?>
