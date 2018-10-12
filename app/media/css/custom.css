@@ -1694,6 +1694,31 @@ span.bg-success,
     padding-left: 2px;
 }
 
+.contacts-region, .contacts-region .col-md-6 {
+    padding: 0;
+    margin-top: 16px;
+}
+
+.contacts-region .col-md-6:first-child, .contacts-region .col-md-6:first-child(+1) {
+    margin-top: 0;
+}
+
+.contacts-region {
+    margin: 15px 0 32px;
+}
+
+.questions .questions-text-bold.contacts-region-title {
+    margin-top: 32px;
+}
+
+.contacts-region .questions-text-bold {
+    font-size: 17px;
+}
+
+.questions-text-bold.contacts-region-title, .questions-text-bold.title {
+    font-size: 24px;
+}
+
 @media (max-width: 1199px) {
 
 }

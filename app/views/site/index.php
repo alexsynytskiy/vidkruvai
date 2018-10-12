@@ -20,11 +20,12 @@ $baseUrl = $asset->baseUrl;
             <br><br>
             <?= 'Навчальний процес буде проходити на геймифікованій онлайн-платформі, яка містить інтерактивні 
             інструкції, навчальні матеріали, надихаючі історії успіху та багато іншого!' ?></div>
-
-        <?= Html::a('Реєстрація', \yii\helpers\Url::to(['/register']), ['class' => 'link-button register']) ?>
-        <div class="already">
-            <?= 'Маєте профіль? ' . Html::a('Вхід', \yii\helpers\Url::to(['/login']),
-                ['class' => 'link-button']) ?>
-        </div>
+        <?php if (\Yii::$app->siteUser->isGuest): ?>
+            <?= Html::a('Реєстрація', \yii\helpers\Url::to(['/register']), ['class' => 'link-button register']) ?>
+            <div class="already">
+                <?= 'Маєте профіль? ' . Html::a('Вхід', \yii\helpers\Url::to(['/login']),
+                    ['class' => 'link-button']) ?>
+            </div>
+        <?php endif; ?>
     </div>
 </div>

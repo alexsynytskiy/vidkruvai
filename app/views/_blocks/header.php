@@ -54,6 +54,11 @@ switch ($controller) {
                         Блог
                     </a>
                 </li> -->
+                <li class="<?= $contact ?>">
+                    <a href="<?= Url::to(['/contact']) ?>">
+                        Контакти
+                    </a>
+                </li>
                 <?php if (\Yii::$app->siteUser->isGuest): ?>
                     <li class="<?= $contact ?>">
                         <a href="<?= Url::to(['/register']) ?>">

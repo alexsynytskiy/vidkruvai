@@ -743,10 +743,10 @@ class ProfileController extends Controller
      */
     public function actionNotifications($category = '', $status = '')
     {
-        $status = $this->checkUserStatus();
+        $statusUser = $this->checkUserStatus();
 
-        if ($status !== true) {
-            return $status;
+        if ($statusUser !== true) {
+            return $statusUser;
         }
 
         $listCategories = DefNotification::getListCategories();
