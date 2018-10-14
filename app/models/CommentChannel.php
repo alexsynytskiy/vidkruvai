@@ -16,7 +16,7 @@ use yii\db\ActiveRecord;
  * @property string $status
  * @property integer $site_user_id
  *
- * @property Comment[] $landingsComments
+ * @property Comment[] $comments
  */
 class CommentChannel extends ActiveRecord
 {
@@ -71,7 +71,7 @@ class CommentChannel extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getLandingsComments()
+    public function getComments()
     {
         return $this->hasMany(Comment::className(), ['channel_id' => 'id']);
     }

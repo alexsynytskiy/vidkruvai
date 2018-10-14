@@ -51,7 +51,7 @@ class DefaultController extends Controller
     {
         $r = Yii::$app->request;
 
-        if (!$r->isPost || !$r->isAjax || \Yii::$app->user->isGuest) {
+        if (!$r->isPost || !$r->isAjax || \Yii::$app->siteUser->isGuest) {
             throw new BadRequestHttpException();
         }
 
@@ -140,8 +140,8 @@ class DefaultController extends Controller
         $model->channel_id = $channelId;
         $model->message = trim($model->message);
 
-        if (!Yii::$app->user->isGuest) {
-            $model->site_user_id = 1;
+        if(!$model->site_user_id) {
+            $model->site_user_id = Yii::$app->siteUser->identity->id;
         }
     }
 
@@ -173,7 +173,7 @@ class DefaultController extends Controller
         }
 
         $template = $this->commentService->getTemplate($templateName);
-        $userId = (Yii::$app->user->id ?: null);
+        $userId = (Yii::$app->siteUser->id ?: null);
 
         $trees = Comment::getTopTrees($channelId, $this->commentService->getTreesLimit(), $treeId);
 
@@ -184,7 +184,7 @@ class DefaultController extends Controller
 
         $this->commentService->prepareMaxTreeId($treeStructure);
 
-        $this->commentService->setIsGuest(\Yii::$app->user->isGuest);
+        $this->commentService->setIsGuest(\Yii::$app->siteUser->isGuest);
 
         $items = $this->renderPartial($this->commentService->getTemplatePath($template) . '/_parts/items',
             ['comments' => $treeStructure]);
@@ -225,14 +225,14 @@ class DefaultController extends Controller
         }
 
         $template = $this->commentService->getTemplate($templateName);
-        $userId = (Yii::$app->user->id ?: null);
+        $userId = (Yii::$app->siteUser->id ?: null);
 
         /** @var Comment $tree */
         $commentsTree = Comment::getComments($this->commentService->commentOffset, $channelId, $userId, $treeId);
 
         $this->commentService->prepareMaxTreeId($commentsTree);
 
-        $this->commentService->setIsGuest(\Yii::$app->user->isGuest);
+        $this->commentService->setIsGuest(\Yii::$app->siteUser->isGuest);
 
         $items = $this->renderPartial($this->commentService->getTemplatePath($template) . '/_parts/items',
             ['comments' => $commentsTree]);
@@ -253,7 +253,7 @@ class DefaultController extends Controller
      */
     public function actionVote($channelId)
     {
-        if (!Yii::$app->request->isPost || !Yii::$app->request->isAjax || Yii::$app->user->isGuest) {
+        if (!Yii::$app->request->isPost || !Yii::$app->request->isAjax || Yii::$app->siteUser->isGuest) {
             throw new NotFoundHttpException();
         }
 
@@ -278,11 +278,11 @@ class DefaultController extends Controller
         $rating = $rating > 0 ? 1 : -1;
         $isNewVote = false;
 
-        $commentVote = CommentVote::findOne(['site_user_id' => Yii::$app->user->id, 'comment_id' => $commentId]);
+        $commentVote = CommentVote::findOne(['site_user_id' => Yii::$app->siteUser->id, 'comment_id' => $commentId]);
 
         if (!$commentVote) {
             $commentVote = new CommentVote;
-            $commentVote->site_user_id = Yii::$app->user->id;
+            $commentVote->site_user_id = Yii::$app->siteUser->id;
             $commentVote->comment_id = $commentId;
             $commentVote->rating = $rating;
 

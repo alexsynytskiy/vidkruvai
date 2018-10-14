@@ -2,6 +2,7 @@
 
 namespace app\modules\comment\models;
 
+use app\components\CommentQuery;
 use creocoder\nestedsets\NestedSetsBehavior;
 use yii\db\Query;
 
@@ -21,7 +22,7 @@ class Comm extends \yii\db\ActiveRecord
 
     public static function find()
     {
-        return new CommQuery(get_called_class());
+        return new CommentQuery(get_called_class());
     }
 
     public function behaviors()

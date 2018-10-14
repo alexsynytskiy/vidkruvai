@@ -8,7 +8,7 @@ use yii\web\BadRequestHttpException;
 
 /**
  * Class UserRegisteredEventHandler
- * @package landings\common\components
+ * @package app\components
  */
 class UserRegisteredEventHandler
 {

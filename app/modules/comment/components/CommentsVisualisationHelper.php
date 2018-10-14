@@ -12,7 +12,7 @@ class CommentsVisualisationHelper
     {
         $leftFirstCommentPadding = "";
         if ($depth > 0) {
-            $leftFirstCommentPadding = "p-" . abs(-5 + 40 * ($depth - 1));
+            $leftFirstCommentPadding = "p-" . abs(-5 + 60 * ($depth - 1));
         }
 
         return $leftFirstCommentPadding;

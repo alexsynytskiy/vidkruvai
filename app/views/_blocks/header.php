@@ -55,7 +55,7 @@ switch ($controller) {
                     </a>
                 </li> -->
                 <li class="<?= $contact ?>">
-                    <a href="<?= Url::to(['/contact']) ?>">
+                    <a href="<?= Url::to(['/contacts']) ?>">
                         Контакти
                     </a>
                 </li>

@@ -7,7 +7,11 @@ use app\components\CommentQuery;
 use app\models\CommentChannel;
 use app\models\definitions\DefComment;
 use app\models\SiteUser as User;
+use app\models\SiteUser;
 use creocoder\nestedsets\NestedSetsBehavior;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
 
@@ -27,7 +31,7 @@ use yii\helpers\ArrayHelper;
  * @property string $created_at
  *
  * @property CommentChannel $channel
- * @property User $landingUser
+ * @property SiteUser $user
  * @property CommentVote $userVote
  */
 class Comment extends \yii\db\ActiveRecord
@@ -70,6 +74,13 @@ class Comment extends \yii\db\ActiveRecord
                 'rightAttribute' => 'rgt',
                 'depthAttribute' => 'depth',
             ],
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at'],
+                ],
+                'value' => new Expression('NOW()'),
+            ],
         ];
     }
 
@@ -84,7 +95,7 @@ class Comment extends \yii\db\ActiveRecord
             [['message', 'status'], 'string'],
             [['created_at'], 'safe'],
             [['channel_id'], 'exist', 'skipOnError' => true, 'targetClass' => CommentChannel::className(), 'targetAttribute' => ['channel_id' => 'id']],
-            [['site_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['site_user_id' => 'id']],
+            //[['site_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SiteUser::className(), 'targetAttribute' => ['site_user_id' => 'id']],
             [['replyTo'], 'exist', 'targetClass' => self::className(), 'targetAttribute' => ['replyTo' => 'id']],
         ];
     }
@@ -119,9 +130,9 @@ class Comment extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getLandingUser()
+    public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'site_user_id']);
+        return $this->hasOne(SiteUser::className(), ['id' => 'site_user_id']);
     }
 
     /**
@@ -148,13 +159,14 @@ class Comment extends \yii\db\ActiveRecord
 
         if ($userId !== null) {
             $comments->joinWith([
-                'landingUser',
+                'user',
                 'userVote AS userVote' => function ($query) use ($userId) {
                     /** @var \yii\db\ActiveQuery $query */
                     $query->andOnCondition(['userVote.site_user_id' => $userId]);
                 },
             ])
-                ->leftJoin(CommentVote::tableName() . ' cm', 't.site_user_id = cm.site_user_id and cm.comment_id = t.id');
+                ->leftJoin(CommentVote::tableName() . ' cm',
+                    't.site_user_id = cm.site_user_id and cm.comment_id = t.id');
         }
 
         $comments->where([
@@ -207,7 +219,7 @@ class Comment extends \yii\db\ActiveRecord
                     //Remove all children
                     foreach ($result as $innerKey => $innerComment) {
                         foreach ($childrenIDs as $childrenID) {
-                            if ($innerComment->id == $childrenID && isset($result[$innerKey])) {
+                            if ($innerComment->id === $childrenID && isset($result[$innerKey])) {
                                 unset($result[$innerKey]);
                             }
                         }

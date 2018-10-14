@@ -52,7 +52,7 @@ class CommentAsset extends \yii\web\AssetBundle
     {
         $view = static::$_view;
 
-        $landingsMedia = $assetManager->publish('@app/modules/comment/media',
+        $media = $assetManager->publish('@app/modules/comment/media',
             ['only' =>
                 [
                     'img/*',
@@ -63,15 +63,15 @@ class CommentAsset extends \yii\web\AssetBundle
             ]
         );
 
-        self::$_theme = $landingsMedia[1];
+        self::$_theme = $media[1];
 
-        self::$pathToImages = $landingsMedia[1] . "/img";
+        self::$pathToImages = $media[1] . "/img";
 
         \Yii::$app->view->params['pathToImages'] = self::$pathToImages;
 
-        $view->registerCssFile($landingsMedia[1] . "/css/style.css");
+        $view->registerCssFile($media[1] . "/css/style.css");
 
-        $view->registerJsFile($landingsMedia[1] . '/js/Comment.js');
+        $view->registerJsFile($media[1] . '/js/Comment.js');
     }
 
     /**

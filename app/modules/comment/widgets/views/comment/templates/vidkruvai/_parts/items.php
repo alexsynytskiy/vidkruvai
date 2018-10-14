@@ -7,17 +7,20 @@ use yii\helpers\Html;
 /** @var \app\modules\comment\models\Comment[] $comments */
 /** @var \app\modules\comment\components\CommentService $service */
 
+$asset = \app\assets\AppAsset::register($this);
+$baseUrl = $asset->baseUrl;
 \app\modules\comment\assets\CommentAsset::getInstance()->setView($this)->registerAsset();
 
 $service = $this->context->commentService;
 $defaultUsername = \app\modules\comment\components\CommentService::UNKNOWN_USERNAME;
 $isGuest = $service->isGuest;
 
-foreach ($comments as $comment): ?>
+foreach ($comments as $comment):
+?>
 
-    <?php
-    $user = $comment->landingUser;
-    $username = $user && $user->name ? $user->name : $defaultUsername;
+<?php
+    $user = $comment->user;
+    $username = $user && $user->getFullName() ? $user->getFullName() : $defaultUsername;
     $userId = $user && $user->id ? $user->id : '#';
     $userCommentRating = null;
     $isAllowVote = true;
@@ -28,31 +31,31 @@ foreach ($comments as $comment): ?>
             $userCommentRating = $userVote->rating;
         }
     }
-    ?>
+?>
 
     <ul class="comment-wrapper">
         <li class="<?= CommentsVisualisationHelper::leftPaddingClassName($comment->depth); ?>
-        <?= $comment->isFirstReply ? "first-reply" : "" ?> comment"
-            style="padding-left: <?= (40 * Html::encode($comment->depth)) ?>px;">
+        <?= $comment->isFirstReply ? 'first-reply' : '' ?> comment"
+            style="padding-left: <?= (60 * Html::encode($comment->depth)) ?>px;">
             <div class="testimonials-item" data-id="<?= Html::encode($comment->id) ?>"
                  data-tree-id="<?= Html::encode($comment->tree) ?>"
                  data-depth="<?= Html::encode($comment->depth) ?>">
                 <div class="left-side">
                     <div class="avatar">
-                        <img class="" src="<?= \Yii::$app->view->params['pathToImages'] . '/user-icon.png' ?>">
+                        <img class="" src="<?= $user->avatar ?: $baseUrl . '/img/default-avatar.png' ?>">
                     </div>
                 </div>
                 <div class="right-side">
                     <div class="side-inner">
                         <div class="user-login">
-                            <?= $comment->landingUser->name ?>
+                            <?= $user->getFullName() ?>
                         </div>
                         <div class="comment">
                             <p>
                                 <?= nl2br(Html::encode($comment->message)) ?>
                             </p>
                         </div>
-                        <?php if (!Yii::$app->user->isGuest): ?>
+                        <?php if (!Yii::$app->siteUser->isGuest): ?>
                             <div class="bottom-panel clearfix">
                                 <div class="edit-buttons">
                                     <div class="date">
@@ -61,7 +64,7 @@ foreach ($comments as $comment): ?>
                                 </div>
 
                                 <div class="edit-buttons">
-                                    <a href="#" class="reply-to"><?= \app\components\AppMsg::t('Ответить'); ?></a>
+                                    <a href="#" class="reply-to"><?= \app\components\AppMsg::t('Відповісти'); ?></a>
                                 </div>
 
                                 <div class="rating">
@@ -91,21 +94,23 @@ foreach ($comments as $comment): ?>
                         <?php endif; ?>
                     </div>
                     <div class="info-block clearfix">
-                        <div class="info-item">
-                            <div class="info"><?= AppMsg::t('Команда'); ?></div>
-                            <img data-toggle="tooltip" data-placement="top" title="#"
-                                 src="<?= \Yii::$app->view->params['pathToImages'] . '/team.png' ?>" alt="alt">
-                        </div>
+                        <?php if($user->team): ?>
+                            <div class="info-item">
+                                <div class="info"><?= AppMsg::t('Команда'); ?></div>
+                                <img data-toggle="tooltip" data-placement="top" title="#"
+                                     src="<?= $user->team->avatar ?: $baseUrl . '/img/default-avatar.png' ?>" alt="alt">
+                            </div>
+                        <?php endif; ?>
                         <div class="info-item">
                             <p><?= AppMsg::t('Досвід'); ?></p>
-                            <div class="counter"><?= $comment->landingUser->total_experience ?></div>
+                            <div class="counter"><?= $comment->user->total_experience ?></div>
                         </div>
                     </div>
                 </div>
             </div>
         </li>
         <li class="<?= CommentsVisualisationHelper::leftPaddingClassName($comment->depth + 1) ?> first-reply reply-form"
-            style="padding-left: <?= (40 * (Html::encode($comment->depth + 1))) ?>px; display: none;">
+            style="padding-left: <?= (60 * Html::encode($comment->depth + 1)) ?>px; display: none;">
 
         </li>
     </ul>

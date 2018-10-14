@@ -2,7 +2,9 @@
 
 namespace app\modules\comment\models;
 
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "site_comment_vote".
@@ -44,6 +46,22 @@ class CommentVote extends ActiveRecord
             'comment_id' => 'Comment ID',
             'rating' => 'Rating',
             'created_at' => 'Created At',
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at'],
+                ],
+                'value' => new Expression('NOW()'),
+            ],
         ];
     }
 }

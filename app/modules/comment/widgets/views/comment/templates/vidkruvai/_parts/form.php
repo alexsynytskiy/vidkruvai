@@ -8,6 +8,9 @@ use yii\web\View;
 /** @var \app\modules\comment\models\Comment $model */
 /** @var View $this */
 
+$asset = \app\assets\AppAsset::register($this);
+$baseUrl = $asset->baseUrl;
+
 \app\modules\comment\assets\CommentAsset::getInstance()->setView($this)->registerAsset();
 
 $this->context->activeFormOptions['fieldConfig'] = [
@@ -17,16 +20,16 @@ $this->context->activeFormOptions['fieldConfig'] = [
     ],
 ];
 
-$user = Yii::$app->user;
+$user = Yii::$app->siteUser;
 ?>
 
-<?php if (!Yii::$app->user->isGuest): ?>
+<?php if (!$user->isGuest): ?>
     <div class="add-testimonials main-comment-form">
         <div class="row">
             <div class="col-lg-2 col-md-3 col-sm-3">
                 <div class="test-avatar">
-                    <img src="<?= \Yii::$app->view->params['pathToImages'] . '/user-icon.png' ?>" alt="avatar">
-                    <div class="test-login"><?= 'Name' ?></div>
+                    <img src="<?= $user->identity->avatar ?: $baseUrl . '/img/default-avatar.png' ?>" alt="avatar">
+                    <div class="test-login"><?= $user->identity->getFullName() ?></div>
                 </div>
             </div>
             <div class="col-lg-10 col-md-9 col-sm-9">
@@ -34,12 +37,12 @@ $user = Yii::$app->user;
                 <?= Html::hiddenInput('t', $this->context->commentService->template); ?>
                 <div class="form-group clearfix">
                     <?= $form->field($model, 'message')->textarea(
-                        ['placeholder' => AppMsg::t('Сообщение'), 'class' => 'textarea']
+                        ['placeholder' => AppMsg::t('Повідомлення'), 'class' => 'textarea']
                     ); ?>
                 </div>
                 <div class="form-group clearfix">
-                    <?= Html::submitButton(AppMsg::t('Отправить'), ['class' => 'button']); ?>
-                    <?= Html::button(AppMsg::t('Отмена'), ['class' => 'button cancel-reply hidden']); ?>
+                    <?= Html::submitButton(AppMsg::t('Відправити'), ['class' => 'button']); ?>
+                    <?= Html::button(AppMsg::t('Відміна'), ['class' => 'button cancel-reply hidden']); ?>
                 </div>
                 <?php ActiveForm::end(); ?>
             </div>
@@ -54,7 +57,7 @@ $pageOptions = [
     'treesLimit' => $this->context->commentService->getTreesLimit(),
 ];
 
-if (!Yii::$app->user->isGuest) {
+if (!Yii::$app->siteUser->isGuest) {
     $pageOptions = array_merge($pageOptions, [
         'voteUrl' => "/comment/{$this->context->channelId}/vote",
         'validationUrl' => $this->context->activeFormOptions['validationUrl'],

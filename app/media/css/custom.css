@@ -1719,6 +1719,10 @@ span.bg-success,
     font-size: 24px;
 }
 
+#comments-section .container {
+    width: 100%;
+}
+
 @media (max-width: 1199px) {
 
 }

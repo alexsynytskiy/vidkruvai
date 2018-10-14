@@ -36,6 +36,8 @@ const Comment = function (options) {
                         });
 
                         $('#treeReload').replaceWith(response.items);
+
+                        SiteCore.windowSize();
                     }
                 }
             }
@@ -111,6 +113,8 @@ const Comment = function (options) {
                         if (idsSelectors.length) {
                             $(idsSelectors.join(', ')).remove();
                         }
+
+                        SiteCore.windowSize();
                     }
 
                     if (typeof response.items !== 'undefined') {
@@ -160,6 +164,8 @@ const Comment = function (options) {
                 value: replyId
             }));
 
+            SiteCore.windowSize();
+
             for (var i in formData.attributes) {
                 var attribute = formData.attributes[i];
 
@@ -190,6 +196,7 @@ const Comment = function (options) {
 
             $(this).closest(replyFormSelector).css('display', 'none');
             $(this).closest(replyFormSelector).html('');
+            SiteCore.windowSize();
         })
         .on('click', '.rating-btn', function (e) {
             e.preventDefault();
@@ -199,8 +206,8 @@ const Comment = function (options) {
 
             if ($(this).hasClass("disabled")) {
                 new PNotify({
-                    title: 'Ошибка',
-                    text: 'Вы не можете голосовать дважды',
+                    title: 'Помилка',
+                    text: 'Ви не можете голосувати двічі',
                     icon: '',
                     type: 'error',
                     delay: 8000 //Show the notification 4sec

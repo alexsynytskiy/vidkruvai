@@ -2,6 +2,7 @@
 
 namespace yii\easyii\modules\news\controllers;
 
+use app\models\CommentChannel;
 use app\models\SiteUser;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -71,6 +72,13 @@ class AController extends Controller
                     $siteUsers = ArrayHelper::getColumn((new Query)->select('id')
                         ->from(SiteUser::tableName())
                         ->where(['status' => SiteUser::STATUS_ACTIVE])->all(), 'id');
+
+                    $channelComments = new CommentChannel();
+                    $channelComments->site_user_id = Yii::$app->user->id;
+                    $channelComments->name = $model->title;
+                    $channelComments->slug= $model->slug;
+                    $channelComments->status = 'ACTIVE';
+                    $channelComments->save();
 
                     foreach ($siteUsers as $userId) {
                         $newsUser = new NewsUser();

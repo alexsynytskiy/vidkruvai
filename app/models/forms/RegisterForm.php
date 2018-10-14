@@ -67,6 +67,7 @@ class RegisterForm extends Model
             ['captchaUser', 'captcha', 'captchaAction' => '/validation/captcha'],
             ['userPassword', 'string', 'min' => 6],
             [['role', 'class'], 'userClass'],
+            [['email'], 'uniqueEmail'],
             [['name', 'surname', 'role', 'age', 'class', 'school_id'], 'uniqueSiteUser'],
             ['passwordRepeat', 'compare', 'compareAttribute' => 'userPassword'],
         ];
@@ -76,6 +77,17 @@ class RegisterForm extends Model
     {
         if($this->role === SiteUser::ROLE_PARTICIPANT && (!$this->class || $this->class === '')) {
             $this->addError($attribute, "Учасник обов'язково має вказати клас");
+        }
+    }
+
+    public function uniqueEmail($attribute, $params, $validator)
+    {
+        $userExists = SiteUser::find()->where([
+            'email' => $this->email,
+        ])->exists();
+
+        if ($userExists) {
+            $this->addError($attribute, "Такий e-mail вже існує ({$this->email})");
         }
     }
 

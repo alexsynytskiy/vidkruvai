@@ -21,15 +21,13 @@ $service = $this->context->commentService;
     <?php if ($hasTreesToLoadMore): ?>
         <div class="row">
             <div class="col-lg-12">
-
                 <a href="#"
                    id="load-more-comments"
                    class="button more-testimonials"
                    data-t="<?= $service->template; ?>"
                    data-tree-id="<?= $service->maxTreeId; ?>">
-                    <?= 'Показать больше отзывов'; ?>
+                    <?= 'Показати більше коментарів'; ?>
                 </a>
-
             </div>
         </div>
     <?php endif; ?>

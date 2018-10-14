@@ -109,9 +109,9 @@ class CommentWidget extends Widget
         ];
 
         $this->commentService->setTotalComments(Comment::getCountComments($this->channelId));
-        $this->commentService->setIsGuest(\Yii::$app->user->isGuest);
+        $this->commentService->setIsGuest(\Yii::$app->siteUser->isGuest);
 
-        $userId = \Yii::$app->user->id ?: null;
+        $userId = \Yii::$app->siteUser->id ?: null;
 
         $trees = Comment::getTopTrees($this->channelId, $this->commentService->getTreesLimit(), null, $userId);
         $treeStructure = Comment::getComments($this->commentService->commentOffset, $this->channelId, $userId, $trees);
@@ -121,7 +121,8 @@ class CommentWidget extends Widget
         $form = $this->render($templatePath . '/_parts/form', $data);
         $items = $this->render($templatePath . '/_parts/items', ['comments' => $treeStructure]);
 
-        $template = $this->render($templatePath . '/template', ['hasTreesToLoadMore' => (count($trees) < $this->commentService->treesLimit) ? false : true]);
+        $template = $this->render($templatePath . '/template',
+            ['hasTreesToLoadMore' => count($trees) >= $this->commentService->treesLimit]);
 
         $template = str_replace('{form}', $form, $template);
         $template = str_replace('{items}', $items, $template);
