@@ -1,0 +1,92 @@
+<?php
+/** @var $model \app\models\SiteUser */
+
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
+$module = $this->context->module->id;
+
+$asset = \yii\easyii\modules\siteusers\assets\SiteUserAsset::register($this);
+?>
+
+<?php $form = ActiveForm::begin([
+    'enableAjaxValidation' => true,
+    'options' => ['enctype' => 'multipart/form-data', 'class' => 'model-form']
+]); ?>
+
+    <div class="col-md-12 form-z-index clearfix">
+<?= $form->field($model, 'email')->textInput(['maxlength' => true, 'placeholder' => 'Електронна пошта']) ?>
+
+<?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => "Ім'я"]) ?>
+
+<?= $form->field($model, 'surname')->textInput(['maxlength' => true, 'placeholder' => 'Прізвище']) ?>
+
+<?= $form->field($model, 'status')->widget(\kartik\select2\Select2::className(), [
+    'data' => \app\models\definitions\DefSiteUser::getListStatuses(),
+    'language' => Yii::$app->language,
+    'options' => ['placeholder' => \app\components\AppMsg::t('Статус')],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+]); ?>
+
+<?= $form->field($model, 'role')->widget(\kartik\select2\Select2::className(), [
+    'data' => \app\models\definitions\DefSiteUser::getListUserRoles(),
+    'language' => Yii::$app->language,
+    'options' => ['placeholder' => \app\components\AppMsg::t('Роль')],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+]); ?>
+
+<?= $form->field($model, 'school_id')->widget(\kartik\select2\Select2::className(), [
+    'data' => \app\models\School::getList(),
+    'language' => Yii::$app->language,
+    'options' => ['placeholder' => \app\components\AppMsg::t('Школа')],
+    'pluginOptions' => [
+        'allowClear' => true
+    ],
+]); ?>
+
+<?= $form->field($model, 'class')->textInput(['maxlength' => true, 'placeholder' => 'Клас']) ?>
+
+<?= $form->field($model, 'age')->textInput(['maxlength' => true, 'placeholder' => 'Вік']) ?>
+
+<div class="labels-text">
+    <div class="col-md-6">
+        Количество входов в систему
+        <div class="text-block"><?= $model->login_count ?></div>
+    </div>
+    <div class="col-md-6">
+        Прочитано ли соглашение
+        <div class="text-block"><?= $model->agreement_read ? 'Да' : 'Нет' ?></div>
+    </div>
+    <div class="col-md-6">
+        Язык
+        <div class="text-block"><?= $model->language ?></div>
+    </div>
+    <div class="col-md-6">
+        Уровень
+        <div class="text-block"><?= 'Група ' . $model->level->levelgroup->name . ', Номер ' .
+            $model->level->num ?></div>
+    </div>
+    <div class="col-md-6">
+        Опыта на уровне
+        <div class="text-block"><?= $model->level_experience ?></div>
+    </div>
+    <div class="col-md-6">
+        Опыта всего
+        <div class="text-block"><?= $model->total_experience ?></div>
+    </div>
+    <br>
+
+<?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-primary']) ?>
+<?php ActiveForm::end(); ?>
+
+<?php
+$pageOptions = \yii\helpers\Json::encode([
+    'mentorValue' => \app\models\SiteUser::ROLE_MENTOR,
+]);
+
+$this->registerJs('SiteUserForm(' . $pageOptions . ')');
+?>

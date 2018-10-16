@@ -66,7 +66,6 @@ class LevelComponent extends Component
 
             return true;
         } catch (\Exception $e) {
-
             throw $e;
         }
     }

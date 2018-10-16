@@ -42,7 +42,8 @@ $module = $this->context->module->id;
                 <td><?= $item->type->name ?></td>
                 <td><?= $item->number ?></td>
                 <td><?= $item->name ?></td>
-                <td><a href="<?= Url::to(['/admin/' . $module . '/a/edit/', 'id' => $item->primaryKey]) ?>">Редактировать</a>
+                <td>
+                    <a href="<?= Url::to(['/admin/' . $module . '/a/edit/', 'id' => $item->primaryKey]) ?>">Редактировать</a>
                 </td>
             </tr>
 

@@ -22,7 +22,6 @@ $module = $this->context->module->id;
                 <th width="50">#</th>
             <?php endif; ?>
             <th><?= Yii::t('easyii', 'Имя') ?></th>
-            <th><?= Yii::t('easyii', 'Фамилия') ?></th>
             <th><?= Yii::t('easyii', 'E-Mail') ?></th>
             <th><?= Yii::t('easyii', 'Роль') ?></th>
             <th><?= Yii::t('easyii', 'Школа') ?></th>
@@ -35,8 +34,11 @@ $module = $this->context->module->id;
                 <?php if (IS_ROOT) : ?>
                     <td><?= $item->primaryKey ?></td>
                 <?php endif; ?>
-                <td><?= $item->name ?></td>
-                <td><?= $item->surname ?></td>
+                <td>
+                    <a href="<?= Url::to(['/admin/' . $module . '/a/edit/', 'id' => $item->primaryKey]) ?>">
+                        <?= $item->getFullName() ?>
+                    </a>
+                </td>
                 <td><?= $item->email ?></td>
                 <td><?= \app\models\definitions\DefSiteUser::getUserRoleText($item->role) ?></td>
                 <td><?= $item->school ? $item->school->getFullName() : '' ?></td>
