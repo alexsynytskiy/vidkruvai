@@ -3,15 +3,16 @@
 namespace app\models;
 
 use app\components\AppMsg;
-use app\models\definitions\DefUserAchievement;
+use app\models\definitions\DefEntityAchievement;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "user_achievement".
+ * This is the model class for table "entity_achievement".
  *
  * @property integer $id
  * @property integer $achievement_id
- * @property integer $site_user_id
+ * @property integer $entity_id
+ * @property string $entity_type
  * @property integer $performed_steps
  * @property integer $done
  * @property integer $is_first
@@ -19,16 +20,17 @@ use yii\db\ActiveRecord;
  * @property string $done_at
  *
  * @property Achievement $achievement
- * @property SiteUser $siteUser
+ * @property SiteUser $user
+ * @property Team $team
  */
-class UserAchievement extends ActiveRecord
+class EntityAchievement extends ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'user_achievement';
+        return 'entity_achievement';
     }
 
     /**
@@ -37,8 +39,9 @@ class UserAchievement extends ActiveRecord
     public function rules()
     {
         return [
-            [['achievement_id', 'site_user_id'], 'required'],
-            [['achievement_id', 'site_user_id', 'performed_steps', 'done', 'is_first'], 'integer'],
+            [['achievement_id', 'entity_id', 'entity_type'], 'required'],
+            [['achievement_id', 'entity_id', 'performed_steps', 'done', 'is_first'], 'integer'],
+            [['entity_type'], 'string'],
             [['created_at'], 'safe'],
             [['achievement_id'], 'exist', 'skipOnError' => true, 'targetClass' => Achievement::className(),
                 'targetAttribute' => ['achievement_id' => 'id']],
@@ -53,7 +56,8 @@ class UserAchievement extends ActiveRecord
         return [
             'id' => 'ID',
             'achievement_id' => AppMsg::t('Достижение'),
-            'site_user_id' => AppMsg::t('Пользователь'),
+            'entity_id' => AppMsg::t('Получатель'),
+            'entity_type' => AppMsg::t('Тип получателя'),
             'performed_steps' => AppMsg::t('Завершено шагов'),
             'is_first' => AppMsg::t('Первое достижение группы'),
             'done' => AppMsg::t('Завершено'),
@@ -75,16 +79,27 @@ class UserAchievement extends ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(SiteUser::className(), ['id' => 'site_user_id']);
+        return $this->hasOne(SiteUser::className(), ['id' => 'entity_id'])
+            ->andOnCondition(['entity_type' => DefEntityAchievement::ENTITY_USER]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeam()
+    {
+        return $this->hasOne(Team::className(), ['id' => 'entity_id'])
+            ->andOnCondition(['entity_type' => DefEntityAchievement::ENTITY_TEAM]);
     }
 
     /**
      * @param string $achievementClass
-     * @param int $userId
+     * @param int $entityId
+     * @param string $entityType
      *
      * @return array|null|\yii\db\ActiveRecord
      */
-    public static function checkUserAchievement($achievementClass, $userId)
+    public static function checkEntityAchievement($achievementClass, $entityId, $entityType)
     {
         $achievementTable = Achievement::tableName();
         $userAchievementTable = self::tableName();
@@ -92,9 +107,11 @@ class UserAchievement extends ActiveRecord
         return static::find()
             ->innerJoin($achievementTable, $achievementTable . '.`id` = ' . $userAchievementTable . '.`achievement_id`')
             ->where([
-                $userAchievementTable . '.`site_user_id`' => $userId,
+                $userAchievementTable . '.`entity_id`' => $entityId,
+                $userAchievementTable . '.`entity_type`' => $entityType,
                 $achievementTable . '.`class_name`' => $achievementClass,
                 $achievementTable . '.`archived`' => Achievement::IS_NOT_ARCHIVED,
+                $achievementTable . '.`entity_type`' => $entityType,
             ])
             ->one();
     }
@@ -102,12 +119,13 @@ class UserAchievement extends ActiveRecord
     /**
      * @param string $achievementClass
      * @param int $achievementId
-     * @param int $userId
+     * @param int $entityId
+     * @param string $entityType
      *
-     * @return UserAchievement|array|null|ActiveRecord
+     * @return EntityAchievement|array|null|ActiveRecord
      * @throws \Exception
      */
-    public static function getUserAchievementByID($achievementClass, $achievementId, $userId)
+    public static function getEntityAchievementByID($achievementClass, $achievementId, $entityId, $entityType)
     {
         $achievementTable = Achievement::tableName();
         $userAchievementTable = self::tableName();
@@ -117,13 +135,14 @@ class UserAchievement extends ActiveRecord
                 $userAchievementTable . '.`achievement_id`')
             ->where([
                 $achievementTable . '.`id`' => $achievementId,
-                $userAchievementTable . '.`site_user_id`' => $userId,
+                $userAchievementTable . '.`entity_id`' => $entityId,
+                $userAchievementTable . '.`entity_type`' => $entityType,
                 $achievementTable . '.`archived`' => Achievement::IS_NOT_ARCHIVED,
             ])
             ->one();
 
         if (!$achievement) {
-            $achievement = static::createUserAchievement($achievementClass, $achievementId, $userId);
+            $achievement = static::createEntityAchievement($achievementClass, $achievementId, $entityId, $entityType);
         }
 
         return $achievement;
@@ -132,19 +151,21 @@ class UserAchievement extends ActiveRecord
     /**
      * @param string $achievementClass
      * @param int $achievementId
-     * @param int $userId
+     * @param int $entityId
+     * @param string $entityType
      *
      * @return static
      * @throws \Exception
      */
-    public static function createUserAchievement($achievementClass, $achievementId, $userId)
+    public static function createEntityAchievement($achievementClass, $achievementId, $entityId, $entityType)
     {
         if (!$achievementId) {
             throw new \Exception("Achievement {$achievementClass} is not found.");
         }
 
         $achievement = new static;
-        $achievement->site_user_id = $userId;
+        $achievement->entity_id = $entityId;
+        $achievement->entity_type = $entityType;
         $achievement->achievement_id = $achievementId;
         $achievement->save(false);
 
@@ -154,12 +175,15 @@ class UserAchievement extends ActiveRecord
     }
 
     /**
-     * @param int $userId
+     * @param int $entityId
+     * @param string $entityType
      *
      * @return int|string
      */
-    public static function getPassedAchievements($userId)
+    public static function getPassedAchievements($entityId, $entityType)
     {
-        return static::find()->where(['site_user_id' => $userId, 'done' => DefUserAchievement::IS_DONE])->count();
+        return static::find()
+            ->where(['entity_id' => $entityId, 'entity_type' => $entityType, 'done' => DefEntityAchievement::IS_DONE])
+            ->count();
     }
 }

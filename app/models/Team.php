@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\components\AppMsg;
+use app\models\definitions\DefEntityAchievement;
 use app\models\definitions\DefTeamSiteUser;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
@@ -113,5 +114,14 @@ class Team extends ActiveRecord
     public function getTeamUsers()
     {
         return $this->hasMany(TeamSiteUser::className(), ['team_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLevel()
+    {
+        return $this->hasOne(Level::className(), ['id' => 'level_id'])
+            ->andOnCondition(['entity_type' => DefEntityAchievement::ENTITY_TEAM]);
     }
 }

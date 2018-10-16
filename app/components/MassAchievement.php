@@ -11,7 +11,11 @@ class MassAchievement
     /**
      * @var int
      */
-    protected $userId;
+    protected $entityId;
+    /**
+     * @var string
+     */
+    protected $entityType;
     /**
      * @var array
      */
@@ -24,11 +28,13 @@ class MassAchievement
     /**
      * MassAchievement constructor.
      *
-     * @param $userId
+     * @param int $entityId
+     * @param string $entityType
      */
-    public function __construct($userId)
+    public function __construct($entityId, $entityType)
     {
-        $this->userId = $userId;
+        $this->entityId = $entityId;
+        $this->entityType = $entityType;
     }
 
     /**
@@ -63,8 +69,8 @@ class MassAchievement
     {
         foreach ($this->rules as $ruleName => $params) {
             try {
-                if (AchievementComponent::isGoalAchieved($ruleName, $this->userId, $params)) {
-                    AchievementComponent::achieveByUser($ruleName, $this->userId);
+                if (AchievementComponent::isGoalAchieved($ruleName, $this->entityId, $this->entityType, $params)) {
+                    AchievementComponent::achieveByUser($ruleName, $this->entityId, $this->entityType);
                 }
             } catch (\Exception $e) {
 

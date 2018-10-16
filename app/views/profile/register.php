@@ -44,7 +44,7 @@ $asset = \app\assets\AppAsset::register($this);
                     <?= $form->field($model, 'surname')->textInput(['maxlength' => true, 'placeholder' => 'Прізвище']) ?>
 
                     <div class="custom-option clearfix">
-                        <?php foreach (\app\models\SiteUser::getRoles() as $value => $role): ?>
+                        <?php foreach (\app\models\definitions\DefSiteUser::getRoles() as $value => $role): ?>
                             <div class="item" data-value="<?= $value ?>"><?= $role ?></div>
                         <?php endforeach; ?>
                     </div>

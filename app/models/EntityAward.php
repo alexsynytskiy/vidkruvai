@@ -3,14 +3,16 @@
 namespace app\models;
 
 use app\components\AppMsg;
-use app\models\definitions\DefUserAward;
+use app\models\definitions\DefEntityAchievement;
+use app\models\definitions\DefEntityAward;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "user_award".
+ * This is the model class for table "entity_award".
  *
  * @property integer $id
- * @property integer $site_user_id
+ * @property integer $entity_id
+ * @property string $entity_type
  * @property integer $award_id
  * @property string $type
  * @property integer $object_id
@@ -22,14 +24,14 @@ use yii\db\ActiveRecord;
  * @property Achievement $achievement
  * @property string $objectName
  */
-class UserAward extends ActiveRecord
+class EntityAward extends ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'user_award';
+        return 'entity_award';
     }
 
     /**
@@ -38,14 +40,12 @@ class UserAward extends ActiveRecord
     public function rules()
     {
         return [
-            [['site_user_id', 'award_id', 'object_id'], 'required'],
-            [['site_user_id', 'award_id', 'object_id'], 'integer'],
-            [['type'], 'string'],
+            [['entity_id', 'entity_type', 'award_id', 'object_id'], 'required'],
+            [['entity_id', 'award_id', 'object_id'], 'integer'],
+            [['type', 'entity_type'], 'string'],
             [['created_at'], 'safe'],
             [['award_id'], 'exist', 'skipOnError' => true, 'targetClass' => Award::className(),
                 'targetAttribute' => ['award_id' => 'id']],
-            [['site_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SiteUser::className(),
-                'targetAttribute' => ['site_user_id' => 'id']],
         ];
     }
 
@@ -56,7 +56,8 @@ class UserAward extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'site_user_id' => AppMsg::t('Пользователь'),
+            'entity_id' => AppMsg::t('Получатель'),
+            'entity_type' => AppMsg::t('Тип получателя'),
             'award_id' => AppMsg::t('Награда'),
             'type' => AppMsg::t('Тип награды'),
             'object_id' => AppMsg::t('Объект'),
@@ -78,7 +79,17 @@ class UserAward extends ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(SiteUser::className(), ['id' => 'site_user_id']);
+        return $this->hasOne(SiteUser::className(), ['id' => 'entity_id'])
+            ->andOnCondition(['entity_type' => DefEntityAchievement::ENTITY_USER]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeam()
+    {
+        return $this->hasOne(Team::className(), ['id' => 'entity_id'])
+            ->andOnCondition(['entity_type' => DefEntityAchievement::ENTITY_TEAM]);
     }
 
     /**
@@ -86,7 +97,7 @@ class UserAward extends ActiveRecord
      */
     public function getLevel()
     {
-        if ($this->type === DefUserAward::TYPE_LEVEL) {
+        if ($this->type === DefEntityAward::TYPE_LEVEL) {
             return $this->hasOne(Level::className(), ['id' => 'object_id']);
         }
 
@@ -98,7 +109,7 @@ class UserAward extends ActiveRecord
      */
     public function getAchievement()
     {
-        if ($this->type === DefUserAward::TYPE_ACHIEVEMENT) {
+        if ($this->type === DefEntityAward::TYPE_ACHIEVEMENT) {
             return $this->hasOne(Achievement::className(), ['id' => 'object_id']);
         }
 
@@ -110,11 +121,11 @@ class UserAward extends ActiveRecord
      */
     public function getObjectName()
     {
-        if ($this->type === DefUserAward::TYPE_ACHIEVEMENT) {
+        if ($this->type === DefEntityAward::TYPE_ACHIEVEMENT) {
             return $this->achievement->name ?: null;
         }
 
-        if ($this->type === DefUserAward::TYPE_LEVEL) {
+        if ($this->type === DefEntityAward::TYPE_LEVEL) {
             return isset($this->level->num) ? 'Уровень ' . $this->level->num : null;
         }
 

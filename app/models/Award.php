@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\components\AppMsg;
 use app\models\definitions\DefAward;
+use app\models\definitions\DefEntityAchievement;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\validators\NumberValidator;
@@ -21,7 +22,8 @@ use yii\validators\NumberValidator;
  *
  * @property Achievement[] $achievementAwards
  * @property Level[] $levelAwards
- * @property UserAward[] $userAwards
+ * @property EntityAward[] $userAwards
+ * @property EntityAward[] $teamAwards
  */
 class Award extends ActiveRecord
 {
@@ -118,7 +120,17 @@ class Award extends ActiveRecord
      */
     public function getUserAwards()
     {
-        return $this->hasMany(UserAward::className(), ['award_id' => 'id']);
+        return $this->hasMany(EntityAward::className(), ['award_id' => 'id'])
+            ->andOnCondition(['entity_type' => DefEntityAchievement::ENTITY_USER]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeamAwards()
+    {
+        return $this->hasMany(EntityAward::className(), ['award_id' => 'id'])
+            ->andOnCondition(['entity_type' => DefEntityAchievement::ENTITY_TEAM]);
     }
 
     /**

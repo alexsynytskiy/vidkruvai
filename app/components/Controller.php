@@ -2,10 +2,17 @@
 
 namespace app\components;
 
+use app\components\helpers\EntityHelper;
+use app\models\Achievement;
+use app\models\definitions\DefEntityAchievement;
+use app\models\EntityAchievement;
 use app\models\NotificationUser;
+use app\models\search\AchievementSearch;
+use app\models\search\LevelSearch;
 use app\models\SiteUser;
 use app\models\Team;
 use Yii;
+use yii\base\ErrorException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
@@ -30,6 +37,9 @@ class Controller extends \yii\web\Controller
      */
     private $_userLastNotifications = [];
 
+    public static $entityType = '';
+    public static $entityLevelNum = '';
+
     /**
      * @inheritdoc
      */
@@ -43,6 +53,25 @@ class Controller extends \yii\web\Controller
                 ],
             ],
         ];
+    }
+
+    /**
+     * @param $mode
+     * @return bool
+     */
+    public static function initMode($mode)
+    {
+        if ($mode === DefEntityAchievement::ENTITY_USER) {
+            self::$entityType = DefEntityAchievement::ENTITY_USER;
+            self::$entityLevelNum =  \Yii::$app->siteUser->identity->level->num;
+        }
+
+        if ($mode === DefEntityAchievement::ENTITY_TEAM) {
+            self::$entityType = DefEntityAchievement::ENTITY_TEAM;
+            self::$entityLevelNum =  \Yii::$app->siteUser->identity->team->level->num;
+        }
+
+        return true;
     }
 
     /**
@@ -202,5 +231,164 @@ class Controller extends \yii\web\Controller
             }
         }
         return $this->back();
+    }
+
+    /**
+     * @param null $id
+     * @return bool|string|Response
+     * @throws \yii\web\NotFoundHttpException
+     */
+    public function actionLevels($id = null)
+    {
+        $status = $this->checkUserStatus();
+
+        if ($status !== true) {
+            return $status;
+        }
+
+        \Yii::$app->seo->setTitle('Рівні');
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('Відкривай, Україну');
+
+        $entityInfo = EntityHelper::getEntityRenderingInfo($id, self::$entityType);
+
+        $searchModel = new LevelSearch();
+
+        $queryParams = \Yii::$app->request->queryParams;
+        $queryParams['LevelSearch']['entity_id'] = $entityInfo['id'];
+        $queryParams['LevelSearch']['entity_level'] = self::$entityLevelNum;
+        $queryParams['LevelSearch']['entity_type'] = self::$entityType;
+
+        $dataProvider = $searchModel->userSearch($queryParams);
+
+        $data = [
+            'data' => $dataProvider->getModels(),
+            'userCredentials' => EntityHelper::getEntityCredentials(self::$entityType, $entityInfo['id']),
+            'userLevelExperience' => $entityInfo['entity']->level_experience,
+            'userCurrentLevel' => $entityInfo['entity']->level->num,
+            'preview' => $entityInfo['preview'],
+        ];
+
+        return $this->render('/_blocks/levels', $data);
+    }
+
+    /**
+     * @param null $id
+     * @return bool|string|Response
+     * @throws \yii\web\NotFoundHttpException
+     */
+    public function actionAchievements($id = null)
+    {
+        $statusUser = $this->checkUserStatus();
+
+        if ($statusUser !== true) {
+            return $statusUser;
+        }
+
+        \Yii::$app->seo->setTitle('Досягнення');
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('Відкривай, Україну');
+
+        $entityInfo = EntityHelper::getEntityRenderingInfo($id, self::$entityType);
+
+        $searchModel = new AchievementSearch();
+
+        $queryParams = \Yii::$app->request->queryParams;
+        $queryParams['AchievementSearch']['entity_id'] = $entityInfo['id'];
+        $queryParams['AchievementSearch']['entity_type'] = self::$entityType;
+
+        $dataProvider = $searchModel->userSearch($queryParams);
+
+        $data = [
+            'searchModel' => $searchModel,
+            'userCredentials' => EntityHelper::getEntityCredentials(self::$entityType, $entityInfo['id']),
+            'preview' => $entityInfo['preview'],
+            'status' => array_key_exists('filterAchievementType', $queryParams['AchievementSearch']) ?
+                $queryParams['AchievementSearch']['filterAchievementType'] : null
+        ];
+
+        $getParams = \Yii::$app->request->get();
+
+        if (isset($getParams['id'])) {
+            unset($getParams['id']);
+        }
+
+        if (!$getParams) {
+            $achievements = $dataProvider->getModels();
+
+            $category = null;
+            $groups = [];
+
+            foreach ($achievements as $achievement) {
+                if (($category && $category !== $achievement->group_id) || empty($category)) {
+                    $category = $achievement->group_id;
+                }
+
+                $groups[($achievement->group->slug ?: '') . '__' . ($achievement->group->name ?: '')][] = $achievement;
+            }
+
+            /**
+             * @var string $key
+             * @var  Achievement[] $group
+             */
+            foreach ($groups as $key => $group) {
+                $groupStarted = false;
+                $groupStartedFirstPosition = null;
+                $groupDone = false;
+                $groupElements = count($group);
+
+                if ($groupElements > 3) {
+                    for ($i = 0; $i < $groupElements; $i++) {
+                        /** @var EntityAchievement $status */
+                        $status = $group[$i]->getUserAchievementStatus($id ?: \Yii::$app->siteUser->id)->one();
+
+                        if ($status) {
+                            if ($status->done === DefEntityAchievement::IS_IN_PROGRESS) {
+                                $groupStarted = true;
+
+                                if (!$groupStartedFirstPosition) {
+                                    $groupStartedFirstPosition = $i;
+                                    break;
+                                }
+                            }
+
+                            if ($i === $groupElements - 1 && $status->done === DefEntityAchievement::IS_DONE) {
+                                $groupDone = true;
+                            }
+                        }
+                    }
+
+                    if ($groupStarted && !in_array($groupStartedFirstPosition, [$groupElements - 1,
+                            $groupElements - 2], false)) {
+                        $groups[$key]['preview'] = [$group[$groupStartedFirstPosition],
+                            $group[++$groupStartedFirstPosition], $group[++$groupStartedFirstPosition]];
+                    } else {
+                        $position = null;
+
+                        if ((!$groupDone && !$groupStarted) || ($groupStarted && $groupStartedFirstPosition === 0)) {
+                            $position = 0;
+                        } elseif ($groupDone || ($groupStarted && in_array($groupStartedFirstPosition,
+                                    [$groupElements - 1, $groupElements - 2], false))) {
+                            $position = $groupElements - 3;
+                        }
+
+                        $groups[$key]['preview'] = [$group[$position], $group[++$position], $group[++$position]];
+                    }
+
+                    $groups[$key]['full'] = $group;
+                } else {
+                    $groups[$key]['preview'] = $group;
+                    $groups[$key]['full'] = [];
+                }
+            }
+
+            $data = array_merge($data, ['groups' => $groups]);
+
+            return $this->render('achievements-cropped', $data);
+        }
+
+        $data = array_merge($data, ['dataProvider' => $dataProvider]);
+
+        return $this->render('/achievements', $data);
     }
 }

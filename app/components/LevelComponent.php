@@ -5,9 +5,11 @@ namespace app\components;
 use app\components\achievement\PassedLevel;
 use app\components\achievement\ReachedExperience;
 use app\components\events\AwardEvent;
+use app\models\definitions\DefEntityAchievement;
+use app\models\EntityLevelHistory;
 use app\models\Level;
 use app\models\SiteUser;
-use app\models\UserLevelHistory;
+use app\models\Team;
 use Yii;
 use yii\base\Component;
 
@@ -45,23 +47,48 @@ class LevelComponent extends Component
     }
 
     /**
-     * @param int $userId
+     * @param int $teamId
+     *
+     * @return Team
+     * @throws \Exception
+     */
+    protected static function getTeam($teamId)
+    {
+        /** @var Team $team */
+        $team = Team::find()->with('level')->where(['id' => $teamId])->one();
+
+        if (!$team) {
+            throw new \Exception("Team ({$team}) is not found.");
+        }
+
+        return $team;
+    }
+
+    /**
+     * @param int $entityId
+     * @param string $entityType
      * @param int $addExperience
      *
      * @return bool
      * @throws \Exception
      */
-    public static function addUserExperience($userId, $addExperience)
+    public static function addEntityExperience($entityId, $entityType, $addExperience)
     {
-        $user = static::getUser($userId);
+        $entity = null;
+
+        if ($entityType === DefEntityAchievement::ENTITY_TEAM) {
+            $entity = static::getTeam($entityId);
+        } elseif ($entityType === DefEntityAchievement::ENTITY_USER) {
+            $entity = static::getUser($entityId);
+        }
 
         try {
-            $levelsData = static::prepareExperience($user, $addExperience);
-            static::addUserExperienceInternal($user, $addExperience, $levelsData);
+            $levelsData = static::prepareExperience($entity, $addExperience, $entityType);
+            static::addEntityExperienceInternal($entity, $entityType, $addExperience, $levelsData);
 
             if (!AchievementComponent::getLastAchievement() && AchievementComponent::isGoalAchieved(
-                ReachedExperience::CLASS_NAME, $userId, ['updateAchievementsGroup' => true])) {
-                AchievementComponent::achieveByUser(ReachedExperience::CLASS_NAME, $userId);
+                    ReachedExperience::CLASS_NAME, $entityId, $entityType, ['updateAchievementsGroup' => true])) {
+                AchievementComponent::achieveByUser(ReachedExperience::CLASS_NAME, $entityId, $entityType);
             }
 
             return true;
@@ -71,17 +98,18 @@ class LevelComponent extends Component
     }
 
     /**
-     * @param SiteUser $user
+     * @param SiteUser|Team $entity
      * @param int $addExperience
+     * @param string $entityType
      *
      * @return array
      */
-    protected static function prepareExperience($user, $addExperience)
+    protected static function prepareExperience($entity, $addExperience, $entityType)
     {
-        $level = $user->level;
-        $currentLevelExp = $user->level_experience;
-        $userExp = $user->total_experience + $addExperience;
-        $passedLevels = Level::getPassedLevels($user->total_experience, $userExp);
+        $level = $entity->level;
+        $currentLevelExp = $entity->level_experience;
+        $entityExp = $entity->total_experience + $addExperience;
+        $passedLevels = Level::getPassedLevels($entity->total_experience, $entityExp, $entityType);
 
         $result = [
             'level' => [],
@@ -91,7 +119,7 @@ class LevelComponent extends Component
         $prevLevel = null;
 
         if (isset($passedLevels[0]['required_experience'])) {
-            $prevLevel = Level::getPrevLevelByExp($passedLevels[0]['required_experience']);
+            $prevLevel = Level::getPrevLevelByExp($passedLevels[0]['required_experience'], $entityType);
         }
 
         foreach ($passedLevels as $passedLevel) {
@@ -109,7 +137,7 @@ class LevelComponent extends Component
                 $addedExp = $levelAllowedExp;
             }
 
-            $levelExperience = $userExp - $passedLevel['required_experience'];
+            $levelExperience = $entityExp - $passedLevel['required_experience'];
 
             $result['levels'][] = [
                 'levelId' => $passedLevel['id'],
@@ -147,57 +175,61 @@ class LevelComponent extends Component
     }
 
     /**
-     * @param int $userId
+     * @param int $entityId
+     * @param string $entityType
      * @param array $levels
+     *
      * @throws \Exception
      */
-    protected static function unlockLevels($userId, array $levels)
+    protected static function unlockLevels($entityId, $entityType, array $levels)
     {
         foreach ($levels as $level) {
             $triggerEvent = false;
 
             //If we do not found the level, it means that it still is not unlocked, therefore we must
             //write history (unlock level) and trigger the event that will give awards (if any)
-            if (!UserLevelHistory::isLevelUnlocked($userId, $level['levelId'])) {
+            if (!EntityLevelHistory::isLevelUnlocked($entityId, $entityType, $level['levelId'])) {
                 $triggerEvent = true;
             }
 
-            UserLevelHistory::logHistory($userId, $level);
+            EntityLevelHistory::logHistory($entityId, $entityType, $level);
 
             //Trigger event only when the level is unlocked at first time
             if ($triggerEvent) {
                 $awardEvent = new AwardEvent();
                 $awardEvent->objectId = $level['levelId'];
-                $awardEvent->userId = $userId;
+                $awardEvent->entityId = $entityId;
+                $awardEvent->entityType = $entityType;
                 $awardEvent->senderClassName = static::className();
 
                 static::onUnlocked($awardEvent);
 
                 if (!AchievementComponent::getLastAchievement() && AchievementComponent::isGoalAchieved(
-                    PassedLevel::CLASS_NAME, $userId)) {
-                    AchievementComponent::achieveByUser(PassedLevel::CLASS_NAME, $userId);
+                        PassedLevel::CLASS_NAME, $entityId, $entityType)) {
+                    AchievementComponent::achieveByUser(PassedLevel::CLASS_NAME, $entityId, $entityType);
                 }
             }
         }
     }
 
     /**
-     * @param SiteUser $user
+     * @param SiteUser|Team $entity
+     * @param string $entityType
      * @param int $addExperience
      * @param array $levels
      * @throws \Exception
      */
-    protected static function addUserExperienceInternal($user, $addExperience, array $levels)
+    protected static function addEntityExperienceInternal($entity, $entityType, $addExperience, array $levels)
     {
         $level = $levels['level'];
 
-        $user->total_experience += $addExperience;
-        $user->level_experience = $level['levelExp'];
-        $user->level_id = $level['levelId'];
-        $user->save(false);
+        $entity->total_experience += $addExperience;
+        $entity->level_experience = $level['levelExp'];
+        $entity->level_id = $level['levelId'];
+        $entity->save(false);
 
         if ($levels['levels']) {
-            static::unlockLevels($user->id, $levels['levels']);
+            static::unlockLevels($entity->id, $entityType, $levels['levels']);
         }
     }
 

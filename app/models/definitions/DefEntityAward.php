@@ -6,10 +6,10 @@ use app\components\AppMsg;
 use app\components\BaseDefinition;
 
 /**
- * Class DefUserAward
+ * Class DefEntityAward
  * @package app\models\definitions
  */
-class DefUserAward extends BaseDefinition
+class DefEntityAward extends BaseDefinition
 {
     /**
      * Types

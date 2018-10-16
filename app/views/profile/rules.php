@@ -93,7 +93,7 @@ $roleMentor = Yii::$app->siteUser->identity->role === \app\models\SiteUser::ROLE
                                         </div>
 
                                         <?= !\Yii::$app->siteUser->identity->agreement_read ?
-                                            \yii\helpers\Html::submitButton('Далі',
+                                            \yii\helpers\Html::submitButton('Згоден',
                                                 ['class' => 'link-button', 'id' => 'rules-read-agreement']) :
                                             '<a href="/profile">' . \yii\helpers\Html::submitButton('До профілю',
                                                 ['class' => 'link-button rules-to-profile']) . '</a>' ?>

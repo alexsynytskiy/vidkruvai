@@ -4,6 +4,9 @@ namespace app\controllers;
 
 use app\components\AppMsg;
 use app\components\Controller;
+use app\components\events\TeamRegisteredEvent;
+use app\components\TeamRegisteredEventHandler;
+use app\models\definitions\DefEntityAchievement;
 use app\models\definitions\DefNotification;
 use app\models\forms\TeamCreateForm;
 use yii\easyii\helpers\Image;
@@ -19,6 +22,18 @@ use yii\widgets\ActiveForm;
 class TeamController extends Controller
 {
     /**
+     * Event name, uses for triggering event when user is registered
+     */
+    const EVENT_TEAM_REGISTERED = 'app.controllers.on-team-registered';
+
+    public function init()
+    {
+        parent::init();
+
+        \Yii::$app->on(self::EVENT_TEAM_REGISTERED, [new TeamRegisteredEventHandler(), 'handle']);
+    }
+
+    /**
      * @return array
      */
     public function actions()
@@ -28,6 +43,28 @@ class TeamController extends Controller
                 'class' => 'yii\web\ErrorAction',
             ]
         ];
+    }
+
+    /**
+     * @param null $id
+     * @return bool|string|Response
+     * @throws \yii\web\NotFoundHttpException
+     */
+    public function actionLevels($id = null)
+    {
+        parent::initMode(DefEntityAchievement::ENTITY_TEAM);
+        return parent::actionLevels($id);
+    }
+
+    /**
+     * @param null $id
+     * @return bool|string|Response
+     * @throws \yii\web\NotFoundHttpException
+     */
+    public function actionAchievements($id = null)
+    {
+        parent::initMode(DefEntityAchievement::ENTITY_TEAM);
+        return parent::actionAchievements($id);
     }
 
     /**
@@ -67,7 +104,7 @@ class TeamController extends Controller
             throw new BadRequestHttpException();
         }
 
-        if(\Yii::$app->siteUser->identity->team) {
+        if (\Yii::$app->siteUser->identity->team) {
             $this->redirect('/team');
         }
 
@@ -92,6 +129,10 @@ class TeamController extends Controller
             }
 
             if ($model->createTeam()) {
+                $teamEvent = new TeamRegisteredEvent();
+                $teamEvent->teamId = $model->getTeam()->id;
+                \Yii::$app->trigger(self::EVENT_TEAM_REGISTERED, $teamEvent);
+
                 \Yii::$app->notification->addToUser(\Yii::$app->siteUser->identity,
                     DefNotification::CATEGORY_TEAM,
                     DefNotification::TYPE_TEAM_CREATED, null,
@@ -129,7 +170,7 @@ class TeamController extends Controller
             throw new BadRequestHttpException();
         }
 
-        if(!\Yii::$app->siteUser->identity->isCaptain()) {
+        if (!\Yii::$app->siteUser->identity->isCaptain()) {
             $this->redirect('/team');
         }
 
@@ -139,6 +180,12 @@ class TeamController extends Controller
 
         $model = new TeamCreateForm;
         $model->isNewRecord = false;
+
+
+//        $teamEvent = new TeamRegisteredEvent();
+//        $teamEvent->teamId = \Yii::$app->siteUser->identity->team->id;
+//        \Yii::$app->trigger(self::EVENT_TEAM_REGISTERED, $teamEvent);
+
 
         $model->setTeam(\Yii::$app->siteUser->identity->team);
 

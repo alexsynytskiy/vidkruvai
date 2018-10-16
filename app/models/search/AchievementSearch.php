@@ -6,8 +6,8 @@ use app\components\AppMsg;
 use app\components\traits\SortTrait;
 use app\models\Achievement;
 use app\models\definitions\DefAchievements;
-use app\models\definitions\DefUserAchievement;
-use app\models\UserAchievement;
+use app\models\definitions\DefEntityAchievement;
+use app\models\EntityAchievement;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -26,7 +26,7 @@ class AchievementSearch extends Achievement
     /**
      * @var int
      */
-    public $site_user_id;
+    public $entity_id;
     /**
      * @var string
      */
@@ -39,7 +39,7 @@ class AchievementSearch extends Achievement
     {
         return [
             [['id', 'required_steps'], 'integer'],
-            [['created_at', 'group_id', 'name', 'class_name', 'archived', 'site_user_id', 'filterAchievementType',
+            [['created_at', 'group_id', 'name', 'class_name', 'archived', 'entity_id', 'entity_type', 'filterAchievementType',
                 'filterAchievementCategory'], 'safe'],
         ];
     }
@@ -85,14 +85,16 @@ class AchievementSearch extends Achievement
     {
         $query = static::find();
 
-        $userAchievementTable = UserAchievement::tableName();
+        $userAchievementTable = EntityAchievement::tableName();
 
         $this->load($params);
 
         $query->alias('t');
-        $query->leftJoin($userAchievementTable . ' as u', 'u.achievement_id = t.id and u.site_user_id = :userId', [
-            ':userId' => $this->site_user_id,
-        ]);
+        $query->leftJoin($userAchievementTable . ' as u', 'u.achievement_id = t.id and u.entity_id = :userId and u.entity_type = :userType' , [
+            ':userId' => $this->entity_id,
+            ':userType' => $this->entity_type,
+        ])
+            ->andWhere(['t.entity_type' => $this->entity_type]);
 
         $query->orderBy('t.group_id DESC, t.required_steps ASC');
 
@@ -110,18 +112,15 @@ class AchievementSearch extends Achievement
         ]);
 
         if ($this->filterAchievementType === DefAchievements::STATUS_ACHIEVED) {
-            $query->andWhere(['u.done' => DefUserAchievement::IS_DONE]);
+            $query->andWhere(['u.done' => DefEntityAchievement::IS_DONE]);
         } elseif ($this->filterAchievementType === DefAchievements::STATUS_AVAILABLE) {
-            $query->andWhere('u.site_user_id is null');
+            $query->andWhere('u.entity_id is null');
         } elseif ($this->filterAchievementType === DefAchievements::STATUS_IN_PROGRESS) {
-            $query->andWhere(['u.done' => DefUserAchievement::IS_IN_PROGRESS]);
+            $query->andWhere(['u.done' => DefEntityAchievement::IS_IN_PROGRESS]);
         }
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'class_name', $this->class_name]);
-
-
-        //print_r($query->createCommand()->getRawSql()); die;
 
         return $dataProvider;
     }

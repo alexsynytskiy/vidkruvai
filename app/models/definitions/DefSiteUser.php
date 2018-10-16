@@ -65,4 +65,15 @@ class DefSiteUser extends BaseDefinition
 
         return $roles[$key];
     }
+
+    /**
+     * @return array
+     */
+    public static function getRoles()
+    {
+        return [
+            SiteUser::ROLE_PARTICIPANT => 'Учасник',
+            SiteUser::ROLE_MENTOR => 'Ментор',
+        ];
+    }
 }

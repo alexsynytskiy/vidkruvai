@@ -3,6 +3,7 @@
 namespace app\components\achievement;
 
 use app\models\SiteUser;
+use app\models\Team;
 
 /**
  * Class ReachedExperience
@@ -19,10 +20,10 @@ class ReachedExperience extends BaseAchievementRule
      */
     public static function execute(array $params = [])
     {
-        /** @var SiteUser $user */
-        $user = SiteUser::findOne($params['userId']);
+        /** @var SiteUser|Team $entity */
+        $entity = self::getEntity($params['entityId'], $params['entityType']);
 
-        $params['performed_steps'] = $user->total_experience;
+        $params['performed_steps'] = $entity->total_experience;
 
         if (parent::isLastAchievement(self::CLASS_NAME, $params)) {
             return true;

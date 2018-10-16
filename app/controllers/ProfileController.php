@@ -6,26 +6,24 @@ use app\components\AppMsg;
 use app\components\BaseDefinition;
 use app\components\Controller;
 use app\components\events\UserRegisteredEvent;
+use app\components\helpers\EntityHelper;
 use app\components\UserRegisteredEventHandler;
 use app\models\Achievement;
 use app\models\City;
+use app\models\definitions\DefEntityAchievement;
 use app\models\definitions\DefLevel;
 use app\models\definitions\DefNotification;
 use app\models\definitions\DefTeam;
 use app\models\definitions\DefTeamSiteUser;
-use app\models\definitions\DefUserAchievement;
 use app\models\forms\AddSchoolForm;
 use app\models\forms\LoginForm;
 use app\models\forms\RegisterForm;
 use app\models\Level;
 use app\models\NotificationUser;
-use app\models\search\AchievementSearch;
-use app\models\search\LevelSearch;
 use app\models\search\NotificationUserSearch;
 use app\models\SiteUser;
 use app\models\Team;
 use app\models\TeamSiteUser;
-use app\models\UserAchievement;
 use yii\easyii\components\helpers\LanguageHelper;
 use yii\easyii\helpers\Image;
 use yii\easyii\modules\news\api\News;
@@ -66,6 +64,28 @@ class ProfileController extends Controller
     }
 
     /**
+     * @param null $id
+     * @return bool|string|Response
+     * @throws \yii\web\NotFoundHttpException
+     */
+    public function actionLevels($id = null)
+    {
+        parent::initMode(DefEntityAchievement::ENTITY_USER);
+        return parent::actionLevels($id);
+    }
+
+    /**
+     * @param null $id
+     * @return bool|string|Response
+     * @throws \yii\web\NotFoundHttpException
+     */
+    public function actionAchievements($id = null)
+    {
+        parent::initMode(DefEntityAchievement::ENTITY_USER);
+        return parent::actionAchievements($id);
+    }
+
+    /**
      * @return string
      */
     public function actionIndex()
@@ -75,6 +95,10 @@ class ProfileController extends Controller
         if ($status !== true) {
             return $status;
         }
+
+//        $userEvent = new UserRegisteredEvent();
+//        $userEvent->userId = \Yii::$app->siteUser->id;
+//        \Yii::$app->trigger(self::EVENT_USER_REGISTERED, $userEvent);
 
         \Yii::$app->seo->setTitle('Профіль');
         \Yii::$app->seo->setDescription('Відкривай Україну');
@@ -96,7 +120,7 @@ class ProfileController extends Controller
             return $status;
         }
 
-        $userInfo = SiteUser::getUserRenderingInfo($id);
+        $userInfo = EntityHelper::getEntityRenderingInfo($id, DefEntityAchievement::ENTITY_USER);
 
         return $this->renderUserProfilePage($userInfo['user'], $userInfo['preview']);
     }
@@ -109,17 +133,17 @@ class ProfileController extends Controller
      */
     public function renderUserProfilePage($user, $isPreview = false)
     {
-        $levelInfo = $user->getUserLevelInfo();
+        $levelInfo = EntityHelper::getEntityLevelInfo( DefEntityAchievement::ENTITY_USER, $user->id);
 
         $previousLevels = [];
-        $nextLevels = Level::getLevels($user->level_id, DefLevel::NEXT_LEVELS);
+        $nextLevels = Level::getLevels($user->level_id, DefLevel::NEXT_LEVELS, DefEntityAchievement::ENTITY_USER);
 
         if (count($nextLevels) < 2) {
-            $previousLevels = Level::getLevels($user->level_id, DefLevel::PREVIOUS_LEVELS,
+            $previousLevels = Level::getLevels($user->level_id, DefLevel::PREVIOUS_LEVELS, DefEntityAchievement::ENTITY_USER,
                 2 - count($nextLevels));
         }
 
-        $achievements = Achievement::getAchievementsInProgress($user->id);
+        $achievements = Achievement::getAchievementsInProgress($user->id, DefEntityAchievement::ENTITY_USER);
 
         if (count($achievements) < 3) {
             $achievementsToStart = Achievement::getAchievementsToStart($user->id, 3 - count($achievements));
@@ -139,168 +163,9 @@ class ProfileController extends Controller
                 'levelInfo' => $levelInfo,
                 'previousLevels' => $previousLevels,
                 'nextLevels' => $nextLevels,
-                'userCredentials' => SiteUser::getUserCredentials($user),
+                'userCredentials' => EntityHelper::getEntityCredentials(DefEntityAchievement::ENTITY_USER, $user->id)
             ]
         );
-    }
-
-    /**
-     * @param null $id
-     *
-     * @return string|\yii\web\Response
-     * @throws \yii\web\NotFoundHttpException
-     */
-    public function actionLevels($id = null)
-    {
-        $status = $this->checkUserStatus();
-
-        if ($status !== true) {
-            return $status;
-        }
-
-        \Yii::$app->seo->setTitle('Рівні');
-        \Yii::$app->seo->setDescription('Відкривай Україну');
-        \Yii::$app->seo->setKeywords('Відкривай, Україну');
-
-        $userInfo = SiteUser::getUserRenderingInfo($id);
-
-        $searchModel = new LevelSearch();
-
-        $queryParams = \Yii::$app->request->queryParams;
-        $queryParams['LandingLevelSearch']['site_user_id'] = $userInfo['id'];
-        $queryParams['LandingLevelSearch']['user_level'] = \Yii::$app->siteUser->identity->level->num;
-
-        $dataProvider = $searchModel->userSearch($queryParams);
-
-        $data = [
-            'data' => $dataProvider->getModels(),
-            'userCredentials' => SiteUser::getUserCredentials($userInfo['user']),
-            'userLevelExperience' => $userInfo['user']->level_experience,
-            'userCurrentLevel' => $userInfo['user']->level->num,
-            'preview' => $userInfo['preview'],
-        ];
-
-        return $this->render('levels', $data);
-    }
-
-    /**
-     * @param null $id
-     *
-     * @return string|\yii\web\Response
-     * @throws \yii\web\NotFoundHttpException
-     */
-    public function actionAchievements($id = null)
-    {
-        $statusUser = $this->checkUserStatus();
-
-        if ($statusUser !== true) {
-            return $statusUser;
-        }
-
-        \Yii::$app->seo->setTitle('Досягнення');
-        \Yii::$app->seo->setDescription('Відкривай Україну');
-        \Yii::$app->seo->setKeywords('Відкривай, Україну');
-
-        $userInfo = SiteUser::getUserRenderingInfo($id);
-
-        $searchModel = new AchievementSearch();
-
-        $queryParams = \Yii::$app->request->queryParams;
-        $queryParams['AchievementSearch']['site_user_id'] = $userInfo['id'];
-
-        $dataProvider = $searchModel->userSearch($queryParams);
-
-        $data = [
-            'searchModel' => $searchModel,
-            'userCredentials' => SiteUser::getUserCredentials($userInfo['user']),
-            'preview' => $userInfo['preview'],
-            'status' => array_key_exists('filterAchievementType', $queryParams['AchievementSearch']) ?
-                $queryParams['AchievementSearch']['filterAchievementType'] : null
-        ];
-
-        $getParams = \Yii::$app->request->get();
-
-        if (isset($getParams['id'])) {
-            unset($getParams['id']);
-        }
-
-        if (!$getParams) {
-            $achievements = $dataProvider->getModels();
-
-            $category = null;
-            $groups = [];
-
-            foreach ($achievements as $achievement) {
-                if (($category && $category !== $achievement->group_id) || empty($category)) {
-                    $category = $achievement->group_id;
-                }
-
-                $groups[($achievement->group->slug ?: '') . '__' . ($achievement->group->name ?: '')][] = $achievement;
-            }
-
-            /**
-             * @var string $key
-             * @var  Achievement[] $group
-             */
-            foreach ($groups as $key => $group) {
-                $groupStarted = false;
-                $groupStartedFirstPosition = null;
-                $groupDone = false;
-                $groupElements = count($group);
-
-                if ($groupElements > 3) {
-                    for ($i = 0; $i < $groupElements; $i++) {
-                        /** @var UserAchievement $status */
-                        $status = $group[$i]->getUserAchievementStatus($id ?: \Yii::$app->siteUser->id)->one();
-
-                        if ($status) {
-                            if ($status->done === DefUserAchievement::IS_IN_PROGRESS) {
-                                $groupStarted = true;
-
-                                if (!$groupStartedFirstPosition) {
-                                    $groupStartedFirstPosition = $i;
-                                    break;
-                                }
-                            }
-
-                            if ($i === $groupElements - 1 && $status->done === DefUserAchievement::IS_DONE) {
-                                $groupDone = true;
-                            }
-                        }
-                    }
-
-                    if ($groupStarted && !in_array($groupStartedFirstPosition, [$groupElements - 1,
-                            $groupElements - 2], false)) {
-                        $groups[$key]['preview'] = [$group[$groupStartedFirstPosition],
-                            $group[++$groupStartedFirstPosition], $group[++$groupStartedFirstPosition]];
-                    } else {
-                        $position = null;
-
-                        if ((!$groupDone && !$groupStarted) || ($groupStarted && $groupStartedFirstPosition === 0)) {
-                            $position = 0;
-                        } elseif ($groupDone || ($groupStarted && in_array($groupStartedFirstPosition,
-                                    [$groupElements - 1, $groupElements - 2], false))) {
-                            $position = $groupElements - 3;
-                        }
-
-                        $groups[$key]['preview'] = [$group[$position], $group[++$position], $group[++$position]];
-                    }
-
-                    $groups[$key]['full'] = $group;
-                } else {
-                    $groups[$key]['preview'] = $group;
-                    $groups[$key]['full'] = [];
-                }
-            }
-
-            $data = array_merge($data, ['groups' => $groups]);
-
-            return $this->render('achievements-cropped', $data);
-        }
-
-        $data = array_merge($data, ['dataProvider' => $dataProvider]);
-
-        return $this->render('achievements', $data);
     }
 
     /**
@@ -339,8 +204,9 @@ class ProfileController extends Controller
             $lastItemId = $news[count($news) - 1]->id;
         }
 
-        $params = ArrayHelper::merge(SiteUser::getUserCredentials(\Yii::$app->siteUser ?
-            \Yii::$app->siteUser->identity : \Yii::$app->user->identity), [
+        $params = ArrayHelper::merge(
+            EntityHelper::getEntityCredentials(DefEntityAchievement::ENTITY_USER, \Yii::$app->siteUser->id),
+            [
                 'news' => $news,
                 'hasToLoadMore' => $hasToLoadMore,
                 'lastItemId' => $lastItemId,
@@ -444,7 +310,7 @@ class ProfileController extends Controller
             $stateId = \Yii::$app->request->post('stateId');
             $cities = City::getList($stateId);
 
-            if($cities) {
+            if ($cities) {
                 return ['status' => 'success', 'cities' => $cities];
             }
 
@@ -465,7 +331,11 @@ class ProfileController extends Controller
     public function actionRegister($hash = '')
     {
         if (!\Yii::$app->siteUser->isGuest && $hash === '') {
-            return $this->redirect(['/profile']);
+            if (\Yii::$app->siteUser->identity->agreement_read) {
+                return $this->redirect(['/profile']);
+            }
+
+            return $this->redirect(['/rules']);
         }
 
         if (!\Yii::$app->mutex->acquire('multiple-registration')) {
@@ -556,8 +426,7 @@ class ProfileController extends Controller
                         DefNotification::TYPE_TEAM_USER_ACCEPTED, null,
                         ['team_member' => $user->getFullName(), 'created_at' => date('d-M-Y H:i:s')]);
                 }
-            }
-            else {
+            } else {
                 /** @var TeamSiteUser $existsInvitation */
                 $existsInvitation = TeamSiteUser::find()
                     ->alias('tsu')
@@ -569,7 +438,7 @@ class ProfileController extends Controller
                     ->andWhere(['t.status' => [DefTeam::STATUS_UNCONFIRMED, DefTeam::STATUS_ACTIVE]])
                     ->one();
 
-                if($existsInvitation) {
+                if ($existsInvitation) {
                     $existsInvitation->getDataInvitedUser();
                 }
             }
@@ -627,12 +496,10 @@ class ProfileController extends Controller
                 } else {
                     $this->flash('error', AppMsg::t('Щось пішло не так..'));
                 }
-            }
-            else {
+            } else {
                 $this->flash('error', AppMsg::t('Запрошення для користувача не існує'));
             }
-        }
-        else {
+        } else {
             $this->flash('error', AppMsg::t('Недостатньо параметрів'));
         }
 
@@ -649,8 +516,12 @@ class ProfileController extends Controller
             \Yii::$app->user->logout();
         }
 
-        if (!\Yii::$app->siteUser->isGuest && \Yii::$app->siteUser->identity->agreement_read) {
-            return $this->redirect(['/profile']);
+        if (!\Yii::$app->siteUser->isGuest) {
+            if (\Yii::$app->siteUser->identity->agreement_read) {
+                return $this->redirect(['/profile']);
+            }
+
+            return $this->redirect(['/rules']);
         }
 
         if (!\Yii::$app->mutex->acquire('multiple-login')) {
@@ -782,10 +653,8 @@ class ProfileController extends Controller
      */
     public function actionRules()
     {
-        $status = $this->checkUserStatus();
-
-        if ($status !== true) {
-            return $status;
+        if (\Yii::$app->siteUser->isGuest) {
+            return $this->redirect('/login');
         }
 
         \Yii::$app->seo->setTitle('Правила');

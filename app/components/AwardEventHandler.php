@@ -6,9 +6,9 @@ use app\components\events\AwardEvent;
 use app\models\Achievement;
 use app\models\Award;
 use app\models\definitions\DefAward;
-use app\models\definitions\DefUserAward;
+use app\models\definitions\DefEntityAward;
 use app\models\Level;
-use app\models\UserAward;
+use app\models\EntityAward;
 use Yii;
 
 /**
@@ -50,12 +50,12 @@ class AwardEventHandler
     protected function initParams()
     {
         if ($this->event->senderClassName === AchievementComponent::className()) {
-            $this->awards = Achievement::getListAwards($this->event->objectId);
-            $this->awardType = DefUserAward::TYPE_ACHIEVEMENT;
+            $this->awards = Achievement::getListAwards($this->event->objectId, $this->event->entityType);
+            $this->awardType = DefEntityAward::TYPE_ACHIEVEMENT;
         } elseif ($this->event->senderClassName === LevelComponent::className()) {
-            $this->awards = Level::getListAwards($this->event->objectId);
-            AchievementHelper::levelPassedUserNotification($this->event->objectId, $this->awards);
-            $this->awardType = DefUserAward::TYPE_LEVEL;
+            $this->awards = Level::getListAwards($this->event->objectId, $this->event->entityType);
+            AchievementHelper::levelPassedNotification($this->event->objectId, $this->awards, $this->event->entityType);
+            $this->awardType = DefEntityAward::TYPE_LEVEL;
         }
     }
 
@@ -70,8 +70,9 @@ class AwardEventHandler
             }
 
             try {
-                $awardLog = new UserAward();
-                $awardLog->site_user_id = $this->event->userId;
+                $awardLog = new EntityAward();
+                $awardLog->entity_id = $this->event->entityId;
+                $awardLog->entity_type = $this->event->entityType;
                 $awardLog->award_id = $award->id;
                 $awardLog->type = $this->awardType;
                 $awardLog->object_id = $this->event->objectId ?: null; //Id of element, after achievement which award was taken(DefLandingUserAward::listTypes)
@@ -92,7 +93,7 @@ class AwardEventHandler
     protected function giveExperience($award, $awardValue = null)
     {
         $value = $awardValue ?: $award->value;
-        LevelComponent::addUserExperience($this->event->userId, $value);
+        LevelComponent::addEntityExperience($this->event->entityId, $this->event->entityType, $value);
 
         return true;
     }

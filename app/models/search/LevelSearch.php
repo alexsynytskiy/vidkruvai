@@ -4,9 +4,11 @@ namespace app\models\search;
 
 use app\components\AppMsg;
 use app\components\traits\SortTrait;
+use app\models\definitions\DefEntityAchievement;
 use app\models\definitions\DefLevel;
 use app\models\Level;
 use app\models\SiteUser;
+use app\models\Team;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\Expression;
@@ -31,11 +33,11 @@ class LevelSearch extends Level
     /**
      * @var int
      */
-    public $site_user_id;
+    public $entity_id;
     /**
      * @var int
      */
-    public $user_level;
+    public $entity_level;
     /**
      * @var boolean
      */
@@ -49,8 +51,8 @@ class LevelSearch extends Level
         return [
             [['id', 'group_id', 'required_experience', 'base_level', 'num'], 'integer'],
             [[
-                'levelgroupName', 'created_at', 'site_user_id', 'filterLevelType',
-                'user_level', 'isAchieved', 'filterLevelCategory', 'archived',
+                'levelgroupName', 'created_at', 'entity_id', 'filterLevelType',
+                'entity_level', 'entity_type', 'isAchieved', 'filterLevelCategory', 'archived',
             ], 'safe'],
         ];
     }
@@ -96,12 +98,19 @@ class LevelSearch extends Level
                 WHEN l.num > :user_achieved THEN 1
                 END) as isAchieved',
                 [
-                    'user_achieved' => $this->user_level,
+                    'user_achieved' => $this->entity_level,
                 ]
-            ));
+            ))
+            ->andWhere(['l.entity_type' => $this->entity_type]);
 
-        /** @var SiteUser $user */
-        $user = SiteUser::findOne($this->site_user_id);
+        /** @var SiteUser|Team $entity */
+        $entity = null;
+
+        if($this->entity_type === DefEntityAchievement::ENTITY_USER) {
+            $entity = SiteUser::findOne($this->entity_id);
+        } elseif ($this->entity_type === DefEntityAchievement::ENTITY_TEAM) {
+            $entity = Team::findOne($this->entity_id);
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -116,11 +125,11 @@ class LevelSearch extends Level
 
         $query->andWhere(['l.archived' => parent::IS_NOT_ARCHIVED]);
 
-        if ($user) {
+        if ($entity) {
             if ($this->filterLevelType === DefLevel::STATUS_ACHIEVED) {
-                $query->andFilterWhere(['<=', 'num', $user->level_id]);
+                $query->andFilterWhere(['<=', 'num', $entity->level_id]);
             } elseif ($this->filterLevelType === DefLevel::STATUS_AVAILABLE) {
-                $query->andFilterWhere(['>', 'num', $user->level_id]);
+                $query->andFilterWhere(['>', 'num', $entity->level_id]);
             }
         }
 

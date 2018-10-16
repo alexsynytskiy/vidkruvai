@@ -25,5 +25,9 @@ class AwardEvent extends Event
     /**
      * @var int
      */
-    public $userId = null;
+    public $entityId = null;
+    /**
+     * @var string
+     */
+    public $entityType = null;
 }

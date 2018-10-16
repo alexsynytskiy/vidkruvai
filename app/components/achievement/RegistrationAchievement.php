@@ -3,6 +3,7 @@
 namespace app\components\achievement;
 
 use app\models\SiteUser;
+use app\models\Team;
 
 /**
  * Class RegistrationAchievement
@@ -19,9 +20,9 @@ class RegistrationAchievement extends BaseAchievementRule
      */
     public static function execute(array $params = [])
     {
-        /** @var SiteUser $user */
-        $user = SiteUser::findOne($params['userId']);
+        /** @var SiteUser|Team $entity */
+        $entity = self::getEntity($params['entityId'], $params['entityType']);
 
-        return $user ? 1 : 0;
+        return $entity ? 1 : 0;
     }
 }

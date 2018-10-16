@@ -16,10 +16,11 @@ if(!isset($model->awards) || count($model->awards) === 0) {
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
                 <div class="knob-block">
                     <input type="text" value="0" data-min="0" data-max="<?= Html::encode($model->required_experience) ?>" class="dial">
-                    <?php if($model->nextLevel): ?>
+                    <?php if($model->getNextLevel(\app\models\definitions\DefEntityAchievement::ENTITY_USER)): ?>
                         <div class="counter">
                             <?= AppMsg::t('<span>{amount}</span><span class="descr">досвіду</span>', [
-                                'amount' => Html::encode($model->nextLevel->required_experience - $model->required_experience),
+                                'amount' => Html::encode($model->getNextLevel(\app\models\definitions\DefEntityAchievement::ENTITY_USER)
+                                        ->required_experience - $model->required_experience),
                             ]); ?>
                         </div>
                     <?php else: ?>

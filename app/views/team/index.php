@@ -45,7 +45,7 @@ $user = \Yii::$app->siteUser->identity;
                                                 </a>
                                             <?php endif; ?>
                                         </div>
-                                        <div class="school"><?= $user->school ?></div>
+                                        <div class="school"><?= $user->school->getFullName() ?></div>
 
                                         <div class="black-panel mb-50 pb-20 pt-20-i personal-team">
                                             <div class="progress-block pt-0 mt-0">

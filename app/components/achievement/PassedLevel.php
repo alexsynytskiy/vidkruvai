@@ -3,6 +3,7 @@
 namespace app\components\achievement;
 
 use app\models\SiteUser;
+use app\models\Team;
 
 /**
  * Class PassedLevel
@@ -19,13 +20,13 @@ class PassedLevel extends BaseAchievementRule
      */
     public static function execute(array $params = [])
     {
-        /** @var SiteUser $user */
-        $user = SiteUser::findOne($params['userId']);
+        /** @var SiteUser|Team $entity */
+        $entity = self::getEntity($params['entityId'], $params['entityType']);
 
-        if ($user->level->num >= $params['required_steps']) {
+        if ($entity->level->num >= $params['required_steps']) {
             return $params['required_steps'];
         }
 
-        return $user->level->num;
+        return $entity->level->num;
     }
 }

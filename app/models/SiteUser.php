@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\components\AppMsg;
+use app\models\definitions\DefEntityAchievement;
 use app\models\definitions\DefSiteUser;
 use app\models\definitions\DefTeamSiteUser;
 use yii\base\NotSupportedException;
@@ -176,89 +177,6 @@ class SiteUser extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return array
-     */
-    public function getUserLevelInfo()
-    {
-        $result = [];
-
-        $result['currentLevel'] = $this->level->num;
-        $result['currentLevelExp'] = $this->level_experience;
-        $result['currentLevelGroup'] = $this->level->levelgroup->name;
-        $result['currentLevelGroupSlug'] = $this->level->levelgroup->slug;
-        $result['currentLevelMin'] = $this->total_experience - $this->level_experience;
-
-        if ($this->level->nextLevel) {
-            $result['currentLevelMaxExp'] = $this->level->nextLevel->required_experience;
-            $result['currentLevelMaxExpProfile'] = $this->level->nextLevel->required_experience -
-                $this->level->required_experience;
-            $result['currentLevelAward'] = $this->level->nextLevel->awards;
-        } else {
-            $result['currentLevelMaxExp'] = $this->total_experience;
-            $result['currentLevelMaxExpProfile'] = $this->total_experience;
-            $result['currentLevelExp'] = $this->total_experience;
-            $result['currentLevelAward'] = [];
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param SiteUser $user
-     *
-     * @return array
-     */
-    public static function getUserCredentials($user = null)
-    {
-        if ($user instanceof self) {
-            $result = [
-                'userPhoto' => $user->avatar,
-                'userName' => $user->name,
-                'userLevel' => $user->level->levelgroup->name,
-                'userLevelNum' => $user->level->num,
-                'levelGroupSlug' => $user->level->levelgroup->slug,
-                'id' => $user->id,
-            ];
-        } else {
-            $result = [
-                'name' => $user->username
-            ];
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param $id
-     *
-     * @return mixed
-     * @throws \yii\web\NotFoundHttpException
-     */
-    public static function getUserRenderingInfo($id)
-    {
-        $userId = \Yii::$app->siteUser->id;
-        $user = \Yii::$app->siteUser->identity;
-        $preview = false;
-
-        if ($id && $user->id !== $id) {
-            $user = self::findIdentity($id);
-            $userId = $id;
-
-            if (!$user) {
-                throw new NotFoundHttpException();
-            }
-
-            $preview = true;
-        }
-
-        $result['id'] = $userId;
-        $result['user'] = $user;
-        $result['preview'] = $preview;
-
-        return $result;
-    }
-
-    /**
      * @return string
      */
     public function getPasswordWithSalt()
@@ -398,18 +316,8 @@ class SiteUser extends ActiveRecord implements IdentityInterface
      */
     public function getLevel()
     {
-        return $this->hasOne(Level::className(), ['id' => 'level_id']);
-    }
-
-    /**
-     * @return array
-     */
-    public static function getRoles()
-    {
-        return [
-            self::ROLE_PARTICIPANT => 'Учасник',
-            self::ROLE_MENTOR => 'Ментор',
-        ];
+        return $this->hasOne(Level::className(), ['id' => 'level_id'])
+            ->andOnCondition(['entity_type' => DefEntityAchievement::ENTITY_USER]);
     }
 
     /**

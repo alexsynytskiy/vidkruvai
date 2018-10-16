@@ -5,9 +5,10 @@ namespace app\components;
 use app\components\events\AwardEvent;
 use app\models\Achievement;
 use app\models\definitions\DefAchievements;
-use app\models\definitions\DefUserAchievement;
+use app\models\definitions\DefEntityAchievement;
 use app\models\SiteUser;
-use app\models\UserAchievement;
+use app\models\EntityAchievement;
+use app\models\Team;
 use Yii;
 use yii\base\Component;
 use yii\db\Expression;
@@ -35,43 +36,56 @@ class AchievementComponent extends Component
 
     /**
      * @param       $achievementClass
-     * @param       $userId
+     * @param       $entityId
+     * @param       $entityType
      * @param array $params
      *
      * @return bool
      * @throws \Exception
      */
-    public static function isGoalAchieved($achievementClass, $userId, $params = [])
+    public static function isGoalAchieved($achievementClass, $entityId, $entityType, $params = [])
     {
         try {
-            /** @var SiteUser $user */
-            $user = SiteUser::find()->where(['id' => $userId])->one();
+            /** @var SiteUser|Team $entity */
+            $entity = null;
 
-            if (!$user) {
+            if($entityType === DefEntityAchievement::ENTITY_USER) {
+                $entity = SiteUser::find()->where(['id' => $entityId])->one();
+            }
+            elseif ($entityType === DefEntityAchievement::ENTITY_TEAM) {
+                $entity = Team::find()->where(['id' => $entityId])->one();
+            }
+
+            if (!$entity) {
                 return false;
             }
 
             /** @var Achievement $achievement */
-            $achievement = Achievement::getAchievementByClassNameAndUser($userId, $achievementClass);
+            $achievement = Achievement::getAchievementByClassNameAndEntity($entityId, $entityType, $achievementClass);
 
             if (!$achievement) {
                 return false;
             }
 
-            $userAchievement = UserAchievement::getUserAchievementByID($achievementClass, $achievement->id, $userId);
+            $entityAchievement = EntityAchievement::getEntityAchievementByID($achievementClass, $achievement->id,
+                $entityId, $entityType);
 
-            if ($userAchievement->is_first) {
+            if ($entityAchievement->is_first) {
                 static::$isLastAchievement = false;
 
                 return false;
             }
 
-            if ($userAchievement !== null && $userAchievement->done) {
+            if ($entityAchievement !== null && $entityAchievement->done) {
                 return false;
             }
 
-            if (!isset($params['userId'])) {
-                $params['userId'] = $userId;
+            if (!isset($params['entityId'])) {
+                $params['entityId'] = $entityId;
+            }
+
+            if (!isset($params['entityType'])) {
+                $params['entityType'] = $entityType;
             }
 
             if (!isset($params['required_steps'])) {
@@ -82,28 +96,26 @@ class AchievementComponent extends Component
 
             if ($preformedSteps === true) {
                 static::$isLastAchievement = true;
-                $userAchievement->updateAttributes(['performed_steps' => $achievement->required_steps]);
+                $entityAchievement->updateAttributes(['performed_steps' => $achievement->required_steps]);
 
                 /** @var Achievement $firstAchievement */
-                $firstAchievement = Achievement::getAchievementToIncrease($userId, $achievementClass, 'LEFT JOIN');
-                $firstUserAchievement = UserAchievement::getUserAchievementByID($achievementClass, $firstAchievement->id, $userId);
-                $firstUserAchievement->updateAttributes(['is_first' => 1]);
+                $firstAchievement = Achievement::getAchievementToIncrease($entityId, $entityType, $achievementClass, 'LEFT JOIN');
+                $firstEntityAchievement = EntityAchievement::getEntityAchievementByID($achievementClass, $firstAchievement->id, $entityId, $entityType);
+                $firstEntityAchievement->updateAttributes(['is_first' => 1]);
 
                 return true;
             }
 
-            $userAchievement->updateAttributes(['performed_steps' => $preformedSteps]);
+            $entityAchievement->updateAttributes(['performed_steps' => $preformedSteps]);
 
             if (array_key_exists('updateAchievementsGroup', $params) && $params['updateAchievementsGroup']) {
-                $achievementsToUpdate = Achievement::getAchievementsToUpdatePerformedSteps($achievementClass, $achievement->id);
+                $achievementsToUpdate = Achievement::getAchievementsToUpdatePerformedSteps($achievementClass, $achievement->id, $entityType);
 
                 /** @var Achievement $item */
                 foreach ($achievementsToUpdate as $item) {
-
-
-                    /** @var UserAchievement $userStatus */
-                    $userStatus = UserAchievement::getUserAchievementByID($item->class_name, $item->id, $userId);
-                    $userStatus->updateAttributes(['performed_steps' => $preformedSteps]);
+                    /** @var EntityAchievement $userStatus */
+                    $entityStatus = EntityAchievement::getEntityAchievementByID($item->class_name, $item->id, $entityId, $entityType);
+                    $entityStatus->updateAttributes(['performed_steps' => $preformedSteps]);
                 }
             }
 
@@ -115,34 +127,36 @@ class AchievementComponent extends Component
 
     /**
      * @param string $achievementClass
-     * @param int $userId
+     * @param int $entityId
+     * @param string $entityType
      *
      * @return bool
      * @throws \Exception
      */
-    public static function achieveByUser($achievementClass, $userId)
+    public static function achieveByUser($achievementClass, $entityId, $entityType)
     {
         try {
             /** @var Achievement $achievement */
-            $achievement = Achievement::getAchievementByClassNameAndUser($userId, $achievementClass);
+            $achievement = Achievement::getAchievementByClassNameAndEntity($entityId, $entityType, $achievementClass);
 
             if (!$achievement) {
                 return false;
             }
 
-            $userAchievement = UserAchievement::getUserAchievementByID($achievementClass, $achievement->id, $userId);
+            $entityAchievement = EntityAchievement::getEntityAchievementByID($achievementClass, $achievement->id, $entityId, $entityType);
 
-            $userAchievement->updateAttributes([
-                'done' => DefUserAchievement::IS_DONE,
+            $entityAchievement->updateAttributes([
+                'done' => DefEntityAchievement::IS_DONE,
                 'done_at' => new Expression('NOW()'),
             ]);
 
             $awardEvent = new AwardEvent;
-            $awardEvent->objectId = $userAchievement->achievement_id;
-            $awardEvent->userId = $userId;
+            $awardEvent->objectId = $entityAchievement->achievement_id;
+            $awardEvent->entityId = $entityId;
+            $awardEvent->entityType = $entityType;
             $awardEvent->senderClassName = static::className();
 
-            AchievementHelper::achievementPassedUserNotification($achievement);
+            AchievementHelper::achievementPassedNotification($achievement);
 
             static::onAchieved($awardEvent);
 

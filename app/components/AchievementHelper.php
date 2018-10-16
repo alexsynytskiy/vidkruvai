@@ -5,6 +5,7 @@ namespace app\components;
 use app\models\Achievement;
 use app\models\Award;
 use app\models\Category;
+use app\models\definitions\DefEntityAchievement;
 use app\models\Level;
 use Yii;
 use yii\db\Query;
@@ -46,13 +47,17 @@ class AchievementHelper
     /**
      * @param Achievement $achievement
      */
-    public static function achievementPassedUserNotification($achievement)
+    public static function achievementPassedNotification($achievement)
     {
-        $message = 'Вітаємо! Ви виконали досягнення {achievementName}';
-        $msgParams = ['achievementName' => Html::a(Html::encode($achievement->name), '/profile/achievements')];
+        $message = $achievement->entity_type === DefEntityAchievement::ENTITY_USER ?
+            'Вітаємо! Ви виконали досягнення {achievementName}' : 'Вітаємо! Команда виконала досягнення {achievementName}';
+        $msgParams = ['achievementName' => Html::a(Html::encode($achievement->name),
+            $achievement->entity_type === DefEntityAchievement::ENTITY_USER ? '/profile/achievements' : '/team/achievements')];
 
         if (count($achievement->awards) > 0) {
-            $message = 'Вітаємо! Ви виконали досягнення {achievementName} та отримали <span class="bold">{awards}</span>';
+            $message = $achievement->entity_type === DefEntityAchievement::ENTITY_USER ?
+                'Вітаємо! Ви виконали досягнення {achievementName} та отримали <span class="bold">{awards}</span>' :
+                'Вітаємо! Команда виконала досягнення {achievementName} та отримала <span class="bold">{awards}</span>';
             $awardsNames = '';
 
             foreach ($achievement->awards as $award) {
@@ -70,23 +75,27 @@ class AchievementHelper
     /**
      * @param int $levelId
      * @param Award[] $awards
+     * @param string $entityType
      */
-    public static function levelPassedUserNotification($levelId, $awards)
+    public static function levelPassedNotification($levelId, $awards, $entityType)
     {
         $levelNum = (new Query)
             ->select('l.num')
             ->from(Level::tableName() . ' l')
-            ->where(['id' => $levelId])
+            ->where(['id' => $levelId, 'entity_type' => $entityType])
             ->scalar();
 
-        $message = 'Ви перейшли на {levelLink}';
+        $message = $entityType === DefEntityAchievement::ENTITY_USER ? 'Ви перейшли на {levelLink}' :
+            'Команда перейшла на {levelLink}';
         $msgParams = [
             'levelLink' => Html::a(AppMsg::t('рівень {levelNum}', ['levelNum' => $levelNum]),
-                '/profile/levels', ['class' => 'bold']),
+                $entityType === DefEntityAchievement::ENTITY_USER ? '/profile/levels' : '/team/levels', ['class' => 'bold']),
         ];
 
         if (count($awards) > 0) {
-            $message = 'Ви перейшли на {levelLink} та отримали <span class="bold">{awards}</span>';
+            $message = $entityType === DefEntityAchievement::ENTITY_USER ?
+                'Ви перейшли на {levelLink} та отримали <span class="bold">{awards}</span>' :
+                'Команда перейшла на {levelLink} та отримала <span class="bold">{awards}</span>';
             $awardsNames = '';
 
             foreach ($awards as $award) {
@@ -105,10 +114,11 @@ class AchievementHelper
      * @param int $awardValue
      * @param int $current
      * @param string $class
+     * @param string $entityType
      *
      * @return array
      */
-    public static function getTransactionsDividedAward($awardValue, $current, $class)
+    public static function getTransactionsDividedAward($awardValue, $current, $class, $entityType)
     {
         $expected = $current + $awardValue;
 
@@ -118,6 +128,7 @@ class AchievementHelper
             ->where([
                 'a.archived' => Achievement::IS_NOT_ARCHIVED,
                 'a.class_name' => $class,
+                'entity_type' => $entityType,
             ])
             ->orderBy('a.required_steps ASC');
 
@@ -139,8 +150,9 @@ class AchievementHelper
 
         $achievements = array_merge($achievementsDone, $achievementsCurrent);
         $transactions = [];
+        $countAchievements = count($achievements);
 
-        for ($i = 0; $i < count($achievements); $i++) {
+        for ($i = 0; $i < $countAchievements; $i++) {
             if ($i === 0 && count($achievementsDone) > 0) {
                 $transactions[] = $achievements[$i] - $current;
                 $awardValue -= $achievements[$i] - $current;

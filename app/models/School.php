@@ -98,8 +98,8 @@ class School extends ActiveRecord
     public function getFullName()
     {
         return $this->city->state->name . ' обл, ' . $this->city->city . ' ' .
-            ($this->type ? $this->type->name : '') . ' ' .
-            ((int)$this->number > 0 || (int)$this->number <= 1000 ? '№' . $this->number : '') . ' ' .
+            ($this->type && $this->type_id !== 7 ? $this->type->name : '') . ' ' .
+            ($this->number && ((int)$this->number > 0 && (int)$this->number <= 1000) ? '№' . $this->number : '') . ' ' .
             $this->name;
     }
 }
