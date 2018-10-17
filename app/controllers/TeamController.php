@@ -121,12 +121,12 @@ class TeamController extends Controller
         $achievements = Achievement::getAchievementsInProgress($team->id, DefEntityAchievement::ENTITY_TEAM);
 
         if (count($achievements) < 3) {
-            $achievementsToStart = Achievement::getAchievementsToStart($team->id, 3 - count($achievements));
+            $achievementsToStart = Achievement::getAchievementsToStart($team->id, DefEntityAchievement::ENTITY_TEAM,3 - count($achievements));
             $achievements = array_merge($achievements, $achievementsToStart);
         }
 
         if (count($achievements) < 3) {
-            $achievementsFinished = Achievement::getAchievementsFinished($team->id, 3 - count($achievements));
+            $achievementsFinished = Achievement::getAchievementsFinished($team->id, DefEntityAchievement::ENTITY_TEAM,3 - count($achievements));
             $achievements = array_merge($achievementsFinished, $achievements);
         }
 

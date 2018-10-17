@@ -603,7 +603,8 @@ article {
     bottom: 24px;
 }
 
-.content-left-fixed .news-item .information a.short.read-more:hover {
+.content-left-fixed .news-item .information a.short.read-more:hover,
+.content-left-fixed .news-item .information .title a:hover {
     color: #3195FF;
     -webkit-transition: all ease 0.5s;
     -moz-transition: all ease 0.5s;

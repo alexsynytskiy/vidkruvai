@@ -8,7 +8,7 @@
     <div class="image" style="background: url(<?= $item->image ?>);background-size: cover;"></div>
     <div class="information">
         <div class="title">
-            <?= $item->title ?>
+            <a href="<?= \yii\helpers\Url::to(['/profile/news-item/' . $item->slug]) ?>"><?= $item->title ?></a>
         </div>
         <div class="short">
             <?= \yii\helpers\StringHelper::truncate($item->short, 150) ?>

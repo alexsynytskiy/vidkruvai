@@ -152,12 +152,12 @@ class ProfileController extends Controller
         $achievements = Achievement::getAchievementsInProgress($user->id, DefEntityAchievement::ENTITY_USER);
 
         if (count($achievements) < 3) {
-            $achievementsToStart = Achievement::getAchievementsToStart($user->id, 3 - count($achievements));
+            $achievementsToStart = Achievement::getAchievementsToStart($user->id, DefEntityAchievement::ENTITY_USER,3 - count($achievements));
             $achievements = array_merge($achievements, $achievementsToStart);
         }
 
         if (count($achievements) < 3) {
-            $achievementsFinished = Achievement::getAchievementsFinished($user->id, 3 - count($achievements));
+            $achievementsFinished = Achievement::getAchievementsFinished($user->id, DefEntityAchievement::ENTITY_USER,3 - count($achievements));
             $achievements = array_merge($achievementsFinished, $achievements);
         }
 
