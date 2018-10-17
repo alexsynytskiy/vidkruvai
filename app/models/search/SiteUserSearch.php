@@ -71,7 +71,7 @@ class SiteUserSearch extends SiteUser
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
+            'u.id' => $this->id,
             'school_id' => $this->school_id,
             'class' => $this->class,
             'role' => $this->role,
@@ -81,6 +81,7 @@ class SiteUserSearch extends SiteUser
 
         $query->andFilterWhere(['like', 'school.name', $this->school_id])
             ->andFilterWhere(['like', 'level.num', $this->level_id])
+            ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere([
                 'or',
                 ['like', 'u.surname', $this->name],

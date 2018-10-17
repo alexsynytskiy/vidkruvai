@@ -63,7 +63,7 @@ $asset = \yii\easyii\modules\siteusers\assets\SiteUserAsset::register($this);
 ?>
 
 <?= $this->render('_menu') ?>
-
+<br>
 <?php \yii\widgets\Pjax::begin(['timeout' => 5000, 'id' => 'site-users']); ?>
     <div class="form-group">
         <?= \yii\grid\GridView::widget([
