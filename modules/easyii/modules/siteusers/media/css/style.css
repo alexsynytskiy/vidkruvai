@@ -7,3 +7,7 @@
 .labels-text .col-md-6 .text-block {
     font-weight: normal;
 }
+
+.switcher.default .text {
+    color: transparent !important;
+}

@@ -85,7 +85,6 @@ $asset = \yii\easyii\modules\siteusers\assets\SiteUserAsset::register($this);
 
 <?php
 $pageOptions = \yii\helpers\Json::encode([
-    'mentorValue' => \app\models\SiteUser::ROLE_MENTOR,
 ]);
 
 $this->registerJs('SiteUserForm(' . $pageOptions . ')');

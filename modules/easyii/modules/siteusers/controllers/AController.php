@@ -2,9 +2,9 @@
 
 namespace yii\easyii\modules\siteusers\controllers;
 
+use app\models\search\SiteUserSearch;
 use app\models\SiteUser;
 use Yii;
-use yii\data\ActiveDataProvider;
 use yii\easyii\behaviors\StatusController;
 use yii\easyii\components\Controller;
 use yii\web\Response;
@@ -24,12 +24,13 @@ class AController extends Controller
 
     public function actionIndex()
     {
-        $data = new ActiveDataProvider([
-            'query' => SiteUser::find()->orderBy('created_at')
-        ]);
+        $searchModel = new SiteUserSearch();
+        $queryParams = \Yii::$app->request->queryParams;
+        $dataProvider = $searchModel->search($queryParams);
 
         return $this->render('index', [
-            'data' => $data,
+            'data' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
     }
 

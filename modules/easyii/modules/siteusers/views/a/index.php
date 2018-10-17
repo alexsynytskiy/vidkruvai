@@ -1,61 +1,83 @@
 <?php
 
 /* @var $this yii\web\View */
+
 /* @var $data yii\data\ActiveDataProvider */
 
-use yii\easyii\modules\news\models\News;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 $this->title = 'Users';
 
-$module = $this->context->module->id;
+$gridColumns = [
+    [
+        'attribute' => 'id',
+        'headerOptions' => ['style' => 'width:80px'],
+    ],
+    [
+        'attribute' => 'name',
+        'content' => function ($model) {
+            /** @var \app\models\SiteUser $model */
+            return $model->getFullName();
+        },
+    ],
+    'email',
+    [
+        'attribute' => 'role',
+        'content' => function ($model) {
+            return \app\models\definitions\DefSiteUser::getUserRoleText($model->role);
+        },
+        'filter' => \kartik\select2\Select2::widget([
+            'model' => $searchModel,
+            'attribute' => 'role',
+            'data' => \app\models\definitions\DefSiteUser::getListUserRoles(),
+            'language' => Yii::$app->language,
+            'options' => [
+                'placeholder' => \app\components\AppMsg::t('Все'),
+                'class' => 'reload-grid',
+            ],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]),
+    ],
+    [
+        'attribute' => 'school_id',
+        'content' => function ($model) {
+            return $model->school ? $model->school->getFullName() : '';
+        },
+    ],
+    [
+        'label' => 'Switch status',
+        'content' => function ($model) {
+            return Html::checkbox('', $model->status === \app\models\SiteUser::STATUS_ACTIVE, [
+                'class' => 'switch',
+                'data-id' => $model->primaryKey,
+                'data-link' => Url::to(['/admin/' . $this->context->module->id . '/a']),
+            ]);
+        },
+    ],
+];
+
+$asset = \yii\easyii\modules\siteusers\assets\SiteUserAsset::register($this);
 ?>
 
 <?= $this->render('_menu') ?>
 
-<?php if ($data->count > 0) : ?>
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <?php if (IS_ROOT) : ?>
-                <th width="50">#</th>
-            <?php endif; ?>
-            <th><?= Yii::t('easyii', 'Имя') ?></th>
-            <th><?= Yii::t('easyii', 'E-Mail') ?></th>
-            <th><?= Yii::t('easyii', 'Роль') ?></th>
-            <th><?= Yii::t('easyii', 'Школа') ?></th>
-            <th width="100"><?= Yii::t('easyii', 'Status') ?></th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($data->models as $item) : ?>
-            <tr data-id="<?= $item->primaryKey ?>">
-                <?php if (IS_ROOT) : ?>
-                    <td><?= $item->primaryKey ?></td>
-                <?php endif; ?>
-                <td>
-                    <a href="<?= Url::to(['/admin/' . $module . '/a/edit/', 'id' => $item->primaryKey]) ?>">
-                        <?= $item->getFullName() ?>
-                    </a>
-                </td>
-                <td><?= $item->email ?></td>
-                <td><?= \app\models\definitions\DefSiteUser::getUserRoleText($item->role) ?></td>
-                <td><?= $item->school ? $item->school->getFullName() : '' ?></td>
-                <td class="status">
-                    <?= Html::checkbox('', $item->status === \app\models\SiteUser::STATUS_ACTIVE, [
-                        'class' => 'switch',
-                        'data-id' => $item->primaryKey,
-                        'data-link' => Url::to(['/admin/' . $module . '/a']),
-                    ]) ?>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
-    <?= yii\widgets\LinkPager::widget([
-        'pagination' => $data->pagination
-    ]) ?>
-<?php else : ?>
-    <p><?= Yii::t('easyii', 'No records found') ?></p>
-<?php endif; ?>
+<?php \yii\widgets\Pjax::begin(['timeout' => 5000, 'id' => 'site-users']); ?>
+    <div class="form-group">
+        <?= \yii\grid\GridView::widget([
+            'dataProvider' => $data,
+            'filterModel' => $searchModel,
+            'columns' => $gridColumns,
+        ]);
+        ?>
+    </div>
+<?php \yii\widgets\Pjax::end(); ?>
+
+<?php
+$pageOptions = \yii\helpers\Json::encode([
+]);
+
+$this->registerJs('SiteUserForm(' . $pageOptions . ')');
+?>
