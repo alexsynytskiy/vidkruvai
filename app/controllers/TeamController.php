@@ -239,12 +239,6 @@ class TeamController extends Controller
         $model = new TeamCreateForm;
         $model->isNewRecord = false;
 
-
-//        $teamEvent = new TeamRegisteredEvent();
-//        $teamEvent->teamId = \Yii::$app->siteUser->identity->team->id;
-//        \Yii::$app->trigger(self::EVENT_TEAM_REGISTERED, $teamEvent);
-
-
         $model->setTeam(\Yii::$app->siteUser->identity->team);
 
         if ($model && $model->load(\Yii::$app->request->post())) {

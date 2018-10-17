@@ -10,7 +10,7 @@ $baseUrl = $asset->baseUrl;
 ?>
 
 <div class="steps-block profile clearfix">
-    <div class="cabinet update-profile">
+    <div class="cabinet profile update-profile">
         <article>
             <div class="sidebar-right-fixed">
                 <?= $this->render('/_blocks/profile-sidebar') ?>

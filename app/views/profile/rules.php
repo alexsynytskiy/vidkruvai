@@ -10,7 +10,7 @@ $roleMentor = Yii::$app->siteUser->identity->role === \app\models\SiteUser::ROLE
 ?>
 
     <div class="steps-block profile clearfix">
-        <div class="cabinet rules">
+        <div class="cabinet profile rules">
             <article>
                 <div class="sidebar-right-fixed">
                     <?= $this->render('/_blocks/profile-sidebar') ?>

@@ -106,10 +106,6 @@ class ProfileController extends Controller
             return $status;
         }
 
-//        $userEvent = new UserRegisteredEvent();
-//        $userEvent->userId = \Yii::$app->siteUser->id;
-//        \Yii::$app->trigger(self::EVENT_USER_REGISTERED, $userEvent);
-
         \Yii::$app->seo->setTitle('Профіль');
         \Yii::$app->seo->setDescription('Відкривай Україну');
         \Yii::$app->seo->setKeywords('Відкривай, Україну');

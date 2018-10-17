@@ -70,7 +70,7 @@ foreach ($dropDownFilter as $key => $item) {
 <?= Html::endForm() ?>
 
 <div class="steps-block profile clearfix">
-    <div class="cabinet achievements">
+    <div class="cabinet profile achievements">
         <article>
             <div class="sidebar-right-fixed">
                 <?= $this->render('/_blocks/profile-sidebar') ?>

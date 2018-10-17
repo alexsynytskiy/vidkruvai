@@ -983,25 +983,6 @@ span.bg-success,
     margin-bottom: 52px;
 }
 
-.content-left-fixed .profile-user-page .image {
-    display: block;
-    width: 100%;
-    height: 286px;
-    overflow: hidden;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    background: url(/app/media/img/create-team.png) no-repeat center;
-    background-size: 850px 286px;
-    margin-bottom: 32px;
-}
-
-.cabinet.create-team .content-left-fixed .image,
-.cabinet.profile.team .content-left-fixed .image {
-    background: url(/app/media/img/team.jpg) no-repeat center;
-    background-size: 850px 286px;
-    margin-bottom: 12px;
-}
-
 .profile-info-main .left-side {
     float: left;
     width: 214px;
