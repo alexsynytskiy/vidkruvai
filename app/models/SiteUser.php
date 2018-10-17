@@ -11,7 +11,6 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\web\IdentityInterface;
-use yii\web\NotFoundHttpException;
 
 /**
  * This is the model class for table "site_user".
@@ -109,7 +108,6 @@ class SiteUser extends ActiveRecord implements IdentityInterface
         if (parent::beforeSave($insert)) {
             if ($this->userPassword) {
                 $this->password = \Yii::$app->security->generatePasswordHash($this->passwordWithSalt);
-                $this->status = self::STATUS_UNCONFIRMED;
             }
 
             if ($insert) {
@@ -244,7 +242,8 @@ class SiteUser extends ActiveRecord implements IdentityInterface
         return md5($this->id . self::HASH_ID_SALT);
     }
 
-    public function getFullName() {
+    public function getFullName()
+    {
         return $this->name . ' ' . $this->surname;
     }
 
@@ -324,7 +323,8 @@ class SiteUser extends ActiveRecord implements IdentityInterface
     /**
      * @return bool
      */
-    public function isCaptain() {
+    public function isCaptain()
+    {
         return self::find()
             ->alias('su')
             ->innerJoin(TeamSiteUser::tableName() . ' tsu', 'tsu.site_user_id = su.id')

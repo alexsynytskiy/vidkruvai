@@ -139,7 +139,7 @@ class ProfileController extends Controller
      */
     public function renderUserProfilePage($user, $isPreview = false)
     {
-        $levelInfo = EntityHelper::getEntityLevelInfo( DefEntityAchievement::ENTITY_USER, $user->id);
+        $levelInfo = EntityHelper::getEntityLevelInfo(DefEntityAchievement::ENTITY_USER, $user->id);
 
         $previousLevels = [];
         $nextLevels = Level::getLevels($user->level_id, DefLevel::NEXT_LEVELS, DefEntityAchievement::ENTITY_USER);
