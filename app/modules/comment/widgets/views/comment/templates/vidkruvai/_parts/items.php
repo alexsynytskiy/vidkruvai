@@ -41,8 +41,8 @@ foreach ($comments as $comment):
                  data-tree-id="<?= Html::encode($comment->tree) ?>"
                  data-depth="<?= Html::encode($comment->depth) ?>">
                 <div class="left-side">
-                    <div class="avatar">
-                        <img class="" src="<?= $user->avatar ?: $baseUrl . '/img/default-avatar.png' ?>">
+                    <div class="image-cropper">
+                        <img class="avatar" src="<?= $user->avatar ?: $baseUrl . '/img/default-avatar-user.jpg' ?>">
                     </div>
                 </div>
                 <div class="right-side">

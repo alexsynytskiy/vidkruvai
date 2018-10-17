@@ -28,7 +28,9 @@ $user = Yii::$app->siteUser;
         <div class="row">
             <div class="col-lg-2 col-md-3 col-sm-3">
                 <div class="test-avatar">
-                    <img src="<?= $user->identity->avatar ?: $baseUrl . '/img/default-avatar.png' ?>" alt="avatar">
+                    <div class="image-cropper">
+                        <img src="<?= $user->identity->avatar ?: $baseUrl . '/img/default-avatar-user.jpg' ?>" alt="avatar">
+                    </div>
                     <div class="test-login"><?= $user->identity->getFullName() ?></div>
                 </div>
             </div>
