@@ -17,8 +17,10 @@ $confirmed = $member->status === DefTeamSiteUser::STATUS_CONFIRMED;
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
                 <div class="member-avatar">
-                    <img src="<?= $confirmed ? ($memberInstance->avatar ?: $baseUrl . '/img/default-avatar.png') :
-                        $baseUrl . '/img/default-avatar.png' ?>" class="avatar">
+                    <div class="image-cropper">
+                        <img src="<?= $confirmed ? ($memberInstance->avatar ?: $baseUrl . '/img/default-avatar-user.jpg') :
+                            $baseUrl . '/img/default-avatar-user.jpg' ?>" class="avatar">
+                    </div>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">

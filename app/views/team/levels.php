@@ -5,9 +5,9 @@ use \yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $data array */
-/* @var $userCredentials array */
-/* @var $userLevelExperience integer */
-/* @var $userCurrentLevel integer */
+/* @var $entityCredentials array */
+/* @var $entityLevelExperience integer */
+/* @var $entityCurrentLevel integer */
 /* @var $preview boolean */
 
 $asset = \app\assets\AppAsset::register($this);
@@ -16,7 +16,7 @@ $baseUrl = $asset->baseUrl;
 ?>
 
     <div class="steps-block profile clearfix">
-        <div class="cabinet">
+        <div class="cabinet profile team">
             <article>
                 <div class="sidebar-right-fixed">
                     <?= $this->render('/_blocks/profile-sidebar') ?>
@@ -29,7 +29,7 @@ $baseUrl = $asset->baseUrl;
                                 <div class="progress-top">
                                     <div class="progress-title level-title">
                                         <h3 class="levels-table-title">
-                                            <?= AppMsg::t('Список рівнів'); ?>
+                                            <?= AppMsg::t('Список рівнів команди'); ?>
                                         </h3>
                                     </div>
                                 </div>
@@ -50,7 +50,7 @@ $baseUrl = $asset->baseUrl;
                                         <tbody>
                                         <?php foreach($data as $level):
                                             /* @var $level \app\models\Level */ ?>
-                                            <tr class="<?= ($level->num === $userCurrentLevel) ? 'current-level' : '' ?>">
+                                            <tr class="<?= ($level->num === $entityCurrentLevel) ? 'current-level' : '' ?>">
                                                 <td class="col-lg-1 col-md-1" data-label="Рівень"><?= Html::encode($level->num) ?></td>
                                                 <td class="col-lg-2 col-md-2 <?= Html::encode($level->levelgroup->slug) ?>" data-label="Група">
                                                     <?= Html::encode($level->levelgroup->name) ?>
@@ -58,15 +58,15 @@ $baseUrl = $asset->baseUrl;
                                                 <td class="col-lg-2 col-md-2" data-label="Досвіду потрібно"><?= Html::encode($level->required_experience) ?></td>
 
                                                 <?php
-                                                    if($level->num < $userCurrentLevel) {
+                                                    if($level->num < $entityCurrentLevel) {
                                                         $done = '<i class="fa fa-check" style="font-size: 16px;"></i>';
-                                                    } elseif($level->num === $userCurrentLevel) {
+                                                    } elseif($level->num === $entityCurrentLevel) {
                                                         $percent = 100;
 
                                                         /** @var \app\models\Level $nextLevel */
                                                         if($nextLevel = $level->getNextLevel(\app\models\definitions\DefEntityAchievement::ENTITY_USER)) {
                                                             $percent = ($nextLevel->required_experience === 0) ? 0 :
-                                                                ($userLevelExperience / ($nextLevel->required_experience - $level->required_experience)) * 100;
+                                                                ($entityLevelExperience / ($nextLevel->required_experience - $level->required_experience)) * 100;
                                                         }
 
                                                         $done = Html::encode(round($percent, 2) . '%');

@@ -509,8 +509,7 @@ article {
 
 .steps-block.error,
 .steps-block.questions,
-.steps-block.contacts
-{
+.steps-block.contacts {
     max-width: 1028px;
     padding: 15px;
 }
@@ -695,11 +694,33 @@ article {
     color: #373737;
 }
 
-.cabinet-menu .profile-info img {
-    display: block;
-    margin: 0 auto 10px;
+.cabinet-menu .profile-info .image-cropper,
+.profile-info-main .left-side .image-cropper,
+.profile-team-preview .member-item .image-cropper {
+    width: 150px;
+    height: 150px;
+    position: relative;
+    overflow: hidden;
     border-radius: 50%;
-    max-width: 150px;
+    margin: 0 auto 10px;
+}
+
+.profile-team-preview .member-item .image-cropper {
+    width: 100px;
+    height: 100px;
+    position: relative;
+}
+
+.cabinet-menu .profile-info img,
+.profile-info-main .left-side img,
+.profile-team-preview .member-item img {
+    height: 100%;
+    width: auto;
+    max-height: 150px;
+}
+
+.profile-team-preview .member-item img {
+    max-height: 100px;
 }
 
 .cabinet-menu .profile-info .name {
@@ -984,12 +1005,6 @@ span.bg-success,
 .profile-info-main .left-side {
     float: left;
     width: 214px;
-}
-
-.profile-info-main .left-side img {
-    border-radius: 50%;
-    margin: 0 auto 16px;
-    max-width: 150px;
 }
 
 .profile-info-main .left-side .status, .profile-info .rating {
@@ -1345,6 +1360,7 @@ span.bg-success,
 
 .cabinet.profile .personal-team .progress-descr p {
     font-size: 12px;
+    line-height: 18px;
 }
 
 .cabinet.profile .personal-team .team-items .col-md-6 {

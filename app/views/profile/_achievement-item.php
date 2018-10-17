@@ -15,7 +15,7 @@ if (!isset($model->awards) || count($model->awards) === 0) {
 $stepsComplete = 0;
 
 /** @var \app\models\EntityAchievement $status */
-$status = $model->getUserAchievementStatus($userId ?: Yii::$app->siteUser->id)->one();
+$status = $model->getEntityAchievementStatus($userId ?: Yii::$app->siteUser->id, DefEntityAchievement::ENTITY_USER)->one();
 
 if ($status) {
     if ($status->done === DefEntityAchievement::IS_IN_PROGRESS) {

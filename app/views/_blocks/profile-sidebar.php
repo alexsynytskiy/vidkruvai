@@ -50,7 +50,9 @@ switch ($controller) {
         <?php if ($showUserInfo): ?>
             <a href="<?= Url::to('/profile') ?>">
                 <div class="profile-info">
-                    <img src="<?= $user->avatar ?: $baseUrl . '/img/default-avatar.png' ?>" class="avatar">
+                    <div class="image-cropper">
+                        <img src="<?= $user->avatar ?: $baseUrl . '/img/default-avatar-user.jpg' ?>" class="avatar">
+                    </div>
                     <div class="name"><?= $user->getFullName() ?></div>
                     <div class="school"><?= $user->school ? $user->school->getFullName() : '' ?></div>
                     <div class="rating"><?= $user->total_experience ?></div>

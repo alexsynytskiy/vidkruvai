@@ -1,7 +1,7 @@
 <?php
 /** @var $this yii\web\View */
 /** @var $searchModel \app\models\search\AchievementSearch */
-/** @var array $userCredentials */
+/** @var array $entityCredentials */
 /** @var boolean $preview */
 /** @var array $groups */
 /* @var string $status */
@@ -78,10 +78,10 @@ foreach ($dropDownFilter as $key => $item) {
                         <div class="progress-block">
                             <div class="progress-top">
                                 <div class="row">
-                                    <div class="col-lg-3 col-md-7 col-sm-7">
+                                    <div class="col-lg-4 col-md-7 col-sm-7">
                                         <div class="progress-title">
                                             <h3>
-                                                <?= AppMsg::t('Досягнення'); ?>
+                                                <?= AppMsg::t('Досягнення профілю'); ?>
                                             </h3>
                                         </div>
                                     </div>
@@ -153,7 +153,7 @@ foreach ($dropDownFilter as $key => $item) {
                                                 '_achievement-item',
                                                 [
                                                     'model' => $achievement,
-                                                    'userId' => $preview ? $userCredentials['id'] : null,
+                                                    'userId' => $preview ? $entityCredentials['id'] : null,
                                                 ]
                                             );
                                         }
@@ -166,14 +166,14 @@ foreach ($dropDownFilter as $key => $item) {
                                                     '_achievement-item',
                                                     [
                                                         'model' => $achievement,
-                                                        'userId' => $preview ? $userCredentials['id'] : null,
+                                                        'userId' => $preview ? $entityCredentials['id'] : null,
                                                     ]
                                                 );
                                             }
                                             echo '</div><div class="col-lg-12"><div class="progress-block pt-0 mt-0">';
 
-                                            echo \yii\helpers\Html::a(AppMsg::t('Показать все'),
-                                                ["#"],
+                                            echo \yii\helpers\Html::a(AppMsg::t('Показати всі'),
+                                                ['#'],
                                                 [
                                                     'class' => 'button mt-0 show-full-group',
                                                     'id' => $data[0],

@@ -3,7 +3,7 @@
 /* @var $searchModel \app\models\search\AchievementSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $topInfo array */
-/* @var array $userCredentials */
+/* @var array $entityCredentials */
 /* @var boolean $preview */
 /* @var string $status */
 
@@ -70,7 +70,7 @@ foreach ($dropDownFilter as $key => $item) {
 <?= Html::endForm() ?>
 
 <div class="steps-block profile clearfix">
-    <div class="cabinet achievements">
+    <div class="cabinet profile team achievements">
         <article>
             <div class="sidebar-right-fixed">
                 <?= $this->render('/_blocks/profile-sidebar') ?>
@@ -83,10 +83,10 @@ foreach ($dropDownFilter as $key => $item) {
                         <div class="progress-block">
                             <div class="progress-top">
                                 <div class="row">
-                                    <div class="col-lg-3 col-md-7 col-sm-7">
+                                    <div class="col-lg-4 col-md-7 col-sm-7">
                                         <div class="progress-title">
                                             <h3>
-                                                <?= AppMsg::t('Досягнення'); ?>
+                                                <?= AppMsg::t('Досягнення команди'); ?>
                                             </h3>
                                         </div>
                                     </div>
@@ -152,11 +152,11 @@ foreach ($dropDownFilter as $key => $item) {
                                         'dataProvider' => $dataProvider,
                                         'emptyText' => $this->render('_empty-item', ['msg' => AppMsg::t('Досягнень немає')]),
                                         'summary' => '',
-                                        'itemView' => function ($model, $key, $index, $widget) use ($preview, $userCredentials) {
+                                        'itemView' => function ($model, $key, $index, $widget) use ($preview, $entityCredentials) {
                                             return $this->render('_achievement-item',
                                                 [
                                                     'model' => $model,
-                                                    'userId' => $preview ? $userCredentials['id'] : null,
+                                                    'teamId' => $preview ? $entityCredentials['id'] : null,
                                                 ]);
                                         },
                                         'itemOptions' => [

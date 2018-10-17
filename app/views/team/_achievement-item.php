@@ -1,7 +1,7 @@
 <?php
 /** @var \app\models\Achievement $model */
 
-/** @var integer $userId */
+/** @var integer $teamId */
 
 use app\components\AppMsg;
 use app\models\definitions\DefEntityAchievement;
@@ -15,7 +15,7 @@ if (!isset($model->awards) || count($model->awards) === 0) {
 $stepsComplete = 0;
 
 /** @var \app\models\EntityAchievement $status */
-$status = $model->getUserAchievementStatus($userId ?: Yii::$app->siteUser->id)->one();
+$status = $model->getEntityAchievementStatus($teamId ?: Yii::$app->siteUser->identity->team->id, DefEntityAchievement::ENTITY_TEAM)->one();
 
 if ($status) {
     if ($status->done === DefEntityAchievement::IS_IN_PROGRESS) {

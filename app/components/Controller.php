@@ -246,10 +246,6 @@ class Controller extends \yii\web\Controller
             return $status;
         }
 
-        \Yii::$app->seo->setTitle('Рівні');
-        \Yii::$app->seo->setDescription('Відкривай Україну');
-        \Yii::$app->seo->setKeywords('Відкривай, Україну');
-
         $entityInfo = EntityHelper::getEntityRenderingInfo($id, self::$entityType);
 
         $searchModel = new LevelSearch();
@@ -263,13 +259,13 @@ class Controller extends \yii\web\Controller
 
         $data = [
             'data' => $dataProvider->getModels(),
-            'userCredentials' => EntityHelper::getEntityCredentials(self::$entityType, $entityInfo['id']),
-            'userLevelExperience' => $entityInfo['entity']->level_experience,
-            'userCurrentLevel' => $entityInfo['entity']->level->num,
+            'entityCredentials' => EntityHelper::getEntityCredentials(self::$entityType, $entityInfo['id']),
+            'entityLevelExperience' => $entityInfo['entity']->level_experience,
+            'entityCurrentLevel' => $entityInfo['entity']->level->num,
             'preview' => $entityInfo['preview'],
         ];
 
-        return $this->render('/_blocks/levels', $data);
+        return $this->render('levels', $data);
     }
 
     /**
@@ -285,10 +281,6 @@ class Controller extends \yii\web\Controller
             return $statusUser;
         }
 
-        \Yii::$app->seo->setTitle('Досягнення');
-        \Yii::$app->seo->setDescription('Відкривай Україну');
-        \Yii::$app->seo->setKeywords('Відкривай, Україну');
-
         $entityInfo = EntityHelper::getEntityRenderingInfo($id, self::$entityType);
 
         $searchModel = new AchievementSearch();
@@ -301,7 +293,7 @@ class Controller extends \yii\web\Controller
 
         $data = [
             'searchModel' => $searchModel,
-            'userCredentials' => EntityHelper::getEntityCredentials(self::$entityType, $entityInfo['id']),
+            'entityCredentials' => EntityHelper::getEntityCredentials(self::$entityType, $entityInfo['id']),
             'preview' => $entityInfo['preview'],
             'status' => array_key_exists('filterAchievementType', $queryParams['AchievementSearch']) ?
                 $queryParams['AchievementSearch']['filterAchievementType'] : null
@@ -340,7 +332,9 @@ class Controller extends \yii\web\Controller
                 if ($groupElements > 3) {
                     for ($i = 0; $i < $groupElements; $i++) {
                         /** @var EntityAchievement $status */
-                        $status = $group[$i]->getUserAchievementStatus($id ?: \Yii::$app->siteUser->id)->one();
+                        $status = $group[$i]->getEntityAchievementStatus($id ?:
+                            (self::$entityType === DefEntityAchievement::ENTITY_USER ? \Yii::$app->siteUser->id : \Yii::$app->siteUser->identity->team->id),
+                            self::$entityType)->one();
 
                         if ($status) {
                             if ($status->done === DefEntityAchievement::IS_IN_PROGRESS) {
@@ -389,6 +383,6 @@ class Controller extends \yii\web\Controller
 
         $data = array_merge($data, ['dataProvider' => $dataProvider]);
 
-        return $this->render('/achievements', $data);
+        return $this->render('achievements', $data);
     }
 }

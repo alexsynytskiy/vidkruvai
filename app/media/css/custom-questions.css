@@ -796,6 +796,16 @@ a {
     background-size: 480px 480px;
 }
 
+.login .block-right {
+    background: url(/app/media/img/login.jpg) no-repeat center;
+    background-size: 480px 480px;
+}
+
+.login.register .block-right {
+    background: url(/app/media/img/register.jpg) no-repeat center;
+    background-size: 480px 480px;
+}
+
 .social-items {
     padding: 20px;
     border-radius: 10px;

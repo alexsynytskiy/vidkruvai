@@ -136,22 +136,24 @@ class Achievement extends ActiveRecord
     }
 
     /**
-     * @param int $userId
+     * @param int $entityId
+     * @param string $entityType
      * @return \yii\db\ActiveQuery
      */
-    public function getUserAchievementStatus($userId)
+    public function getEntityAchievementStatus($entityId, $entityType)
     {
         return $this->hasOne(EntityAchievement::className(), ['achievement_id' => 'id'])
-            ->andOnCondition(['entity_type' => DefEntityAchievement::ENTITY_USER, 'entity_id' => $userId]);
+            ->andOnCondition(['entity_type' => $entityType, 'entity_id' => $entityId]);
     }
 
     /**
+     * @param string $entityType
      * @return \yii\db\ActiveQuery
      */
-    public function getUserAchievements()
+    public function getEntityAchievements($entityType)
     {
         return $this->hasMany(EntityAchievement::className(), ['achievement_id' => 'id'])
-            ->andOnCondition(['entity_type' => DefEntityAchievement::ENTITY_USER]);
+            ->andOnCondition(['entity_type' => $entityType]);
     }
 
     /**

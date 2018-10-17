@@ -71,6 +71,11 @@ class ProfileController extends Controller
     public function actionLevels($id = null)
     {
         parent::initMode(DefEntityAchievement::ENTITY_USER);
+
+        \Yii::$app->seo->setTitle('Рівні профілю');
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('Відкривай, Україну');
+
         return parent::actionLevels($id);
     }
 
@@ -82,6 +87,11 @@ class ProfileController extends Controller
     public function actionAchievements($id = null)
     {
         parent::initMode(DefEntityAchievement::ENTITY_USER);
+
+        \Yii::$app->seo->setTitle('Досягнення профілю');
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('Відкривай, Україну');
+
         return parent::actionAchievements($id);
     }
 

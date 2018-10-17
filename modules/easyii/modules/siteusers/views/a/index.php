@@ -18,7 +18,10 @@ $gridColumns = [
         'attribute' => 'name',
         'content' => function ($model) {
             /** @var \app\models\SiteUser $model */
-            return $model->getFullName();
+            return Html::a($model->getFullName(), Url::to(['/admin/' . $this->context->module->id . '/a/edit/', 'id' => $model->primaryKey]), [
+                'data' => [
+                    'pjax' => 0,
+                ],]);
         },
     ],
     'email',
@@ -63,7 +66,7 @@ $asset = \yii\easyii\modules\siteusers\assets\SiteUserAsset::register($this);
 ?>
 
 <?= $this->render('_menu') ?>
-<br>
+    <br>
 <?php \yii\widgets\Pjax::begin(['timeout' => 5000, 'id' => 'site-users']); ?>
     <div class="form-group">
         <?= \yii\grid\GridView::widget([

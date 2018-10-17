@@ -12,7 +12,7 @@ use \app\models\definitions\DefTeam;
 /* @var $previousLevels array */
 /* @var $nextLevels array */
 /* @var $preview boolean */
-/* @var array $userCredentials */
+/* @var array $entityCredentials */
 
 $asset = \app\assets\AppAsset::register($this);
 
@@ -34,7 +34,9 @@ $user = \Yii::$app->siteUser->identity;
                         <div class="profile-info-main clearfix">
                             <div class="profile-personal-preview clearfix">
                                 <div class="left-side">
-                                    <img src="<?= $user->avatar ?: $baseUrl . '/img/default-avatar.png' ?>" class="avatar">
+                                    <div class="image-cropper">
+                                        <img src="<?= $user->avatar ?: $baseUrl . '/img/default-avatar-user.jpg' ?>" class="avatar">
+                                    </div>
                                     <div class="status"><?= $user->total_experience ?></div>
                                 </div>
                                 <div class="right-side">
@@ -105,7 +107,7 @@ $user = \Yii::$app->siteUser->identity;
                                                     <div class="row">
                                                         <div class="col-lg-12">
                                                             <?= Html::a(AppMsg::t('Всі рівні'),
-                                                                [$preview ? "/profile/{$userCredentials['id']}/levels" : '/profile/levels'],
+                                                                [$preview ? "/profile/{$entityCredentials['id']}/levels" : '/profile/levels'],
                                                                 [
                                                                     'class' => 'button m-0-auto-i',
                                                                 ]) ?>
@@ -136,14 +138,14 @@ $user = \Yii::$app->siteUser->identity;
                                                         <?php foreach ($achievements as $achievement): ?>
                                                             <?= $this->render('_achievement-item', [
                                                                 'model' => $achievement,
-                                                                'userId' => $preview ? $userCredentials['id'] : Yii::$app->siteUser->id,
+                                                                'userId' => $preview ? $entityCredentials['id'] : Yii::$app->siteUser->id,
                                                             ]) ?>
                                                         <?php endforeach; ?>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-lg-12">
                                                             <?= \yii\helpers\Html::a(AppMsg::t('Всі досягнення'),
-                                                                [$preview ? "/profile/{$userCredentials['id']}/achievements" : '/profile/achievements'],
+                                                                [$preview ? "/profile/{$entityCredentials['id']}/achievements" : '/profile/achievements'],
                                                                 [
                                                                     'class' => 'button mt-0',
                                                                 ]) ?>

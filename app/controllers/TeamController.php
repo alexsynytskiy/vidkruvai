@@ -5,10 +5,15 @@ namespace app\controllers;
 use app\components\AppMsg;
 use app\components\Controller;
 use app\components\events\TeamRegisteredEvent;
+use app\components\helpers\EntityHelper;
 use app\components\TeamRegisteredEventHandler;
+use app\models\Achievement;
 use app\models\definitions\DefEntityAchievement;
+use app\models\definitions\DefLevel;
 use app\models\definitions\DefNotification;
 use app\models\forms\TeamCreateForm;
+use app\models\Level;
+use app\models\Team;
 use yii\easyii\helpers\Image;
 use yii\web\BadRequestHttpException;
 use yii\web\Response;
@@ -53,6 +58,11 @@ class TeamController extends Controller
     public function actionLevels($id = null)
     {
         parent::initMode(DefEntityAchievement::ENTITY_TEAM);
+
+        \Yii::$app->seo->setTitle('Рівні команди');
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('Відкривай, Україну');
+
         return parent::actionLevels($id);
     }
 
@@ -64,6 +74,11 @@ class TeamController extends Controller
     public function actionAchievements($id = null)
     {
         parent::initMode(DefEntityAchievement::ENTITY_TEAM);
+
+        \Yii::$app->seo->setTitle('Досягнення команди');
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('Відкривай, Україну');
+
         return parent::actionAchievements($id);
     }
 
@@ -82,7 +97,50 @@ class TeamController extends Controller
         \Yii::$app->seo->setDescription('Відкривай Україну');
         \Yii::$app->seo->setKeywords('Відкривай, Україну');
 
-        return $this->render('index');
+        return $this->renderTeamProfilePage(\Yii::$app->siteUser->identity->team);
+    }
+
+    /**
+     * @param Team $team
+     * @param bool $isPreview
+     *
+     * @return string
+     */
+    public function renderTeamProfilePage($team, $isPreview = false)
+    {
+        $levelInfo = EntityHelper::getEntityLevelInfo( DefEntityAchievement::ENTITY_TEAM, $team->id);
+
+        $previousLevels = [];
+        $nextLevels = Level::getLevels($team->level_id, DefLevel::NEXT_LEVELS, DefEntityAchievement::ENTITY_TEAM);
+
+        if (count($nextLevels) < 2) {
+            $previousLevels = Level::getLevels($team->level_id, DefLevel::PREVIOUS_LEVELS, DefEntityAchievement::ENTITY_TEAM,
+                2 - count($nextLevels));
+        }
+
+        $achievements = Achievement::getAchievementsInProgress($team->id, DefEntityAchievement::ENTITY_TEAM);
+
+        if (count($achievements) < 3) {
+            $achievementsToStart = Achievement::getAchievementsToStart($team->id, 3 - count($achievements));
+            $achievements = array_merge($achievements, $achievementsToStart);
+        }
+
+        if (count($achievements) < 3) {
+            $achievementsFinished = Achievement::getAchievementsFinished($team->id, 3 - count($achievements));
+            $achievements = array_merge($achievementsFinished, $achievements);
+        }
+
+        return $this->render('index',
+            [
+                'showTeamInfo' => false,
+                'preview' => $isPreview,
+                'achievements' => $achievements,
+                'levelInfo' => $levelInfo,
+                'previousLevels' => $previousLevels,
+                'nextLevels' => $nextLevels,
+                'teamCredentials' => EntityHelper::getEntityCredentials(DefEntityAchievement::ENTITY_TEAM, $team->id)
+            ]
+        );
     }
 
     /**

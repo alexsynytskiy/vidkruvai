@@ -8,7 +8,7 @@ use yii\helpers\Html;
 $asset = \app\assets\AppAsset::register($this);
 ?>
 
-    <div class="steps-block login clearfix">
+    <div class="steps-block login register clearfix">
         <div class="block-left">
             <div class="step-title"><?= \app\components\AppMsg::t('Реєстрація на проект') ?></div>
             <div class="step-subtitle">
