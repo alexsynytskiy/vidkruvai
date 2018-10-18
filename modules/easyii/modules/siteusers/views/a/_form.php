@@ -67,7 +67,7 @@ $asset = \yii\easyii\modules\siteusers\assets\SiteUserAsset::register($this);
     </div>
     <div class="col-md-6">
         Уровень
-        <div class="text-block"><?= 'Група ' . $model->level->levelgroup->name . ', Номер ' .
+        <div class="text-block"><?= 'Група ' . $model->level->levelgroup->name . ', Уровень ' .
             $model->level->num ?></div>
     </div>
     <div class="col-md-6">
@@ -78,7 +78,8 @@ $asset = \yii\easyii\modules\siteusers\assets\SiteUserAsset::register($this);
         Опыта всего
         <div class="text-block"><?= $model->total_experience ?></div>
     </div>
-    <br>
+</div>
+<br>
 
 <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-primary']) ?>
 <?php ActiveForm::end(); ?>

@@ -25,6 +25,8 @@ use yii\helpers\Url;
  * @property string $updated_at
  *
  * @property TeamSiteUser[] $teamUsers
+ * @property School $school
+ * @property Level $level
  *
  * @package app\models
  */
@@ -106,6 +108,13 @@ class Team extends ActiveRecord
             ->innerJoin(TeamSiteUser::tableName() . ' tsu', 'tsu.site_user_id = su.id')
             ->where(['tsu.team_id' => $this->id, 'tsu.role' => DefTeamSiteUser::ROLE_CAPTAIN])
             ->one();
+    }
+
+    /**
+     * @return array|null|School|string
+     */
+    public function getSchool() {
+        return $this->teamCaptain() ? $this->teamCaptain()->school : '';
     }
 
     /**
