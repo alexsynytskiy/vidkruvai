@@ -37,7 +37,8 @@ const Comment = function (options) {
 
                         $('#treeReload').replaceWith(response.items);
 
-                        SiteCore.windowSize();
+                        var screenW = $(document).width();
+                        SiteCore.windowSize(screenW);
                     }
                 }
             }
@@ -101,7 +102,7 @@ const Comment = function (options) {
             $.post(
                 pageOptions.loadMoreUrl,
                 {
-                    template: template, treeId: treeId, _csrf: LandingCore.getCsrfToken()
+                    template: template, treeId: treeId, _csrf: SiteCore.getCsrfToken()
                 },
                 function (response) {
                     if (typeof response.ids !== 'undefined') {
@@ -113,8 +114,6 @@ const Comment = function (options) {
                         if (idsSelectors.length) {
                             $(idsSelectors.join(', ')).remove();
                         }
-
-                        SiteCore.windowSize();
                     }
 
                     if (typeof response.items !== 'undefined') {
@@ -133,6 +132,9 @@ const Comment = function (options) {
                     else {
                         $loadMore.remove();
                     }
+
+                    var screenW = $(document).width();
+                    SiteCore.windowSize(screenW);
                 }, 'json');
 
             $loadMore.blur();
@@ -164,8 +166,6 @@ const Comment = function (options) {
                 value: replyId
             }));
 
-            SiteCore.windowSize();
-
             for (var i in formData.attributes) {
                 var attribute = formData.attributes[i];
 
@@ -182,6 +182,9 @@ const Comment = function (options) {
             $('#' + newFormId).yiiActiveForm(validationAttributes, {
                 "validationUrl": pageOptions.validationUrl
             });
+
+            var screenW = $(document).width();
+            SiteCore.windowSize(screenW);
         })
         .on('click', '.reply-form .cancel-reply', function (e) {
             e.preventDefault();
@@ -196,7 +199,9 @@ const Comment = function (options) {
 
             $(this).closest(replyFormSelector).css('display', 'none');
             $(this).closest(replyFormSelector).html('');
-            SiteCore.windowSize();
+
+            var screenW = $(document).width();
+            SiteCore.windowSize(screenW);
         })
         .on('click', '.rating-btn', function (e) {
             e.preventDefault();

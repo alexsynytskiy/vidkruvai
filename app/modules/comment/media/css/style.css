@@ -171,10 +171,18 @@ a.first-level-group, .first-level-group {
     -webkit-border-radius: 3px;
     border-radius: 3px;
     border: none;
-    font-size: 19px;
+    font-size: 17px;
     font-family: "Lato", sans-serif;
-    padding: 30px 0;
-    margin-top: 20px;
+    background: none;
+    color: #007BFF;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
+}
+
+#testimonials-section .more-testimonials:hover {
+    color: #308ef3;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
 }
 
 #testimonials-section .testimonials-item .right-side .bottom-panel .edit-buttons .date {
@@ -289,7 +297,7 @@ a.first-level-group, .first-level-group {
     position: absolute;
     bottom: -28px;
     left: 0;
-    width: 100%;
+    min-width: 100px;
     color: #373737;
     font-family: "Lato", sans-serif;
     line-height: 1.2;

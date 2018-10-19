@@ -1721,6 +1721,14 @@ span.bg-success,
     width: 100%;
 }
 
+.navbar-inverse .navbar-nav > li > a.donate {
+    color: #FF6B00;
+}
+
+.navbar-inverse .navbar-nav > li > a.donate:hover {
+    color: #f5cb47;
+}
+
 @media (max-width: 1199px) {
 
 }

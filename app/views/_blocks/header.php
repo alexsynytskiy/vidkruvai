@@ -54,6 +54,11 @@ switch ($controller) {
                         Блог
                     </a>
                 </li> -->
+                <li>
+                    <a class="donate" target="_blank" href="https://coukraine.org/donate">
+                        Підтримайте проект
+                    </a>
+                </li>
                 <li class="<?= $contact ?>">
                     <a href="<?= Url::to(['/contacts']) ?>">
                         Контакти

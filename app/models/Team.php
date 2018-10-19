@@ -92,7 +92,7 @@ class Team extends ActiveRecord
             [
                 'captainName' => $captain->getFullName(),
                 'link' => Url::to([
-                    '/admin/team/a/view',
+                    '/admin/teams/a/edit',
                     'id' => $this->primaryKey
                 ], true),
             ]
