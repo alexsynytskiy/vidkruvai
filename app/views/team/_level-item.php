@@ -13,7 +13,7 @@ if(!isset($model->awards) || count($model->awards) === 0) {
 <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
     <div class="progress-item">
         <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-4 text-center">
                 <div class="knob-block">
                     <input type="text" value="0" data-min="0" data-max="<?= Html::encode($model->required_experience) ?>" class="dial">
                     <?php if($model->getNextLevel(\app\models\definitions\DefEntityAchievement::ENTITY_TEAM)): ?>
@@ -30,7 +30,7 @@ if(!isset($model->awards) || count($model->awards) === 0) {
                     <?php endif; ?>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-8">
                 <div class="progress-descr <?= $awardEmpty ?>">
                     <h5><?= AppMsg::t('{num}-й рівень', [
                             'num' => Html::encode($model->num),

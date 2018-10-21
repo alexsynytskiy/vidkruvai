@@ -42,11 +42,17 @@
 #testimonials-section .testimonials-item .left-side .avatar {
     text-align: center;
     width: 90px;
-    height: 90px;
+    min-height: 90px;
     position: relative;
     overflow: hidden;
-    border-radius: 50%;
     margin: 0 auto;
+}
+
+#testimonials-section .testimonials-item .left-side .image-cropper {
+    height: 90px;
+    width: 90px;
+    overflow: hidden;
+    border-radius: 50%;
 }
 
 #testimonials-section .testimonials-item .left-side .avatar img {
@@ -427,4 +433,56 @@ a.first-level-group, .first-level-group {
 
 .testimonials-list li.p-295.first-reply:before {
     left: 313px;
+}
+
+
+@media (max-width: 991px) {
+    #testimonials-section .add-testimonials .button {
+        padding: 15px 10px;
+    }
+
+    .input-comment-text {
+        float: right !important;
+    }
+
+    .testimonials-list li {
+        position: relative;
+        padding-left: 0 !important;
+    }
+
+    .testimonials-list li.first-reply:before {
+        display: none;
+    }
+
+    #testimonials-section .testimonials-item .right-side .info-block {
+        padding: 0;
+    }
+
+    #testimonials-section .testimonials-item .left-side {
+        padding: 30px 0;
+    }
+
+    #testimonials-section .testimonials-item .right-side .user-login {
+        margin-bottom: 105px;
+    }
+
+    #testimonials-section .testimonials-item .right-side {
+        padding: 0;
+    }
+
+    #comment-list .comment-wrapper {
+        margin-bottom: 20px !important;
+    }
+
+    .news-item #comments-section .section-title {
+        padding-left: 8px;
+    }
+
+    #testimonials-section {
+        padding: 0 8px;
+    }
+
+    #testimonials-section .add-testimonials {
+        padding: 0 0 16px 0;
+    }
 }

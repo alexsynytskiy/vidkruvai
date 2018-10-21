@@ -106,7 +106,7 @@ $user = \Yii::$app->siteUser->identity;
                                                                         <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                                                                             <div class="progress-item">
                                                                                 <div class="row">
-                                                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+                                                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-4 text-center">
                                                                                         <div class="knob-block">
                                                                                             <input type="text"
                                                                                                    value="<?= $levelInfo['currentLevelExp'] ?>"
@@ -121,7 +121,7 @@ $user = \Yii::$app->siteUser->identity;
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-8">
                                                                                         <div class="progress-descr <?= isset($levelInfo['currentLevelAward'][0]) ? '' : 'empty' ?>">
                                                                                             <h5><?= AppMsg::t('{num}-й рівень', ['num' => $levelInfo['currentLevel']]); ?></h5>
                                                                                             <?php if (isset($levelInfo['currentLevelAward'][0]) && $levelInfo['currentLevelAward'][0]->name): ?>

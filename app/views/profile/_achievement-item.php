@@ -30,7 +30,7 @@ if ($status) {
 <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
     <div class="progress-item">
         <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-4 text-center">
                 <div class="knob-block">
                     <input type="text" value="<?= Html::encode($stepsComplete) ?>" data-min="0"
                            data-max="<?= Html::encode($model->required_steps) ?>" class="dial">
@@ -39,7 +39,7 @@ if ($status) {
                             '<span> / ' . Html::encode($model->required_steps) . '</span>' ?></div>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-8">
                 <div class="progress-descr <?= $awardEmpty ?>">
                     <h5><?= Html::encode($model->name) ?></h5>
                     <?php if (null === $awardEmpty): ?>

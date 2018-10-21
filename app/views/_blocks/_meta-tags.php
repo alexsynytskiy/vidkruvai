@@ -15,3 +15,13 @@
 <link rel="shortcut icon" href="<?= $asset->baseUrl ?>/img/favicon.png" type="image/x-icon">
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpVcxjCQWKJb952npbOD5hGSo8qyJ5UTE"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-127132032-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-127132032-1');
+</script>

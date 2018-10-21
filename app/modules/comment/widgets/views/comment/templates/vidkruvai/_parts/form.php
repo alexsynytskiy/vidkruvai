@@ -26,7 +26,7 @@ $user = Yii::$app->siteUser;
 <?php if (!$user->isGuest): ?>
     <div class="add-testimonials main-comment-form">
         <div class="row">
-            <div class="col-lg-2 col-md-3 col-sm-3">
+            <div class="col-lg-2 col-md-3 col-xs-3">
                 <div class="test-avatar">
                     <div class="image-cropper">
                         <img src="<?= $user->identity->avatar ?: $baseUrl . '/img/default-avatar-user.jpg' ?>" alt="avatar">
@@ -34,7 +34,7 @@ $user = Yii::$app->siteUser;
                     <div class="test-login"><?= $user->identity->getFullName() ?></div>
                 </div>
             </div>
-            <div class="col-lg-10 col-md-9 col-sm-9">
+            <div class="col-lg-10 col-md-9 col-xs-8 input-comment-text">
                 <?php $form = ActiveForm::begin($this->context->activeFormOptions); ?>
                 <?= Html::hiddenInput('t', $this->context->commentService->template); ?>
                 <div class="form-group clearfix">

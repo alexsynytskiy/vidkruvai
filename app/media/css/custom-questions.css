@@ -803,7 +803,7 @@ a {
 .cabinet.profile .content-left-fixed .image {
     background: url(/app/media/img/profile.jpg) no-repeat center;
     background-size: 850px 286px;
-    margin-bottom: 12px;
+    margin-bottom: 32px;
 }
 
 .cabinet.task .content-left-fixed .image {

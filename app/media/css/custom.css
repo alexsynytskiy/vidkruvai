@@ -546,6 +546,7 @@ article {
 
 .content-left-fixed .news-item.first .image {
     height: 380px;
+    margin: 0;
 }
 
 .content-left-fixed .news-item.first .information {
@@ -1033,7 +1034,6 @@ span.bg-success,
 }
 
 .profile-info-main .personal-achievements {
-    margin-top: 10px;
     margin-bottom: 10px;
 }
 
@@ -1925,6 +1925,7 @@ span.bg-success,
         margin-bottom: 10px;
         display: block;
         border-bottom: 2px solid #ddd;
+        padding: 6px 6px 10px;
     }
 
     .levels-table-block table thead {
@@ -1956,6 +1957,29 @@ span.bg-success,
         text-align: right;
         font-size: 13px;
         border-bottom: 1px dotted #ccc;
+    }
+
+    .pl-32 {
+        padding-left: 23px;
+    }
+
+    .content-left-fixed .news-item .information {
+        padding: 0 23px;
+        margin-top: 23px;
+        width: 100%;
+        height: 295px;
+    }
+
+    .content-left-fixed .news-item.first .information {
+        height: 295px;
+    }
+
+    .content-left-fixed .news-item .information .short.item-date {
+        left: 23px;
+    }
+
+    .content-left-fixed .news-item .information a.short.read-more {
+        left: 23px;
     }
 }
 
@@ -2015,6 +2039,55 @@ span.bg-success,
 
     .navbar-brand img {
         height: 29px;
+    }
+
+    .notification-page .navbar-default {
+        background-color: #fff;
+        border: none;
+    }
+
+    .notification-page .dropdown-menu:before,
+    .notification-page .dropdown-menu:after,
+    .cabinet.achievements .dropdown-menu:before,
+    .cabinet.achievements .dropdown-menu:after
+    {
+        display: none;
+    }
+
+    #mark-all-news-as-read {
+        display: block;
+        margin: 10px auto 0;
+        float: none;
+    }
+
+    .notification-index #navbar-second {
+        display: block;
+        border: none;
+    }
+
+    .notification-page .visible-xs-block {
+        display: none !important;
+    }
+
+    .cabinet.achievements .progress-top .navbar-nav {
+        float: none;
+    }
+
+    .progress-block .progress-top .progress-title h3 {
+        font-size: 29px;
+        margin-bottom: 26px;
+    }
+
+    .progress-block .progress-top .progress-title h3.levels-table-title {
+        padding-right: 23px;
+    }
+
+    .profile-info-main .right-side .name {
+        float: none;
+    }
+
+    .profile-edit {
+        float: right;
     }
 }
 
