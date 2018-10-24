@@ -17,6 +17,26 @@ $asset = \yii\easyii\modules\siteusers\assets\SiteUserAsset::register($this);
     <div class="col-md-12 form-z-index clearfix">
 <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => "Ім'я"]) ?>
 
+<?= $form->field($model, 'avatar')->widget(\kartik\file\FileInput::className(), [
+    'options' => [
+        'accept' => 'image/*'
+    ],
+    'pluginOptions' => [
+        'showRemove' => false,
+        'initialPreview' => [
+            isset($model->avatar) ?
+                \yii\easyii\helpers\Image::thumb($model->avatar, 240) :
+                null
+        ],
+        'initialPreviewAsData' => true,
+        'initialPreviewConfig' => [
+            [
+                'url' => \yii\helpers\Url::to(['/admin/' . $module . '/a/clear-image', 'id' => $model->primaryKey]),
+            ],
+        ],
+    ]
+]); ?>
+
 <?= $form->field($model, 'status')->widget(\kartik\select2\Select2::className(), [
     'data' => \app\models\definitions\DefTeam::getStatuses(),
     'language' => Yii::$app->language,
@@ -40,7 +60,7 @@ $asset = \yii\easyii\modules\siteusers\assets\SiteUserAsset::register($this);
     </div>
     <div class="col-md-6">
         Школа
-        <div class="text-block"><?= 'Група ' . $model->getSchool()->getFullName() ?></div>
+        <div class="text-block"><?= $model->getSchool()->getFullName() ?></div>
     </div>
     <div class="col-md-6">
         Уровень

@@ -56,7 +56,12 @@ switch ($controller) {
                 </li> -->
                 <li>
                     <a class="donate" target="_blank" href="https://coukraine.org/donate">
-                        Підтримайте проект
+                        Підтримайте нас
+                    </a>
+                </li>
+                <li class="<?= $contact ?>">
+                    <a href="<?= Url::to(['/about']) ?>">
+                        Про проект
                     </a>
                 </li>
                 <li class="<?= $contact ?>">

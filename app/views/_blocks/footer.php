@@ -31,17 +31,16 @@ $asset = \app\assets\AppAsset::register($this);
                 <div class="col-md-6 rights nopadding">
                     <div class="social-block">
                         <div class="social-icon-pack">
-
-                            <a class="social-icon" href="mailto:vu.proekt@gmail.com">
+                            <a class="social-icon" href="mailto:vidkryvai.ukrainu@gmail.com">
                                 <img class="svg" src="<?= $asset->baseUrl ?>/img/mail.png">
                             </a>
-                            <a class="social-icon" href="https://www.instagram.com/vidkruvai.ukrainu/">
+                            <a class="social-icon" target="_blank" href="https://www.instagram.com/vidkruvai.ukrainu/">
                                 <img class="svg" src="<?= $asset->baseUrl ?>/img/instagram.png">
                             </a>
-                            <a class="social-icon" href="http://bit.ly/2DQebVI">
+                            <a class="social-icon" target="_blank" href="http://bit.ly/2DQebVI">
                                 <img class="svg" src="<?= $asset->baseUrl ?>/img/youtube.png">
                             </a>
-                            <a class="social-icon" href="https://www.facebook.com/vidkruvai.ukrainu/">
+                            <a class="social-icon" target="_blank" href="https://www.facebook.com/vidkruvai.ukrainu/">
                                 <img class="svg" src="<?= $asset->baseUrl ?>/img/facebook.png">
                             </a>
                         </div>

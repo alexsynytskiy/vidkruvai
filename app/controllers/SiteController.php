@@ -55,6 +55,20 @@ class SiteController extends Controller
     /**
      * @return string
      */
+    public function actionAbout()
+    {
+        \Yii::$app->seo->setTitle('Про проект');
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('відкривай, україну');
+
+        return $this->render('about', [
+
+        ]);
+    }
+
+    /**
+     * @return string
+     */
     public function actionError()
     {
         \Yii::$app->seo->setTitle('Проблема');

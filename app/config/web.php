@@ -77,6 +77,7 @@ $config = [
                 'add-school' => 'profile/add-school',
                 'rules' => 'profile/rules',
                 'questions' => 'site/questions',
+                'about' => 'site/about',
                 'contacts' => 'site/contacts',
 
                 'comment/<channelId:\d+>/<action:[\w-]+>' => 'comment/default/<action>',
