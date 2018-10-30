@@ -10,7 +10,7 @@ use yii\db\Expression;
  * This is the model class for table "question_answer_user".
  *
  * @property integer $id
- * @property integer $user_id
+ * @property integer $site_user_id
  * @property integer $question_id
  * @property integer $answer_id
  * @property string $created_at
@@ -37,8 +37,8 @@ class UserAnswer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['started_at', 'answered_at', 'created_at', 'question_id', 'user_id', 'answer_id'], 'safe'],
-            [['question_id', 'user_id', 'answer_id'], 'integer'],
+            [['started_at', 'answered_at', 'created_at', 'question_id', 'site_user_id', 'answer_id'], 'safe'],
+            [['question_id', 'site_user_id', 'answer_id'], 'integer'],
         ];
     }
 
@@ -78,7 +78,7 @@ class UserAnswer extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(SiteUser::className(), ['id' => 'user_id']);
+        return $this->hasOne(SiteUser::className(), ['id' => 'site_user_id']);
     }
 
     /**

@@ -13,6 +13,7 @@ use app\models\definitions\DefLevel;
 use app\models\definitions\DefNotification;
 use app\models\forms\TeamCreateForm;
 use app\models\Level;
+use app\models\SiteUser;
 use app\models\Team;
 use yii\easyii\helpers\Image;
 use yii\web\BadRequestHttpException;
@@ -163,6 +164,13 @@ class TeamController extends Controller
         }
 
         if (\Yii::$app->siteUser->identity->team) {
+            $this->flash('error', AppMsg::t('Ви вже створили команду! Тепер її можна лише редагувати'));
+            $this->redirect('/team');
+        }
+
+        if (\Yii::$app->siteUser->identity->role === SiteUser::ROLE_MENTOR) {
+            $this->flash('error', AppMsg::t('Створювати команди можуть лише власне учасники(не ментори). 
+            Учасник, що створить команду автоматично стане її капітаном.'));
             $this->redirect('/team');
         }
 

@@ -2,6 +2,8 @@
 
 namespace yii\easyii\modules\news\api;
 
+use app\models\Comment;
+use app\models\CommentChannel;
 use Yii;
 use yii\db\Query;
 use yii\easyii\components\API;
@@ -33,6 +35,7 @@ use yii\helpers\Url;
  * @property string $data
  * @property PhotoObject[] $photos
  * @property string $editLink
+ * @property integer commentsCount
  */
 class NewsObject extends ApiObject
 {
@@ -96,6 +99,7 @@ class NewsObject extends ApiObject
 
     /**
      * @return string
+     * @throws \yii\base\InvalidConfigException
      */
     public function getDate()
     {
@@ -128,6 +132,18 @@ class NewsObject extends ApiObject
     public function getEditLink()
     {
         return Url::to(['/admin/news/a/edit/', 'id' => $this->id, 'language' => 'uk']);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCommentsCount()
+    {
+        return Comment::find()
+            ->alias('c')
+            ->innerJoin(CommentChannel::tableName() . ' cc', 'cc.id = c.channel_id')
+            ->where(['cc.slug' => $this->model->slug])
+            ->count();
     }
 
     /**

@@ -6,17 +6,17 @@ use app\components\Controller;
 use app\components\helpers\StartBlock;
 use app\models\Answer;
 use app\models\Question;
-use app\models\QuestionGroup;
+use app\models\Test;
 use app\models\SiteUser;
 use app\models\UserAnswer;
 use yii\web\BadRequestHttpException;
 use yii\web\Response;
 
 /**
- * Class QuizController
+ * Class TasksTestController
  * @package app\controllers
  */
-class QuizController extends Controller
+class TasksTestController extends Controller
 {
     /**
      * @return array
@@ -105,7 +105,7 @@ class QuizController extends Controller
             /** @var UserAnswer $userAnswer */
             $userAnswer = UserAnswer::find()
                 ->where([
-                    'user_id' => $userId,
+                    'site_user_id' => $userId,
                     'question_id' => $questionId,
                     'answer_id' => null
                 ])
@@ -173,7 +173,7 @@ class QuizController extends Controller
                         /** @var UserAnswer[] $otherBlockAnswers */
                         $otherBlockAnswers = UserAnswer::find()->where([
                             'question_id' => $blockQuestion->id,
-                            'user_id' => \Yii::$app->siteUser->identity->id,
+                            'site_user_id' => \Yii::$app->siteUser->identity->id,
                         ])
                             ->all();
 
@@ -196,7 +196,7 @@ class QuizController extends Controller
                         'isCorrect' => $isAnswerCorrect,
                         'answerCorrectId' => $answerCorrectId,
                         'message' => 'Відповіді зараховано вчасно!',
-                        'blockFinishedUrl' => '/block-finished/' . QuestionGroup::findOne($groupId)->hash,
+                        'blockFinishedUrl' => '/block-finished/' . Test::findOne($groupId)->hash,
                     ];
                 }
 

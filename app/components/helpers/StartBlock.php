@@ -3,7 +3,7 @@
 namespace app\components\helpers;
 
 use app\models\Question;
-use app\models\QuestionGroup;
+use app\models\Test;
 use app\models\UserAnswer;
 
 /**
@@ -21,7 +21,7 @@ class StartBlock
      */
     public static function startBlockLogic($hash)
     {
-        $group = QuestionGroup::findOne(['hash' => $hash]);
+        $group = Test::findOne(['hash' => $hash]);
 
         if ($group) {
             /** @var UserAnswer[] $userAnswers */
@@ -29,7 +29,7 @@ class StartBlock
                 ->alias('qa')
                 ->innerJoin(Question::tableName() . ' q', 'qa.question_id = q.id')
                 ->where([
-                    'qa.user_id' => \Yii::$app->siteUser->id,
+                    'qa.site_user_id' => \Yii::$app->siteUser->id,
                     'qa.answer_id' => null,
                     'q.group_id' => $group->id,
                 ])

@@ -7,6 +7,7 @@
 <div class="news-item first clearfix">
     <div class="image" style="background: url(<?= $item->image ?>);background-size: cover;"></div>
     <div class="information">
+        <div class="comments-count-news"><?= $item->commentsCount ?></div>
         <div class="title">
             <a href="<?= \yii\helpers\Url::to(['/profile/news-item/' . $item->slug]) ?>"><?= $item->title ?></a>
         </div>

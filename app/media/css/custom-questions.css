@@ -484,14 +484,10 @@ form .already a:hover {
     color: #fff;
     height: 100%;
     float: left;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
 }
 
 .steps-block.profile .questions .block .right-part .start.enabled {
     background-color: #007BFF;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
     -webkit-transition: all ease 0.5s;
     -moz-transition: all ease 0.5s;
     -o-transition: all ease 0.5s;
@@ -503,8 +499,8 @@ form .already a:hover {
     cursor: pointer;
     background-color: #fff;
     color: #007BFF;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
     -webkit-transition: all ease 0.5s;
     -moz-transition: all ease 0.5s;
     -o-transition: all ease 0.5s;

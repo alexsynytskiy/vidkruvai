@@ -20,7 +20,7 @@ use yii\db\Expression;
  * @property string $updated_at
  *
  * @property Answer[] $answers
- * @property QuestionGroup $group
+ * @property Test $group
  * @property int $emptyQuestionsCount
  *
  */
@@ -120,7 +120,7 @@ class Question extends \yii\db\ActiveRecord
      */
     public function getGroup()
     {
-        return $this->hasOne(QuestionGroup::className(), ['id' => 'group_id']);
+        return $this->hasOne(Test::className(), ['id' => 'group_id']);
     }
 
     /**
@@ -134,7 +134,7 @@ class Question extends \yii\db\ActiveRecord
             ->alias('q')
             ->innerJoin(UserAnswer::tableName() . ' qa', 'qa.question_id = q.id')
             ->where([
-                'qa.user_id' => \Yii::$app->siteUser->id,
+                'qa.site_user_id' => \Yii::$app->siteUser->id,
                 'qa.answer_id' => null,
                 'q.group_id' => $groupId,
             ])
@@ -151,7 +151,7 @@ class Question extends \yii\db\ActiveRecord
             ->alias('qa')
             ->innerJoin(Question::tableName() . ' q', 'qa.question_id = q.id')
             ->where([
-                'qa.user_id' => \Yii::$app->siteUser->id,
+                'qa.site_user_id' => \Yii::$app->siteUser->id,
                 'qa.answer_id' => null,
                 'q.group_id' => $this->group_id,
             ])

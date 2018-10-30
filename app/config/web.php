@@ -99,6 +99,8 @@ $config = [
 
                 '<alias:\w+>' => 'validation/<alias>',
 
+                'tasks/test/<hash:[\w-]+>' => 'tasks/test',
+
                 '<controller:\w+>' => '<controller>/index',
                 '<controller:\w+>/<slug:[\w-]+>' => '<controller>/view',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',

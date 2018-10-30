@@ -98,7 +98,7 @@ foreach ($comments as $comment):
                             <div class="info-item">
                                 <div class="info"><?= AppMsg::t('Команда'); ?></div>
                                 <img data-toggle="tooltip" data-placement="top" title="#"
-                                     src="<?= $user->team->avatar ?: $baseUrl . '/img/default-avatar.png' ?>" alt="alt">
+                                     src="<?= $user->team->avatar ?: $baseUrl . '/img/default-avatar-team.jpg' ?>" alt="alt">
                             </div>
                         <?php endif; ?>
                         <div class="info-item">

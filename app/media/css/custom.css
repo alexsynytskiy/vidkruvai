@@ -719,6 +719,7 @@ article {
     height: 100%;
     width: auto;
     max-height: 150px;
+    max-width: none;
 }
 
 .profile-team-preview .member-item img {
@@ -919,6 +920,25 @@ span.bg-success,
     line-height: 1;
     border-bottom-left-radius: 3px;
     border-top-left-radius: 3px;
+}
+
+.comments-count-news {
+    height: 15px;
+    width: 15px;
+    background: url(/app/media/img/comments.svg) no-repeat center;
+    background-size: 15px;
+    position: absolute;
+    top: 43px;
+    right: 32px;
+    text-align: right;
+    font-size: 15px;
+    line-height: 15px;
+    padding-left: 30px;
+}
+
+.news-item.small .comments-count-news {
+    left: 25px;
+    top: 0;
 }
 
 .badge {
@@ -1370,6 +1390,10 @@ span.bg-success,
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
     min-height: 350px;
+}
+
+.cabinet.news-item .simple-news-page .comments-count-news {
+    top: 432px;
 }
 
 .cabinet.news-item .simple-news-page h3 {
@@ -1979,8 +2003,17 @@ span.bg-success,
         height: 295px;
     }
 
+    .cabinet.news-item .simple-news-page .comments-count-news {
+        top: 381px;
+    }
+
     .content-left-fixed .news-item.first .information {
         height: 295px;
+    }
+
+    .comments-count-news {
+        bottom: 27px;
+        top: inherit;
     }
 
     .content-left-fixed .news-item .information .short.item-date {
@@ -2124,6 +2157,12 @@ span.bg-success,
 
     .profile-info-main .left-side img {
         max-width: 130px;
+        max-height: 130px;
+    }
+
+    .profile-info-main .left-side .image-cropper {
+        width: 130px;
+        height: 130px;
     }
 
     .profile-info-main .left-side {

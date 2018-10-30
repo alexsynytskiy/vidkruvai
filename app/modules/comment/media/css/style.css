@@ -297,12 +297,10 @@ a.first-level-group, .first-level-group {
     height: 100%;
     width: auto;
     max-height: 100px;
+    max-width: none;
 }
 
 #testimonials-section .add-testimonials .test-avatar .test-login {
-    position: absolute;
-    bottom: -28px;
-    left: 0;
     min-width: 100px;
     color: #373737;
     font-family: "Lato", sans-serif;

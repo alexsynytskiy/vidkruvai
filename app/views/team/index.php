@@ -215,7 +215,7 @@ $user = \Yii::$app->siteUser->identity;
                                                 <div class="team-items mb-0 pl-32">
                                                     <div class="row">
                                                         <div class="col-lg-12">
-                                                            <?php if (!$user->team && !$preview): ?>
+                                                            <?php if (!$user->team && !$preview && \Yii::$app->siteUser->identity->role !== \app\models\SiteUser::ROLE_MENTOR): ?>
                                                                 <?= \yii\helpers\Html::a(AppMsg::t('Створити команду'),
                                                                     ['/team/create-team'],
                                                                     [

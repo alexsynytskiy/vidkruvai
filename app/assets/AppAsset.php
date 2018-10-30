@@ -43,6 +43,7 @@ class AppAsset extends \yii\web\AssetBundle
         'js/Notifications.js',
         'js/RulesPage.js',
         'js/AnswerPage.js',
+        'js/TestsPage.js',
         'js/ProfilePage.js',
         'js/RegisterPage.js',
         'js/Achievements.js',

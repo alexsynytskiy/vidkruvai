@@ -3,7 +3,7 @@
 namespace app\models;
 
 /**
- * This is the model class for table "question_group".
+ * This is the model class for table "test".
  *
  * @property integer $id
  * @property string $name
@@ -16,7 +16,7 @@ namespace app\models;
  * @property Question[] $questions
  * @property UserAnswer[] $userAnswers
  */
-class QuestionGroup extends \yii\db\ActiveRecord
+class Test extends \yii\db\ActiveRecord
 {
     const MISSED = 'missed';
     const DISABLED = 'disabled';
@@ -32,7 +32,7 @@ class QuestionGroup extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'question_group';
+        return 'test';
     }
 
     /**
@@ -55,7 +55,7 @@ class QuestionGroup extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Назва',
             'description' => 'Опис',
-            'completed_data' => 'Інформація про захід',
+            'completed_data' => 'Інформація',
         ];
     }
 
@@ -77,7 +77,7 @@ class QuestionGroup extends \yii\db\ActiveRecord
             ->innerJoin(Question::tableName() . ' q', 'q.id = qa.question_id')
             ->innerJoin(self::tableName() . ' g', 'q.group_id = g.id')
             ->where([
-                'qa.user_id' => \Yii::$app->siteUser->id,
+                'qa.site_user_id' => \Yii::$app->siteUser->id,
                 'g.id' => $this->id,
             ])
             ->all();
@@ -91,7 +91,7 @@ class QuestionGroup extends \yii\db\ActiveRecord
         $groups = self::find()->all();
 
         $result = [];
-        /** @var QuestionGroup $group */
+        /** @var Test $group */
         foreach ($groups as $group) {
             $result[$group->id] = $group->name;
         }
