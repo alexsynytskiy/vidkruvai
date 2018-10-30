@@ -3,6 +3,7 @@
 /* @var $this yii\web\View */
 
 /* @var $data yii\data\ActiveDataProvider */
+/* @var $stateStatistics array */
 
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -67,6 +68,30 @@ $asset = \yii\easyii\modules\siteusers\assets\SiteUserAsset::register($this);
 
 <?= $this->render('_menu') ?>
     <br>
+    Статистика по областям
+    <div style="height: 10px"></div>
+<?php if (count($stateStatistics) > 0) : ?>
+    <table class="table table-hover" style="width: 30%">
+        <thead>
+        <tr>
+            <th><?= Yii::t('easyii', 'State') ?></th>
+            <th><?= Yii::t('easyii', 'Users count') ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($stateStatistics as $stateData) : ?>
+            <tr>
+                <td><?= $stateData['name'] ?></td>
+                <td><?= $stateData['count'] ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else : ?>
+    <p><?= Yii::t('easyii', 'No records found') ?></p>
+<?php endif; ?>
+
+<br>
 <?php \yii\widgets\Pjax::begin(['timeout' => 5000, 'id' => 'site-users']); ?>
     <div class="form-group">
         <?= \yii\grid\GridView::widget([

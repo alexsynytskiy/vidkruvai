@@ -26,8 +26,8 @@ class TasksTestController extends Controller
     {
         $errorResponse = ['status' => 'error', 'message' => 'Щось пішло не так..'];
 
-        if (!\Yii::$app->mutex->acquire('multiple-start-block')) {
-            \Yii::info('Пользователь попытался выполнить несколько раз подряд вход');
+        if (!\Yii::$app->mutex->acquire('multiple-start-test')) {
+            \Yii::info('Пользователь попытался несколько начать тест');
 
             return $errorResponse;
         }
@@ -133,18 +133,11 @@ class TasksTestController extends Controller
 
                         $user = SiteUser::findOne(\Yii::$app->siteUser->identity->id);
 
-                        if ($user) {
-                            $user->total_experience += $userAnswer->question->reward;
-
-                            if (!$user->update()) {
-                                return ['status' => 'error', 'message' => 'Смарти не зараховано'];
-                            }
-                        } else {
-                            return ['status' => 'error', 'message' => 'Користувача не знайдено'];
-                        }
+                        //TODO: achieve awards
                     }
 
                     if (!$isAnswerCorrect) {
+                        /** @var Answer $userAnswerCorrect */
                         $userAnswerCorrect = Answer::find()
                             ->where([
                                 'question_id' => $questionId,
@@ -165,7 +158,7 @@ class TasksTestController extends Controller
                                 'message' => 'Відповідь зараховано! Наступне питання вже перед тобою',
                                 'isCorrect' => $isAnswerCorrect,
                                 'answerCorrectId' => $answerCorrectId,
-                                'newQuestion' => $this->renderAjax('/_blocks/question-body',
+                                'newQuestion' => $this->renderAjax('/tasks/question-body',
                                     ['blockQuestion' => $blockQuestion]),
                             ];
                         }
@@ -187,7 +180,7 @@ class TasksTestController extends Controller
                         return [
                             'status' => 'error',
                             'message' => 'Нажаль ти не встиг за відведений час..',
-                            'blockFinishedUrl' => '/profile',
+                            'blockFinishedUrl' => '/tasks',
                         ];
                     }
 

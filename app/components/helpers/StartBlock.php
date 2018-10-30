@@ -58,6 +58,6 @@ class StartBlock
             ];
         }
 
-        return ['status' => 'error', 'message' => 'Блок питань не знайдено'];
+        return ['status' => 'error', 'message' => 'Тест не знайдено'];
     }
 }

@@ -1,20 +1,23 @@
 <?php
 /* @var $this yii\web\View */
-/* @var $blockQuestion \app\models\Question */
+/* @var $question \app\models\Question */
 
-$countAnswered = 2 - $blockQuestion->emptyQuestionsCount;
+$test = $question->group;
+$testQuestionsCount = count($test->questions);
+
+$countAnswered = $testQuestionsCount - $question->emptyQuestionsCount;
 ?>
 
-<div class="question clearfix" data-id="<?= $blockQuestion->id ?>" data-group-id="<?= $blockQuestion->group_id ?>">
-    <?php if ($blockQuestion->image): ?>
+<div class="question clearfix" data-id="<?= $question->id ?>" data-group-id="<?= $question->group_id ?>">
+    <?php if ($question->image): ?>
         <div class="question-text">
-            <?= $blockQuestion->text ?>
+            <?= $question->text ?>
         </div>
         <div class="image">
-            <img src="<?= $blockQuestion->image ?>">
+            <img src="<?= $question->image ?>">
         </div>
     <?php else: ?>
-        <?= $blockQuestion->text ?>
+        <?= $question->text ?>
     <?php endif; ?>
 </div>
 
@@ -26,7 +29,7 @@ $countAnswered = 2 - $blockQuestion->emptyQuestionsCount;
 </div>
 
 <div class="answers clearfix">
-    <?php foreach ($blockQuestion->answers as $answer): ?>
+    <?php foreach ($question->answers as $answer): ?>
         <div class="answer" data-id="<?= $answer->id ?>">
             <div class="text">
                 <?= $answer->text ?>

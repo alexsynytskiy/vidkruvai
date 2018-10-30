@@ -19,28 +19,30 @@ class QuestionsSetter
     {
         $userId = \Yii::$app->siteUser->identity->id;
 
-        $questionGroups = Test::find()->orderBy('id')->all();
+        $tests = Test::find()->orderBy('id')->all();
 
-        /** @var Test $group */
-        foreach ($questionGroups as $group) {
-            $groupQuestions = $group->questions;
+        /** @var Test $test */
+        foreach ($tests as $test) {
+            $testQuestions = $test->questions;
+            $testQuestionsCount = count($testQuestions);
 
-            $questionNumber1 = 0;
-            $questionNumber2 = 1;
+            $selectedStack = [];
 
-            if (count($groupQuestions) > Test::USER_BLOCK_QUESTIONS) {
-                $questionNumber1 = mt_rand(0, count($groupQuestions) - 1);
+            if (count($testQuestions) > $testQuestionsCount) {
+                $selectedStack[] = mt_rand(0, count($testQuestions) - 1);
                 do {
-                    $questionNumber2 = mt_rand(0, count($groupQuestions) - 1);
-                } while ($questionNumber1 === $questionNumber2);
+                    $newNumber = mt_rand(0, count($testQuestions) - 1);
+
+                    if(!in_array($newNumber, $selectedStack,false)) {
+                        $selectedStack[] = $newNumber;
+                    }
+                } while (count($selectedStack) < $testQuestionsCount);
             }
 
-            $questionPositions = [$questionNumber1, $questionNumber2];
-
-            foreach ($questionPositions as $position) {
+            foreach ($selectedStack as $position) {
                 $answer = new UserAnswer();
                 $answer->site_user_id = $userId;
-                $answer->question_id = $groupQuestions[$position]->id;
+                $answer->question_id = $testQuestions[$position]->id;
 
                 if (!$answer->save()) {
                     throw new Exception('User questions answers not created');

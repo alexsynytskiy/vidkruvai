@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\components\Controller;
+use app\components\helpers\QuestionsSetter;
 use app\components\helpers\StartBlock;
 use app\models\Question;
 use app\models\Test;
@@ -33,8 +34,9 @@ class TasksController extends Controller
     }
 
     /**
-     * @param string $hash
+     * @param $hash
      * @return bool|string|\yii\web\Response
+     * @throws Exception
      */
     public function actionTest($hash)
     {
@@ -47,6 +49,8 @@ class TasksController extends Controller
         \Yii::$app->seo->setTitle('Тест');
         \Yii::$app->seo->setDescription('Відкривай Україну');
         \Yii::$app->seo->setKeywords('Відкривай, Україну');
+
+        //QuestionsSetter::setUserQuestions();
 
         /** @var Test $test */
         $test = Test::findOne(['hash' => $hash]);

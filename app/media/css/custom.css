@@ -1546,10 +1546,12 @@ span.bg-success,
     font-size: 20px;
 }
 
-.questions .questions-text {
+.questions .questions-text,
+.task .profile-info-main .text {
     font-size: 17px;
     line-height: 32px;
     margin-top: 25px;
+    text-align: justify;
 }
 
 .questions img {
@@ -1760,6 +1762,14 @@ span.bg-success,
     -o-transition: all ease 0.5s;
     -ms-transition: all ease 0.5s;
     transition: all ease 0.5s;
+}
+
+.task .profile-info-main {
+    padding: 20px 32px 32px;
+}
+
+.task .profile-info-main .questions {
+    margin-bottom: 7px;
 }
 
 @media (max-width: 1199px) {
