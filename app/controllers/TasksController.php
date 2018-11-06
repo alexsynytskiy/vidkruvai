@@ -3,8 +3,10 @@
 namespace app\controllers;
 
 use app\components\Controller;
+use app\components\helpers\EntityHelper;
 use app\components\helpers\QuestionsSetter;
 use app\components\helpers\StartBlock;
+use app\models\definitions\DefEntityAchievement;
 use app\models\Question;
 use app\models\Test;
 use app\models\UserAnswer;
@@ -34,9 +36,41 @@ class TasksController extends Controller
     }
 
     /**
-     * @param $hash
+     * @param string $category
      * @return bool|string|\yii\web\Response
-     * @throws Exception
+     */
+    public function actionIndex($category = '')
+    {
+        $status = $this->checkUserStatus();
+
+        if ($status !== true) {
+            return $status;
+        }
+
+        \Yii::$app->seo->setTitle('Завдання');
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('Відкривай, Україну');
+
+        $hasToLoadMore = false;
+        $lastItemId = 0;
+        $tasks = [];
+
+        $params = ArrayHelper::merge(
+            EntityHelper::getEntityCredentials(DefEntityAchievement::ENTITY_USER, \Yii::$app->siteUser->id),
+            [
+                'tasks' => $tasks,
+                'hasToLoadMore' => $hasToLoadMore,
+                'lastItemId' => $lastItemId,
+                'category' => $category,
+            ]
+        );
+
+        return $this->render('index', $params);
+    }
+
+    /**
+     * @param string $hash
+     * @return bool|string|\yii\web\Response
      */
     public function actionTest($hash)
     {
@@ -46,14 +80,14 @@ class TasksController extends Controller
             return $status;
         }
 
-        \Yii::$app->seo->setTitle('Тест');
-        \Yii::$app->seo->setDescription('Відкривай Україну');
-        \Yii::$app->seo->setKeywords('Відкривай, Україну');
-
         //QuestionsSetter::setUserQuestions();
 
         /** @var Test $test */
         $test = Test::findOne(['hash' => $hash]);
+
+        \Yii::$app->seo->setTitle('Тест|' . $test->name);
+        \Yii::$app->seo->setDescription('Відкривай Україну');
+        \Yii::$app->seo->setKeywords('Відкривай, Україну');
 
         if ($test) {
             $testQuestionsCount = count($test->questions);

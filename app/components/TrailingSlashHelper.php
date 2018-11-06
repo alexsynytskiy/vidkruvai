@@ -21,9 +21,9 @@ class TrailingSlashHelper extends Object
         $getParam = $app->request->get('parent');
         preg_match('/[^\/]+$/', $pathInfo, $matches);
 
-        $startRedirect = ['admin', 'site', 'profile', 'team'];
+        $startRedirect = ['admin', 'site', 'profile', 'team', 'tasks'];
         $stopRedirect = ['items', 'edit', 'photos', 'settings', 'index',
-            'list', 'redactor', 'all', 'account', 'news-item', 'news', 'clear-image', 'team-notifications'];
+            'list', 'redactor', 'all', 'account', 'news-item', 'news', 'clear-image', 'team-notifications', 'test'];
 
         $redirect = false;
 

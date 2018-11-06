@@ -80,7 +80,9 @@ switch ($controller) {
             <div class="icon">
                 <i class="fa fa-list" style="font-size: 26px;"></i>
             </div>
-            <div class="text">Завдання</div>
+            <a href="<?= Url::to([$user->team ? '/tasks' : '#']) ?>">
+                <div class="text">Завдання</div>
+            </a>
         </div>
         <div class="menu-link <?= $messages ?>">
             <div class="icon">

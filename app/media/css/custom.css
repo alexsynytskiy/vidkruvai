@@ -1772,6 +1772,124 @@ span.bg-success,
     margin-bottom: 7px;
 }
 
+.task .categories .category {
+    float: left;
+    font-size: 13px;
+}
+
+.task .categories .category:hover {
+    color: #3195FF;
+}
+
+.task .categories .category .icon {
+    height: 40px;
+    width: 40px;
+    background-color: #878787;
+    border-radius: 50%;
+    float: left;
+    margin-right: 16px;
+}
+
+.task .categories .category .text-category {
+    float: left;
+    line-height: 40px;
+    margin-right: 24px;
+}
+
+.task .categories {
+    margin: 20px 0;
+}
+
+.mobile-actions {
+    display: none;
+}
+
+.desktop-actions {
+    display: block;
+}
+
+.content-left-fixed #tasks-list .tasks-item {
+    border-radius: 10px;
+    box-shadow: 0 3px 15px 0 rgba(0, 60, 125, 0.15);
+    margin-bottom: 62px;
+}
+
+.content-left-fixed #tasks-list .tasks-item .image {
+    height: 336px;
+    margin: 0;
+    float: left;
+    width: 220px;
+    overflow: hidden;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-color: #E4E9EC;
+}
+
+.content-left-fixed #tasks-list .tasks-item .information {
+    float: right;
+    position: relative;
+    width: 620px;
+    padding: 32px;
+    height: 336px;
+}
+
+.content-left-fixed #tasks-list .tasks-item .information .title {
+    font-family: 'Lato', sans-serif;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: left;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.content-left-fixed #tasks-list .tasks-item .information .short {
+    font-family: 'Lato', sans-serif;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: left;
+    margin-bottom: 20px;
+    color: #373737;
+}
+
+.content-left-fixed #tasks-list .tasks-item .information a.read-more {
+    font-weight: bold;
+    text-align: left;
+    display: block;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+    height: 44px;
+    background-color: #007BFF;
+    color: #fff;
+    padding: 12px 32px;
+    border-radius: 5px;
+    line-height: 15px;
+    border: 2px solid #007BFF;
+    margin-bottom: 0;
+}
+
+.content-left-fixed #tasks-list .tasks-item .information a.read-more:hover,
+.content-left-fixed #tasks-list .tasks-item .information .title a:hover {
+    color: #007BFF;
+    background-color: #fff;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+}
+
+.content-left-fixed #tasks-list .tasks-item.task .categories {
+    margin: 0;
+    position: absolute;
+    bottom: 32px;
+}
+
 @media (max-width: 1199px) {
 
 }
@@ -1798,6 +1916,25 @@ span.bg-success,
     .error .content-left-fixed.container,
     .questions .content-left-fixed.container {
         max-width: 770px;
+    }
+
+    .mobile-actions {
+        display: block;
+    }
+
+    .desktop-actions {
+        display: none;
+    }
+
+    .cabinet.rules .progress-block {
+        padding: 0 23px 23px;
+    }
+
+    .cabinet.rules .progress-block .progress-top .progress-title h3 {
+        font-size: 20px;
+        margin-bottom: 8px;
+        text-align: left;
+        margin-top: 48px;
     }
 
     .sidebar-right-fixed {

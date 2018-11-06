@@ -60,10 +60,10 @@ $form = ActiveForm::begin([
                 <?php if($model->isNewRecord): ?>
                     <?= $form->field($model, 'emails[]')->hiddenInput([
                         'value' => Yii::$app->siteUser->identity->email, 'id' => 'captain-id']) ?>
-                    <?php for ($i = 1; $i <= 9; $i++): ?>
+                    <?php for ($i = 1; $i <= 10; $i++): ?>
                         <div class="col-md-6 col-xs-12">
                             <?= $form->field($model, 'emails[]')->textInput([
-                                'placeholder' => AppMsg::t('Учасник ') . $i
+                                'placeholder' => AppMsg::t('Учасник/Ментор ') . $i . ' (e-mail)'
                             ]) ?>
                         </div>
                     <?php endfor; ?>
@@ -79,10 +79,10 @@ $form = ActiveForm::begin([
                             ]) ?>
                         </div>
                     <?php endforeach; ?>
-                    <?php for ($i = 1 + count($model->emails); $i <= 9; $i++): ?>
+                    <?php for ($i = 1 + count($model->emails); $i <= 10; $i++): ?>
                         <div class="col-md-6 col-xs-12">
                             <?= $form->field($model, 'emails[]')->textInput([
-                                'placeholder' => AppMsg::t('Учасник ') . $i
+                                'placeholder' => AppMsg::t('Учасник/Ментор ') . $i . ' (e-mail)'
                             ]) ?>
                         </div>
                     <?php endfor; ?>

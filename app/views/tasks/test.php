@@ -38,14 +38,14 @@ $user = \Yii::$app->siteUser->identity;
                                                 <div class="title"><?= $test->name ?></div>
                                                 <div class="sub-title"><?= $test->description ?></div>
                                             <?php endif; ?>
-                                            <div class="categories">
+                                            <div class="categories clearfix">
                                                 <div class="category">
                                                     <div class="icon"></div>
-                                                    Суспільство
+                                                    <div class="text-category">Суспільство</div>
                                                 </div>
                                                 <div class="category">
                                                     <div class="icon"></div>
-                                                    Місто
+                                                    <div class="text-category">Місто</div>
                                                 </div>
                                             </div>
                                         </div>

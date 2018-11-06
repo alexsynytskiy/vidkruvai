@@ -71,7 +71,7 @@ class TeamCreateForm extends Model
             $this->addError('emails', AppMsg::t('Кількість учасників має бути більша за 2'));
         }
 
-        if (count($this->emails) > 10) {
+        if (count($this->emails) > 11) {
             $this->addError('emails', AppMsg::t('Кількість учасників має бути не більша за 10'));
         }
     }

@@ -27,7 +27,7 @@ $roleMentor = Yii::$app->siteUser->identity->role === \app\models\SiteUser::ROLE
 
                                             <?php if(!$roleMentor): ?>
                                                 <div class="progress-title">
-                                                    <h3>
+                                                    <h3 style="margin-top: 0;">
                                                         <?= \app\components\AppMsg::t('Реєструючись на платформі Освітнього проекту «Відкривай Україну», як учасник я погоджуюся з тим, що:'); ?>
                                                     </h3>
                                                 </div>
