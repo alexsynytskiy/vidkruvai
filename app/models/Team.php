@@ -37,6 +37,14 @@ class Team extends ActiveRecord
         return 'team';
     }
 
+    /**
+     * @return string
+     */
+    public static function answersTableName()
+    {
+        return 'test_question_answer';
+    }
+
     public function rules()
     {
         return [
@@ -132,5 +140,14 @@ class Team extends ActiveRecord
     {
         return $this->hasOne(Level::className(), ['id' => 'level_id'])
             ->andOnCondition(['entity_type' => DefEntityAchievement::ENTITY_TEAM]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAnswers()
+    {
+        return $this->hasMany(Answer::className(), ['id' => 'answer_id'])
+            ->viaTable(static::answersTableName(), ['team_id' => 'id']);
     }
 }

@@ -11,6 +11,9 @@
 $asset = \app\assets\AppAsset::register($this);
 
 $baseUrl = $asset->baseUrl;
+
+$totalNews = \yii\easyii\modules\news\models\News::getUserNewsCounters();
+$totalNews = $totalNews > 0 ? $totalNews : null;
 ?>
 
     <div class="steps-block profile clearfix">
@@ -20,11 +23,13 @@ $baseUrl = $asset->baseUrl;
                     <?= $this->render('/_blocks/profile-sidebar') ?>
                 </div>
                 <div class="content-left-fixed">
-                    <div class="helpers-header clearfix">
-                        <?= \yii\helpers\Html::a('<i class="fa fa-check"></i>' . \app\components\AppMsg::t('Прочитати все'),
-                            null,
-                            ['id' => 'mark-all-news-as-read', 'class' => count($news) ? 'no-spinner' : 'disabled']) ?>
-                    </div>
+                    <?php if($totalNews): ?>
+                        <div class="helpers-header clearfix">
+                            <?= \yii\helpers\Html::a('<i class="fa fa-check"></i>' . \app\components\AppMsg::t('Прочитати все'),
+                                null,
+                                ['id' => 'mark-all-news-as-read', 'class' => count($news) ? 'no-spinner' : 'disabled']) ?>
+                        </div>
+                    <?php endif; ?>
 
                     <?php if(count($news)): ?>
                         <div id="news-list">

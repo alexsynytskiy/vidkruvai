@@ -2,6 +2,7 @@
 
 namespace app\models\forms;
 
+use app\models\definitions\DefSiteUser;
 use app\models\SiteUser;
 use Yii;
 use yii\base\Model;
@@ -75,7 +76,7 @@ class RegisterForm extends Model
 
     public function userClass($attribute, $params, $validator)
     {
-        if($this->role === SiteUser::ROLE_PARTICIPANT && (!$this->class || $this->class === '')) {
+        if($this->role === DefSiteUser::ROLE_PARTICIPANT && (!$this->class || $this->class === '')) {
             $this->addError($attribute, "Учасник обов'язково має вказати клас");
         }
     }

@@ -3,10 +3,7 @@
 use app\models\Test;
 
 /* @var $this yii\web\View */
-/* @var $name string */
-/* @var $points string */
 /* @var $test \app\models\Test */
-/* @var $blocksQuestions array */
 
 $asset = \app\assets\AppAsset::register($this);
 
@@ -36,45 +33,11 @@ $user = \Yii::$app->siteUser->identity;
                                             <?php elseif (in_array($test->active, [Test::ACTIVE, Test::DISABLED], false)
                                                 || !$test->completed_data): ?>
                                                 <div class="title"><?= $test->name ?></div>
-                                                <div class="sub-title"><?= $test->description ?></div>
                                             <?php endif; ?>
-                                            <div class="categories clearfix">
-                                                <div class="category">
-                                                    <div class="icon"></div>
-                                                    <div class="text-category">Суспільство</div>
-                                                </div>
-                                                <div class="category">
-                                                    <div class="icon"></div>
-                                                    <div class="text-category">Місто</div>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="right-part">
-                                            <div class="numbers <?= $test->active ?>">
-                                                <?php $i = 0; ?>
-                                                <?php foreach ($test->userAnswers as $userAnswer): ?>
-                                                    <?php if (in_array($test->active, [Test::ACTIVE, Test::DISABLED],
-                                                        false)): ?>
-                                                        <div class="number"><?= ++$i ?></div>
-                                                    <?php elseif ($test->active === Test::MISSED): ?>
-                                                        <div class="number">
-                                                            <div class="state wrong">
-                                                                <?= ++$i ?>
-                                                            </div>
-                                                        </div>
-                                                    <?php else: ?>
-                                                        <div class="number">
-                                                            <div class="state <?= $userAnswer->answer &&
-                                                            $userAnswer->answer->is_correct ?
-                                                                'correct' : 'wrong' ?>">
-                                                                <?= ++$i ?>
-                                                            </div>
-                                                        </div>
-                                                    <?php endif; ?>
-                                                <?php endforeach; ?>
-                                            </div>
-                                            <?php if ($test->active === Test::ACTIVE): ?>
-                                                <div data-hash="<?= $test->hash ?>" id="block-start"
+                                            <?php if ($test->active === Test::ACTIVE && Yii::$app->siteUser->identity->isCaptain()): ?>
+                                                <div data-hash="<?= $test->task->hash ?>" id="block-start"
                                                      class="start enabled">
                                                     <div class="text title">Старт</div>
                                                     <div class="text sub-title"><?= \app\models\Question::TIME_FOR_ANSWER / 60 ?>
@@ -91,37 +54,35 @@ $user = \Yii::$app->siteUser->identity;
                                                 </div>
                                             <?php endif; ?>
                                         </div>
+
+                                        <div class="numbers <?= $test->active ?>">
+                                            <?php $i = 0; ?>
+                                            <?php foreach ($test->teamAnswers as $teamAnswer): ?>
+                                                <?php if (in_array($test->active, [Test::ACTIVE, Test::DISABLED],
+                                                    false)): ?>
+                                                    <div class="number"><?= ++$i ?></div>
+                                                <?php elseif ($test->active === Test::MISSED): ?>
+                                                    <div class="number">
+                                                        <div class="state wrong">
+                                                            <?= ++$i ?>
+                                                        </div>
+                                                    </div>
+                                                <?php else: ?>
+                                                    <div class="number">
+                                                        <div class="state <?= $teamAnswer->answer &&
+                                                        $teamAnswer->answer->is_correct ?
+                                                            'correct' : 'wrong' ?>">
+                                                            <?= ++$i ?>
+                                                        </div>
+                                                    </div>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+                                        </div>
                                     </div>
                                 </div>
                             <?php endif; ?>
-                            <div class="text">
-                                <div class="bold">Завдання</div> - текст-риба.
-                                <br>
-                                <br><div class="bold">Освітній проект Відкривай Україну</div> – це потужна ресурсна база, яка сприяє формуванню
-                                необхідних компетенцій сучасної молодої людини, розвиває життєстійкість молодих людей,
-                                формує навички критичного мислення, для вміння визначення проблем у своїх громадах та
-                                запропонувати інноваційні рішення для їх вирішення, а громадам отримати максимум переваг від
-                                пропозицій молоді.
-                                <br>
-                                <br><div class="bold">Місія проекту:</div>
-                                формувати нову генерацію соціально-активної, культурно збагаченої, ініціативної та
-                                високорозвиненої молоді!
-                                <br>
-                                <br><div class="bold">Мета проекту:</div>
-                                створити умови для набуття практичного проектного досвіду; розширити обізнаність щодо
-                                налагодження ефективних комунікацій, командної роботи, розуміння суспільних потреб, бачення
-                                місцевого культурного розвитку та можливостей фінансового самозабезпечення; сформувати
-                                необхідні компетенції у молоді для створення можливостей до самореалізації у містах,
-                                районах, регіонах України.
-                                <br>
-                                <br><div class="bold">Ціль проекту:</div>
-                                сприяти розвитку громадянського суспільства в регіонах через реалізацію молодіжних
-                                соціальних та культурних проектів.
-                                <br>
-                                <br><div class="bold">Цільові групи:</div> учасники – учні шкіл з 7-11 клас, ментори команд - вчителі шкіл. Проектна
-                                діяльність направлена на всі регіони України та здійснюється з метою залучення молоді із
-                                різних куточків в тому числі молоді із числа ВПО та інших маргінальних груп з метою
-                                налагодження взаємодії та рівних можливостей для всіх категорій молодого покоління.
+                            <div class="text test-description">
+                                <?= $test->description ?>
                             </div>
                         </div>
                     </div>
@@ -132,7 +93,7 @@ $user = \Yii::$app->siteUser->identity;
 
 <?php
 $pageOptions = \yii\helpers\Json::encode([
-    'startBlockUrl' => '/tasks-test/start-block/',
+    'startBlockUrl' => '/tasks/start-test/',
 ]);
 
 $this->registerJs('TestsPage(' . $pageOptions . ')');

@@ -46,14 +46,6 @@ use yii\web\IdentityInterface;
  */
 class SiteUser extends ActiveRecord implements IdentityInterface
 {
-    const STATUS_ACTIVE = 'active';
-    const STATUS_UNCONFIRMED = 'unconfirmed';
-    const STATUS_BANNED = 'banned';
-    const STATUS_DISABLED = 'disabled';
-
-    const ROLE_MENTOR = 'mentor';
-    const ROLE_PARTICIPANT = 'participant';
-
     /**
      * Salt uses to hash user ID
      */
@@ -72,14 +64,6 @@ class SiteUser extends ActiveRecord implements IdentityInterface
      * @var string
      */
     public $passwordRepeat;
-
-    /**
-     * @return string
-     */
-    public static function answersTableName()
-    {
-        return 'question_answer_user';
-    }
 
     /**
      * @return string
@@ -207,7 +191,7 @@ class SiteUser extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByEmail($email)
     {
-        return static::findOne(['email' => $email, 'status' => [self::STATUS_ACTIVE, self::STATUS_UNCONFIRMED]]);
+        return static::findOne(['email' => $email, 'status' => [DefSiteUser::STATUS_ACTIVE, DefSiteUser::STATUS_INACTIVE]]);
     }
 
     /**
@@ -283,15 +267,6 @@ class SiteUser extends ActiveRecord implements IdentityInterface
     public function updateLoginCount()
     {
         $this->updateCounters(['login_count' => 1]);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAnswers()
-    {
-        return $this->hasMany(Answer::className(), ['id' => 'answer_id'])
-            ->viaTable(static::answersTableName(), ['user_id' => 'id']);
     }
 
     /**

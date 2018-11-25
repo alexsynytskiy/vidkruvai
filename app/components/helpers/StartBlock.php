@@ -2,9 +2,11 @@
 
 namespace app\components\helpers;
 
+use app\models\definitions\DefTask;
 use app\models\Question;
+use app\models\Task;
 use app\models\Test;
-use app\models\UserAnswer;
+use app\models\TeamAnswer;
 
 /**
  * Class StartBlock
@@ -21,23 +23,28 @@ class StartBlock
      */
     public static function startBlockLogic($hash)
     {
-        $group = Test::findOne(['hash' => $hash]);
+        /** @var Test $test */
+        $test = Test::find()
+            ->alias('test')
+            ->innerJoin(Task::tableName() . ' task', 'test.id = task.item_id')
+            ->where(['task.hash' => $hash, 'task.item_type' => DefTask::TYPE_TEST])
+            ->one();
 
-        if ($group) {
-            /** @var UserAnswer[] $userAnswers */
-            $userAnswers = UserAnswer::find()
+        if ($test) {
+            /** @var TeamAnswer[] $teamAnswers */
+            $teamAnswers = TeamAnswer::find()
                 ->alias('qa')
                 ->innerJoin(Question::tableName() . ' q', 'qa.question_id = q.id')
                 ->where([
-                    'qa.site_user_id' => \Yii::$app->siteUser->id,
+                    'qa.team_id' => \Yii::$app->siteUser->identity->team->id,
                     'qa.answer_id' => null,
-                    'q.group_id' => $group->id,
+                    'q.group_id' => $test->id,
                 ])
                 ->all();
 
             $alreadyStarted = false;
 
-            foreach ($userAnswers as $answer) {
+            foreach ($teamAnswers as $answer) {
                 if ($answer->started_at === null) {
                     $answer->started_at = date('Y-m-d H:i:s');
                 } elseif ($answer->started_at !== null &&
@@ -54,7 +61,7 @@ class StartBlock
             return [
                 'status' => !$alreadyStarted ? 'success' : 'warning',
                 'message' => !$alreadyStarted ? 'Відлік часу розпочато!' : 'Ти втрачаєш час, таймер не чекатиме',
-                'answerBlockUrl' => '/answer/' . $hash,
+                'answerBlockUrl' => '/tasks/test-answer/' . $hash,
             ];
         }
 

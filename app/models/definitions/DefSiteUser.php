@@ -4,7 +4,6 @@ namespace app\models\definitions;
 
 use app\components\AppMsg;
 use app\components\BaseDefinition;
-use app\models\SiteUser;
 
 /**
  * Class DefSiteUser
@@ -12,6 +11,9 @@ use app\models\SiteUser;
  */
 class DefSiteUser extends BaseDefinition
 {
+    const ROLE_MENTOR = 'mentor';
+    const ROLE_PARTICIPANT = 'participant';
+
     /**
      * Statuses
      */
@@ -45,8 +47,8 @@ class DefSiteUser extends BaseDefinition
     public static function getListUserRoles($returnType = 'key-value')
     {
         $roles = [
-            SiteUser::ROLE_PARTICIPANT => AppMsg::t('Учасник'),
-            SiteUser::ROLE_MENTOR => AppMsg::t('Ментор'),
+            self::ROLE_PARTICIPANT => AppMsg::t('Учасник'),
+            self::ROLE_MENTOR => AppMsg::t('Ментор'),
         ];
 
         return static::getListDataByReturnType($roles, $returnType);
@@ -59,8 +61,8 @@ class DefSiteUser extends BaseDefinition
     public static function getUserRoleText($key)
     {
         $roles = [
-            SiteUser::ROLE_PARTICIPANT => AppMsg::t('Учасник'),
-            SiteUser::ROLE_MENTOR => AppMsg::t('Ментор'),
+            self::ROLE_PARTICIPANT => AppMsg::t('Учасник'),
+            self::ROLE_MENTOR => AppMsg::t('Ментор'),
         ];
 
         return $roles[$key];
@@ -72,8 +74,8 @@ class DefSiteUser extends BaseDefinition
     public static function getRoles()
     {
         return [
-            SiteUser::ROLE_PARTICIPANT => 'Учасник',
-            SiteUser::ROLE_MENTOR => 'Ментор',
+            self::ROLE_PARTICIPANT => 'Учасник',
+            self::ROLE_MENTOR => 'Ментор',
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\components\AppMsg;
 use yii\db\ActiveRecord;
+use yii\db\Query;
 
 /**
  * This is the model class for table "school".
@@ -19,6 +20,8 @@ use yii\db\ActiveRecord;
  */
 class School extends ActiveRecord
 {
+    public $usersCount;
+
     /**
      * @inheritdoc
      */

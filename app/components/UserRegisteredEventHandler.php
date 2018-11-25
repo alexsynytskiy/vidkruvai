@@ -37,8 +37,10 @@ class UserRegisteredEventHandler
     protected function checkUserAccounts()
     {
         if ($this->event !== null) {
-            if (AchievementComponent::isGoalAchieved(RegistrationAchievement::CLASS_NAME, $this->event->userId, DefEntityAchievement::ENTITY_USER)) {
-                AchievementComponent::achieveByUser(RegistrationAchievement::CLASS_NAME, $this->event->userId, DefEntityAchievement::ENTITY_USER);
+            if (AchievementComponent::isGoalAchieved(RegistrationAchievement::CLASS_NAME,
+                $this->event->userId, DefEntityAchievement::ENTITY_USER)) {
+                AchievementComponent::achieveByUser(RegistrationAchievement::CLASS_NAME,
+                    $this->event->userId, DefEntityAchievement::ENTITY_USER);
             }
         } else {
             throw new BadRequestHttpException('Bad request');

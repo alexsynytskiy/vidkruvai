@@ -7,8 +7,9 @@ use app\models\Achievement;
 use app\models\Award;
 use app\models\definitions\DefAward;
 use app\models\definitions\DefEntityAward;
-use app\models\Level;
 use app\models\EntityAward;
+use app\models\Level;
+use app\models\Task;
 use Yii;
 
 /**
@@ -56,6 +57,10 @@ class AwardEventHandler
             $this->awards = Level::getListAwards($this->event->objectId, $this->event->entityType);
             AchievementHelper::levelPassedNotification($this->event->objectId, $this->awards, $this->event->entityType);
             $this->awardType = DefEntityAward::TYPE_LEVEL;
+        } elseif ($this->event->senderClassName === TaskComponent::className()) {
+            $this->awards = Task::getListAwards($this->event->objectId);
+            AchievementHelper::taskExecutedNotification($this->event->objectId, $this->awards);
+            $this->awardType = DefEntityAward::TYPE_TASK;
         }
     }
 
@@ -75,7 +80,7 @@ class AwardEventHandler
                 $awardLog->entity_type = $this->event->entityType;
                 $awardLog->award_id = $award->id;
                 $awardLog->type = $this->awardType;
-                $awardLog->object_id = $this->event->objectId ?: null; //Id of element, after achievement which award was taken(DefLandingUserAward::listTypes)
+                $awardLog->object_id = $this->event->objectId ?: null;
                 $awardLog->save(false);
             } catch (\Throwable $e) {
 

@@ -4,7 +4,9 @@ namespace yii\easyii\modules\news\controllers;
 
 use app\models\CommentChannel;
 use app\models\definitions\DefSiteUser;
+use app\models\definitions\DefTask;
 use app\models\SiteUser;
+use app\models\Task;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
@@ -15,6 +17,7 @@ use yii\easyii\components\helpers\CategoryHelper;
 use yii\easyii\helpers\Image;
 use yii\easyii\modules\news\models\News;
 use yii\easyii\modules\news\models\NewsUser;
+use yii\easyii\modules\tasks\models\TasksUser;
 use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 use yii\web\UploadedFile;
@@ -31,19 +34,19 @@ class AController extends Controller
             ],
             [
                 'class' => StatusController::className(),
-                'model' => News::className()
+                'model' => Task::className()
             ]
         ];
     }
 
     public function actionIndex()
     {
-        $dataNews = new ActiveDataProvider([
-            'query' => News::find()->where(['category' => CategoryHelper::CATEGORY_NEWS])->orderBy('time')
+        $dataTasks = new ActiveDataProvider([
+            'query' => Task::find()->orderBy('created_at DESC')
         ]);
 
         return $this->render('index', [
-            'dataNews' => $dataNews
+            'dataTasks' => $dataTasks
         ]);
     }
 
@@ -53,8 +56,7 @@ class AController extends Controller
      */
     public function actionCreate()
     {
-        $model = new News;
-        $model->time = time();
+        $model = new Task();
 
         if ($model->load(Yii::$app->request->post())) {
             if (Yii::$app->request->isAjax) {
@@ -74,25 +76,18 @@ class AController extends Controller
                         ->from(SiteUser::tableName())
                         ->where(['status' => DefSiteUser::STATUS_ACTIVE])->all(), 'id');
 
-                    $channelComments = new CommentChannel();
-                    $channelComments->site_user_id = Yii::$app->user->id;
-                    $channelComments->name = $model->title;
-                    $channelComments->slug= $model->slug;
-                    $channelComments->status = 'ACTIVE';
-                    $channelComments->save();
-
                     foreach ($siteUsers as $userId) {
-                        $newsUser = new NewsUser();
-                        $newsUser->site_user_id = $userId;
-                        $newsUser->news_id = $model->news_id;
+                        $tasksUser = new TasksUser();
+                        $tasksUser->site_user_id = $userId;
+                        $tasksUser->task_id = $model->id;
 
-                        if(!$newsUser->save()) {
-                            $this->flash('error', Yii::t('easyii/news',
-                                'Notifications not sent :' . VarDumper::export($newsUser->getErrors())));
+                        if(!$tasksUser->save()) {
+                            $this->flash('error', Yii::t('easyii/tasks',
+                                'Notifications not sent :' . VarDumper::export($tasksUser->getErrors())));
                         }
                     }
 
-                    $this->flash('success', Yii::t('easyii/news', 'News created'));
+                    $this->flash('success', Yii::t('easyii/tasks', 'Task created'));
                     return $this->redirect(['/admin/' . $this->module->id]);
                 }
 
@@ -113,7 +108,7 @@ class AController extends Controller
      */
     public function actionEdit($id)
     {
-        $model = News::find()->where(['news_id' => $id])->multilingual()->one();
+        $model = Task::findOne($id);
 
         if ($model === null) {
             $this->flash('error', Yii::t('easyii', 'Not found'));
@@ -135,7 +130,7 @@ class AController extends Controller
                 }
 
                 if ($model->save()) {
-                    $this->flash('success', Yii::t('easyii/news', 'News updated'));
+                    $this->flash('success', Yii::t('easyii/tasks', 'Task updated'));
                 } else {
                     $this->flash('error', Yii::t('easyii', 'Update error. {0}', $model->formatErrors()));
                 }
@@ -150,21 +145,6 @@ class AController extends Controller
 
     /**
      * @param $id
-     * @return string|\yii\web\Response
-     */
-    public function actionPhotos($id)
-    {
-        if (!($model = News::findOne($id))) {
-            return $this->redirect(['/admin/' . $this->module->id]);
-        }
-
-        return $this->render('photos', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * @param $id
      * @return mixed
      * @throws \Exception
      * @throws \Throwable
@@ -172,37 +152,12 @@ class AController extends Controller
      */
     public function actionDelete($id)
     {
-        if (($model = News::findOne($id))) {
+        if (($model = Task::findOne($id))) {
             $model->delete();
         } else {
             $this->error = Yii::t('easyii', 'Not found');
         }
-        return $this->formatResponse(Yii::t('easyii/news', 'News deleted'));
-    }
-
-    /**
-     * @param $id
-     * @return \yii\web\Response
-     * @throws \Exception
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
-    public function actionClearImage($id)
-    {
-        $model = News::findOne($id);
-
-        if ($model === null) {
-            $this->flash('error', Yii::t('easyii', 'Not found'));
-        } else {
-            $model->image = '';
-            if ($model->update()) {
-                @unlink(Yii::getAlias('@webroot') . $model->image);
-                $this->flash('success', Yii::t('easyii', 'Image cleared'));
-            } else {
-                $this->flash('error', Yii::t('easyii', 'Update error. {0}', $model->formatErrors()));
-            }
-        }
-        return $this->back();
+        return $this->formatResponse(Yii::t('easyii/tasks', 'Task deleted'));
     }
 
     public function actionUp($id)
@@ -217,11 +172,11 @@ class AController extends Controller
 
     public function actionOn($id)
     {
-        return $this->changeStatus($id, News::STATUS_ON);
+        return $this->changeStatus($id, DefTask::STATUS_ON);
     }
 
     public function actionOff($id)
     {
-        return $this->changeStatus($id, News::STATUS_OFF);
+        return $this->changeStatus($id, DefTask::STATUS_OFF);
     }
 }

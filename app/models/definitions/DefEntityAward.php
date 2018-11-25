@@ -16,6 +16,7 @@ class DefEntityAward extends BaseDefinition
      */
     const TYPE_ACHIEVEMENT = 'achievement';
     const TYPE_LEVEL = 'level';
+    const TYPE_TASK = 'task';
 
     /**
      * @param string $returnType
@@ -29,6 +30,7 @@ class DefEntityAward extends BaseDefinition
         $statuses = [
             self::TYPE_ACHIEVEMENT => AppMsg::t('Досягнення'),
             self::TYPE_LEVEL => AppMsg::t('Рівень'),
+            self::TYPE_TASK => AppMsg::t('Завдання'),
         ];
 
         return static::getListDataByReturnType($statuses, $returnType);

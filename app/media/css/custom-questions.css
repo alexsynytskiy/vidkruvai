@@ -341,17 +341,10 @@ form .already a:hover {
     width: 100%;
     min-height: 116px;
     border-radius: 5px;
-    border: 2px solid #007BFF;
 }
 
 .steps-block.profile .questions .block:last-child {
     margin-bottom: 0;
-}
-
-.steps-block.profile .questions .block.disabled,
-.steps-block.profile .questions .block.answered,
-.steps-block.profile .questions .block.missed {
-    border: 2px solid #CBD5DC;
 }
 
 .steps-block.profile .questions .block.answered .right-part .number {
@@ -362,21 +355,19 @@ form .already a:hover {
 
 .steps-block.profile .questions .block .left-part {
     float: left;
-    width: calc(100% - 173px);
+    width: calc(100% - 116px);
     height: 100%;
     min-height: 116px;
     text-align: left;
-    padding-left: 32px;
 }
 
 .steps-block.profile .questions .block .left-part .title {
-    height: 50%;
+    height: 100%;
     font-family: 'Lato', sans-serif;
     font-size: 24px;
     font-weight: bold;
     color: #263745;
-    line-height: 21px;
-    padding-top: 28px;
+    line-height: 116px;
 }
 
 .steps-block.profile .questions .block .left-part .sub-title {
@@ -388,8 +379,6 @@ form .already a:hover {
     line-height: 22px;
     padding-top: 12px;
 }
-
-
 
 .steps-block.profile .questions .block .left-part .sub-title.info {
     line-height: 21px;
@@ -425,41 +414,43 @@ form .already a:hover {
 
 .steps-block.profile .questions .block .right-part {
     float: left;
-    width: 173px;
+    width: 116px;
     height: 100%;
 }
 
-.steps-block.profile .questions .block .right-part .numbers {
+.steps-block.profile .questions .block .numbers {
+    height: 60px;
+    width: 100%;
+}
+
+.steps-block.profile .questions .block .number {
     height: 100%;
-    width: 58px;
+    width: 60px;
     float: left;
-}
-
-.steps-block.profile .questions .block .right-part .number {
-    height: 50%;
     border: 2px solid #007BFF;
     font-family: 'Lato', sans-serif;
     font-size: 18px;
+    margin-top: 32px;
     font-weight: bold;
-    line-height: 55px;
-    border-top: none;
+    line-height: 57px;
+    border-right: none;
 }
 
-.steps-block.profile .questions .block.disabled .right-part .number,
-.steps-block.profile .questions .block.missed .right-part .number {
+.steps-block.profile .questions .block .number:last-child {
+    border-right: 2px solid #007BFF;
+}
+
+.steps-block.profile .questions .block.disabled .number,
+.steps-block.profile .questions .block.missed .number {
     border: 2px solid #CBD5DC;
     border-top: none;
 }
 
-.steps-block.profile .questions .block.missed .right-part .number {
+.steps-block.profile .questions .block.missed .number {
     position: relative;
 }
 
-.steps-block.profile .questions .block .right-part .number:last-child {
-    border-bottom: none;
-}
-
-.steps-block.profile .questions .block .right-part .number .state {
+.steps-block.profile .questions .block .number .state {
     height: 38px;
     width: 38px;
     position: absolute;
@@ -473,11 +464,11 @@ form .already a:hover {
     border-radius: 19px;
 }
 
-.steps-block.profile .questions .block .right-part .number .state.correct {
+.steps-block.profile .questions .block .number .state.correct {
     background-color: #69d6ad;
 }
 
-.steps-block.profile .questions .block .right-part .number .state.wrong {
+.steps-block.profile .questions .block .number .state.wrong {
     background-color: #9F6CC7;
 }
 
@@ -486,6 +477,8 @@ form .already a:hover {
     color: #fff;
     height: 100%;
     float: left;
+    border-radius: 5px;
+    border: 2px solid #007BFF;
 }
 
 .steps-block.profile .questions .block .right-part .start.enabled {
@@ -521,7 +514,7 @@ form .already a:hover {
 
 .steps-block.profile .questions .block .right-part .start .text.title {
     padding-top: 45px;
-    line-height: 40px;
+    line-height: 5px;
 }
 
 .steps-block.profile .questions .block .right-part .start .text.sub-title {
@@ -533,6 +526,7 @@ form .already a:hover {
 .steps-block.profile .questions .block .right-part .start.missed {
     position: relative;
     background-color: #CBD5DC;
+    border-color: #CBD5DC;
 }
 
 .steps-block.profile .questions .block .right-part .start.answered {

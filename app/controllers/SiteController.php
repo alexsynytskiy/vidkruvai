@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\components\Controller;
+use yii\easyii\modules\page\api\Page;
 
 /**
  * Class SiteController
@@ -20,7 +21,6 @@ class SiteController extends Controller
         \Yii::$app->seo->setKeywords('відкривай, україну');
 
         return $this->render('index', [
-
         ]);
     }
 
@@ -34,7 +34,7 @@ class SiteController extends Controller
         \Yii::$app->seo->setKeywords('відкривай, україну');
 
         return $this->render('questions', [
-
+            'questions' => Page::get(['questions'])
         ]);
     }
 
@@ -48,7 +48,7 @@ class SiteController extends Controller
         \Yii::$app->seo->setKeywords('відкривай, україну');
 
         return $this->render('contacts', [
-
+            'contacts' => Page::get(['contacts'])
         ]);
     }
 
@@ -62,7 +62,7 @@ class SiteController extends Controller
         \Yii::$app->seo->setKeywords('відкривай, україну');
 
         return $this->render('about', [
-
+            'about' => Page::get(['about'])
         ]);
     }
 

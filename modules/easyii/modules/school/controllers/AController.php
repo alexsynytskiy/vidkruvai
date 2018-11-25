@@ -6,6 +6,7 @@ use app\models\City;
 use app\models\School;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\db\Expression;
 use yii\easyii\components\Controller;
 use yii\easyii\modules\school\models\AddSchoolForm;
 use yii\filters\VerbFilter;
@@ -32,8 +33,24 @@ class AController extends Controller
 
     public function actionIndex()
     {
+//        $searchModel = new SchoolSearch();
+//        $queryParams = \Yii::$app->request->queryParams;
+//        $dataProvider = $searchModel->search($queryParams);
+//
+//        return $this->render('index', [
+//            'data' => $dataProvider,
+//            'searchModel' => $searchModel,
+//        ]);
+
+        $query = School::find()->alias('s')->select('s.*')->addSelect(
+            new Expression('(SELECT COUNT(su.id) count_users FROM `school` `sc` 
+            INNER JOIN `site_user` `su` ON su.school_id = sc.id 
+            WHERE `sc`.`id`= s.id GROUP BY `su`.`school_id`) as usersCount')
+        )
+            ->orderBy('usersCount DESC');
+
         $data = new ActiveDataProvider([
-            'query' => School::find()->orderBy('id DESC')
+            'query' => $query
         ]);
 
         return $this->render('index', [

@@ -132,9 +132,9 @@ class Question extends \yii\db\ActiveRecord
     {
         return self::find()
             ->alias('q')
-            ->innerJoin(UserAnswer::tableName() . ' qa', 'qa.question_id = q.id')
+            ->innerJoin(TeamAnswer::tableName() . ' qa', 'qa.question_id = q.id')
             ->where([
-                'qa.site_user_id' => \Yii::$app->siteUser->id,
+                'qa.team_id' => \Yii::$app->siteUser->identity->team->id,
                 'qa.answer_id' => null,
                 'q.group_id' => $groupId,
             ])
@@ -147,11 +147,11 @@ class Question extends \yii\db\ActiveRecord
      */
     public function getEmptyQuestionsCount()
     {
-        return UserAnswer::find()
+        return TeamAnswer::find()
             ->alias('qa')
             ->innerJoin(Question::tableName() . ' q', 'qa.question_id = q.id')
             ->where([
-                'qa.site_user_id' => \Yii::$app->siteUser->id,
+                'qa.team_id' => \Yii::$app->siteUser->identity->team->id,
                 'qa.answer_id' => null,
                 'q.group_id' => $this->group_id,
             ])

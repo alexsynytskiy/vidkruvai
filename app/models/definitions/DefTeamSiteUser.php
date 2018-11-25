@@ -92,10 +92,10 @@ class DefTeamSiteUser extends BaseDefinition
     public static function getRoleText($teamRole, $userRole)
     {
         $types = [
-            SiteUser::ROLE_MENTOR => [
+            DefSiteUser::ROLE_MENTOR => [
                 self::ROLE_MEMBER => AppMsg::t('Ментор'),
             ],
-            SiteUser::ROLE_PARTICIPANT => [
+            DefSiteUser::ROLE_PARTICIPANT => [
                 self::ROLE_MEMBER => AppMsg::t('Учасник'),
                 self::ROLE_CAPTAIN => AppMsg::t('Капітан'),
             ]

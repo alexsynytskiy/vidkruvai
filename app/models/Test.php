@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\models\definitions\DefTask;
+
 /**
  * This is the model class for table "test".
  *
@@ -9,12 +11,10 @@ namespace app\models;
  * @property string $name
  * @property string $description
  * @property string $completed_data
- * @property string $hash
- * @property string $starting_at
- * @property string $ending_at
  *
  * @property Question[] $questions
- * @property UserAnswer[] $userAnswers
+ * @property TeamAnswer[] $teamAnswers
+ * @property Task $task
  */
 class Test extends \yii\db\ActiveRecord
 {
@@ -22,8 +22,6 @@ class Test extends \yii\db\ActiveRecord
     const DISABLED = 'disabled';
     const ACTIVE = 'active';
     const ANSWERED = 'answered';
-
-    const USER_BLOCK_QUESTIONS = 2;
 
     public $active = self::DISABLED;
 
@@ -41,8 +39,8 @@ class Test extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['starting_at', 'ending_at', 'name'], 'safe'],
-            [['name', 'description', 'hash', 'completed_data'], 'string'],
+            [['name'], 'safe'],
+            [['name', 'description', 'completed_data'], 'string'],
         ];
     }
 
@@ -70,17 +68,26 @@ class Test extends \yii\db\ActiveRecord
     /**
      * @return array|null|\yii\db\ActiveRecord
      */
-    public function getUserAnswers()
+    public function getTeamAnswers()
     {
-        return UserAnswer::find()
+        return TeamAnswer::find()
             ->alias('qa')
             ->innerJoin(Question::tableName() . ' q', 'q.id = qa.question_id')
             ->innerJoin(self::tableName() . ' g', 'q.group_id = g.id')
             ->where([
-                'qa.site_user_id' => \Yii::$app->siteUser->id,
+                'qa.team_id' => \Yii::$app->siteUser->identity->team->id,
                 'g.id' => $this->id,
             ])
             ->all();
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTask()
+    {
+        return $this->hasOne(Task::className(), ['item_id' => 'id'])
+            ->andOnCondition(['item_type' => DefTask::TYPE_TEST]);
     }
 
     /**

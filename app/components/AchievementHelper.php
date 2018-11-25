@@ -7,6 +7,7 @@ use app\models\Award;
 use app\models\Category;
 use app\models\definitions\DefEntityAchievement;
 use app\models\Level;
+use app\models\Task;
 use Yii;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
@@ -108,6 +109,38 @@ class AchievementHelper
         }
 
         static::setFlashArray(AppMsg::t($message, $msgParams));
+    }
+
+    /**
+     * @param int $taskId
+     * @param Award[] $awards
+     */
+    public static function taskExecutedNotification($taskId, $awards)
+    {
+        $task = Task::findOne([$taskId]);
+
+        if($task) {
+            $message = 'Команда виконала завдання {taskLink}';
+            $msgParams = [
+                'taskLink' => Html::a(AppMsg::t('{taskName}', ['taskName' => $task->object->name]),
+                    "/tasks/{$task->item_type}/" . $task->hash, ['class' => 'bold']),
+            ];
+
+            if (count($awards) > 0) {
+                $message = 'Команда виконала {taskLink} та отримала <span class="bold">{awards}</span>';
+                $awardsNames = '';
+
+                foreach ($awards as $award) {
+                    $awardsNames .= $award->name . ', ';
+                }
+
+                $awardsNames = rtrim($awardsNames, ', ');
+
+                $msgParams['awards'] = $awardsNames;
+            }
+
+            static::setFlashArray(AppMsg::t($message, $msgParams));
+        }
     }
 
     /**

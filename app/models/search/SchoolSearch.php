@@ -3,17 +3,21 @@
 namespace app\models\search;
 
 use app\components\traits\SortTrait;
+use app\models\School;
 use app\models\SiteUser;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\Query;
 
 /**
- * Class SiteUserSearch
+ * Class SchoolSearch
  * @package app\models\search
  */
-class SiteUserSearch extends SiteUser
+class SchoolSearch extends School
 {
     use SortTrait;
+
+    public $usersCount;
 
     /**
      * @inheritdoc
@@ -21,11 +25,9 @@ class SiteUserSearch extends SiteUser
     public function rules()
     {
         return [
-            [['id', 'age', 'school_id'], 'integer'],
+            [['id', 'name', 'number'], 'integer'],
             [[
-                'email', 'school_id', 'class', 'age',
-                'name', 'surname', 'role', 'level_id', 'language', 'level_experience',
-                'total_experience', 'school.name', 'level.num'
+                'id', 'name', 'number', 'city.state.name', 'city.city', 'type.name', 'usersCount'
             ], 'safe'],
         ];
     }
@@ -51,11 +53,19 @@ class SiteUserSearch extends SiteUser
         $this->load($params);
 
         $query = static::find()
-            ->alias('u');
+            ->alias('s');
+
+        $this->usersCount = (new Query)
+            ->from(self::tableName() . ' s')
+            ->select('COUNT(su.id) count_users')
+            ->innerJoin(SiteUser::tableName() . ' su', 'su.school_id = s.id')
+            ->where(['s.id' => $this->id])
+            ->groupBy('su.school_id')
+            ->scalar();
 
         $query->joinWith([
-            'level',
-            'school',
+            'type',
+            'city',
         ]);
 
         $dataProvider = new ActiveDataProvider([
@@ -71,22 +81,15 @@ class SiteUserSearch extends SiteUser
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'u.id' => $this->id,
-            'school_id' => $this->school_id,
-            'class' => $this->class,
-            'role' => $this->role,
+            's.id' => $this->id,
+            's.name' => $this->name,
+            's.number' => $this->number,
         ]);
 
-        $this->compareRangeDate($query, 'created_at', $this->created_at);
-
-        $query->andFilterWhere(['like', 'school_id', $this->school_id])
-            ->andFilterWhere(['like', 'level.num', $this->level_id])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere([
-                'or',
-                ['like', 'u.surname', $this->name],
-                ['like', 'u.name', $this->name],
-            ]);
+        $query->andFilterWhere(['like', 'city.state.name', $this->city->state->name])
+            ->andFilterWhere(['like', 'city.city', $this->city->city])
+            ->andFilterWhere(['like', 'type.name', $this->type->name])
+            ->andFilterWhere(['like', 'usersCount', $this->usersCount]);
 
         return $dataProvider;
     }

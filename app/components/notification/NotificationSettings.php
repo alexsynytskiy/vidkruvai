@@ -98,8 +98,8 @@ class NotificationSettings
                 ],
                 DefNotification::TYPE_TEAM_INVITATION => [
                     'icon' => 'fa fa-envelope-o',
-                    'icon-border-color' => 'border-failure',
-                    'icon-color' => 'text-failure',
+                    'icon-border-color' => 'border-success',
+                    'icon-color' => 'text-success',
                     'short-title' => 'Отримано запрошення у команду',
                     'title' => 'Вам надійшло запрошення у команду',
                     'message' => 'Капітан {team_captain} надіслав вам запрошення у команду {team_name}! 
@@ -121,7 +121,19 @@ class NotificationSettings
                         'sendIfNotRead' => false,
                         'sendPeriod' => 24,
                     ],
-                ]
+                ],
+                DefNotification::TYPE_MENTOR_NOTIFICATION => [
+                    'icon' => 'fa fa-user-secret',
+                    'icon-border-color' => 'border-success',
+                    'icon-color' => 'text-success',
+                    'short-title' => 'Отримано повідомлення від організаторів',
+                    'title' => 'Вам надійшло повідомлення від організаторів проекту',
+                    'message' => 'Сьогодні о 19:00 відбудеться вебінар, на якому ви отримаєте усі відповіді про проект, реєстрацію, етапи, структуру, роль ментора та багато іншого! Детальніше за посиланням {link_news} Дата отримання {created_at}',
+                    'scenario' => [
+                        'sendIfNotRead' => false,
+                        'sendPeriod' => 24,
+                    ],
+                ],
             ];
         }
     }

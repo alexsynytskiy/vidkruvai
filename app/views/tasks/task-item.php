@@ -1,21 +1,67 @@
 <?php
+
+use \app\models\definitions\DefTask;
+
 /* @var $this yii\web\View */
 /* @var $item \app\models\Task */
 
 ?>
 
-<div class="task-item clearfix">
-    <div class="image" style="background: url(<?= $item->image ?>);background-size: cover;"></div>
+<div class="tasks-item task clearfix">
+    <div class="image" style="background: url(<?= $item->image ?>); background-size: 220px; background-repeat: no-repeat;"></div>
     <div class="information">
+        <div class="icon-states">
+            <?php if ($item->required): ?>
+                <div class="task-required" data-toggle="tooltip" data-placement="top"
+                     title="<?= \app\components\AppMsg::t('Це завдання - обов\'язкове') ?>"></div>
+            <?php endif; ?>
+
+            <?php if ($item->read): ?>
+                <div class="task-new" data-toggle="tooltip" data-placement="top"
+                     title="<?= \app\components\AppMsg::t('Ви отримали нове завдання!') ?>"></div>
+            <?php endif; ?>
+        </div>
+
         <div class="title">
-            <a href="<?= \yii\helpers\Url::to(["/tasks/{$item->type}/" . $item->hash]) ?>"><?= $item->title ?></a>
+            <a href="<?= \yii\helpers\Url::to(["/tasks/{$item->item_type}/" . $item->hash]) ?>"><?= $item->object->name ?></a>
         </div>
+
         <div class="short">
-            <?= \yii\helpers\StringHelper::truncate($item->short, 250, '..') ?>
+            <?= \yii\helpers\StringHelper::truncate($item->object->short, 250, '..') ?>
         </div>
+
         <div class="short item-date">
-            <?= date('d.m.Y', $item->time); ?>
+            <div class="dark">Старт</div>
+            <?= date('d.m.Y H:i:s ', strtotime($item->starting_at)) .
+            '<div class="dark">- Дедлайн</div>' .
+            date(' d.m.Y H:i:s', strtotime($item->ending_at)) ?>
         </div>
-        <a class="short read-more" href="<?= \yii\helpers\Url::to(["/tasks/{$item->type}/" . $item->hash]) ?>">Детальніше</a>
+
+        <div class="categories clearfix">
+            <div class="category">
+                <div class="icon <?= $item->item_type ?>"></div>
+                <div class="text-category"><?= DefTask::getTypeText($item->item_type) ?></div>
+            </div>
+        </div>
+
+        <div class="team-state <?= $item->stateForTeam ?>">
+            <?= \app\models\definitions\DefTask::getStateText($item->stateForTeam) ?>
+        </div>
+
+        <?php if (!in_array($item->stateForTeam, [DefTask::DISABLED, DefTask::MISSED], false)): ?>
+            <a class="short read-more" href="<?= \yii\helpers\Url::to(["/tasks/{$item->item_type}/" . $item->hash]) ?>">
+                <?= $item->stateForTeam === DefTask::ACTIVE ? 'Детальніше' : 'Переглянути' ?>
+            </a>
+        <?php endif; ?>
+
+        <div class="heading-elements" data-task-id="<?= $item->id; ?>">
+            <?php if ($item->read): ?>
+                <a id="read<?= $item->id ?>"
+                   href="<?= \yii\helpers\Url::to(['/tasks/read', 'id' => $item->id]) ?>"
+                   class="label label-success heading-text read-tasks" data-ajax="1">
+                    <i class="fa fa-check"></i>Ознайомився
+                </a>
+            <?php endif; ?>
+        </div>
     </div>
 </div>

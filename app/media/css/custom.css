@@ -495,7 +495,6 @@ article {
     position: fixed;
     z-index: 1;
     top: 145px;
-    left: 145px;
     margin-left: auto;
     margin-right: auto;
     background: #fff;
@@ -649,7 +648,7 @@ article {
     color: #3195FF;
 }
 
-.cabinet-menu .icon .new-count {
+.cabinet-menu .icon .news-count, .cabinet-menu .icon .tasks-count {
     position: absolute;
     right: -7px;
     top: -5px;
@@ -752,9 +751,10 @@ article {
 
 .content-left-fixed .tasks-item .information {
     float: right;
-    width: 620px;
-    padding: 32px;
+    width: 630px;
+    padding: 32px 45px 32px 32px;
     height: 335px;
+    position: relative;
 }
 
 .content-left-fixed .tasks-item .information .title {
@@ -764,6 +764,15 @@ article {
     text-align: left;
     margin-bottom: 20px;
     font-weight: bold;
+}
+
+.content-left-fixed .tasks-item .information .title a:hover {
+    color: #3195FF;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
 }
 
 .content-left-fixed .tasks-item .information .short {
@@ -776,15 +785,44 @@ article {
 }
 
 .content-left-fixed .tasks-item .information .short.item-date {
-    color: #93A0A9;
-    margin-bottom: 40px;
+    color: #ff4c00;
+    margin-bottom: 24px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.content-left-fixed .tasks-item .information .short.item-date .dark {
+    color: #373737;
+    display: inline-block;
+    font-size: 15px;
 }
 
 .content-left-fixed .tasks-item .information a.short.read-more {
     font-weight: bold;
-    color: #007BFF;
     text-align: left;
     display: block;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin-bottom: 32px;
+    margin-right: 32px;
+    background-color: #007BFF;
+    border-radius: 5px;
+    color: #fff;
+    padding: 8px 12px !important;
+    margin-left: 16px;
+    border: 2px solid #007BFF;
+}
+
+.content-left-fixed .tasks-item .information a.short.read-more:hover {
+    color: #007BFF;
+    background-color: #fff;
+    border: 2px solid #007BFF;
     -webkit-transition: all ease 0.5s;
     -moz-transition: all ease 0.5s;
     -o-transition: all ease 0.5s;
@@ -796,7 +834,7 @@ article {
     margin-bottom: 25px !important;
 }
 
-.read-news {
+.read-news, .read-tasks {
     float: left;
     font-size: 12px;
     padding: 7px;
@@ -860,11 +898,11 @@ span.bg-success,
     border: none;
 }
 
-.read-news:hover {
+.read-news:hover, .read-tasks:hover {
     background-color: #3195FF !important;
 }
 
-.read-news i {
+.read-news i, .read-tasks i {
     margin-right: 5px;
 }
 
@@ -888,7 +926,7 @@ span.bg-success,
     border-radius: 5px;
 }
 
-#mark-all-news-as-read {
+#mark-all-news-as-read, #mark-all-tasks-as-read {
     float: right;
     height: 100%;
     padding: 6px 11px 6px 45px;
@@ -901,17 +939,18 @@ span.bg-success,
     position: relative;
 }
 
-#mark-all-news-as-read:hover, #load-more-news:hover {
+#mark-all-news-as-read:hover, #load-more-news:hover,
+#mark-all-tasks-as-read:hover, #load-more-tasks:hover {
     cursor: pointer;
     background-color: #fff;
     color: #007BFF;
 }
 
-#mark-all-news-as-read:hover i {
+#mark-all-news-as-read:hover i, #mark-all-tasks-as-read:hover i {
     color: #007BFF;
 }
 
-#mark-all-news-as-read i {
+#mark-all-news-as-read i, #mark-all-tasks-as-read i {
     padding: 12px;
     position: absolute;
     top: 0;
@@ -1551,6 +1590,13 @@ span.bg-success,
     font-size: 17px;
     line-height: 32px;
     margin-top: 25px;
+    text-align: center;
+    padding-left: 32px;
+    padding-right: 32px;
+}
+
+.task .profile-info-main .test-description {
+    padding: 0;
     text-align: justify;
 }
 
@@ -1579,6 +1625,10 @@ span.bg-success,
 
 #full-notification-block i.fa.fa-home {
     font-size: 42px;
+}
+
+#full-notification-block i.fa.fa-user-secret {
+    font-size: 48px;
 }
 
 .btn-kv {
@@ -1782,22 +1832,33 @@ span.bg-success,
 }
 
 .task .categories .category .icon {
-    height: 40px;
-    width: 40px;
-    background-color: #878787;
-    border-radius: 50%;
+    height: 42px;
+    width: 42px;
     float: left;
     margin-right: 16px;
+}
+
+.task .categories .category .icon.test {
+    background: url(/app/media/img/test.svg) center no-repeat;
+    background-size: 42px;
+}
+
+.task .categories .category .icon.written {
+    background: url(/app/media/img/written.svg) center no-repeat;
+    background-size: 42px;
 }
 
 .task .categories .category .text-category {
     float: left;
     line-height: 40px;
     margin-right: 24px;
+    color: #93A0A9;
 }
 
 .task .categories {
-    margin: 20px 0;
+    margin: 32px 0;
+    position: absolute;
+    bottom: 0;
 }
 
 .mobile-actions {
@@ -1808,52 +1869,57 @@ span.bg-success,
     display: block;
 }
 
-.content-left-fixed #tasks-list .tasks-item {
-    border-radius: 10px;
-    box-shadow: 0 3px 15px 0 rgba(0, 60, 125, 0.15);
-    margin-bottom: 62px;
-}
-
-.content-left-fixed #tasks-list .tasks-item .image {
-    height: 336px;
-    margin: 0;
-    float: left;
-    width: 220px;
-    overflow: hidden;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    background-color: #E4E9EC;
-}
-
-.content-left-fixed #tasks-list .tasks-item .information {
-    float: right;
-    position: relative;
-    width: 620px;
-    padding: 32px;
-    height: 336px;
-}
-
-.content-left-fixed #tasks-list .tasks-item .information .title {
+.task .profile-info-main .title.written-title {
+    height: 100%;
     font-family: 'Lato', sans-serif;
     font-size: 24px;
-    line-height: 29px;
-    text-align: left;
-    margin-bottom: 20px;
     font-weight: bold;
+    color: #263745;
+    line-height: 32px;
+    text-align: left;
 }
 
-.content-left-fixed #tasks-list .tasks-item .information .short {
-    font-family: 'Lato', sans-serif;
+.task .profile-info-main .field-writtentaskanswer-text {
+    margin-top: 25px;
+    text-align: left;
+}
+
+.task .profile-info-main .field-writtentaskanswer-text label{
+    text-align: left;
     font-size: 18px;
-    line-height: 22px;
-    text-align: left;
+    line-height: 24px;
     margin-bottom: 20px;
-    color: #373737;
 }
 
-.content-left-fixed #tasks-list .tasks-item .information a.read-more {
+.task .profile-info-main .send-written-task {
     font-weight: bold;
-    text-align: left;
+    display: block;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+    margin-top: 25px;
+    margin-bottom: 0;
+    margin-right: 32px;
+    background-color: #007BFF;
+    border-radius: 5px;
+    color: #fff;
+    padding: 8px 12px !important;
+    border: 2px solid #007BFF;
+}
+
+.task .profile-info-main .send-written-task:hover {
+    background-color: #fff;
+    color: #007BFF;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+}
+
+.content-left-fixed .tasks-item .team-state {
     display: block;
     -webkit-transition: all ease 0.5s;
     -moz-transition: all ease 0.5s;
@@ -1861,33 +1927,51 @@ span.bg-success,
     -ms-transition: all ease 0.5s;
     transition: all ease 0.5s;
     position: absolute;
-    bottom: 32px;
-    right: 32px;
-    height: 44px;
-    background-color: #007BFF;
-    color: #fff;
-    padding: 12px 32px;
-    border-radius: 5px;
-    line-height: 15px;
-    border: 2px solid #007BFF;
-    margin-bottom: 0;
+    right: 181px;
+    bottom: 0;
+    margin-bottom: 32px;
+    padding: 8px 12px !important;
+    margin-left: 16px;
+    font-size: 15px;
+    font-weight: bold;
 }
 
-.content-left-fixed #tasks-list .tasks-item .information a.read-more:hover,
-.content-left-fixed #tasks-list .tasks-item .information .title a:hover {
+.content-left-fixed .tasks-item .team-state.active {
+    color: #59d818;
+}
+
+.content-left-fixed .tasks-item .team-state.disabled {
+    color: #93A0A9;
+}
+
+.content-left-fixed .tasks-item .team-state.answered {
     color: #007BFF;
-    background-color: #fff;
-    -webkit-transition: all ease 0.5s;
-    -moz-transition: all ease 0.5s;
-    -o-transition: all ease 0.5s;
-    -ms-transition: all ease 0.5s;
-    transition: all ease 0.5s;
 }
 
-.content-left-fixed #tasks-list .tasks-item.task .categories {
-    margin: 0;
+.content-left-fixed .tasks-item .team-state.missed {
+    color: #FF6B00;
+}
+
+.content-left-fixed .tasks-item .icon-states {
     position: absolute;
-    bottom: 32px;
+    right: 8px;
+    top: 13px;
+}
+
+.content-left-fixed .tasks-item .task-required {
+    background: url(/app/media/img/required.svg) center no-repeat;
+    background-size: 32px;
+    height: 32px;
+    width: 32px;
+    margin-bottom: 6px;
+}
+
+.content-left-fixed .tasks-item .task-new {
+    background: url(/app/media/img/new-task.svg) center no-repeat;
+    background-size: 23px;
+    height: 23px;
+    width: 23px;
+    margin: 0 auto;
 }
 
 @media (max-width: 1199px) {
@@ -2243,7 +2327,7 @@ span.bg-success,
         display: none;
     }
 
-    #mark-all-news-as-read {
+    #mark-all-news-as-read, #mark-all-tasks-as-read {
         display: block;
         margin: 10px auto 0;
         float: none;

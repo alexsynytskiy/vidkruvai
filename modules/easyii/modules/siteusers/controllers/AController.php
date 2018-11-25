@@ -42,10 +42,17 @@ class AController extends Controller
         $queryParams = \Yii::$app->request->queryParams;
         $dataProvider = $searchModel->search($queryParams);
 
+        $showStates = true;
+
+        if($queryParams) {
+            $showStates = false;
+        }
+
         return $this->render('index', [
             'data' => $dataProvider,
             'searchModel' => $searchModel,
             'stateStatistics' => $stateStatistics,
+            'showStates' => $showStates,
         ]);
     }
 

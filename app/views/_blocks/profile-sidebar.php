@@ -10,6 +10,9 @@ $baseUrl = $asset->baseUrl;
 $totalNews = \yii\easyii\modules\news\models\News::getUserNewsCounters();
 $totalNews = $totalNews > 0 ? $totalNews : null;
 
+$totalTasks = \app\models\Task::getUserTasksCounters();
+$totalTasks = $totalTasks > 0 ? $totalTasks : null;
+
 $showUserInfo = isset($showUserInfo) ? $showUserInfo : true;
 $user = \Yii::$app->siteUser->identity;
 
@@ -33,13 +36,10 @@ switch ($controller) {
 
         break;
     case 'team':
-        if($currentPage === 'tasks') {
-            $tasks = 'active';
-        }
-        else {
-            $team = 'active';
-        }
-
+        $team = 'active';
+        break;
+    case 'tasks':
+        $tasks = 'active';
         break;
 }
 
@@ -79,6 +79,9 @@ switch ($controller) {
         <div class="menu-link <?= $tasks ?>">
             <div class="icon">
                 <i class="fa fa-list" style="font-size: 26px;"></i>
+                <?php if ($totalTasks): ?>
+                    <div class="tasks-count tasks-unread"><?= $totalTasks ?></div>
+                <?php endif; ?>
             </div>
             <a href="<?= Url::to([$user->team ? '/tasks' : '#']) ?>">
                 <div class="text">Завдання</div>
@@ -94,7 +97,7 @@ switch ($controller) {
             <div class="icon">
                 <i class="fa fa-newspaper-o" style="font-size: 23px;"></i>
                 <?php if ($totalNews): ?>
-                    <div class="new-count news-unread"><?= $totalNews ?></div>
+                    <div class="news-count news-unread"><?= $totalNews ?></div>
                 <?php endif; ?>
             </div>
             <a href="/profile/news/">

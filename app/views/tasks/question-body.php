@@ -49,7 +49,7 @@ $countAnswered = $testQuestionsCount - $question->emptyQuestionsCount;
             <div class="item answered-point"></div>
         <?php endfor; ?>
 
-        <?php for ($i = 0; $i < 2 - $countAnswered; $i++): ?>
+        <?php for ($i = 0; $i < $testQuestionsCount - $countAnswered; $i++): ?>
             <div class="item unanswered-point"></div>
         <?php endfor; ?>
     </div>

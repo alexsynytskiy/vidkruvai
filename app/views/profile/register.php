@@ -106,7 +106,7 @@ $asset = \app\assets\AppAsset::register($this);
 
 <?php
 $pageOptions = \yii\helpers\Json::encode([
-    'mentorValue' => \app\models\SiteUser::ROLE_MENTOR,
+    'mentorValue' => \app\models\definitions\DefSiteUser::ROLE_MENTOR,
 ]);
 
 $this->registerJs('RegisterPage(' . $pageOptions . ')');

@@ -1,66 +1,69 @@
-var News = function () {
+var Tasks = function () {
     "use strict";
 
     /**
      * @returns {boolean}
      */
-    var newsPage = function () {
-        var handleNewsChangeStatus = function () {
-            $('body')
-                .on('click', '.read-news', function (e) {
+    var tasksPage = function () {
+        var handleTasksChangeStatus = function () {
+            $('body').on('click', '.read-tasks', function (e) {
                     e.preventDefault();
 
-                    var newsId = $(this).parent('div').data('news-id');
+                    var tasksId = $(this).parent('div').data('task-id');
 
-                    if (typeof newsId === 'undefined') {
+                    var $readLabel = $(this).parent().parent().find('.task-new');
+                    $readLabel.remove();
+
+                    if (typeof tasksId === 'undefined') {
                         return false;
                     }
 
-                    _mark([newsId], 'read', 0);
+                    _mark([tasksId], 'read', 0);
                     $(this).remove();
                 })
-                .on('click', '#mark-all-news-as-read', function () {
+                .on('click', '#mark-all-tasks-as-read', function () {
                     if ($(this).hasClass('disabled')) {
                         return false;
                     }
 
                     swal({
-                        text: SiteCore.t('news.markAllConfirm'),
+                        text: SiteCore.t('tasks.markAllConfirm'),
                         type: 'question',
                         showCancelButton: true,
                         cancelButtonText: SiteCore.t('cancel')
                     }).then(function (result) {
                         if (result.value) {
                             _mark([], null, 1).then(function () {
-                                $('.read-news').remove();
-                                updateNewsCounters();
+                                $('.read-tasks').remove();
+                                $('.task-new').remove();
+                                updateTasksCounters();
 
                                 new PNotify({
                                     title: 'Успіх!',
-                                    text: SiteCore.t('news.allHaveBeenRead'),
+                                    text: SiteCore.t('tasks.allHaveBeenRead'),
                                     icon: '',
                                     type: 'success',
                                     delay: 3000 //Show the notification 4sec
                                 });
 
-                                $('#mark-all-news-as-read').hide();
+                                $('#mark-all-tasks-as-read').hide();
                             });
                         }
                     });
-                }).on('click', '#load-more-news', function (e) {
+                }).on('click', '#load-more-tasks', function (e) {
                 e.preventDefault();
 
                 const $loadMore = $(this),
                     lastId = parseInt($loadMore.attr('data-last-id'));
 
                 $.post(
-                    '/news/load-more/',
+                    '/tasks/load-more/',
                     {
                         lastId: lastId, _csrf: SiteCore.getCsrfToken()
                     },
                     function (response) {
                         if (typeof response.items !== 'undefined') {
-                            $('#news-list').append(response.items);
+                            $('#tasks-list').append(response.items);
 
                             var screenW = $(document).width();
                             SiteCore.windowSize(screenW);
@@ -82,8 +85,8 @@ var News = function () {
                 $loadMore.blur();
             });
 
-            function _mark(newsIds, newsStatus, markAll) {
-                return markNews(newsIds, newsStatus, markAll)
+            function _mark(tasksIds, tasksStatus, markAll) {
+                return markTasks(tasksIds, tasksStatus, markAll)
                     .then(function () {
                         ObserverList.notify(ObserverList.EVENT_ON_NEWS_STATUS_CHANGE);
                         ObserverList.notify(ObserverList.EVENT_ON_NEWS_AFTER_STATUS_CHANGE);
@@ -93,22 +96,22 @@ var News = function () {
 
         return {
             init: function () {
-                ObserverList.subscribe(ObserverList.EVENT_ON_NEWS_STATUS_CHANGE, refreshToolbarNews);
+                ObserverList.subscribe(ObserverList.EVENT_ON_NEWS_STATUS_CHANGE, refreshToolbarTasks);
                 ObserverList.subscribe(ObserverList.EVENT_ON_NEWS_BEFORE_STATUS_CHANGE, blockActionButtons, [true]);
                 ObserverList.subscribe(ObserverList.EVENT_ON_NEWS_AFTER_STATUS_CHANGE, blockActionButtons, [false]);
-                handleNewsChangeStatus();
+                handleTasksChangeStatus();
             }
         };
     };
 
-    var markNews = function (newsIds, newsStatus, markAll) {
+    var markTasks = function (tasksIds, tasksStatus, markAll) {
         markAll = markAll || 0;
 
         return $.ajax({
-            url: '/news/mark/',
+            url: '/tasks/mark/',
             dataType: 'json',
             method: 'POST',
-            data: {ids: newsIds, status: newsStatus, mark_all: markAll, _csrf: SiteCore.getCsrfToken()},
+            data: {ids: tasksIds, status: tasksStatus, mark_all: markAll, _csrf: SiteCore.getCsrfToken()},
             beforeSend: function () {
                 ObserverList.notify(ObserverList.EVENT_ON_NEWS_BEFORE_STATUS_CHANGE);
             },
@@ -121,21 +124,21 @@ var News = function () {
         });
     };
 
-    var updateNewsCounters = function (counters) {
+    var updateTasksCounters = function (counters) {
         var total = counters,
             isTotalPositive = parseInt(total) > 0;
 
         if (isTotalPositive === true) {
-            $('.news-unread').text(total.toString());
+            $('.tasks-unread').text(total.toString());
         }
         else {
-            $('.news-unread').remove();
+            $('.tasks-unread').remove();
         }
     };
 
     var blockActionButtons = function (mode) {
-        var $newsPage = $('.news-page'),
-            $markAllBtn = $newsPage.find('#mark-all-news-as-read');
+        var tasksPage = $('.tasks-page'),
+            $markAllBtn = tasksPage.find('#mark-all-tasks-as-read');
 
         if (mode) {
             $markAllBtn.addClass('disabled');
@@ -144,13 +147,13 @@ var News = function () {
         }
     };
 
-    var refreshToolbarNews = function () {
-        $.get('/news/counter/', function (result) {
-            updateNewsCounters(result.counters);
+    var refreshToolbarTasks = function () {
+        $.get('/tasks/counter/', function (result) {
+            updateTasksCounters(result.counters);
         }, 'json');
     };
 
     return {
-        NewsPage: newsPage
+        TasksPage: tasksPage
     };
 }();

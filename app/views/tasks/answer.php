@@ -9,9 +9,9 @@ $asset = \app\assets\AppAsset::register($this);
 
 $baseUrl = $asset->baseUrl;
 
-$userAnswer = \app\models\UserAnswer::findOne([
+$teamAnswer = \app\models\TeamAnswer::findOne([
     'question_id' => $blockQuestion->id,
-    'user_id' => \Yii::$app->siteUser->identity->id,
+    'team_id' => \Yii::$app->siteUser->identity->team->id,
     'answer_id' => null,
 ]);
 
@@ -31,8 +31,8 @@ $user = \Yii::$app->siteUser->identity;
                             <div class="profile-info-main clearfix">
                                 <?php if ($user->team): ?>
                                     <div id="question-wrapper">
-                                        <?= $this->render('/_blocks/question-body',
-                                            ['blockQuestion' => $blockQuestion]) ?>
+                                        <?= $this->render('/tasks/question-body',
+                                            ['question' => $blockQuestion]) ?>
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -45,8 +45,8 @@ $user = \Yii::$app->siteUser->identity;
 <?php
 $pageOptions = \yii\helpers\Json::encode([
     'questionId' => $blockQuestion->id,
-    'checkAnswerUrl' => '/tasks-test/answer-check/',
-    'expiringAt' => strtotime($userAnswer->started_at) + \app\models\Question::TIME_FOR_ANSWER,
+    'checkAnswerUrl' => '/tasks/answer-test-check/',
+    'expiringAt' => strtotime($teamAnswer->started_at) + \app\models\Question::TIME_FOR_ANSWER,
 ]);
 
 $this->registerJs('AnswerPage(' . $pageOptions . ')');

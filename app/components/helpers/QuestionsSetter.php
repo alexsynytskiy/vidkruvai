@@ -3,7 +3,7 @@
 namespace app\components\helpers;
 
 use app\models\Test;
-use app\models\UserAnswer;
+use app\models\TeamAnswer;
 use yii\db\Exception;
 
 /**
@@ -13,40 +13,38 @@ use yii\db\Exception;
 class QuestionsSetter
 {
     /**
+     * @param int $teamId
+     * @param int $testId
      * @throws Exception
      */
-    public static function setUserQuestions()
+    public static function setTeamQuestions($teamId, $testId)
     {
-        $userId = \Yii::$app->siteUser->identity->id;
-
-        $tests = Test::find()->orderBy('id')->all();
-
         /** @var Test $test */
-        foreach ($tests as $test) {
-            $testQuestions = $test->questions;
-            $testQuestionsCount = count($testQuestions);
+        $test = Test::find()->where(['id' => $testId])->one();
 
-            $selectedStack = [];
+        $testQuestions = $test->questions;
+        $testQuestionsCount = count($test->teamAnswers);
 
-            if (count($testQuestions) > $testQuestionsCount) {
-                $selectedStack[] = mt_rand(0, count($testQuestions) - 1);
-                do {
-                    $newNumber = mt_rand(0, count($testQuestions) - 1);
+        $selectedStack = [];
 
-                    if(!in_array($newNumber, $selectedStack,false)) {
-                        $selectedStack[] = $newNumber;
-                    }
-                } while (count($selectedStack) < $testQuestionsCount);
-            }
+        if (count($testQuestions) > $testQuestionsCount) {
+            $selectedStack[] = mt_rand(0, count($testQuestions) - 1);
+            do {
+                $newNumber = mt_rand(0, count($testQuestions) - 1);
 
-            foreach ($selectedStack as $position) {
-                $answer = new UserAnswer();
-                $answer->site_user_id = $userId;
-                $answer->question_id = $testQuestions[$position]->id;
-
-                if (!$answer->save()) {
-                    throw new Exception('User questions answers not created');
+                if(!in_array($newNumber, $selectedStack,false)) {
+                    $selectedStack[] = $newNumber;
                 }
+            } while (count($selectedStack) < count($testQuestions));
+        }
+
+        foreach ($selectedStack as $position) {
+            $answer = new TeamAnswer();
+            $answer->team_id = $teamId;
+            $answer->question_id = $testQuestions[$position]->id;
+
+            if (!$answer->save()) {
+                throw new Exception('User questions answers not created');
             }
         }
     }

@@ -25,15 +25,16 @@ $module = $this->context->module->id;
             <th><?= Yii::t('easyii', 'Тип') ?></th>
             <th><?= Yii::t('easyii', '№') ?></th>
             <th><?= Yii::t('easyii', 'Название') ?></th>
+            <th><?= Yii::t('easyii', 'Участники') ?></th>
             <th width="150">#</th>
         </tr>
         </thead>
         <tbody>
-        <?php foreach ($data->models as $item): ?>
-            <?php /** School $item */ ?>
-
+        <?php
+            /** School $item */
+            foreach ($data->models as $item):
+        ?>
             <tr data-id="<?= $item->primaryKey ?>">
-
                 <?php if (IS_ROOT) : ?>
                     <td><?= $item->primaryKey ?></td>
                 <?php endif; ?>
@@ -42,6 +43,9 @@ $module = $this->context->module->id;
                 <td><?= $item->type->name ?></td>
                 <td><?= $item->number ?></td>
                 <td><?= $item->name ?></td>
+                <td>
+                    <a target="_blank" href="<?= str_replace('siteusers', 'siteusers/', Url::to(['/admin/siteusers/', 'SiteUserSearch' => ['school_id' => $item->id]])) ?>"><?= $item->usersCount ?: '0' ?></a>
+                </td>
                 <td>
                     <a href="<?= Url::to(['/admin/' . $module . '/a/edit/', 'id' => $item->primaryKey]) ?>">Редактировать</a>
                 </td>

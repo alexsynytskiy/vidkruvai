@@ -100,6 +100,8 @@ $config = [
                 '<alias:\w+>' => 'validation/<alias>',
 
                 'tasks/test/<hash:[\w-]+>' => 'tasks/test',
+                'tasks/written/<hash:[\w-]+>' => 'tasks/written',
+                'tasks/test-answer/<hash:[\w-]+>' => 'tasks/test-answer',
 
                 '<controller:\w+>' => '<controller>/index',
                 '<controller:\w+>/<slug:[\w-]+>' => '<controller>/view',
@@ -159,6 +161,9 @@ $config = [
         (new app\components\AwardEventHandler)->award($event);
     },
     'on app.components.LevelComponent.on-unlocked' => function ($event) {
+        (new app\components\AwardEventHandler)->award($event);
+    },
+    'on app.components.TaskComponent.on-executed' => function ($event) {
         (new app\components\AwardEventHandler)->award($event);
     },
     'on beforeRequest' => function () {

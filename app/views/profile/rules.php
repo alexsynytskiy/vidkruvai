@@ -6,7 +6,7 @@ $asset = \app\assets\AppAsset::register($this);
 
 $baseUrl = $asset->baseUrl;
 
-$roleMentor = Yii::$app->siteUser->identity->role === \app\models\SiteUser::ROLE_MENTOR;
+$roleMentor = Yii::$app->siteUser->identity->role === \app\models\definitions\DefSiteUser::ROLE_MENTOR;
 ?>
 
     <div class="steps-block profile clearfix">

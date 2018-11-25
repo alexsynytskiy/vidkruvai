@@ -37,6 +37,7 @@ class DefNotification extends BaseDefinition
     const TYPE_TASK_RECEIVED = 'task-received';
 
     const TYPE_USER_PROFILE_PROBLEM = 'user=profile-problem';
+    const TYPE_MENTOR_NOTIFICATION = 'mentor-notification';
 
     /**
      * @param string $returnType
@@ -81,7 +82,7 @@ class DefNotification extends BaseDefinition
     {
         $types = [
             self::TYPE_USER_REGISTRATION => AppMsg::t('Реєстрація користувача'),
-            self::TYPE_NEWS_ADDED => AppMsg::t('Добавлена новина'),
+            self::TYPE_NEWS_ADDED => AppMsg::t('Додано новину'),
             self::TYPE_HELLO_USER => AppMsg::t('Привітання користувачу'),
             self::TYPE_TEAM_CREATED => AppMsg::t('Команду створено'),
             self::TYPE_TEAM_ACTIVATED => AppMsg::t('Команду активовано'),
@@ -90,6 +91,7 @@ class DefNotification extends BaseDefinition
             self::TYPE_TASK_RECEIVED => AppMsg::t('Отримано завдання'),
             self::TYPE_TEAM_INVITATION => AppMsg::t('Отримано запрошення у команду'),
             self::TYPE_USER_PROFILE_PROBLEM => AppMsg::t('Виникла помилка профілю!'),
+            self::TYPE_MENTOR_NOTIFICATION => AppMsg::t('Повідомлення від організаторів проекту'),
         ];
 
         return static::getListDataByReturnType($types, $returnType);

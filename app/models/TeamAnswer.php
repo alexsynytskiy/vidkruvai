@@ -7,10 +7,10 @@ use yii\db\ActiveRecord;
 use yii\db\Expression;
 
 /**
- * This is the model class for table "question_answer_user".
+ * This is the model class for table "test_question_answer".
  *
  * @property integer $id
- * @property integer $site_user_id
+ * @property integer $team_id
  * @property integer $question_id
  * @property integer $answer_id
  * @property string $created_at
@@ -19,16 +19,16 @@ use yii\db\Expression;
  *
  * @property Question $question
  * @property Answer $answer
- *
+ * @property Team $team
  */
-class UserAnswer extends \yii\db\ActiveRecord
+class TeamAnswer extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'question_answer_user';
+        return 'test_question_answer';
     }
 
     /**
@@ -37,8 +37,8 @@ class UserAnswer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['started_at', 'answered_at', 'created_at', 'question_id', 'site_user_id', 'answer_id'], 'safe'],
-            [['question_id', 'site_user_id', 'answer_id'], 'integer'],
+            [['started_at', 'answered_at', 'created_at', 'question_id', 'team_id', 'answer_id'], 'safe'],
+            [['question_id', 'team_id', 'answer_id'], 'integer'],
         ];
     }
 
@@ -76,9 +76,9 @@ class UserAnswer extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getTeam()
     {
-        return $this->hasOne(SiteUser::className(), ['id' => 'site_user_id']);
+        return $this->hasOne(SiteUser::className(), ['id' => 'team_id']);
     }
 
     /**
