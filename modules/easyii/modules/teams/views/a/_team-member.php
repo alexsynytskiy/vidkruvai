@@ -27,8 +27,19 @@ $confirmed = $member->status === DefTeamSiteUser::STATUS_CONFIRMED;
                 <div class="progress-descr">
                     <h5><?= $confirmed ? Html::encode($memberInstance->getFullName()) : $member->email ?></h5>
                     <p>
-                        <?= $confirmed ? DefTeamSiteUser::getRoleText($member->role, $memberInstance->role) :
-                            DefTeamSiteUser::getStatusText($member->status) ?>
+                        <?php if($member->role === DefTeamSiteUser::ROLE_CAPTAIN &&
+                            $memberInstance->role === \app\models\definitions\DefSiteUser::ROLE_MENTOR) : ?>
+                        <div class="bold" style="color: red;">Команду створив ментор - необхідно зв'язатись з ментором,
+                        та перевизначити капітана у системі. До того часу команда виконувати завдання не може, АКТИВУВАТИ КОМАНДУ ЗАБОРОНЕНО!</div>
+                        <?php endif; ?>
+                        <?= $confirmed ? DefTeamSiteUser::getRoleText($member->role, $memberInstance->role) : '' ?>
+                        <br>
+                        <?= DefTeamSiteUser::getStatusText($member->status) ?>
+                        <?php if($memberInstance->role === \app\models\definitions\DefSiteUser::ROLE_PARTICIPANT): ?>
+                            <br>
+                            Клас:
+                            <?= $memberInstance->class ?>
+                        <?php endif; ?>
                     </p>
                 </div>
             </div>

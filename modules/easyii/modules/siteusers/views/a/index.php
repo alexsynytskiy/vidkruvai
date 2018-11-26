@@ -55,7 +55,7 @@ $gridColumns = [
     [
         'label' => 'Switch status',
         'content' => function ($model) {
-            return Html::checkbox('', $model->status === \app\models\SiteUser::STATUS_ACTIVE, [
+            return Html::checkbox('', $model->status === \app\models\definitions\DefSiteUser::STATUS_ACTIVE, [
                 'class' => 'switch',
                 'data-id' => $model->primaryKey,
                 'data-link' => Url::to(['/admin/' . $this->context->module->id . '/a']),

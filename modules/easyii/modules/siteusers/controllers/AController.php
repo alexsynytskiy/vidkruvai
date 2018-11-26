@@ -3,6 +3,7 @@
 namespace yii\easyii\modules\siteusers\controllers;
 
 use app\models\City;
+use app\models\definitions\DefSiteUser;
 use app\models\School;
 use app\models\search\SiteUserSearch;
 use app\models\SiteUser;
@@ -120,11 +121,11 @@ class AController extends Controller
 
     public function actionOn($id)
     {
-        return $this->changeStatus($id, SiteUser::STATUS_ACTIVE);
+        return $this->changeStatus($id, DefSiteUser::STATUS_ACTIVE);
     }
 
     public function actionOff($id)
     {
-        return $this->changeStatus($id, SiteUser::STATUS_DISABLED);
+        return $this->changeStatus($id, DefSiteUser::STATUS_BLOCKED);
     }
 }

@@ -209,6 +209,8 @@ class TeamController extends Controller
                     ['team_name' => $model->name, 'created_at' => date('d-M-Y H:i:s')]);
 
                 $this->flash('success', AppMsg::t('Команду створено'));
+
+                return $this->redirect('/team');
             } else {
                 $this->flash('error', AppMsg::t('Проблема при створенні команди'));
             }

@@ -5,10 +5,12 @@ use \app\models\definitions\DefTask;
 /* @var $this yii\web\View */
 /* @var $item \app\models\Task */
 
+$asset = \app\assets\AppAsset::register($this);
+$baseUrl = $asset->baseUrl;
 ?>
 
 <div class="tasks-item task clearfix">
-    <div class="image" style="background: url(<?= $item->image ?>); background-size: 220px; background-repeat: no-repeat;"></div>
+    <div class="image" style="background: url(<?= $item->image ?: $baseUrl . '/img/task-default.svg' ?>); background-size: cover; background-repeat: no-repeat;"></div>
     <div class="information">
         <div class="icon-states">
             <?php if ($item->required): ?>

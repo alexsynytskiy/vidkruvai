@@ -12,6 +12,7 @@ use app\components\TaskCompletedEventHandler;
 use app\models\definitions\DefEntityAchievement;
 use app\models\definitions\DefNotificationUser;
 use app\models\definitions\DefTask;
+use app\models\definitions\DefTeam;
 use app\models\Question;
 use app\models\Task;
 use app\models\Test;
@@ -81,13 +82,24 @@ class TasksController extends Controller
             return $this->redirect('/profile');
         }
 
+        if($team->status === DefTeam::STATUS_UNCONFIRMED) {
+            $this->flash('error', AppMsg::t('Ми перевіряємо склад вашої команди та відповідність правилам! Зачекай трохи, та повертайся.'));
+            return $this->redirect('/team');
+        }
+
+        if($team->status === DefTeam::STATUS_DISABLED) {
+            $this->flash('error', AppMsg::t('На жаль склад вашої команди не відповідає правилам. У вас є час до 02.12.2018 запросити до команди учнів з класів, яких не вистачає.'));
+            return $this->redirect('/team');
+        }
+
         $hasToLoadMore = false;
         $lastItemId = 0;
         /** @var Task[] $tasks */
         $tasks = Task::find()
             ->where(['<=', 'starting_at', new Expression('NOW()')])
-            ->where(['>=', 'ending_at', new Expression('NOW()')])
-            ->orderBy('starting_at DESC')
+            ->andWhere(['>=', 'ending_at', new Expression('NOW()')])
+            ->andWhere(['status' => DefTask::STATUS_ON])
+            ->orderBy('starting_at, id DESC')
             ->all();
 
         foreach ($tasks as $task) {
@@ -124,7 +136,7 @@ class TasksController extends Controller
             }
 
             if($task->item_type === DefTask::TYPE_WRITTEN) {
-                if (!$task->object->teamAnswered($team->id)) {
+                if ($team && !$task->object->teamAnswered($team->id)) {
                     if($currentTime >= strtotime($task->starting_at) && $currentTime <= strtotime($task->ending_at)) {
                         $task->stateForTeam = Test::ACTIVE;
                     }

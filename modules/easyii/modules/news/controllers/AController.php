@@ -215,13 +215,43 @@ class AController extends Controller
         return $this->move($id, 'down');
     }
 
+    /**
+     * @param int $id
+     * @return mixed
+     */
     public function actionOn($id)
     {
+        $siteUsers = ArrayHelper::getColumn((new Query)->select('id')
+            ->from(SiteUser::tableName())
+            ->where(['status' => DefSiteUser::STATUS_ACTIVE])->all(), 'id');
+
+        foreach ($siteUsers as $userId) {
+            $newsUser = new NewsUser();
+            $newsUser->site_user_id = $userId;
+            $newsUser->news_id = $id;
+
+            if(!$newsUser->save()) {
+                $this->flash('error', Yii::t('easyii/news',
+                    'Notifications not sent :' . VarDumper::export($newsUser->getErrors())));
+            }
+        }
+
         return $this->changeStatus($id, News::STATUS_ON);
     }
 
+    /**
+     * @param int $id
+     * @return mixed
+     * @throws \Throwable
+     */
     public function actionOff($id)
     {
+        $notifications = NewsUser::findAll(['news_id' => $id]);
+
+        foreach ($notifications as $notification) {
+            $notification->delete();
+        }
+
         return $this->changeStatus($id, News::STATUS_OFF);
     }
 }

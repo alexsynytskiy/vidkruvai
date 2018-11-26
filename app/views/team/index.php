@@ -174,7 +174,7 @@ $user = \Yii::$app->siteUser->identity;
                                                                     <?php foreach ($achievements as $achievement): ?>
                                                                         <?= $this->render('_achievement-item', [
                                                                             'model' => $achievement,
-                                                                            'teamId' => $preview ? $entityCredentials['id'] : Yii::$app->siteUser->id,
+                                                                            'teamId' => $preview ? $entityCredentials['id'] : null,
                                                                         ]) ?>
                                                                     <?php endforeach; ?>
                                                                 </div>

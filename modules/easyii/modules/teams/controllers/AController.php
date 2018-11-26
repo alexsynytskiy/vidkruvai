@@ -2,14 +2,17 @@
 
 namespace yii\easyii\modules\teams\controllers;
 
+use app\models\definitions\DefTask;
 use app\models\definitions\DefTeam;
-use app\models\search\SiteUserSearch;
 use app\models\search\TeamSearch;
-use app\models\SiteUser;
+use app\models\Task;
 use app\models\Team;
 use Yii;
+use yii\db\Expression;
 use yii\easyii\behaviors\StatusController;
 use yii\easyii\components\Controller;
+use yii\easyii\modules\tasks\models\TasksUser;
+use yii\helpers\VarDumper;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 
@@ -76,13 +79,59 @@ class AController extends Controller
         ]);
     }
 
+    /**
+     * @param int $id
+     * @return mixed
+     */
     public function actionOn($id)
     {
+        $team = Team::findOne([$id]);
+
+        if($team) {
+            /** @var Task[] $tasks */
+            $tasks = Task::find()
+                ->where(['<=', 'starting_at', new Expression('NOW()')])
+                ->andWhere(['>=', 'ending_at', new Expression('NOW()')])
+                ->andWhere(['status' => DefTask::STATUS_ON])
+                ->orderBy('starting_at, id DESC')
+                ->all();
+
+            foreach ($tasks as $task) {
+                foreach ($team->teamUsers as $teamUser) {
+                    $tasksUser = new TasksUser();
+                    $tasksUser->site_user_id = $teamUser->site_user_id;
+                    $tasksUser->task_id = $task->id;
+
+                    if(!$tasksUser->save()) {
+                        $this->flash('error', Yii::t('easyii/tasks',
+                            'Notifications not sent :' . VarDumper::export($tasksUser->getErrors())));
+                    }
+                }
+            }
+        }
+
         return $this->changeStatus($id, DefTeam::STATUS_ACTIVE);
     }
 
+    /**
+     * @param int $id
+     * @return mixed
+     * @throws \Throwable
+     */
     public function actionOff($id)
     {
-        return $this->changeStatus($id, DefTeam::STATUS_DISABLED);
+        $team = Team::findOne([$id]);
+
+        if($team) {
+            foreach ($team->teamUsers as $teamUser) {
+                $notifications = TasksUser::findAll(['site_user_id' => $teamUser->site_user_id]);
+
+                foreach ($notifications as $notification) {
+                    $notification->delete();
+                }
+            }
+        }
+
+        return $this->changeStatus($id, DefTeam::STATUS_UNCONFIRMED);
     }
 }
