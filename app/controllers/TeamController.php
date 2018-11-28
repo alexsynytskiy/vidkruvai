@@ -269,12 +269,10 @@ class TeamController extends Controller
             }
 
             if ($model->updateTeam()) {
-                $this->flash('success', AppMsg::t('Команду оновлено'));
-            } else {
-                $this->flash('error', AppMsg::t('Внутрішня проблема при оновленні команди'));
-            }
+                $this->flash('success', AppMsg::t('Команду оновлено!'));
 
-            return $this->redirect('/team');
+                return $this->redirect('/team');
+            }
         }
 
         return $this->render('update-team', [

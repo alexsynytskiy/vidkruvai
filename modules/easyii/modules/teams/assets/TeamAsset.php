@@ -14,6 +14,7 @@ class TeamAsset extends \yii\web\AssetBundle
         'pnotify/pnotify.min.js',
         'js/TeamsCore.js',
         'js/TeamsForm.js',
+        'js/TeamsIndex.js'
     ];
 
     public $css = [

@@ -15,6 +15,7 @@ use yii\db\Expression;
  * @property integer $team_id
  * @property integer $task_id
  * @property string $created_at
+ * @property string $updated_at
  * @property string $params
  *
  * @property Task $task
@@ -37,7 +38,7 @@ class WrittenTaskAnswer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['created_at', 'task_id', 'team_id', 'text'], 'safe'],
+            [['created_at', 'task_id', 'team_id', 'text', 'updated_at'], 'safe'],
             [['task_id', 'team_id'], 'integer'],
         ];
     }
@@ -51,6 +52,8 @@ class WrittenTaskAnswer extends \yii\db\ActiveRecord
             'id' => 'ID',
             'text' => AppMsg::t('Поле відповіді (тут ви можете завантижити текст та додати фотографії. 
             Для відправлення є лише 1 спроба, тож будьте уважні!):'),
+            'created_at' => AppMsg::t('Создано'),
+            'updated_at' => AppMsg::t('Обновлено'),
         ];
     }
 
@@ -61,6 +64,7 @@ class WrittenTaskAnswer extends \yii\db\ActiveRecord
                 'class' => TimestampBehavior::className(),
                 'attributes' => [
                     ActiveRecord::EVENT_BEFORE_INSERT => ['created_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
                 ],
                 'value' => new Expression('NOW()'),
             ],

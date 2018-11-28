@@ -37,6 +37,7 @@ class AppAsset extends \yii\web\AssetBundle
         'plugins/pnotify/pnotify.min.js',
         'plugins/sweetalert/sweetalert2.min.js',
         'plugins/js/jquery.knob.min.js',
+        'js/ResizeSensor.js',
         'js/SiteCore.js',
         'js/ObserverList.js',
         'js/News.js',
@@ -48,7 +49,8 @@ class AppAsset extends \yii\web\AssetBundle
         'js/ProfilePage.js',
         'js/RegisterPage.js',
         'js/Achievements.js',
-        'js/AddSchoolPage.js'
+        'js/AddSchoolPage.js',
+        'js/WrittenPage.js'
     ];
 
     public $publishOptions = ['forceCopy' => true];

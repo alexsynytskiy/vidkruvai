@@ -4,7 +4,6 @@ namespace app\models\definitions;
 
 use app\components\AppMsg;
 use app\components\BaseDefinition;
-use app\models\SiteUser;
 
 /**
  * Class DefTeamSiteUser
@@ -61,7 +60,8 @@ class DefTeamSiteUser extends BaseDefinition
      * @param $type
      * @return mixed
      */
-    public static function getStatusByType($type) {
+    public static function getStatusByType($type)
+    {
         $types = [
             self::RESPONSE_DECLINED => self::STATUS_DECLINED,
             self::RESPONSE_REMOVED => self::STATUS_REMOVED,
@@ -102,5 +102,17 @@ class DefTeamSiteUser extends BaseDefinition
         ];
 
         return $types[$userRole][$teamRole];
+    }
+
+    /**
+     * @return array
+     */
+    public static function getTeammatesStatuses()
+    {
+        return [
+            self::STATUS_DECLINED => AppMsg::t('Відхилили запрошення:'),
+            self::STATUS_UNCONFIRMED => AppMsg::t('Очікують підтвердження:'),
+            self::STATUS_CONFIRMED => AppMsg::t('Підтвердили участь:'),
+        ];
     }
 }

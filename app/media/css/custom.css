@@ -1974,6 +1974,28 @@ span.bg-success,
     margin: 0 auto;
 }
 
+.teammates-emails-status {
+    text-align: left;
+    font-size: 18px;
+    font-weight: bold;
+    padding-left: 12px;
+    margin-bottom: 8px;
+}
+
+#redactor_modal footer {
+    min-height: auto;
+    position: relative;
+}
+
+.task .profile-info-main .text.written-text {
+    padding: 0;
+    text-align: left;
+}
+
+span.btn:hover {
+    cursor: default;
+}
+
 @media (max-width: 1199px) {
 
 }

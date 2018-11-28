@@ -189,13 +189,14 @@ class TasksController extends Controller
             ->where(['task.hash' => $hash, 'task.item_type' => DefTask::TYPE_TEST])
             ->one();
 
-        QuestionsSetter::setTeamQuestions($team->id, $test->id);
-
-        \Yii::$app->seo->setTitle('Тест|' . $test->name);
-        \Yii::$app->seo->setDescription('Відкривай Україну');
-        \Yii::$app->seo->setKeywords('Відкривай, Україну');
-
         if ($test) {
+            \Yii::$app->seo->setTitle('Тест|' . $test->name);
+            \Yii::$app->seo->setDescription('Відкривай Україну');
+            \Yii::$app->seo->setKeywords('Відкривай, Україну');
+
+            QuestionsSetter::setTeamQuestions($team->id, $test->id);
+            Task::readByIds([$test->task->id]);
+
             $testQuestionsCount = count($test->questions);
             $currentTime = time();
             $answersCount = 0;
@@ -253,11 +254,13 @@ class TasksController extends Controller
             ->where(['task.hash' => $hash])
             ->one();
 
-        \Yii::$app->seo->setTitle('Завдання|' . $writtenTask->name);
-        \Yii::$app->seo->setDescription('Відкривай Україну');
-        \Yii::$app->seo->setKeywords('Відкривай, Україну');
-
         if ($writtenTask) {
+            \Yii::$app->seo->setTitle('Завдання|' . $writtenTask->name);
+            \Yii::$app->seo->setDescription('Відкривай Україну');
+            \Yii::$app->seo->setKeywords('Відкривай, Україну');
+
+            Task::readByIds([$writtenTask->task->id]);
+
             $answer = WrittenTaskAnswer::findOne(['task_id' => $writtenTask->id, 'team_id' => $team->id]);
 
             if(!$answer) {
@@ -269,6 +272,11 @@ class TasksController extends Controller
                     $this->flash('error', AppMsg::t('Помилка бази данних, спробуйте ще раз'));
                     return $this->refresh();
                 }
+            }
+
+            if(time() > strtotime($writtenTask->task->ending_at)) {
+                $this->flash('error', AppMsg::t('Час на відповідь скінчився.. На це завдання ваша команда надіслати відповідь не зможе. Наступного разу не повторюйте цю помилку!'));
+                return $this->redirect(['/tasks']);
             }
 
             if (!$answer->text && $answer->load(\Yii::$app->request->post())) {

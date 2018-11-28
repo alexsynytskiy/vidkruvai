@@ -4,6 +4,7 @@
 
 use app\components\AppMsg;
 use yii\widgets\ActiveForm;
+use \app\models\definitions\DefTeamSiteUser;
 
 $asset = \app\assets\AppAsset::register($this);
 
@@ -68,18 +69,27 @@ $form = ActiveForm::begin([
                         </div>
                     <?php endfor; ?>
                 <?php else: ?>
-                    <?= $form->field($model, 'emails[]')->hiddenInput() ?>
-                    <?php foreach ($model->emails as $status => $email): ?>
-                        <div class="col-md-6 col-xs-12">
-                            <?= $form->field($model, 'emails[]')->textInput([
-                                'value' => $email,
-                                'class' => 'form-control ' . $status,
-                                'readonly' => in_array($status, [\app\models\definitions\DefTeamSiteUser::STATUS_DECLINED,
-                                \app\models\definitions\DefTeamSiteUser::STATUS_REMOVED], false),
-                            ]) ?>
-                        </div>
+                    <?php $reservedEmailsCount = 0; ?>
+
+                    <?php foreach (DefTeamSiteUser::getTeammatesStatuses() as $status => $title): ?>
+                        <?php if(array_key_exists($status, $model->emails)): ?>
+                            <div class="teammates-emails-status"><?= $title ?></div>
+                            <?php foreach ($model->emails[$status] as $email): ?>
+                                <div class="col-md-6 col-xs-12">
+                                    <?= $form->field($model, 'emails[]')->textInput([
+                                        'value' => $email,
+                                        'class' => 'form-control ' . $status,
+                                    ]) ?>
+                                </div>
+                                <?php $reservedEmailsCount++; endforeach; ?>
+                            <div class="clearfix"></div>
+                        <?php endif; ?>
                     <?php endforeach; ?>
-                    <?php for ($i = 1 + count($model->emails); $i <= 10; $i++): ?>
+
+                    <div class="clearfix"></div>
+
+                    <div class="teammates-emails-status">Вільні місця у команді:</div>
+                    <?php for ($i = 1 + $reservedEmailsCount; $i <= 10; $i++): ?>
                         <div class="col-md-6 col-xs-12">
                             <?= $form->field($model, 'emails[]')->textInput([
                                 'placeholder' => AppMsg::t('Учасник/Ментор ') . $i . ' (e-mail)'

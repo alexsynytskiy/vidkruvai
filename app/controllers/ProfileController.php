@@ -378,7 +378,16 @@ class ProfileController extends Controller
                     $userTeamItem->site_user_id = $userExistsAsUnit->id;
                     $userTeamItem->status = DefTeamSiteUser::STATUS_CONFIRMED;
 
-                    if ($userTeamItem->update()) {
+                    try {
+                        $userUpdated = $userTeamItem->update();
+                    }
+                    catch (\PDOException $e) {
+                        $this->flash('error', AppMsg::t('Ти ще не дав відповідь на запрошення в іншій команді'));
+
+                        return $this->redirect(['/']);
+                    }
+
+                    if ($userUpdated) {
                         $captain = $userTeamItem->team->teamCaptain();
 
                         \Yii::$app->notification->addToUser($captain, DefNotification::CATEGORY_TEAM,
@@ -478,6 +487,7 @@ class ProfileController extends Controller
         }
 
         if ($hash && $type) {
+            /** @var TeamSiteUser $userTeamItem */
             $userTeamItem = TeamSiteUser::find()
                 ->alias('tsu')
                 ->innerJoin(Team::tableName() . ' t', 't.id = tsu.team_id')
@@ -489,17 +499,15 @@ class ProfileController extends Controller
                 ->one();
 
             if ($userTeamItem) {
-                $userTeamItem->status = DefTeamSiteUser::getStatusByType($type);
+                $captain = $userTeamItem->team->teamCaptain();
 
-                if ($userTeamItem->update()) {
-                    $captain = $userTeamItem->team->teamCaptain();
+                \Yii::$app->notification->addToUser($captain, DefNotification::CATEGORY_TEAM,
+                    DefNotification::TYPE_TEAM_USER_CANCELLED, null,
+                    ['team_member' => $userTeamItem->email, 'created_at' => date('d-M-Y H:i:s')]);
 
-                    \Yii::$app->notification->addToUser($captain, DefNotification::CATEGORY_TEAM,
-                        DefNotification::TYPE_TEAM_USER_CANCELLED, null,
-                        ['team_member' => $userTeamItem->email, 'created_at' => date('d-M-Y H:i:s')]);
+                $this->flash('success', AppMsg::t('Запрошення успішно відхилено!'));
 
-                    $this->flash('success', AppMsg::t('Запрошення успішно відхилено!'));
-                } else {
+                if (!$userTeamItem->delete()) {
                     $this->flash('error', AppMsg::t('Щось пішло не так..'));
                 }
             } else {

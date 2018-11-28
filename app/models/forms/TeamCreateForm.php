@@ -119,10 +119,12 @@ class TeamCreateForm extends Model
 
         foreach ($this->_teamMembers as $member) {
             if ($member->role !== DefTeamSiteUser::ROLE_CAPTAIN) {
-                $this->emails[$member->status] = $member->email;
+                $this->emails[$member->status][] = $member->email;
             }
 
         }
+
+        $this->emails = $this->emails ?: [];
     }
 
     /**
@@ -197,7 +199,6 @@ class TeamCreateForm extends Model
         if ($team) {
             $team->name = $this->name;
             $team->avatar = $this->avatar;
-            $team->status = DefTeam::STATUS_UNCONFIRMED;
 
             $this->_team = $team;
 
@@ -205,40 +206,44 @@ class TeamCreateForm extends Model
                 $transaction = \Yii::$app->db->beginTransaction();
 
                 try {
-                    if ($team->update()) {
-                        $oldTeamMembers = TeamSiteUser::find()
-                            ->where(['team_id' => $team->id, 'role' => DefTeamSiteUser::ROLE_MEMBER])
-                            ->all();
+                    $oldTeamMembers = TeamSiteUser::find()
+                        ->where(['team_id' => $team->id, 'role' => DefTeamSiteUser::ROLE_MEMBER])
+                        ->all();
 
-                        /** @var TeamSiteUser $oldTeamMember */
-                        foreach ($oldTeamMembers as $oldTeamMember) {
-                            if (!in_array($oldTeamMember->email, $this->emails, false)) {
-                                $oldTeamMember->delete();
-                            }
+                    /** @var TeamSiteUser $oldTeamMember */
+                    foreach ($oldTeamMembers as $oldTeamMember) {
+                        if (!in_array($oldTeamMember->email, $this->emails, false)) {
+                            $oldTeamMember->delete();
                         }
+                    }
 
-                        foreach ($this->emails as $email) {
-                            if (!empty($email)) {
-                                $teamMember = TeamSiteUser::find()
-                                    ->where(['email' => $email, 'team_id' => $team->id])
-                                    ->exists();
+                    foreach ($this->emails as $email) {
+                        if (!empty($email)) {
+                            $teamMember = TeamSiteUser::find()
+                                ->where(['email' => $email, 'team_id' => $team->id])
+                                ->exists();
 
-                                if (!$teamMember) {
-                                    $teamMember = new TeamSiteUser;
-                                    $teamMember->team_id = $team->id;
-                                    $teamMember->email = $email;
-                                    $teamMember->role = DefTeamSiteUser::ROLE_MEMBER;
-                                    $teamMember->status = DefTeamSiteUser::STATUS_UNCONFIRMED;
+                            if (!$teamMember) {
+                                $teamMember = new TeamSiteUser;
+                                $teamMember->team_id = $team->id;
+                                $teamMember->email = $email;
+                                $teamMember->role = DefTeamSiteUser::ROLE_MEMBER;
+                                $teamMember->status = DefTeamSiteUser::STATUS_UNCONFIRMED;
 
-                                    if (!$teamMember->save()) {
-                                        $this->addErrors($teamMember->getErrors());
-                                    }
-
-                                    $this->_teamMembers[] = $teamMember;
+                                if (!$teamMember->save()) {
+                                    $this->addErrors($teamMember->getErrors());
                                 }
+
+                                $this->_teamMembers[] = $teamMember;
                             }
                         }
                     }
+
+                    if(count($team->teamUsers) < 7) {
+                        $team->status = DefTeam::STATUS_UNCONFIRMED;
+                    }
+
+                    $team->update();
 
                     $transaction->commit();
                 } catch (\Throwable $e) {

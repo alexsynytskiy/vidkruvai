@@ -25,7 +25,7 @@ $user = \Yii::$app->siteUser->identity;
                             <div class="title-part">
                                 <div class="title written-title"><?= $task->name ?></div>
                             </div>
-                            <div class="text">
+                            <div class="text written-text">
                                 <?= $task->description ?>
                             </div>
 
@@ -38,8 +38,8 @@ $user = \Yii::$app->siteUser->identity;
                                 <?= $form->field($answer, 'text')->widget(\yii\easyii\widgets\Redactor::className(), [
                                     'options' => [
                                         'minHeight' => 400,
-                                        'imageUpload' => \yii\helpers\Url::to(['/admin/redactor/upload', 'dir' => 'tasks']),
-                                        'fileUpload' => \yii\helpers\Url::to(['/admin/redactor/upload', 'dir' => 'tasks']),
+                                        'imageUpload' => \yii\helpers\Url::to(['/redactor/upload', 'dir' => 'tasks']),
+                                        'fileUpload' => \yii\helpers\Url::to(['/redactor/upload', 'dir' => 'tasks']),
                                         'plugins' => ['fullscreen']
                                     ]
                                 ]) ?>
@@ -51,7 +51,7 @@ $user = \Yii::$app->siteUser->identity;
                             <?php elseif($answer->text): ?>
                                 <br>
                                 <div class="title written-title">Ваша відповідь, яку ми отримали:</div>
-                                <div class="text">
+                                <div class="text written-text">
                                     <?= $answer->text ?>
                                 </div>
                             <?php endif; ?>
@@ -61,3 +61,10 @@ $user = \Yii::$app->siteUser->identity;
         </article>
     </div>
 </div>
+
+<?php
+$pageOptions = \yii\helpers\Json::encode([
+]);
+
+$this->registerJs('WrittenPage(' . $pageOptions . ')');
+?>

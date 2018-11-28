@@ -94,6 +94,9 @@ class TeamSiteUser extends ActiveRecord
         ];
     }
 
+    /**
+     * @return array|bool
+     */
     public function getDataInvitedUser()
     {
         $team = $this->team;
@@ -116,6 +119,8 @@ class TeamSiteUser extends ActiveRecord
                     'accept' => Html::a('сюди', $registrationLink, ['class' => 'link-button']),
                     'decline' => Html::a('сюди', $notParticipantLink, ['class' => 'link-button']),
                     'created_at' => date('d-M-Y H:i:s')]);
+
+            return false;
         }
 
         return [
@@ -133,12 +138,18 @@ class TeamSiteUser extends ActiveRecord
      */
     public function mailInvitedUser()
     {
-        return Mail::send(
-            $this->email,
-            AppMsg::t('Запрошення у команду'),
-            '@app/mail/uk/invitation',
-            $this->getDataInvitedUser()
-        );
+        $userData = $this->getDataInvitedUser();
+
+        if(is_array($userData)) {
+            return Mail::send(
+                $this->email,
+                AppMsg::t('Запрошення у команду'),
+                '@app/mail/uk/invitation',
+                $userData
+            );
+        }
+
+        return true;
     }
 
     /**

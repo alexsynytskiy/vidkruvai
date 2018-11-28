@@ -103,6 +103,8 @@ $config = [
                 'tasks/written/<hash:[\w-]+>' => 'tasks/written',
                 'tasks/test-answer/<hash:[\w-]+>' => 'tasks/test-answer',
 
+                'redactor/upload/<dir:[\w-]+>' => 'redactor/upload',
+
                 '<controller:\w+>' => '<controller>/index',
                 '<controller:\w+>/<slug:[\w-]+>' => '<controller>/view',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',

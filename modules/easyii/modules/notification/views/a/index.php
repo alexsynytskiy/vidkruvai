@@ -70,5 +70,5 @@ $asset = \yii\easyii\modules\teams\assets\TeamAsset::register($this);
 $pageOptions = \yii\helpers\Json::encode([
 ]);
 
-$this->registerJs('TeamsIndex(' . $pageOptions . ')');
+$this->registerJs('TeamsForm(' . $pageOptions . ')');
 ?>

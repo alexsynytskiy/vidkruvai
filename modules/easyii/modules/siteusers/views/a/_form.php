@@ -54,28 +54,28 @@ $asset = \yii\easyii\modules\siteusers\assets\SiteUserAsset::register($this);
 
 <div class="labels-text">
     <div class="col-md-6">
-        Количество входов в систему
+        Кількість входів у систему
         <div class="text-block"><?= $model->login_count ?></div>
     </div>
     <div class="col-md-6">
-        Прочитано ли соглашение
+        Прочитано правила для коричтувачів
         <div class="text-block"><?= $model->agreement_read ? 'Да' : 'Нет' ?></div>
     </div>
     <div class="col-md-6">
-        Язык
+        Мова
         <div class="text-block"><?= $model->language ?></div>
     </div>
     <div class="col-md-6">
-        Уровень
-        <div class="text-block"><?= 'Група ' . $model->level->levelgroup->name . ', Уровень ' .
+        Рівень
+        <div class="text-block"><?= 'Група рівнів ' . $model->level->levelgroup->name . ', Рівень ' .
             $model->level->num ?></div>
     </div>
     <div class="col-md-6">
-        Опыта на уровне
+        Кількість балів на поточному рівні
         <div class="text-block"><?= $model->level_experience ?></div>
     </div>
     <div class="col-md-6">
-        Опыта всего
+        Сумма балів на рахунку
         <div class="text-block"><?= $model->total_experience ?></div>
     </div>
 </div>

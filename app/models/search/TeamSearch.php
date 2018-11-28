@@ -71,7 +71,9 @@ class TeamSearch extends Team
 
         $query->joinWith([
             'level',
-            'teamUsers',
+            'teamUsers teamUsers' => function (\yii\db\ActiveQuery $query) {
+                $query->joinWith('user user');
+            },
         ]);
 
         $dataProvider = new ActiveDataProvider([
@@ -98,9 +100,9 @@ class TeamSearch extends Team
             ->andFilterWhere(['like', 'level.num', $this->level_id])
             ->andFilterWhere([
                 'or',
-                ['like', 'teamUsers.name', $this->captain],
-                ['like', 'teamUsers.surname', $this->captain],
-            ]);
+                ['like', 'user.name', $this->captain],
+                ['like', 'user.surname', $this->captain],
+            ])->distinct();
 
         return $dataProvider;
     }
