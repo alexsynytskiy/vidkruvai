@@ -44,18 +44,10 @@ $asset = \yii\easyii\modules\siteusers\assets\SiteUserAsset::register($this);
 <?= $form->field($model, 'status')->widget(\kartik\select2\Select2::className(), [
     'data' => \app\models\definitions\DefTeam::getStatuses(),
     'language' => Yii::$app->language,
-    'options' => ['placeholder' => \app\components\AppMsg::t('Статус')],
+    'options' => ['placeholder' => \app\components\AppMsg::t('Статус верифікації')],
     'pluginOptions' => [
         'allowClear' => true
     ],
-]); ?>
-
-    <br>
-    Верифікувати:
-<?= \yii\helpers\Html::checkbox('', $model->status === \app\models\definitions\DefTeam::STATUS_ACTIVE, [
-    'class' => 'switch',
-    'data-id' => $model->primaryKey,
-    'data-link' => \yii\helpers\Url::to(['/admin/' . $this->context->module->id . '/a']),
 ]); ?>
 
     <div class="labels-text">

@@ -21,18 +21,20 @@ class TestController extends Controller
 {
     public function actionGenerate()
     {
-//        /** @var SiteUser[] $mentors */
-//        $mentors = SiteUser::find()->where(['role' => DefSiteUser::ROLE_MENTOR])->all();
+//        /** @var SiteUser[] $users */
+//        $users = SiteUser::find()->where(['>', 'id', 7481])->all();
 //
-//        foreach ($mentors as $mentor) {
-//            \Yii::$app->notification->addToUser($mentor, DefNotification::CATEGORY_ACCOUNT,
-//                DefNotification::TYPE_MENTOR_NOTIFICATION, null,
+//        foreach ($users as $user) {
+//            \Yii::$app->notification->addToUser($user, DefNotification::CATEGORY_TEAM,
+//                DefNotification::TYPE_ALL_NOTIFICATION, null,
 //                [
-//                    'link_news' => Html::a('​До уваги менторів!',
-//                    Url::to(['/profile/news-item/do-uvagi-mentoriv-2'])),
+//                    'link_news' => Html::a('Зміни щодо підтвердження команд',
+//                    Url::to(['/profile/news-item/zmini-sodo-pidtverdzenna-komand'])),
 //                    'created_at' => date('d-M-Y H:i:s'),
 //                ]);
 //        }
+//
+//        die('ok');
 
 //        $results = \Yii::$app->db->createCommand('
 //        SELECT COUNT(s.id) schools_count, st.name, c.city, ste.name, s.number, s.name, GROUP_CONCAT(s.id) school_ids FROM `school` s LEFT JOIN city c ON c.id = s.city_id LEFT JOIN state st ON st.id = c.state_id LEFT JOIN schooltypes ste ON ste.id = s.type_id GROUP BY s.city_id, s.type_id, s.number HAVING schools_count > 1 ORDER BY schools_count DESC LIMIT 1, 3000

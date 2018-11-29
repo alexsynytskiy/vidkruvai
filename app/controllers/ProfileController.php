@@ -242,13 +242,18 @@ class ProfileController extends Controller
 
         $news = News::get([$slug]);
 
-        \yii\easyii\modules\news\models\News::readByIds([$news->id]);
+        if($news) {
+            \yii\easyii\modules\news\models\News::readByIds([$news->id]);
 
-        isset($news->title) ? \Yii::$app->seo->setTitle($news->title) : null;
-        isset($news->seo->description) ? \Yii::$app->seo->setDescription($news->seo->description) : null;
-        isset($news->seo->keywords) ? \Yii::$app->seo->setKeywords($news->seo->keywords) : null;
+            isset($news->title) ? \Yii::$app->seo->setTitle($news->title) : null;
+            isset($news->seo->description) ? \Yii::$app->seo->setDescription($news->seo->description) : null;
+            isset($news->seo->keywords) ? \Yii::$app->seo->setKeywords($news->seo->keywords) : null;
 
-        return $this->render('news-view', ['newsItem' => $news]);
+            return $this->render('news-view', ['newsItem' => $news]);
+        }
+
+        $this->flash('error', AppMsg::t('Новину не знайдено'));
+        return $this->redirect(['/profile/news/']);
     }
 
     /**

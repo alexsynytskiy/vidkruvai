@@ -45,7 +45,7 @@ $baseUrl = $asset->baseUrl;
             </td>
             <td>
                 <?php if ($member->status !== DefTeamSiteUser::STATUS_CONFIRMED): ?>
-                    <?= Html::a('Отправить приглашение повторно', '#',
+                    <?= Html::a('Надіслати', '#',
                         ['data-pjax' => 0, 'data-user-id' => $memberInstance->id, 'class' => 'send-invitation-again']) ?>
                 <?php endif; ?>
             </td>

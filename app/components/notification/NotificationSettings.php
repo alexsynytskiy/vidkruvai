@@ -134,6 +134,18 @@ class NotificationSettings
                         'sendPeriod' => 24,
                     ],
                 ],
+                DefNotification::TYPE_ALL_NOTIFICATION => [
+                    'icon' => 'fa fa-user-secret',
+                    'icon-border-color' => 'border-success',
+                    'icon-color' => 'text-success',
+                    'short-title' => 'Отримано повідомлення від організаторів',
+                    'title' => 'Вам надійшло повідомлення від організаторів проекту',
+                    'message' => 'Реєстрація команд та отримання завдань. Друзі, для того щоб ви змогли зареєструвати команду і отримати завдання, ознайомтеся, будь ласка, із інформацією за посиланням: {link_news} Дата отримання {created_at}',
+                    'scenario' => [
+                        'sendIfNotRead' => false,
+                        'sendPeriod' => 24,
+                    ],
+                ],
             ];
         }
     }

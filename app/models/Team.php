@@ -4,13 +4,17 @@ namespace app\models;
 
 use app\components\AppMsg;
 use app\models\definitions\DefEntityAchievement;
+use app\models\definitions\DefSiteUser;
+use app\models\definitions\DefTask;
 use app\models\definitions\DefTeamSiteUser;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 use yii\db\ActiveRecord;
 use yii\easyii\helpers\Mail;
 use yii\easyii\models\Setting;
+use yii\easyii\modules\tasks\models\TasksUser;
 use yii\helpers\Url;
+use yii\helpers\VarDumper;
 
 /**
  * Class TeamSiteUser
@@ -79,7 +83,7 @@ class Team extends ActiveRecord
             'avatar' => AppMsg::t('Зображення'),
             'created_at' => AppMsg::t('Створено'),
             'updated_at' => AppMsg::t('Оновлено'),
-            'status' => AppMsg::t('Статус'),
+            'status' => AppMsg::t('Статус верифікації'),
             'level_id' => AppMsg::t('ID Рівня'),
             'level_experience' => AppMsg::t('Досвід на поточному рівні'),
             'total_experience' => AppMsg::t('Загальний досвід'),
@@ -149,5 +153,50 @@ class Team extends ActiveRecord
     {
         return $this->hasMany(Answer::className(), ['id' => 'answer_id'])
             ->viaTable(static::answersTableName(), ['team_id' => 'id']);
+    }
+
+    /**
+     *
+     */
+    public function notifyTeamAboutTasks() {
+        /** @var Task[] $tasks */
+        $tasks = Task::find()
+            ->where(['<=', 'starting_at', new Expression('NOW()')])
+            ->andWhere(['>=', 'ending_at', new Expression('NOW()')])
+            ->andWhere(['status' => DefTask::STATUS_ON])
+            ->orderBy('starting_at, id DESC')
+            ->all();
+
+        foreach ($tasks as $task) {
+            foreach ($this->teamUsers as $teamUser) {
+                if($teamUser->user && $teamUser->user->status === DefSiteUser::STATUS_ACTIVE) {
+                    $tasksUser = new TasksUser();
+                    $tasksUser->site_user_id = $teamUser->site_user_id;
+                    $tasksUser->task_id = $task->id;
+
+                    if(!$tasksUser->save()) {
+                        $this->flash('error', \Yii::t('easyii/tasks',
+                            'Notifications not sent :' . VarDumper::export($tasksUser->getErrors())));
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @throws \Exception
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function removeNotifiesTeamAboutTasks() {
+        foreach ($this->teamUsers as $teamUser) {
+            if($teamUser->user && $teamUser->user->status === DefSiteUser::STATUS_ACTIVE) {
+                $notifications = TasksUser::findAll(['site_user_id' => $teamUser->site_user_id]);
+
+                foreach ($notifications as $notification) {
+                    $notification->delete();
+                }
+            }
+        }
     }
 }

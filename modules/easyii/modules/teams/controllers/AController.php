@@ -2,17 +2,12 @@
 
 namespace yii\easyii\modules\teams\controllers;
 
-use app\models\definitions\DefTask;
 use app\models\definitions\DefTeam;
 use app\models\search\TeamSearch;
-use app\models\Task;
 use app\models\Team;
 use Yii;
-use yii\db\Expression;
 use yii\easyii\behaviors\StatusController;
 use yii\easyii\components\Controller;
-use yii\easyii\modules\tasks\models\TasksUser;
-use yii\helpers\VarDumper;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 
@@ -60,6 +55,8 @@ class AController extends Controller
             return $this->redirect(['/admin/' . $this->module->id]);
         }
 
+        $teamOldStatus = $model->status;
+
         if ($model->load(Yii::$app->request->post())) {
             if (Yii::$app->request->isAjax) {
                 Yii::$app->response->format = Response::FORMAT_JSON;
@@ -67,6 +64,16 @@ class AController extends Controller
             }
 
             if ($model->update()) {
+                if ($teamOldStatus !== $model->status) {
+                    if ($model->status === DefTeam::STATUS_ACTIVE) {
+                        $model->notifyTeamAboutTasks();
+                    }
+
+                    if ($model->status === DefTeam::STATUS_UNCONFIRMED) {
+                        $model->removeNotifiesTeamAboutTasks();
+                    }
+                }
+
                 $this->flash('success', Yii::t('easyii', 'Команда обновлена'));
             } else {
                 $this->flash('error', Yii::t('easyii', 'Ошибка обновления команды'));
@@ -87,27 +94,8 @@ class AController extends Controller
     {
         $team = Team::findOne([$id]);
 
-        if($team) {
-            /** @var Task[] $tasks */
-            $tasks = Task::find()
-                ->where(['<=', 'starting_at', new Expression('NOW()')])
-                ->andWhere(['>=', 'ending_at', new Expression('NOW()')])
-                ->andWhere(['status' => DefTask::STATUS_ON])
-                ->orderBy('starting_at, id DESC')
-                ->all();
-
-            foreach ($tasks as $task) {
-                foreach ($team->teamUsers as $teamUser) {
-                    $tasksUser = new TasksUser();
-                    $tasksUser->site_user_id = $teamUser->site_user_id;
-                    $tasksUser->task_id = $task->id;
-
-                    if(!$tasksUser->save()) {
-                        $this->flash('error', Yii::t('easyii/tasks',
-                            'Notifications not sent :' . VarDumper::export($tasksUser->getErrors())));
-                    }
-                }
-            }
+        if ($team) {
+            $team->notifyTeamAboutTasks();
         }
 
         return $this->changeStatus($id, DefTeam::STATUS_ACTIVE);
@@ -122,14 +110,8 @@ class AController extends Controller
     {
         $team = Team::findOne([$id]);
 
-        if($team) {
-            foreach ($team->teamUsers as $teamUser) {
-                $notifications = TasksUser::findAll(['site_user_id' => $teamUser->site_user_id]);
-
-                foreach ($notifications as $notification) {
-                    $notification->delete();
-                }
-            }
+        if ($team) {
+            $team->removeNotifiesTeamAboutTasks();
         }
 
         return $this->changeStatus($id, DefTeam::STATUS_UNCONFIRMED);
