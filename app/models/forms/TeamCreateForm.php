@@ -8,6 +8,7 @@ use app\models\definitions\DefTeamSiteUser;
 use app\models\Team;
 use app\models\TeamSiteUser;
 use yii\base\Model;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class TeamCreateForm
@@ -130,7 +131,7 @@ class TeamCreateForm extends Model
     /**
      * Creates team with users for accepting invitation
      *
-     * @return bool
+     * @return bool|array
      * @throws \yii\db\Exception
      */
     public function createTeam()
@@ -141,17 +142,19 @@ class TeamCreateForm extends Model
         $team->status = DefTeam::STATUS_UNCONFIRMED;
         $team->level_id = 1;
 
+        $membersCreateErrors = $globalErrors = [];
+
         $this->_team = $team;
 
-        if ($this->validate() && $team->validate()) {
+        if ($this->validate() && $this->_team->validate()) {
             $transaction = \Yii::$app->db->beginTransaction();
 
             try {
-                if ($team->save()) {
+                if ($this->_team->save()) {
                     foreach ($this->emails as $email) {
                         if (!empty($email)) {
                             $teamMember = new TeamSiteUser;
-                            $teamMember->team_id = $team->id;
+                            $teamMember->team_id = $this->_team->id;
                             $teamMember->email = $email;
                             $teamMember->role = DefTeamSiteUser::ROLE_MEMBER;
                             $teamMember->status = DefTeamSiteUser::STATUS_UNCONFIRMED;
@@ -163,6 +166,8 @@ class TeamCreateForm extends Model
                             }
 
                             if (!$teamMember->save()) {
+                                $membersCreateErrors[] = $teamMember->getErrors();
+
                                 $this->addErrors($teamMember->getErrors());
                             }
 
@@ -170,20 +175,26 @@ class TeamCreateForm extends Model
                         }
                     }
 
-                    $team->mailAdmin();
+                    $this->_team->mailAdmin();
                 }
 
                 $transaction->commit();
-            } catch (\Throwable $e) {
+            } catch (\Exception $e) {
+                $globalErrors[] = $e->getMessage();
+
                 $transaction->rollBack();
             }
 
-            return true;
+            if(empty($membersCreateErrors) && empty($globalErrors)) {
+                return true;
+            }
+
+            return ArrayHelper::merge($membersCreateErrors, $globalErrors);
         }
 
         $this->addErrors($this->_team->getErrors());
 
-        return false;
+        return [$this->_team->getErrors()];
     }
 
     /**
@@ -202,12 +213,12 @@ class TeamCreateForm extends Model
 
             $this->_team = $team;
 
-            if ($this->validate() && $team->validate()) {
+            if ($this->validate() && $this->_team->validate()) {
                 $transaction = \Yii::$app->db->beginTransaction();
 
                 try {
                     $oldTeamMembers = TeamSiteUser::find()
-                        ->where(['team_id' => $team->id, 'role' => DefTeamSiteUser::ROLE_MEMBER])
+                        ->where(['team_id' => $this->_team->id, 'role' => DefTeamSiteUser::ROLE_MEMBER])
                         ->all();
 
                     /** @var TeamSiteUser $oldTeamMember */
@@ -220,12 +231,12 @@ class TeamCreateForm extends Model
                     foreach ($this->emails as $email) {
                         if (!empty($email)) {
                             $teamMember = TeamSiteUser::find()
-                                ->where(['email' => $email, 'team_id' => $team->id])
+                                ->where(['email' => $email, 'team_id' => $this->_team->id])
                                 ->exists();
 
                             if (!$teamMember) {
                                 $teamMember = new TeamSiteUser;
-                                $teamMember->team_id = $team->id;
+                                $teamMember->team_id = $this->_team->id;
                                 $teamMember->email = $email;
                                 $teamMember->role = DefTeamSiteUser::ROLE_MEMBER;
                                 $teamMember->status = DefTeamSiteUser::STATUS_UNCONFIRMED;
@@ -239,11 +250,11 @@ class TeamCreateForm extends Model
                         }
                     }
 
-                    if(count($team->teamUsers) < 7) {
-                        $team->status = DefTeam::STATUS_UNCONFIRMED;
+                    if(count($this->_team->teamUsers) < 7) {
+                        $this->_team->status = DefTeam::STATUS_UNCONFIRMED;
                     }
 
-                    $team->update();
+                    $this->_team->update();
 
                     $transaction->commit();
                 } catch (\Throwable $e) {

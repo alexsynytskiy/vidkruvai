@@ -16,6 +16,7 @@ use app\models\forms\TeamCreateForm;
 use app\models\Level;
 use app\models\Team;
 use yii\easyii\helpers\Image;
+use yii\helpers\VarDumper;
 use yii\web\BadRequestHttpException;
 use yii\web\Response;
 use yii\web\UploadedFile;
@@ -198,7 +199,10 @@ class TeamController extends Controller
                 }
             }
 
-            if ($model->createTeam()) {
+            /** @var bool|array $errors */
+            $errors = $model->createTeam();
+
+            if ($errors === true) {
                 $teamEvent = new TeamRegisteredEvent();
                 $teamEvent->teamId = $model->getTeam()->id;
                 \Yii::$app->trigger(self::EVENT_TEAM_REGISTERED, $teamEvent);
@@ -211,9 +215,10 @@ class TeamController extends Controller
                 $this->flash('success', AppMsg::t('Команду створено'));
 
                 return $this->redirect('/team');
-            } else {
-                $this->flash('error', AppMsg::t('Проблема при створенні команди'));
             }
+
+            $this->flash('danger','Виникли помилки при створенні команди. Зробіть знімок екрану з помилками та передайте організаторам!');
+            $this->flash('error', VarDumper::export($errors));
 
             return $this->render('index');
         }

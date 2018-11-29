@@ -118,4 +118,16 @@ class Controller extends \yii\web\Controller
             return $back ? $this->back() : $this->refresh();
         }
     }
+
+    /**
+     * @param ActiveRecord[] $objects
+     * @throws \Exception
+     * @throws \Throwable
+     */
+    public function removeObjects($objects) {
+        /** @var ActiveRecord $object */
+        foreach ($objects as $object) {
+            $object->delete();
+        }
+    }
 }

@@ -15,7 +15,7 @@ $asset = \yii\easyii\modules\siteusers\assets\SiteUserAsset::register($this);
 ]); ?>
 
     <div class="col-md-12 form-z-index clearfix">
-<?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => "Ім'я"]) ?>
+<?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => "Назва"]) ?>
 
 <?= $form->field($model, 'avatar')->widget(\kartik\file\FileInput::className(), [
     'options' => [

@@ -12,6 +12,7 @@ class TeamAsset extends \yii\web\AssetBundle
 
     public $js = [
         'pnotify/pnotify.min.js',
+        'sweetalert/sweetalert2.min.js',
         'js/TeamsCore.js',
         'js/TeamsForm.js',
         'js/TeamsIndex.js'
@@ -19,6 +20,7 @@ class TeamAsset extends \yii\web\AssetBundle
 
     public $css = [
         'pnotify/pnotify.min.css',
+        'sweetalert/sweetalert2.min.css',
         'css/style.css',
     ];
 

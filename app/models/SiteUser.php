@@ -43,6 +43,7 @@ use yii\web\IdentityInterface;
  * @property Level $level
  * @property Team $team
  * @property School $school
+ * @property TeamSiteUser $teamParticipator
  */
 class SiteUser extends ActiveRecord implements IdentityInterface
 {
@@ -284,6 +285,14 @@ class SiteUser extends ActiveRecord implements IdentityInterface
     public function getSchool()
     {
         return $this->hasOne(School::className(), ['id' => 'school_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeamParticipator()
+    {
+        return $this->hasOne(TeamSiteUser::className(), ['site_user_id' => 'id']);
     }
 
     /**

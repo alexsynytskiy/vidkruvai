@@ -28,8 +28,7 @@ class DefTeam extends BaseDefinition
         $statuses = [
             self::STATUS_ACTIVE => AppMsg::t('Підтверджено'),
             self::STATUS_UNCONFIRMED => AppMsg::t('Очікує підтвердження'),
-            self::STATUS_BANNED => AppMsg::t('Заблоковано'),
-            self::STATUS_DISABLED => AppMsg::t('Відключено'),
+            self::STATUS_DISABLED => AppMsg::t('Відхилено'),
         ];
 
         return static::getListDataByReturnType($statuses, $returnType);

@@ -39,7 +39,7 @@ $gridColumns = [
         },
     ],
     [
-        'label' => 'Switch status',
+        'label' => 'Верифікувати',
         'content' => function ($model) {
             return Html::checkbox('', $model->status === \app\models\definitions\DefTeam::STATUS_ACTIVE, [
                 'class' => 'switch',
@@ -48,6 +48,15 @@ $gridColumns = [
             ]);
         },
     ],
+    [
+        'label' => 'Дії',
+        'content' => function ($model) {
+            return Html::a('Видалити команду', '#', [
+                'data-id' => $model->primaryKey,
+                'class' => 'remove-team'
+            ]);
+        },
+    ]
 ];
 
 $asset = \yii\easyii\modules\teams\assets\TeamAsset::register($this);
@@ -68,6 +77,7 @@ $asset = \yii\easyii\modules\teams\assets\TeamAsset::register($this);
 
 <?php
 $pageOptions = \yii\helpers\Json::encode([
+    'removeTeamUrl' => Url::to(['/admin/' . $this->context->module->id . '/a/remove-team'])
 ]);
 
 $this->registerJs('TeamsIndex(' . $pageOptions . ')');

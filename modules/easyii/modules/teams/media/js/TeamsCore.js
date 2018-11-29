@@ -1,4 +1,4 @@
-var SiteUserCore = function (options) {
+var TeamsCore = function (options) {
     return {
         init: function () {
             this.initPNotify();
@@ -34,5 +34,5 @@ var SiteUserCore = function (options) {
 }();
 
 $(function () {
-    SiteUserCore.init();
+    TeamsCore.init();
 });
