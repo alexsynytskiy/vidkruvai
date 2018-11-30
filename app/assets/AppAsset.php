@@ -53,5 +53,5 @@ class AppAsset extends \yii\web\AssetBundle
         'js/WrittenPage.js'
     ];
 
-    public $publishOptions = ['forceCopy' => true];
+    //public $publishOptions = ['forceCopy' => true];
 }

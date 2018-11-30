@@ -91,16 +91,20 @@ class Team extends ActiveRecord
     }
 
     /**
+     * @param string $type
      * @return bool
      */
-    public function mailAdmin()
+    public function mailAdmin($type = 'created')
     {
+        $title = $type === 'created' ? 'Створено нову команду' : 'Команду змінено';
+        $template = $type === 'created' ? '@app/mail/uk/admin_team_created' : '@app/mail/uk/admin_team_updated';
+
         $captain = $this->teamCaptain();
 
         return Mail::send(
             Setting::get('admin_email'),
-            AppMsg::t('Створено нову команду'),
-            '@app/mail/uk/admin_team_created',
+            AppMsg::t($title),
+            $template,
             [
                 'captainName' => $captain->getFullName(),
                 'link' => Url::to([

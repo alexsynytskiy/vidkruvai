@@ -273,11 +273,17 @@ class TeamController extends Controller
                 }
             }
 
-            if ($model->updateTeam()) {
+            /** @var bool|array $errors */
+            $errors = $model->updateTeam();
+
+            if ($errors === true) {
                 $this->flash('success', AppMsg::t('Команду оновлено!'));
 
                 return $this->redirect('/team');
             }
+
+            $this->flash('danger','Виникли помилки при оновленні команди. Зробіть знімок екрану з помилками та передайте організаторам!');
+            $this->flash('error', VarDumper::export($errors));
         }
 
         return $this->render('update-team', [

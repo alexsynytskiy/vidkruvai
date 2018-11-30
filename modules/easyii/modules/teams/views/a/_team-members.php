@@ -17,6 +17,8 @@ $baseUrl = $asset->baseUrl;
         <th><?= Yii::t('easyii', 'Статус') ?></th>
         <th><?= Yii::t('easyii', 'Роль') ?></th>
         <th><?= Yii::t('easyii', 'Клас') ?></th>
+        <th><?= Yii::t('easyii', 'Запрошення надіслано') ?></th>
+        <th><?= Yii::t('easyii', 'Отримано відповідь на запрошення') ?></th>
         <th><?= Yii::t('easyii', 'Надіслати запрошення ще раз') ?></th>
     </tr>
     </thead>
@@ -43,6 +45,8 @@ $baseUrl = $asset->baseUrl;
                     <?= $memberInstance->class ?>
                 <?php endif; ?>
             </td>
+            <td><?= date('d.m.Y H:i:s', strtotime($member->created_at)) ?></td>
+            <td><?= $member->updated_at ? date('d.m.Y H:i:s', strtotime($member->updated_at)) : '' ?></td>
             <td>
                 <?php if ($member->status !== DefTeamSiteUser::STATUS_CONFIRMED): ?>
                     <?= Html::a('Надіслати', '#',

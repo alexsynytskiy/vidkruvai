@@ -175,10 +175,8 @@ class TeamCreateForm extends Model
                         }
                     }
 
-                    $this->_team->mailAdmin();
+                    $this->_team->mailAdmin('created');
                 }
-
-                $transaction->commit();
             } catch (\Exception $e) {
                 $globalErrors[] = $e->getMessage();
 
@@ -186,6 +184,8 @@ class TeamCreateForm extends Model
             }
 
             if(empty($membersCreateErrors) && empty($globalErrors)) {
+                $transaction->commit();
+
                 return true;
             }
 
@@ -200,7 +200,7 @@ class TeamCreateForm extends Model
     /**
      * Updates team
      *
-     * @return bool
+     * @return bool|array
      * @throws \yii\db\Exception
      */
     public function updateTeam()
@@ -212,61 +212,74 @@ class TeamCreateForm extends Model
             $team->avatar = $this->avatar;
 
             $this->_team = $team;
+            $membersCreateErrors = $globalErrors = [];
 
             if ($this->validate() && $this->_team->validate()) {
                 $transaction = \Yii::$app->db->beginTransaction();
 
                 try {
-                    $oldTeamMembers = TeamSiteUser::find()
-                        ->where(['team_id' => $this->_team->id, 'role' => DefTeamSiteUser::ROLE_MEMBER])
-                        ->all();
+                    if ($this->_team->update()) {
+                        $oldTeamMembers = TeamSiteUser::find()
+                            ->where(['team_id' => $this->_team->id, 'role' => DefTeamSiteUser::ROLE_MEMBER])
+                            ->all();
 
-                    /** @var TeamSiteUser $oldTeamMember */
-                    foreach ($oldTeamMembers as $oldTeamMember) {
-                        if (!in_array($oldTeamMember->email, $this->emails, false)) {
-                            $oldTeamMember->delete();
-                        }
-                    }
-
-                    foreach ($this->emails as $email) {
-                        if (!empty($email)) {
-                            $teamMember = TeamSiteUser::find()
-                                ->where(['email' => $email, 'team_id' => $this->_team->id])
-                                ->exists();
-
-                            if (!$teamMember) {
-                                $teamMember = new TeamSiteUser;
-                                $teamMember->team_id = $this->_team->id;
-                                $teamMember->email = $email;
-                                $teamMember->role = DefTeamSiteUser::ROLE_MEMBER;
-                                $teamMember->status = DefTeamSiteUser::STATUS_UNCONFIRMED;
-
-                                if (!$teamMember->save()) {
-                                    $this->addErrors($teamMember->getErrors());
-                                }
-
-                                $this->_teamMembers[] = $teamMember;
+                        /** @var TeamSiteUser $oldTeamMember */
+                        foreach ($oldTeamMembers as $oldTeamMember) {
+                            if (!in_array($oldTeamMember->email, $this->emails, false)) {
+                                $oldTeamMember->delete();
                             }
                         }
+
+                        foreach ($this->emails as $email) {
+                            if (!empty($email)) {
+                                $teamMember = TeamSiteUser::find()
+                                    ->where(['email' => $email, 'team_id' => $this->_team->id])
+                                    ->exists();
+
+                                if (!$teamMember) {
+                                    $teamMember = new TeamSiteUser;
+                                    $teamMember->team_id = $this->_team->id;
+                                    $teamMember->email = $email;
+                                    $teamMember->role = DefTeamSiteUser::ROLE_MEMBER;
+                                    $teamMember->status = DefTeamSiteUser::STATUS_UNCONFIRMED;
+
+                                    if (!$teamMember->save()) {
+                                        $membersCreateErrors[] = $teamMember->getErrors();
+
+                                        $this->addErrors($teamMember->getErrors());
+                                    }
+
+                                    $this->_teamMembers[] = $teamMember;
+                                }
+                            }
+                        }
+
+                        if (count($this->_team->teamUsers) < 7) {
+                            $this->_team->status = DefTeam::STATUS_UNCONFIRMED;
+                        }
+
+                        $this->_team->mailAdmin('updated');
                     }
-
-                    if(count($this->_team->teamUsers) < 7) {
-                        $this->_team->status = DefTeam::STATUS_UNCONFIRMED;
-                    }
-
-                    $this->_team->update();
-
-                    $transaction->commit();
                 } catch (\Throwable $e) {
+                    $globalErrors[] = $e->getMessage();
+
                     $transaction->rollBack();
                 }
 
-                return true;
+                if(empty($membersCreateErrors) && empty($globalErrors)) {
+                    $transaction->commit();
+
+                    return true;
+                }
+
+                return ArrayHelper::merge($membersCreateErrors, $globalErrors);
             }
 
             $this->addErrors($this->_team->getErrors());
+
+            return [$this->_team->getErrors()];
         }
 
-        return false;
+        return [AppMsg::t('Команду не знайдено!')];
     }
 }

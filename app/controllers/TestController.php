@@ -21,6 +21,40 @@ class TestController extends Controller
 {
     public function actionGenerate()
     {
+//        $results = \Yii::$app->db->createCommand('SELECT
+//                SUBSTRING(message, 1, 35) AS subst,
+//                COUNT(id) c,
+//                GROUP_CONCAT(id) notif_ids
+//            FROM
+//                notification
+//            WHERE TYPE
+//                    = \'team-created\'
+//            GROUP BY
+//                SUBSTRING(message, 1, 35)
+//            HAVING
+//                c > 1
+//                order by c desc LIMIT 1,200')
+//            ->queryAll();
+//
+//        foreach ($results as $duplicates) {
+//            $notificationIds = explode(',', $duplicates['notif_ids']);
+//            sort($notificationIds);
+//
+//            array_shift($notificationIds);
+//
+//            $duplicateIdsString = implode(',', $notificationIds);
+//
+//            \Yii::$app->db->createCommand("DELETE FROM `notification_user` WHERE
+//                    `n_id` IN({$duplicateIdsString})
+//            ")->execute();
+//
+//            \Yii::$app->db->createCommand("DELETE FROM `notification` WHERE
+//                    `id` IN({$duplicateIdsString})
+//            ")->execute();
+//        }
+//
+//        die('ok');
+
 //        /** @var SiteUser[] $users */
 //        $users = SiteUser::find()->where(['>', 'id', 7481])->all();
 //
