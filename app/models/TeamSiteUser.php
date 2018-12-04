@@ -42,8 +42,26 @@ class TeamSiteUser extends ActiveRecord
         return [
             [['site_user_id', 'team_id'], 'integer'],
             [['email', 'status', 'role'], 'string', 'max' => 255],
+            [['email', 'status'], 'uniqueInvitation'],
             [['created_at', 'updated_at'], 'safe'],
         ];
+    }
+
+    public function uniqueInvitation($attribute, $params, $validator)
+    {
+        $userExistsTeam = self::find()->where([
+            'email' => $this->email,
+            'team_id' => $this->team_id,
+        ])->exists();
+
+        $userExistsStatus = self::find()->where([
+            'email' => $this->email,
+            'status' => DefTeamSiteUser::STATUS_CONFIRMED,
+        ])->exists();
+
+        if ($userExistsTeam || $userExistsStatus) {
+            $this->addError('email', "Такий e-mail вже запрошено до команди ({$this->email})");
+        }
     }
 
     /**
@@ -111,14 +129,17 @@ class TeamSiteUser extends ActiveRecord
             'decline/' . DefTeamSiteUser::RESPONSE_DECLINED . '/' . $this->hash;
 
         $user = SiteUser::findOne(['email' => $this->email]);
+
         if ($user) {
             \Yii::$app->notification->addToUser($user, DefNotification::CATEGORY_TEAM,
                 DefNotification::TYPE_TEAM_INVITATION, null,
-                ['team_captain' => $teamLead,
+                [
+                    'team_captain' => $teamLead,
                     'team_name' => $teamName,
                     'accept' => Html::a('сюди', $registrationLink, ['class' => 'link-button']),
                     'decline' => Html::a('сюди', $notParticipantLink, ['class' => 'link-button']),
-                    'created_at' => date('d-M-Y H:i:s')]);
+                    'created_at' => date('d-M-Y H:i:s')
+                ]);
 
             return false;
         }
@@ -140,7 +161,7 @@ class TeamSiteUser extends ActiveRecord
     {
         $userData = $this->getDataInvitedUser();
 
-        if(is_array($userData)) {
+        if (is_array($userData)) {
             return Mail::send(
                 $this->email,
                 AppMsg::t('Запрошення у команду'),

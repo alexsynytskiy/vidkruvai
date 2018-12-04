@@ -114,7 +114,7 @@ class AController extends Controller
             return $errorResponse;
         }
 
-        //try {
+        try {
             if (!\Yii::$app->request->isPost || \Yii::$app->user->isGuest) {
                 throw new BadRequestHttpException();
             }
@@ -160,11 +160,11 @@ class AController extends Controller
             $team->delete();
 
             return ['status' => 'success', 'message' => 'Команду та всі дані видалено'];
-//        } catch (BadRequestHttpException $exception) {
-//            return $errorResponse;
-//        } catch (\Exception $exception) {
-//            return $errorResponse;
-//        }
+        } catch (BadRequestHttpException $exception) {
+            return $errorResponse;
+        } catch (\Exception $exception) {
+            return $errorResponse;
+        }
     }
 
     /**

@@ -380,40 +380,48 @@ class ProfileController extends Controller
                 $userExistsAsUnit = SiteUser::findOne(['email' => $userTeamItem->email]);
 
                 if ($userExistsAsUnit) {
-                    $userTeamItem->site_user_id = $userExistsAsUnit->id;
-                    $userTeamItem->status = DefTeamSiteUser::STATUS_CONFIRMED;
+                    if(!$userExistsAsUnit->team) {
+                        $userTeamItem->site_user_id = $userExistsAsUnit->id;
+                        $userTeamItem->status = DefTeamSiteUser::STATUS_CONFIRMED;
 
-                    try {
-                        $userUpdated = $userTeamItem->update();
-                    }
-                    catch (\PDOException $e) {
-                        $this->flash('error', AppMsg::t('Ти ще не дав відповідь на запрошення в іншій команді'));
+                        try {
+                            $userUpdated = $userTeamItem->update(false);
+                        }
+                        catch (\PDOException $e) {
+                            $this->flash('error', AppMsg::t('Ти ще не дав відповідь на запрошення в іншій команді'));
 
+                            return $this->redirect(['/']);
+                        }
+
+                        if ($userUpdated) {
+                            $captain = $userTeamItem->team->teamCaptain();
+
+                            \Yii::$app->notification->addToUser($captain, DefNotification::CATEGORY_TEAM,
+                                DefNotification::TYPE_TEAM_USER_ACCEPTED, null,
+                                ['team_member' => $userExistsAsUnit->getFullName(),
+                                    'created_at' => date('d-M-Y H:i:s')]);
+
+                            if (\Yii::$app->siteUser->isGuest) {
+                                \Yii::$app->siteUser->login($userExistsAsUnit, BaseDefinition::getSessionExpiredTime());
+                            }
+
+                            $this->flash('success', AppMsg::t('Запрошення успішно прийнято!'));
+
+                            if ($userExistsAsUnit->agreement_read) {
+                                return $this->redirect(['/team']);
+                            }
+
+                            return $this->redirect('/rules');
+                        }
+
+                        $this->flash('error', AppMsg::t('Не вдалось оновити інформацію про запрошення'));
                         return $this->redirect(['/']);
                     }
 
-                    if ($userUpdated) {
-                        $captain = $userTeamItem->team->teamCaptain();
+                    $userTeamItem->status = DefTeamSiteUser::STATUS_DECLINED;
+                    $userTeamItem->update();
 
-                        \Yii::$app->notification->addToUser($captain, DefNotification::CATEGORY_TEAM,
-                            DefNotification::TYPE_TEAM_USER_ACCEPTED, null,
-                            ['team_member' => $userExistsAsUnit->getFullName(),
-                                'created_at' => date('d-M-Y H:i:s')]);
-
-                        if (\Yii::$app->siteUser->isGuest) {
-                            \Yii::$app->siteUser->login($userExistsAsUnit, BaseDefinition::getSessionExpiredTime());
-                        }
-
-                        $this->flash('success', AppMsg::t('Запрошення успішно прийнято!'));
-
-                        if ($userExistsAsUnit->agreement_read) {
-                            return $this->redirect(['/team']);
-                        }
-
-                        return $this->redirect('/rules');
-                    }
-
-                    $this->flash('error', AppMsg::t('Не вдалось оновити інформацію про запрошення'));
+                    $this->flash('error', AppMsg::t('Ти вже в іншій команді!'));
                     return $this->redirect(['/']);
                 }
 
@@ -436,15 +444,21 @@ class ProfileController extends Controller
             \Yii::$app->trigger(self::EVENT_USER_REGISTERED, $userEvent);
 
             if ($invitationRegistration && $userTeamItem) {
-                $userTeamItem->site_user_id = $user->id;
-                $userTeamItem->status = DefTeamSiteUser::STATUS_CONFIRMED;
+                if(!$userTeamItem->team) {
+                    $userTeamItem->site_user_id = $user->id;
+                    $userTeamItem->status = DefTeamSiteUser::STATUS_CONFIRMED;
 
-                if ($userTeamItem->update()) {
-                    $captain = $userTeamItem->team->teamCaptain();
+                    if ($userTeamItem->update()) {
+                        $captain = $userTeamItem->team->teamCaptain();
 
-                    \Yii::$app->notification->addToUser($captain, DefNotification::CATEGORY_TEAM,
-                        DefNotification::TYPE_TEAM_USER_ACCEPTED, null,
-                        ['team_member' => $user->getFullName(), 'created_at' => date('d-M-Y H:i:s')]);
+                        \Yii::$app->notification->addToUser($captain, DefNotification::CATEGORY_TEAM,
+                            DefNotification::TYPE_TEAM_USER_ACCEPTED, null,
+                            ['team_member' => $user->getFullName(), 'created_at' => date('d-M-Y H:i:s')]);
+                    }
+                }
+                else {
+                    $userTeamItem->status = DefTeamSiteUser::STATUS_DECLINED;
+                    $userTeamItem->update();
                 }
             } else {
                 /** @var TeamSiteUser $existsInvitation */
@@ -458,7 +472,7 @@ class ProfileController extends Controller
                     ->andWhere(['t.status' => [DefTeam::STATUS_UNCONFIRMED, DefTeam::STATUS_ACTIVE]])
                     ->one();
 
-                if ($existsInvitation) {
+                if ($existsInvitation && !$user->team) {
                     $existsInvitation->getDataInvitedUser();
                 }
             }

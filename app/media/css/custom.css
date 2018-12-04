@@ -741,9 +741,11 @@ article {
 }
 
 .content-left-fixed .tasks-item .image {
+    margin-top: 24px;
+    margin-left: 24px;
     float: left;
-    width: 220px;
-    height: 335px;
+    width: 196px;
+    height: 290px;
     overflow: hidden;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -1465,7 +1467,7 @@ span.bg-success,
     line-height: 25px;
     margin-bottom: 20px;
     color: #373737;
-    text-align: justify;
+    text-align: left;
     padding-right: 32px;
 }
 
@@ -2019,9 +2021,39 @@ span.btn:hover {
 }
 
 @media (max-width: 991px) {
+    .news-item.small .comments-count-news {
+        left: 15px;
+        top: -20px;
+    }
+
     .error .content-left-fixed.container,
     .questions .content-left-fixed.container {
         max-width: 770px;
+    }
+
+    .content-left-fixed .tasks-item .image {
+        width: calc(100% - 48px);
+        display: block;
+        height: 318px;
+    }
+
+    .content-left-fixed .tasks-item .information {
+        display: block;
+        width: 100%;
+        height: 500px;
+    }
+
+    .content-left-fixed .tasks-item .team-state {
+        bottom: 100px;
+        width: 100%;
+        right: 0;
+        margin: 0;
+        text-align: left;
+        padding-left: 32px !important;
+    }
+
+    .task .categories .category .text-category {
+        font-size: 10px;
     }
 
     .mobile-actions {

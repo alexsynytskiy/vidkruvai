@@ -10,8 +10,13 @@ use app\models\definitions\DefNotification;
 use app\models\definitions\DefSiteUser;
 use app\models\Level;
 use app\models\SiteUser;
+use app\models\Task;
+use app\models\Team;
+use app\models\TeamSiteUser;
+use yii\easyii\modules\tasks\models\TasksUser;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\helpers\VarDumper;
 
 /**
  * Class NewsController
@@ -21,6 +26,37 @@ class TestController extends Controller
 {
     public function actionGenerate()
     {
+//        /** @var Task[] $tasks */
+//        $tasks = Task::find()
+//            ->where(['id' => [5, 6]])
+//            ->all();
+//
+//        $teams = Team::find()
+//            ->where(['status' => 'active'])
+//            ->all();
+//
+//
+//        foreach ($teams as $team) {
+//            /** @var Team $team */
+//            foreach ($tasks as $task) {
+//                /** @var TeamSiteUser $teamUser */
+//                foreach ($team->teamUsers as $teamUser) {
+//                    if ($teamUser->user && $teamUser->user->status === DefSiteUser::STATUS_ACTIVE) {
+//                        $tasksUser = new TasksUser();
+//                        $tasksUser->site_user_id = $teamUser->site_user_id;
+//                        $tasksUser->task_id = $task->id;
+//
+//                        if (!$tasksUser->save()) {
+//                            $this->flash('error', \Yii::t('easyii/tasks',
+//                                'Notifications not sent :' . VarDumper::export($tasksUser->getErrors())));
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        die('ok');
+
 //        $results = \Yii::$app->db->createCommand('SELECT
 //                SUBSTRING(message, 1, 35) AS subst,
 //                COUNT(id) c,
@@ -56,14 +92,14 @@ class TestController extends Controller
 //        die('ok');
 
 //        /** @var SiteUser[] $users */
-//        $users = SiteUser::find()->where(['>', 'id', 7481])->all();
+//        $users = SiteUser::find()->where(['>', 'id', 0])->all();
 //
 //        foreach ($users as $user) {
 //            \Yii::$app->notification->addToUser($user, DefNotification::CATEGORY_TEAM,
 //                DefNotification::TYPE_ALL_NOTIFICATION, null,
 //                [
-//                    'link_news' => Html::a('Зміни щодо підтвердження команд',
-//                    Url::to(['/profile/news-item/zmini-sodo-pidtverdzenna-komand'])),
+//                    'link_news' => Html::a('Деталі тут!',
+//                    Url::to(['/profile/news-item/drugij-tizden-proektu-doformovuemo-komandi-ta-vikonuemo-zavdanna'])),
 //                    'created_at' => date('d-M-Y H:i:s'),
 //                ]);
 //        }

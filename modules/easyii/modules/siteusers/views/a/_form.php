@@ -52,34 +52,41 @@ $asset = \yii\easyii\modules\siteusers\assets\SiteUserAsset::register($this);
 
 <?= $form->field($model, 'age')->textInput(['maxlength' => true, 'placeholder' => 'Вік']) ?>
 
-<div class="labels-text">
-    <div class="col-md-6">
-        Кількість входів у систему
-        <div class="text-block"><?= $model->login_count ?></div>
+    <br>Командний статус:
+<?php if ($model->team): ?>
+    <br>Учасник прийняв запрошення у команду "<?= $model->team->name ?>"<br><br>
+<?php else: ?>
+    <br><b>Учасник не в команді<b><br><br>
+<?php endif; ?>
+
+    <div class="labels-text">
+        <div class="col-md-6">
+            Кількість входів у систему
+            <div class="text-block"><?= $model->login_count ?></div>
+        </div>
+        <div class="col-md-6">
+            Прочитано правила для коричтувачів
+            <div class="text-block"><?= $model->agreement_read ? 'Да' : 'Нет' ?></div>
+        </div>
+        <div class="col-md-6">
+            Мова
+            <div class="text-block"><?= $model->language ?></div>
+        </div>
+        <div class="col-md-6">
+            Рівень
+            <div class="text-block"><?= 'Група рівнів ' . $model->level->levelgroup->name . ', Рівень ' .
+                $model->level->num ?></div>
+        </div>
+        <div class="col-md-6">
+            Кількість балів на поточному рівні
+            <div class="text-block"><?= $model->level_experience ?></div>
+        </div>
+        <div class="col-md-6">
+            Сумма балів на рахунку
+            <div class="text-block"><?= $model->total_experience ?></div>
+        </div>
     </div>
-    <div class="col-md-6">
-        Прочитано правила для коричтувачів
-        <div class="text-block"><?= $model->agreement_read ? 'Да' : 'Нет' ?></div>
-    </div>
-    <div class="col-md-6">
-        Мова
-        <div class="text-block"><?= $model->language ?></div>
-    </div>
-    <div class="col-md-6">
-        Рівень
-        <div class="text-block"><?= 'Група рівнів ' . $model->level->levelgroup->name . ', Рівень ' .
-            $model->level->num ?></div>
-    </div>
-    <div class="col-md-6">
-        Кількість балів на поточному рівні
-        <div class="text-block"><?= $model->level_experience ?></div>
-    </div>
-    <div class="col-md-6">
-        Сумма балів на рахунку
-        <div class="text-block"><?= $model->total_experience ?></div>
-    </div>
-</div>
-<br>
+    <br>
 
 <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-primary']) ?>
 <?php ActiveForm::end(); ?>

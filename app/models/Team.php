@@ -8,8 +8,8 @@ use app\models\definitions\DefSiteUser;
 use app\models\definitions\DefTask;
 use app\models\definitions\DefTeamSiteUser;
 use yii\behaviors\TimestampBehavior;
-use yii\db\Expression;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 use yii\easyii\helpers\Mail;
 use yii\easyii\models\Setting;
 use yii\easyii\modules\tasks\models\TasksUser;
@@ -118,7 +118,8 @@ class Team extends ActiveRecord
     /**
      * @return array|null|SiteUser
      */
-    public function teamCaptain() {
+    public function teamCaptain()
+    {
         return SiteUser::find()
             ->alias('su')
             ->innerJoin(TeamSiteUser::tableName() . ' tsu', 'tsu.site_user_id = su.id')
@@ -129,7 +130,8 @@ class Team extends ActiveRecord
     /**
      * @return array|null|School|string
      */
-    public function getSchool() {
+    public function getSchool()
+    {
         return $this->teamCaptain() ? $this->teamCaptain()->school : '';
     }
 
@@ -162,7 +164,8 @@ class Team extends ActiveRecord
     /**
      *
      */
-    public function notifyTeamAboutTasks() {
+    public function notifyTeamAboutTasks()
+    {
         /** @var Task[] $tasks */
         $tasks = Task::find()
             ->where(['<=', 'starting_at', new Expression('NOW()')])
@@ -173,12 +176,12 @@ class Team extends ActiveRecord
 
         foreach ($tasks as $task) {
             foreach ($this->teamUsers as $teamUser) {
-                if($teamUser->user && $teamUser->user->status === DefSiteUser::STATUS_ACTIVE) {
+                if ($teamUser->user && $teamUser->user->status === DefSiteUser::STATUS_ACTIVE) {
                     $tasksUser = new TasksUser();
                     $tasksUser->site_user_id = $teamUser->site_user_id;
                     $tasksUser->task_id = $task->id;
 
-                    if(!$tasksUser->save()) {
+                    if (!$tasksUser->save()) {
                         $this->flash('error', \Yii::t('easyii/tasks',
                             'Notifications not sent :' . VarDumper::export($tasksUser->getErrors())));
                     }
@@ -192,9 +195,10 @@ class Team extends ActiveRecord
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
      */
-    public function removeNotifiesTeamAboutTasks() {
+    public function removeNotifiesTeamAboutTasks()
+    {
         foreach ($this->teamUsers as $teamUser) {
-            if($teamUser->user && $teamUser->user->status === DefSiteUser::STATUS_ACTIVE) {
+            if ($teamUser->user && $teamUser->user->status === DefSiteUser::STATUS_ACTIVE) {
                 $notifications = TasksUser::findAll(['site_user_id' => $teamUser->site_user_id]);
 
                 foreach ($notifications as $notification) {
@@ -202,5 +206,20 @@ class Team extends ActiveRecord
                 }
             }
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getTeamUsersEmails()
+    {
+        $emails = [];
+        foreach ($this->teamUsers as $teamUser) {
+            if ($teamUser->role !== DefTeamSiteUser::ROLE_CAPTAIN) {
+                $emails[] = $teamUser->email;
+            }
+        }
+
+        return $emails;
     }
 }

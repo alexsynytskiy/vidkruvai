@@ -3,12 +3,14 @@
 namespace app\models\forms;
 
 use app\components\AppMsg;
+use app\models\CreateTeamLogs;
 use app\models\definitions\DefTeam;
 use app\models\definitions\DefTeamSiteUser;
 use app\models\Team;
 use app\models\TeamSiteUser;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
+use yii\helpers\VarDumper;
 
 /**
  * Class TeamCreateForm
@@ -131,10 +133,12 @@ class TeamCreateForm extends Model
     /**
      * Creates team with users for accepting invitation
      *
+     * @param array $errors
+     *
      * @return bool|array
      * @throws \yii\db\Exception
      */
-    public function createTeam()
+    public function createTeam(&$errors)
     {
         $team = new Team;
         $team->name = $this->name;
@@ -142,9 +146,9 @@ class TeamCreateForm extends Model
         $team->status = DefTeam::STATUS_UNCONFIRMED;
         $team->level_id = 1;
 
-        $membersCreateErrors = $globalErrors = [];
-
         $this->_team = $team;
+
+        CreateTeamLogs::saveLog('create', 'Team params: ' . VarDumper::export($this->attributes));
 
         if ($this->validate() && $this->_team->validate()) {
             $transaction = \Yii::$app->db->beginTransaction();
@@ -153,133 +157,186 @@ class TeamCreateForm extends Model
                 if ($this->_team->save()) {
                     foreach ($this->emails as $email) {
                         if (!empty($email)) {
-                            $teamMember = new TeamSiteUser;
-                            $teamMember->team_id = $this->_team->id;
-                            $teamMember->email = $email;
-                            $teamMember->role = DefTeamSiteUser::ROLE_MEMBER;
-                            $teamMember->status = DefTeamSiteUser::STATUS_UNCONFIRMED;
+                            /** @var TeamSiteUser $teamMember */
+                            $teamMember = TeamSiteUser::find()
+                                ->where(['email' => $email, 'team_id' => $this->_team->id])
+                                ->one();
 
-                            if ($teamMember->email === \Yii::$app->siteUser->identity->email) {
-                                $teamMember->site_user_id = \Yii::$app->siteUser->identity->id;
-                                $teamMember->role = DefTeamSiteUser::ROLE_CAPTAIN;
-                                $teamMember->status = DefTeamSiteUser::STATUS_CONFIRMED;
+                            if (!$teamMember) {
+                                $teamMember = new TeamSiteUser;
+                                $teamMember->team_id = $this->_team->id;
+                                $teamMember->email = $email;
+                                $teamMember->role = DefTeamSiteUser::ROLE_MEMBER;
+                                $teamMember->status = DefTeamSiteUser::STATUS_UNCONFIRMED;
+
+                                if ($teamMember->email === \Yii::$app->siteUser->identity->email) {
+                                    $teamMember->site_user_id = \Yii::$app->siteUser->identity->id;
+                                    $teamMember->role = DefTeamSiteUser::ROLE_CAPTAIN;
+                                    $teamMember->status = DefTeamSiteUser::STATUS_CONFIRMED;
+                                }
+
+                                if (!$teamMember->validate() || !$teamMember->save()) {
+                                    $errors[] = $teamMember->getErrors();
+
+                                    $this->_team->addErrors($teamMember->getErrors());
+                                }
+
+                                $this->_teamMembers[] = $teamMember;
+                            } else {
+                                $teamMemberOtherTeam = TeamSiteUser::find()
+                                    ->where(['email' => $email, 'status' => DefTeamSiteUser::STATUS_CONFIRMED])
+                                    ->andWhere(['!=', 'team_id', $this->_team->id])
+                                    ->one();
+
+                                if ($teamMemberOtherTeam) {
+                                    $errors[] = AppMsg::t("Користувач {$email} вже в іншій команді!");
+                                }
                             }
-
-                            if (!$teamMember->save()) {
-                                $membersCreateErrors[] = $teamMember->getErrors();
-
-                                $this->addErrors($teamMember->getErrors());
-                            }
-
-                            $this->_teamMembers[] = $teamMember;
                         }
                     }
 
                     $this->_team->mailAdmin('created');
                 }
+                else {
+                    $this->addErrors($this->_team->getErrors());
+                    $errors[] = $this->_team->getErrors();
+                }
             } catch (\Exception $e) {
-                $globalErrors[] = $e->getMessage();
+                $errors[] = $e->getMessage();
 
                 $transaction->rollBack();
             }
 
-            if(empty($membersCreateErrors) && empty($globalErrors)) {
+            if(empty($errors)) {
                 $transaction->commit();
 
                 return true;
             }
 
-            return ArrayHelper::merge($membersCreateErrors, $globalErrors);
+            return false;
         }
 
-        $this->addErrors($this->_team->getErrors());
-
-        return [$this->_team->getErrors()];
+        return false;
     }
 
     /**
      * Updates team
      *
-     * @return bool|array
+     * @param array $errors
+     *
+     * @return array|bool
      * @throws \yii\db\Exception
      */
-    public function updateTeam()
+    public function updateTeam(&$errors)
     {
         $team = Team::findOne(['id' => $this->id]);
 
         if ($team) {
+            CreateTeamLogs::saveLog('update',
+                'Team new params: ' . VarDumper::export($this->attributes),
+                'Team old params: ' . VarDumper::export($team->attributes) .
+                    'Team old members: ' . VarDumper::export($team->getTeamUsersEmails()));
+
             $team->name = $this->name;
             $team->avatar = $this->avatar;
 
             $this->_team = $team;
-            $membersCreateErrors = $globalErrors = [];
 
             if ($this->validate() && $this->_team->validate()) {
                 $transaction = \Yii::$app->db->beginTransaction();
 
                 try {
-                    if ($this->_team->update()) {
-                        $oldTeamMembers = TeamSiteUser::find()
-                            ->where(['team_id' => $this->_team->id, 'role' => DefTeamSiteUser::ROLE_MEMBER])
-                            ->all();
+                    $this->_team->update();
 
-                        /** @var TeamSiteUser $oldTeamMember */
-                        foreach ($oldTeamMembers as $oldTeamMember) {
-                            if (!in_array($oldTeamMember->email, $this->emails, false)) {
-                                $oldTeamMember->delete();
-                            }
+                    $oldTeamMembers = TeamSiteUser::find()
+                        ->where(['team_id' => $this->_team->id, 'role' => DefTeamSiteUser::ROLE_MEMBER])
+                        ->all();
+
+                    /** @var TeamSiteUser $oldTeamMember */
+                    foreach ($oldTeamMembers as $oldTeamMember) {
+                        if (!in_array($oldTeamMember->email, $this->emails, false)) {
+                            $oldTeamMember->delete();
                         }
+                    }
 
-                        foreach ($this->emails as $email) {
-                            if (!empty($email)) {
-                                $teamMember = TeamSiteUser::find()
-                                    ->where(['email' => $email, 'team_id' => $this->_team->id])
-                                    ->exists();
+                    foreach ($this->emails as $email) {
+                        if (!empty($email)) {
+                            $teamMember = TeamSiteUser::find()
+                                ->where(['email' => $email, 'team_id' => $this->_team->id])
+                                ->one();
 
-                                if (!$teamMember) {
-                                    $teamMember = new TeamSiteUser;
-                                    $teamMember->team_id = $this->_team->id;
-                                    $teamMember->email = $email;
-                                    $teamMember->role = DefTeamSiteUser::ROLE_MEMBER;
-                                    $teamMember->status = DefTeamSiteUser::STATUS_UNCONFIRMED;
+                            if (!$teamMember) {
+                                $teamMember = new TeamSiteUser;
+                                $teamMember->team_id = $this->_team->id;
+                                $teamMember->email = $email;
+                                $teamMember->role = DefTeamSiteUser::ROLE_MEMBER;
+                                $teamMember->status = DefTeamSiteUser::STATUS_UNCONFIRMED;
 
-                                    if (!$teamMember->save()) {
-                                        $membersCreateErrors[] = $teamMember->getErrors();
+                                if (!$teamMember->validate() || !$teamMember->save()) {
+                                    $errors[] = $teamMember->getErrors();
 
-                                        $this->addErrors($teamMember->getErrors());
-                                    }
+                                    $this->_team->addErrors($teamMember->getErrors());
+                                }
 
-                                    $this->_teamMembers[] = $teamMember;
+                                $this->_teamMembers[] = $teamMember;
+                            }
+                            else {
+                                $teamMemberOtherTeam = TeamSiteUser::find()
+                                    ->where(['email' => $email, 'status' => DefTeamSiteUser::STATUS_CONFIRMED])
+                                    ->andWhere(['!=', 'team_id',$this->_team->id])
+                                    ->one();
+
+                                if($teamMemberOtherTeam) {
+                                    $errors[] = AppMsg::t("Користувач {$email} вже в іншій команді!");
                                 }
                             }
                         }
-
-                        if (count($this->_team->teamUsers) < 7) {
-                            $this->_team->status = DefTeam::STATUS_UNCONFIRMED;
-                        }
-
-                        $this->_team->mailAdmin('updated');
                     }
+
+                    if (count($this->_team->teamUsers) < 7) {
+                        $this->_team->status = DefTeam::STATUS_UNCONFIRMED;
+                    }
+
+                    $this->_team->mailAdmin('updated');
                 } catch (\Throwable $e) {
-                    $globalErrors[] = $e->getMessage();
+                    $errors[] = $e->getMessage();
 
                     $transaction->rollBack();
                 }
 
-                if(empty($membersCreateErrors) && empty($globalErrors)) {
+                if(empty($errors)) {
                     $transaction->commit();
 
                     return true;
                 }
 
-                return ArrayHelper::merge($membersCreateErrors, $globalErrors);
+                return false;
             }
 
-            $this->addErrors($this->_team->getErrors());
-
-            return [$this->_team->getErrors()];
+            return false;
         }
 
-        return [AppMsg::t('Команду не знайдено!')];
+        $errors[] = AppMsg::t('Команду не знайдено!');
+
+        return false;
+    }
+
+    /**
+     * @param array $errors
+     * @return array
+     */
+    public function getErrorsSimple($errors) {
+        $simpleArrayErrors = [];
+
+        foreach ($errors as $error) {
+            if(is_array($error)) {
+                $simpleArrayErrors = ArrayHelper::merge($simpleArrayErrors, $this->getErrorsSimple($error));
+            }
+            else {
+                $simpleArrayErrors[] = $error;
+            }
+        }
+
+        return array_unique($simpleArrayErrors);
     }
 }

@@ -99,7 +99,7 @@ class TasksController extends Controller
             ->where(['<=', 'starting_at', new Expression('NOW()')])
             ->andWhere(['>=', 'ending_at', new Expression('NOW()')])
             ->andWhere(['status' => DefTask::STATUS_ON])
-            ->orderBy('starting_at, id DESC')
+            ->orderBy('id ASC')
             ->all();
 
         foreach ($tasks as $task) {

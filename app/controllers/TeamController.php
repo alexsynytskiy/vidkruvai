@@ -16,7 +16,6 @@ use app\models\forms\TeamCreateForm;
 use app\models\Level;
 use app\models\Team;
 use yii\easyii\helpers\Image;
-use yii\helpers\VarDumper;
 use yii\web\BadRequestHttpException;
 use yii\web\Response;
 use yii\web\UploadedFile;
@@ -99,7 +98,7 @@ class TeamController extends Controller
         \Yii::$app->seo->setDescription('Відкривай Україну');
         \Yii::$app->seo->setKeywords('Відкривай, Україну');
 
-        if(\Yii::$app->siteUser->identity->role === DefSiteUser::ROLE_MENTOR && !\Yii::$app->siteUser->identity->team) {
+        if (\Yii::$app->siteUser->identity->role === DefSiteUser::ROLE_MENTOR && !\Yii::$app->siteUser->identity->team) {
             return $this->render('mentor-no-team');
         }
 
@@ -114,7 +113,7 @@ class TeamController extends Controller
      */
     public function renderTeamProfilePage($team, $isPreview = false)
     {
-        $levelInfo = EntityHelper::getEntityLevelInfo( DefEntityAchievement::ENTITY_TEAM, $team->id);
+        $levelInfo = EntityHelper::getEntityLevelInfo(DefEntityAchievement::ENTITY_TEAM, $team->id);
 
         $previousLevels = [];
         $nextLevels = Level::getLevels($team->level_id, DefLevel::NEXT_LEVELS, DefEntityAchievement::ENTITY_TEAM);
@@ -127,12 +126,12 @@ class TeamController extends Controller
         $achievements = Achievement::getAchievementsInProgress($team->id, DefEntityAchievement::ENTITY_TEAM);
 
         if (count($achievements) < 3) {
-            $achievementsToStart = Achievement::getAchievementsToStart($team->id, DefEntityAchievement::ENTITY_TEAM,3 - count($achievements));
+            $achievementsToStart = Achievement::getAchievementsToStart($team->id, DefEntityAchievement::ENTITY_TEAM, 3 - count($achievements));
             $achievements = array_merge($achievements, $achievementsToStart);
         }
 
         if (count($achievements) < 3) {
-            $achievementsFinished = Achievement::getAchievementsFinished($team->id, DefEntityAchievement::ENTITY_TEAM,3 - count($achievements));
+            $achievementsFinished = Achievement::getAchievementsFinished($team->id, DefEntityAchievement::ENTITY_TEAM, 3 - count($achievements));
             $achievements = array_merge($achievementsFinished, $achievements);
         }
 
@@ -199,10 +198,12 @@ class TeamController extends Controller
                 }
             }
 
-            /** @var bool|array $errors */
-            $errors = $model->createTeam();
+            $errors = [];
 
-            if ($errors === true) {
+            /** @var bool|array $errors */
+            $hasNoErrors = $model->createTeam($errors);
+
+            if ($hasNoErrors === true) {
                 $teamEvent = new TeamRegisteredEvent();
                 $teamEvent->teamId = $model->getTeam()->id;
                 \Yii::$app->trigger(self::EVENT_TEAM_REGISTERED, $teamEvent);
@@ -217,8 +218,12 @@ class TeamController extends Controller
                 return $this->redirect('/team');
             }
 
-            $this->flash('danger','Виникли помилки при створенні команди. Зробіть знімок екрану з помилками та передайте організаторам!');
-            $this->flash('error', VarDumper::export($errors));
+            $this->flash('danger', 'Виникли помилки при створенні команди. Якщо ви не розумієте їх, 
+            або не згодні з обґрунтованістю - надішліть організаторам листа зі своїм ім\'ям та прізвищем (ім\'я та 
+            прізвище виключно капітана команди), а також запишіть час!');
+
+            $errors = $model->getErrorsSimple($errors);
+            $this->flash('info', implode(', ', $errors));
 
             return $this->render('index');
         }
@@ -273,17 +278,25 @@ class TeamController extends Controller
                 }
             }
 
-            /** @var bool|array $errors */
-            $errors = $model->updateTeam();
+            $errors = [];
 
-            if ($errors === true) {
+            /** @var bool|array $errors */
+            $hasNoErrors = $model->updateTeam($errors);
+
+            if ($hasNoErrors === true) {
                 $this->flash('success', AppMsg::t('Команду оновлено!'));
 
                 return $this->redirect('/team');
             }
 
-            $this->flash('danger','Виникли помилки при оновленні команди. Зробіть знімок екрану з помилками та передайте організаторам!');
-            $this->flash('error', VarDumper::export($errors));
+            $this->flash('danger', 'Виникли помилки при оновленні команди. Якщо ви не розумієте їх, 
+            або не згодні з обґрунтованістю - надішліть організаторам листа зі своїм ім\'ям та прізвищем(ім\'я та 
+            прізвище виключно капітана команди), а також запишіть час!');
+
+            $errors = $model->getErrorsSimple($errors);
+            $this->flash('info', implode(', ', $errors));
+
+            $model->setTeam(\Yii::$app->siteUser->identity->team);
         }
 
         return $this->render('update-team', [

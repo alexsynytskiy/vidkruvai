@@ -3,6 +3,7 @@
 namespace app\models\search;
 
 use app\components\traits\SortTrait;
+use app\models\definitions\DefTeamSiteUser;
 use app\models\SiteUser;
 use app\models\Team;
 use yii\base\Model;
@@ -29,7 +30,7 @@ class TeamSearch extends Team
             [['id'], 'integer'],
             [[
                 'name', 'status', 'level_id', 'level_experience',
-                'total_experience', 'level.num', 'captain', 'school_name'
+                'total_experience', 'level.num', 'captain'
             ], 'safe'],
         ];
     }
@@ -90,19 +91,22 @@ class TeamSearch extends Team
         // grid filtering conditions
         $query->andFilterWhere([
             't.id' => $this->id,
-            't.name' => $this->name,
             't.status' => $this->status,
         ]);
 
         $this->compareRangeDate($query, 't.created_at', $this->created_at);
 
-        $query->andFilterWhere(['like', 'school_name', $this->school_name])
+        $query->andFilterWhere(['like', 't.name', $this->name])
             ->andFilterWhere(['like', 'level.num', $this->level_id])
             ->andFilterWhere([
                 'or',
                 ['like', 'user.name', $this->captain],
                 ['like', 'user.surname', $this->captain],
             ])->distinct();
+
+        if($this->captain) {
+            $query->andWhere(['teamUsers.role' => DefTeamSiteUser::ROLE_CAPTAIN]);
+        }
 
         return $dataProvider;
     }
