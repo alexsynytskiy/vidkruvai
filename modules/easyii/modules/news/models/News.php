@@ -40,7 +40,7 @@ class News extends ActiveRecord
     const STATUS_OFF = 0;
     const STATUS_ON = 1;
 
-    const ITEMS_PER_PAGE = 10;
+    const ITEMS_PER_PAGE = 9;
 
     /**
      * @return MultilingualQuery
@@ -68,7 +68,8 @@ class News extends ActiveRecord
                 'message' => Yii::t('easyii', 'Slug can contain only 0-9, a-z and "-" characters (max: 128).')],
             ['slug', 'default', 'value' => null],
             ['status', 'default', 'value' => self::STATUS_ON],
-            ['tagNames', 'safe']
+            ['tagNames', 'safe'],
+            [['category', 'title', 'text'], 'required']
         ];
     }
 

@@ -9,6 +9,7 @@ use app\models\definitions\DefTask;
  *
  * @property integer $id
  * @property string $name
+ * @property string $short
  * @property string $description
  *
  * @property WrittenTaskAnswer[] $answers
@@ -31,7 +32,7 @@ class WrittenTask extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'safe'],
-            [['name', 'description'], 'string'],
+            [['name', 'description', 'short'], 'string'],
         ];
     }
 
@@ -43,6 +44,7 @@ class WrittenTask extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Назва',
+            'short' => 'Короткий опис',
             'description' => 'Завдання',
         ];
     }

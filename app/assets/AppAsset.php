@@ -23,8 +23,8 @@ class AppAsset extends \yii\web\AssetBundle
         'plugins/pnotify/pnotify.min.css',
         'plugins/sweetalert/sweetalert2.min.css',
         'plugins/css/jquery.bxslider.css',
-        'css/custom-questions.css?version=2',
-        'css/custom.css?version=3',
+        'css/custom-questions.css?version=30',
+        'css/custom.css?version=30',
     ];
 
     public $js = [
@@ -38,9 +38,9 @@ class AppAsset extends \yii\web\AssetBundle
         'plugins/sweetalert/sweetalert2.min.js',
         'plugins/js/jquery.knob.min.js',
         'js/ResizeSensor.js',
-        'js/SiteCore.js',
+        'js/SiteCore.js?version=2',
         'js/ObserverList.js',
-        'js/News.js',
+        'js/News.js?version=11',
         'js/Tasks.js',
         'js/Notifications.js',
         'js/RulesPage.js',
@@ -50,7 +50,8 @@ class AppAsset extends \yii\web\AssetBundle
         'js/RegisterPage.js',
         'js/Achievements.js',
         'js/AddSchoolPage.js',
-        'js/WrittenPage.js'
+        'js/WrittenPage.js',
+        'https://cdn.jsdelivr.net/npm/vanilla-lazyload@11.0.6/dist/lazyload.min.js'
     ];
 
     //public $publishOptions = ['forceCopy' => true];

@@ -3,19 +3,11 @@
 namespace app\controllers;
 
 use app\components\Controller;
-use app\models\Achievement;
-use app\models\Category;
-use app\models\definitions\DefCategory;
-use app\models\definitions\DefNotification;
 use app\models\definitions\DefSiteUser;
-use app\models\Level;
-use app\models\SiteUser;
 use app\models\Task;
+use app\models\TasksUser;
 use app\models\Team;
 use app\models\TeamSiteUser;
-use yii\easyii\modules\tasks\models\TasksUser;
-use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\helpers\VarDumper;
 
 /**
@@ -26,15 +18,43 @@ class TestController extends Controller
 {
     public function actionGenerate()
     {
+//        $team = Team::findOne([365]);
+//        $teamSiteUser = TeamSiteUser::findOne(['hash' => 'SCInAmosPMZ95ylsZaL5u2YLXHGAksbe']);
+//
+//        if($team && $teamSiteUser) {
+//            $registrationLink = Url::to('/register', true) . '/' . $teamSiteUser->hash;
+//            $teamName = $team->name;
+//            $teamLead = $team->teamCaptain() ? $team->teamCaptain()->getFullName() : '';
+//            $notParticipantLink = Url::to('/', true) .
+//                'decline/' . DefTeamSiteUser::RESPONSE_DECLINED . '/' . $teamSiteUser->hash;
+//
+//            $user = SiteUser::findOne(['email' => $teamSiteUser->email]);
+//
+//            if ($user) {
+//                \Yii::$app->notification->addToUser($user, DefNotification::CATEGORY_TEAM,
+//                DefNotification::TYPE_TEAM_INVITATION, null,
+//                [
+//                    'team_captain' => $teamLead,
+//                    'team_name' => $teamName,
+//                    'accept' => Html::a('сюди', $registrationLink, ['class' => 'link-button']),
+//                    'decline' => Html::a('сюди', $notParticipantLink, ['class' => 'link-button']),
+//                    'created_at' => date('d-M-Y H:i:s')
+//                ]);
+//            }
+//        }
+//
+//        die('ok');
+
 //        /** @var Task[] $tasks */
 //        $tasks = Task::find()
-//            ->where(['id' => [5, 6]])
+//            ->where(['id' => [32, 33]])
 //            ->all();
 //
 //        $teams = Team::find()
 //            ->where(['status' => 'active'])
+//            ->andWhere(['>', 'id', 400])
+//            ->andWhere(['<=', 'id', 700])
 //            ->all();
-//
 //
 //        foreach ($teams as $team) {
 //            /** @var Team $team */
@@ -92,15 +112,15 @@ class TestController extends Controller
 //        die('ok');
 
 //        /** @var SiteUser[] $users */
-//        $users = SiteUser::find()->where(['>', 'id', 0])->all();
+//        $users = SiteUser::find()->where(['>', 'id', 3090])->all();
 //
 //        foreach ($users as $user) {
 //            \Yii::$app->notification->addToUser($user, DefNotification::CATEGORY_TEAM,
 //                DefNotification::TYPE_ALL_NOTIFICATION, null,
 //                [
-//                    'link_news' => Html::a('Деталі тут!',
-//                    Url::to(['/profile/news-item/drugij-tizden-proektu-doformovuemo-komandi-ta-vikonuemo-zavdanna'])),
-//                    'created_at' => date('d-M-Y H:i:s'),
+//                    'link_news' => Html::a('Нові ДЕДЛАЙНИ, нові завдання та що робити, якщо ви їх не виконали?!',
+//                    Url::to(['/profile/news-item/novi-dedlajni-novi-zavdanna-ta-so-robiti-akso-vi-ih-ne-vikonali'])),
+//                    'created_at' => date('d.m.Y H:i:s'),
 //                ]);
 //        }
 //

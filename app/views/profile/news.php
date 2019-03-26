@@ -44,6 +44,7 @@ $totalNews = $totalNews > 0 ? $totalNews : null;
                         </div>
 
                         <?php if ($hasToLoadMore): ?>
+                            <div class="clearfix"></div>
                             <div class="row">
                                 <div class="col-lg-12">
 

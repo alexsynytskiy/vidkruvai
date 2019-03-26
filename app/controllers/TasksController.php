@@ -88,7 +88,7 @@ class TasksController extends Controller
         }
 
         if($team->status === DefTeam::STATUS_DISABLED) {
-            $this->flash('error', AppMsg::t('На жаль склад вашої команди не відповідає правилам. У вас є час до 02.12.2018 запросити до команди учнів з класів, яких не вистачає.'));
+            $this->flash('error', AppMsg::t('На жаль ваша команда не пройшла перший етап. Повертайтесь наступного року!'));
             return $this->redirect('/team');
         }
 
@@ -99,54 +99,19 @@ class TasksController extends Controller
             ->where(['<=', 'starting_at', new Expression('NOW()')])
             ->andWhere(['>=', 'ending_at', new Expression('NOW()')])
             ->andWhere(['status' => DefTask::STATUS_ON])
-            ->orderBy('id ASC')
+            ->orderBy('id DESC')
+            ->limit(Task::ITEMS_PER_PAGE + 1)
             ->all();
 
+        if (count($tasks) > Task::ITEMS_PER_PAGE) {
+            $hasToLoadMore = true;
+
+            array_pop($tasks);
+            $lastItemId = $tasks[count($tasks) - 1]->id;
+        }
+
         foreach ($tasks as $task) {
-            $currentTime = time();
-
-            if($task->item_type === DefTask::TYPE_TEST) {
-                $test = $task->object;
-                $testQuestionsCount = count($test->questions);
-                $answersCount = 0;
-                $testTimeFailed = false;
-
-                /** @var TeamAnswer $answer */
-                $teamAnswers = $test->getTeamAnswers();
-
-                foreach ($teamAnswers as $answer) {
-                    if ($answer->answer_id) {
-                        $answersCount++;
-                    }
-
-                    if($answer->answer_id !== -1) {
-                        $testTimeFailed = true;
-                        break;
-                    }
-                }
-
-                if (!$testTimeFailed && $answersCount < $testQuestionsCount &&
-                    $currentTime >= strtotime($test->task->starting_at) && $currentTime <= strtotime($test->task->ending_at)) {
-                    $task->stateForTeam = Test::ACTIVE;
-                } elseif ($answersCount === $testQuestionsCount) {
-                    $task->stateForTeam = Test::ANSWERED;
-                } elseif (($answersCount < $testQuestionsCount && $currentTime > strtotime($test->task->ending_at)) || $testTimeFailed) {
-                    $task->stateForTeam = Test::MISSED;
-                }
-            }
-
-            if($task->item_type === DefTask::TYPE_WRITTEN) {
-                if ($team && !$task->object->teamAnswered($team->id)) {
-                    if($currentTime >= strtotime($task->starting_at) && $currentTime <= strtotime($task->ending_at)) {
-                        $task->stateForTeam = Test::ACTIVE;
-                    }
-                    if($currentTime > strtotime($task->ending_at)) {
-                        $task->stateForTeam = Test::MISSED;
-                    }
-                } else {
-                    $task->stateForTeam = Test::ANSWERED;
-                }
-            }
+            $task->setTaskPublicStatus();
         }
 
         $params = ArrayHelper::merge(
@@ -742,37 +707,40 @@ class TasksController extends Controller
             return [];
         }
 
-        $tag = \Yii::$app->request->get('tag');
+        /** @var Task[] $olderTasks */
+        $olderTasks = Task::find()
+            ->where(['<=', 'starting_at', new Expression('NOW()')])
+            ->andWhere(['>=', 'ending_at', new Expression('NOW()')])
+            ->andWhere(['status' => DefTask::STATUS_ON])
+            ->andWhere(['<', 'id', $lastTaskId])
+            ->orderBy('id DESC')
+            ->limit(Task::ITEMS_PER_PAGE + 1)
+            ->all();
 
-        $queryParams = [
-            'limit' => Task::ITEMS_PER_PAGE + 1,
-            'where' => ['<', 'task_id', $lastTaskId],
-            'tags' => $tag,
-        ];
-
-        //$olderTasks = \yii\easyii\modules\tasks\api\Task::items($queryParams);
-        $olderTasks = [];
         $hasToLoadMore = false;
         $lastItemId = 0;
 
         if (count($olderTasks) > Task::ITEMS_PER_PAGE) {
             $hasToLoadMore = true;
-            $lastItemId = $olderTasks[count($olderTasks) - 1]->id;
 
             array_pop($olderTasks);
+            $lastItemId = $olderTasks[count($olderTasks) - 1]->id;
+        }
+
+        foreach ($olderTasks as $task) {
+            $task->setTaskPublicStatus();
         }
 
         $tasks = '';
 
         foreach ($olderTasks as $task) {
-            $tasks .= $this->renderPartial('/tasks/task-item',
-                ['task' => $task]);
+            $tasks .= $this->renderPartial('/tasks/task-item', ['item' => $task]);
         }
 
         return [
             'hasToLoadMore' => $hasToLoadMore,
             'lastItemId' => $lastItemId,
-            'tasks' => $tasks,
+            'items' => $tasks,
         ];
     }
 }

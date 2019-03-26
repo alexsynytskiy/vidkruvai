@@ -1,0 +1,8 @@
+#admin-body .main .btn.task-status {
+    vertical-align: middle;
+    display: table-caption;
+    height: 30px;
+    line-height: 21px;
+    font-size: 13px;
+    border-radius: 3px !important;
+}

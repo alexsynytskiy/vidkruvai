@@ -5,6 +5,7 @@ body {
     font-weight: normal;
     position: relative;
     color: #000;
+    background-color: #e9ebee;
 }
 
 .clearfix:after {
@@ -116,11 +117,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 .navbar-inverse .navbar-toggle {
     background-color: transparent;
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin-top: 0;
+    margin-top: 25px;
     margin-bottom: 0;
     font-size: 19px;
     padding: 0;
@@ -136,8 +133,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 .navbar-inverse .navbar-nav > li > a {
     text-decoration: none;
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: 8px;
+    padding-right: 12px;
     font-size: 16px;
     font-weight: normal;
     color: #007BFF;
@@ -150,10 +147,10 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 .navbar-inverse .navbar-nav li.login a {
     background-color: #007BFF;
-    border-radius: 5px;
+    border-radius: 3px;
     color: #fff;
     padding: 8px 12px !important;
-    margin-left: 16px;
+    margin-left: 8px;
     -webkit-transition: all ease 0.5s;
     -moz-transition: all ease 0.5s;
     -o-transition: all ease 0.5s;
@@ -231,7 +228,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 .navbar-nav > li.open > .dropdown-menu, .open .dropdown-menu {
     border: none;
-    border-radius: 5px;
+    border-radius: 3px;
     top: 100px;
     padding: 16px;
     min-width: 350px;
@@ -380,7 +377,7 @@ article img {
 }
 
 .navbar-fixed-top .navbar-collapse, .navbar-fixed-bottom .navbar-collapse {
-    max-height: none;
+    min-height: 100%;
 }
 
 .navbar-inverse .navbar-nav > .active > a,
@@ -400,12 +397,15 @@ article img {
 
 .navbar-mobile-rows {
     float: left;
-    margin-right: 10px;
-    margin-top: 10px;
+    padding: 10px 8px;
+    border-radius: 50%;
+    border: 2px solid;
+    height: 35px;
+    width: 35px;
 }
 
 .navbar-toggle .icon-bar + .icon-bar {
-    margin-top: 6px;
+    margin-top: 4px;
 }
 
 footer {
@@ -428,7 +428,7 @@ footer .footer-rights {
     margin: auto;
     height: 24px;
     color: #93A0A9;
-    font-size: 18px;
+    font-size: 14px;
 }
 
 footer .footer-logo img {
@@ -457,8 +457,8 @@ footer .social-icon-pack {
 footer .links-block a {
     color: #93A0A9;
     float: left;
-    margin-right: 32px;
-    font-size: 18px;
+    margin-right: 16px;
+    font-size: 14px;
 }
 
 footer .socials-block {
@@ -497,8 +497,6 @@ article {
     top: 145px;
     margin-left: auto;
     margin-right: auto;
-    background: #fff;
-    overflow-x: hidden;
 }
 
 .steps-block.profile {
@@ -514,16 +512,17 @@ article {
 }
 
 .content-left-fixed {
-    font-size: 28px;
+    font-size: 16px;
     width: 850px;
     float: right;
     margin-top: 50px;
 }
 
 .content-left-fixed .news-item {
-    border-radius: 10px;
+    border-radius: 3px;
     box-shadow: 0 3px 15px 0 rgba(0, 60, 125, 0.15);
     margin-bottom: 32px;
+    background-color: #fff;
 }
 
 .content-left-fixed .news-item .image {
@@ -531,8 +530,8 @@ article {
     width: 500px;
     height: 350px;
     overflow: hidden;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
 }
 
 .content-left-fixed .news-item .information {
@@ -555,10 +554,10 @@ article {
 
 .content-left-fixed .news-item .information .title {
     font-family: 'Lato', sans-serif;
-    font-size: 24px;
+    font-size: 19px;
     line-height: 29px;
     text-align: left;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-weight: bold;
 }
 
@@ -614,34 +613,33 @@ article {
 }
 
 .cabinet-menu .wrapper {
-    background-color: #fff;
     min-height: 166px;
 }
 
 .cabinet-menu .menu-link {
     text-align: left;
     color: #93A0A9;
-    font-size: 16px;
-    line-height: 40px;
-    margin-bottom: 14px;
-    padding-left: 16px;
+    font-size: 15px;
+    line-height: 20px;
+    margin-bottom: 8px;
 }
 
 .cabinet-menu .icon {
-    height: 40px;
-    width: 40px;
+    height: 20px;
+    width: 20px;
     float: left;
-    margin-right: 16px;
+    margin-right: 8px;
+    margin-top: 2px;
     position: relative;
 }
 
 .cabinet-menu .icon .fa {
-    font-size: 32px;
+    font-size: 24px;
     display: block;
     margin: 0 auto;
     width: 22px;
-    line-height: 40px;
-    color: #93A0A9;
+    line-height: 20px;
+    color: #31495e;
 }
 
 .cabinet-menu .menu-link.active .fa {
@@ -650,16 +648,36 @@ article {
 
 .cabinet-menu .icon .news-count, .cabinet-menu .icon .tasks-count {
     position: absolute;
-    right: -7px;
-    top: -5px;
-    line-height: 20px;
-    height: 20px;
-    width: 20px;
-    background-color: #FF6B00;
-    border-radius: 10px;
+    right: -4px;
+    top: -3px;
+    line-height: 13px;
+    height: 13px;
+    width: 13px;
+    background-color: #3295fb;
+    border-radius: 12px;
     color: #fff;
     text-align: center;
-    font-size: 12px;
+    font-size: 10px;
+}
+
+.cabinet-menu .menu-link .text {
+    line-height: 25px;
+    color: #000;
+    font-size: 13px;
+    letter-spacing: 0.2px;
+    color: #000000;
+}
+
+.cabinet-menu .menu-link.active {
+    background-color: #fff;
+    padding: 5px 9px;
+    border-radius: 3px;
+    margin-left: -8px;
+}
+
+.project-info-page-description {
+    background-color: #fff;
+    border-radius: 3px;
 }
 
 .news-item.small {
@@ -676,8 +694,8 @@ article {
     float: none;
     max-width: 409px;
     max-height: 280px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
     border-bottom-left-radius: 0;
 }
 
@@ -690,7 +708,7 @@ article {
 }
 
 .cabinet-menu .profile-info {
-    margin: 0 auto 30px;
+    margin: 0 auto 20px;
     text-align: center;
     color: #373737;
 }
@@ -698,12 +716,12 @@ article {
 .cabinet-menu .profile-info .image-cropper,
 .profile-info-main .left-side .image-cropper,
 .profile-team-preview .member-item .image-cropper {
-    width: 150px;
-    height: 150px;
-    position: relative;
+    width: 60px;
+    height: 60px;
     overflow: hidden;
     border-radius: 50%;
-    margin: 0 auto 10px;
+    float: left;
+    margin-right: 10px;
 }
 
 .profile-team-preview .member-item .image-cropper {
@@ -716,8 +734,7 @@ article {
 .profile-info-main .left-side img,
 .profile-team-preview .member-item img {
     height: 100%;
-    width: auto;
-    max-height: 150px;
+    max-height: 60px;
     max-width: none;
 }
 
@@ -726,8 +743,10 @@ article {
 }
 
 .cabinet-menu .profile-info .name {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: bold;
+    line-height: 60px;
+    float: left;
 }
 
 .sidebar-right-fixed-bottom-big {
@@ -735,36 +754,37 @@ article {
 }
 
 .content-left-fixed .tasks-item {
-    border-radius: 10px;
+    border-radius: 3px;
     box-shadow: 0 3px 15px 0 rgba(0, 60, 125, 0.15);
-    margin-bottom: 52px;
+    margin-bottom: 32px;
+    background-color: #fff;
 }
 
 .content-left-fixed .tasks-item .image {
     margin-top: 24px;
     margin-left: 24px;
     float: left;
-    width: 196px;
-    height: 290px;
+    width: 245px;
+    height: 267px;
     overflow: hidden;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
 }
 
 .content-left-fixed .tasks-item .information {
     float: right;
-    width: 630px;
-    padding: 32px 45px 32px 32px;
-    height: 335px;
+    width: 580px;
+    padding: 24px;
+    height: 317px;
     position: relative;
 }
 
 .content-left-fixed .tasks-item .information .title {
     font-family: 'Lato', sans-serif;
-    font-size: 24px;
+    font-size: 19px;
     line-height: 29px;
     text-align: left;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-weight: bold;
 }
 
@@ -779,17 +799,17 @@ article {
 
 .content-left-fixed .tasks-item .information .short {
     font-family: 'Lato', sans-serif;
-    font-size: 18px;
+    font-size: 15px;
     line-height: 22px;
     text-align: left;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     color: #373737;
 }
 
 .content-left-fixed .tasks-item .information .short.item-date {
     color: #ff4c00;
     margin-bottom: 24px;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: bold;
 }
 
@@ -814,7 +834,7 @@ article {
     margin-bottom: 32px;
     margin-right: 32px;
     background-color: #007BFF;
-    border-radius: 5px;
+    border-radius: 3px;
     color: #fff;
     padding: 8px 12px !important;
     margin-left: 16px;
@@ -875,7 +895,7 @@ span.bg-success,
 .label-success {
     background-color: #047afb;
     padding: 7px 12px;
-    border-radius: 5px;
+    border-radius: 3px;
 }
 
 #full-notification-block, .notification-index #navbar-second {
@@ -919,13 +939,13 @@ span.bg-success,
     padding: 15px 11px;
 }
 
-#load-more-news {
+#load-more-news, #load-more-tasks {
     padding: 11px;
     font-size: 15px;
     color: #fff;
     background-color: #007BFF;
     border: 2px solid #007BFF;
-    border-radius: 5px;
+    border-radius: 3px;
 }
 
 #mark-all-news-as-read, #mark-all-tasks-as-read {
@@ -937,7 +957,7 @@ span.bg-success,
     color: #fff;
     background-color: #007BFF;
     border: 2px solid #007BFF;
-    border-radius: 5px;
+    border-radius: 3px;
     position: relative;
 }
 
@@ -969,8 +989,8 @@ span.bg-success,
     background: url(/app/media/img/comments.svg) no-repeat center;
     background-size: 15px;
     position: absolute;
-    top: 43px;
-    right: 32px;
+    top: 16px;
+    right: 24px;
     text-align: right;
     font-size: 15px;
     line-height: 15px;
@@ -992,7 +1012,7 @@ span.bg-success,
 #notification-filter-status .dropdown-menu a,
 #notification-filter-type .dropdown-menu a {
     position: relative;
-    border-radius: 5px;
+    border-radius: 3px;
     padding: 10px;
 }
 
@@ -1019,7 +1039,7 @@ span.bg-success,
 .notification-page .dropdown.open a.dropdown-toggle {
     background-color: #fff;
     box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.125);
-    border-radius: 5px;
+    border-radius: 3px;
     font-size: 14px;
 }
 
@@ -1041,7 +1061,7 @@ span.bg-success,
 }
 
 .content-left-fixed .profile-user-page {
-    border-radius: 10px;
+    border-radius: 3px;
     box-shadow: 0 3px 15px 0 rgba(0, 60, 125, 0.15);
     margin-bottom: 52px;
 }
@@ -1259,7 +1279,7 @@ span.bg-success,
 
 .cabinet.achievements .progress-top .navbar-nav > li > a {
     margin: 0;
-    border-radius: 5px;
+    border-radius: 3px;
 }
 
 .cabinet.achievements .progress-top .navbar-nav {
@@ -1355,7 +1375,6 @@ span.bg-success,
 
 .profile-team-preview .member-item img {
     margin: 0;
-    border-radius: 50%;
 }
 
 .profile-team-preview .progress-block .progress-top .progress-title h3 {
@@ -1371,11 +1390,6 @@ span.bg-success,
 .cabinet.rules .button.link-button {
     margin: 23px auto 10px;
     display: block;
-}
-
-.cabinet-menu .menu-link.active {
-    border-left: 2px solid #007BFF;
-    border-radius: 5px;
 }
 
 .error .content-left-fixed.container,
@@ -1420,6 +1434,7 @@ span.bg-success,
 
 #main-menu .nav li.last a {
     padding-right: 0;
+    float: left;
 }
 
 .cabinet.profile .profile-personal-preview {
@@ -1428,8 +1443,8 @@ span.bg-success,
 
 .cabinet.news-item .simple-news-page .image {
     border-bottom-left-radius: 0;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
     min-height: 350px;
 }
 
@@ -1446,10 +1461,11 @@ span.bg-success,
 }
 
 .content-left-fixed .simple-news-page {
-    border-radius: 10px;
+    border-radius: 3px;
     box-shadow: 0 3px 15px 0 rgba(0, 60, 125, 0.15);
     margin-bottom: 32px;
     padding-bottom: 16px;
+    background-color: #fff;
 }
 
 .content-left-fixed .simple-news-page .item-date {
@@ -1506,19 +1522,19 @@ span.bg-success,
 
 .steps-block.index .brand-tags {
     text-align: left;
-    color: #F3BD00;
-    margin-bottom: 24px;
-    font-size: 21px;
+    color: #0076ff;
+    margin-bottom: 45px;
+    font-size: 22px;
     font-weight: bold;
-    line-height: 23px;
+    line-height: 29px;
 }
 
 .steps-block.index .slogan {
     font-weight: bold;
-    font-size: 44px;
-    line-height: 50px;
+    font-size: 34px;
+    line-height: 44px;
     text-align: left;
-    margin-bottom: 24px;
+    margin-bottom: 26px;
 }
 
 .steps-block.index .block-left {
@@ -1532,7 +1548,7 @@ span.bg-success,
     background-color: #007BFF;
     border: none;
     height: 44px;
-    border-radius: 5px;
+    border-radius: 3px;
     color: #fff;
     line-height: 44px;
     font-size: 16px;
@@ -1593,8 +1609,10 @@ span.bg-success,
     line-height: 32px;
     margin-top: 25px;
     text-align: center;
-    padding-left: 32px;
-    padding-right: 32px;
+}
+
+.questions .questions-text {
+    text-align: justify;
 }
 
 .task .profile-info-main .test-description {
@@ -1645,7 +1663,7 @@ span.bg-success,
 
 .steps-block .select2-container--krajee .select2-selection--single {
     height: 44px;
-    border-radius: 5px;
+    border-radius: 3px;
     background-color: #F7F9FB;
     padding: 12px;
     color: #373737;
@@ -1905,7 +1923,7 @@ span.bg-success,
     margin-bottom: 0;
     margin-right: 32px;
     background-color: #007BFF;
-    border-radius: 5px;
+    border-radius: 3px;
     color: #fff;
     padding: 8px 12px !important;
     border: 2px solid #007BFF;
@@ -1962,9 +1980,9 @@ span.bg-success,
 
 .content-left-fixed .tasks-item .task-required {
     background: url(/app/media/img/required.svg) center no-repeat;
-    background-size: 32px;
-    height: 32px;
-    width: 32px;
+    background-size: 23px;
+    height: 23px;
+    width: 23px;
     margin-bottom: 6px;
 }
 
@@ -1994,8 +2012,47 @@ span.bg-success,
     text-align: left;
 }
 
+.profile-user-page .profile-info-main .left-side img, 
+.profile-info-main .profile-team-preview .member-item img {
+    max-height: 100%;
+}
+
+.profile-user-page .profile-personal-preview .image-cropper,
+.profile-info-main .left-side .image-cropper {
+    margin: 0 auto;
+    width: 150px;
+    height: 150px;
+    float: none;
+    margin-bottom: 15px;
+}
+
 span.btn:hover {
     cursor: default;
+}
+
+.questions.about img {
+    border-radius: 0;
+}
+
+.progress-descr h5 {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+#main-menu .image-cropper {
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+    border-radius: 50%;
+    float: right;
+    margin-right: 15px;
+    margin-top: 12px;
+}
+
+#main-menu .image-cropper img {
+    height: 100%;
+    max-height: 60px;
+    max-width: none;
 }
 
 @media (max-width: 1199px) {
@@ -2007,7 +2064,9 @@ span.btn:hover {
 }
 
 @media (min-width: 992px) {
-
+    #main-menu .cabinet-menu {
+        display: none;
+    }
 }
 
 @media (max-width: 1050px) {
@@ -2018,12 +2077,35 @@ span.btn:hover {
     .steps-block.index .block-right {
         width: 100%;
     }
+
+    .steps-block.index .step-subtitle {
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 991px) and (min-width: 768px) {
+    .nav .cabinet-menu {
+        display: none;
+    }
 }
 
 @media (max-width: 991px) {
+    .steps-block.profile {
+        margin-top: 10px;
+    }
+
+    .navbar-nav {
+        margin: 7px -15px;
+        overflow: hidden;
+    }
+
+    .navbar-fixed-top .navbar-collapse, .navbar-fixed-bottom .navbar-collapse {
+        max-height: 350px;
+    }
+
     .news-item.small .comments-count-news {
-        left: 15px;
-        top: -20px;
+        left: inherit;
+        top: inherit;
     }
 
     .error .content-left-fixed.container,
@@ -2032,15 +2114,15 @@ span.btn:hover {
     }
 
     .content-left-fixed .tasks-item .image {
-        width: calc(100% - 48px);
+        width: 295px;
         display: block;
-        height: 318px;
+        height: 295px;
     }
 
     .content-left-fixed .tasks-item .information {
         display: block;
         width: 100%;
-        height: 500px;
+        height: 350px;
     }
 
     .content-left-fixed .tasks-item .team-state {
@@ -2049,7 +2131,7 @@ span.btn:hover {
         right: 0;
         margin: 0;
         text-align: left;
-        padding-left: 32px !important;
+        padding-left: 23px !important;
     }
 
     .task .categories .category .text-category {
@@ -2058,6 +2140,7 @@ span.btn:hover {
 
     .mobile-actions {
         display: block;
+        margin-bottom: 18px;
     }
 
     .desktop-actions {
@@ -2068,6 +2151,14 @@ span.btn:hover {
         padding: 0 23px 23px;
     }
 
+    .content-left-fixed .news-item .information .title {
+        line-height: 23px;
+    }
+
+    .content-left-fixed .news-item .information .short {
+        font-size: 16px;
+    }
+
     .cabinet.rules .progress-block .progress-top .progress-title h3 {
         font-size: 20px;
         margin-bottom: 8px;
@@ -2075,14 +2166,8 @@ span.btn:hover {
         margin-top: 48px;
     }
 
-    .sidebar-right-fixed {
-        position: initial;
-        width: 100%;
-        margin-top: 16px;
-    }
-
     .content-left-fixed {
-        margin-top: 16px;
+        margin-top: 0;
         width: 100%;
     }
 
@@ -2113,6 +2198,11 @@ span.btn:hover {
         font-size: 16px;
     }
 
+    .content-left-fixed .tasks-item,
+    .content-left-fixed .news-item {
+        margin-bottom: 20px;
+    }
+
     .progress-block .progress-items .progress-item .knob-block {
         float: right;
     }
@@ -2129,6 +2219,73 @@ span.btn:hover {
         position: relative;
     }
 
+    .navbar-inverse .navbar-nav > li > a {
+        display: block;
+        text-align: left;
+        font-size: 13px;
+        line-height: 25px;
+        color: #000;
+        letter-spacing: 0.2px;
+        padding: 0 15px;
+    }
+
+    .sidebar-right-fixed {
+        display: none;
+    }
+
+    .nav .cabinet-menu {
+        padding: 8px 15px !important;
+    }
+
+    #main-menu .nav li.last a#mobile-name {
+        display: none;
+    }
+
+    #main-menu .nav li.last a i.heading-icon {
+        color: #2a92fe;
+    }
+
+    .cabinet-menu .menu-link {
+        text-align: left;
+        color: #93A0A9;
+        font-size: 15px;
+        line-height: 20px;
+        margin-bottom: 6px;
+    }
+
+    .cabinet-menu .menu-link.active {
+        background-color: #30485e;
+        padding: 5px 9px;
+        border-radius: 3px;
+        margin-left: -7px;
+        margin-right: -7px;
+    }
+
+    .cabinet-menu .menu-link.active .fa {
+        color: #fff;
+    }
+
+    .cabinet-menu .menu-link.active .text {
+        color: #fff;
+    }
+
+    .cabinet-menu .menu-link .text {
+        -webkit-transition: all ease 0.5s;
+        -moz-transition: all ease 0.5s;
+        -o-transition: all ease 0.5s;
+        -ms-transition: all ease 0.5s;
+        transition: all ease 0.5s;
+    }
+
+    .cabinet-menu .menu-link .text:hover {
+        color: #2a92fe;
+        -webkit-transition: all ease 0.5s;
+        -moz-transition: all ease 0.5s;
+        -o-transition: all ease 0.5s;
+        -ms-transition: all ease 0.5s;
+        transition: all ease 0.5s;
+    }
+
     footer {
         padding-top: 32px;
         padding-bottom: 22px;
@@ -2136,7 +2293,8 @@ span.btn:hover {
         position: relative;
         z-index: 1000;
         float: none;
-        margin-top: 64px;
+        margin-top: 84px;
+        overflow: hidden;
     }
 
     .footer-main {
@@ -2215,6 +2373,7 @@ span.btn:hover {
     footer .footer-rights {
         position: static;
         height: 42px;
+        margin-top: 10px;
     }
 
     footer .links-block a:last-child {
@@ -2236,7 +2395,7 @@ span.btn:hover {
     .content-left-fixed .news-item .image {
         width: 100%;
         border-bottom-left-radius: 0;
-        border-top-right-radius: 10px;
+        border-top-right-radius: 3px;
     }
 
     .levels-table-block table tr, #case-grid table tr {
@@ -2311,6 +2470,29 @@ span.btn:hover {
 }
 
 @media (max-width: 767px) {
+    .questions .questions-text {
+        text-align: left;
+    }
+
+    .questions .content-left-fixed .profile-user-page {
+        padding: 0;
+    }
+
+    .questions-text-bold.contacts-region-title,
+    .questions-text-bold.title,
+    .questions .questions-text,
+    .task .profile-info-main .text {
+        padding: 0 15px;
+    }
+
+    .cabinet-menu .profile-info {
+        display: none;
+    }
+
+    .content-left-fixed .tasks-item .image {
+        display: none;
+    }
+
     .navbar-inverse {
         background-color: rgba(255, 255, 255, 0.5);
     }
@@ -2342,11 +2524,6 @@ span.btn:hover {
         background-color: rgba(255, 255, 255, 0.9);
     }
 
-    .navbar-inverse .navbar-nav > li > a {
-        display: block;
-        text-align: center;
-    }
-
     .navbar-nav > li > a {
         margin: 0;
         display: inline-block;
@@ -2361,11 +2538,11 @@ span.btn:hover {
     }
 
     .navbar-inverse .navbar-nav li.login a {
-        margin: 0 16px 9px;
+        margin: 10px 15px 7px;
     }
 
     .navbar-brand img {
-        height: 29px;
+        height: 22px;
     }
 
     .notification-page .navbar-default {
@@ -2421,6 +2598,10 @@ span.btn:hover {
 @media (min-width: 768px) {
     .navbar-inverse .navbar-nav li:last-child(-1) a {
         position: relative;
+    }
+
+    #main-menu .image-cropper {
+        display: none !important;
     }
 }
 

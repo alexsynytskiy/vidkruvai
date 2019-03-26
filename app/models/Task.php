@@ -28,6 +28,7 @@ use yii\helpers\ArrayHelper;
  * @property string $stateForTeam
  *
  * @property WrittenTask|Test $object
+ * @property WrittenTask|Test $taskObject
  * @property Award[] $awards
  */
 class Task extends ActiveRecord
@@ -104,6 +105,15 @@ class Task extends ActiveRecord
             'created_at' => AppMsg::t('Создано'),
             'updated_at' => AppMsg::t('Обновлено'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTaskObject()
+    {
+        return $this->hasOne($this->item_type === DefTask::TYPE_TEST ? Test::className() :
+            WrittenTask::className(), ['id' => 'item_id']);
     }
 
     /**
@@ -255,5 +265,53 @@ class Task extends ActiveRecord
             'awards',
             []
         );
+    }
+
+    public function setTaskPublicStatus() {
+        $currentTime = time();
+        $team = \Yii::$app->siteUser->identity->team;
+
+        if($this->item_type === DefTask::TYPE_TEST) {
+            $test = $this->object;
+            $testQuestionsCount = count($test->questions);
+            $answersCount = 0;
+            $testTimeFailed = false;
+
+            /** @var TeamAnswer $answer */
+            $teamAnswers = $test->getTeamAnswers();
+
+            foreach ($teamAnswers as $answer) {
+                if ($answer->answer_id) {
+                    $answersCount++;
+                }
+
+                if($answer->answer_id !== -1) {
+                    $testTimeFailed = true;
+                    break;
+                }
+            }
+
+            if (!$testTimeFailed && $answersCount < $testQuestionsCount &&
+                $currentTime >= strtotime($test->task->starting_at) && $currentTime <= strtotime($test->task->ending_at)) {
+                $this->stateForTeam = Test::ACTIVE;
+            } elseif ($answersCount === $testQuestionsCount) {
+                $this->stateForTeam = Test::ANSWERED;
+            } elseif (($answersCount < $testQuestionsCount && $currentTime > strtotime($test->task->ending_at)) || $testTimeFailed) {
+                $this->stateForTeam = Test::MISSED;
+            }
+        }
+
+        if($this->item_type === DefTask::TYPE_WRITTEN) {
+            if ($team && !$this->object->teamAnswered($team->id)) {
+                if($currentTime >= strtotime($this->starting_at) && $currentTime <= strtotime($this->ending_at)) {
+                    $this->stateForTeam = Test::ACTIVE;
+                }
+                if($currentTime > strtotime($this->ending_at)) {
+                    $this->stateForTeam = Test::MISSED;
+                }
+            } else {
+                $this->stateForTeam = Test::ANSWERED;
+            }
+        }
     }
 }

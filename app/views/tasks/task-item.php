@@ -10,7 +10,7 @@ $baseUrl = $asset->baseUrl;
 ?>
 
 <div class="tasks-item task clearfix">
-    <div class="image" style="background: url(<?= $item->image ?: $baseUrl . '/img/task-default.svg' ?>); background-size: cover; background-repeat: no-repeat;"></div>
+    <div class="image" style="background: url(<?= $item->image ?: $baseUrl . '/img/task-default.png' ?>); background-size: cover; background-repeat: no-repeat;"></div>
     <div class="information">
         <div class="icon-states">
             <?php if ($item->required): ?>
@@ -25,7 +25,11 @@ $baseUrl = $asset->baseUrl;
         </div>
 
         <div class="title">
+            <?php if($item->stateForTeam === DefTask::ACTIVE): ?>
             <a href="<?= \yii\helpers\Url::to(["/tasks/{$item->item_type}/" . $item->hash]) ?>"><?= $item->object->name ?></a>
+            <?php else: ?>
+                <?= $item->object->name ?>
+            <?php endif; ?>
         </div>
 
         <div class="short">

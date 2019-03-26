@@ -6,6 +6,8 @@ use app\components\AppMsg;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
+use yii\db\Query;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "written_task_answer".
@@ -18,7 +20,7 @@ use yii\db\Expression;
  * @property string $updated_at
  * @property string $params
  *
- * @property Task $task
+ * @property WrittenTask $task
  * @property Team $team
  *
  */
@@ -85,5 +87,13 @@ class WrittenTaskAnswer extends \yii\db\ActiveRecord
     public function getTeam()
     {
         return $this->hasOne(Team::className(), ['id' => 'team_id']);
+    }
+
+    public static function getTasksList() {
+        $tasks = (new Query)->from(self::tableName() . ' wt')->select(['wt.task_id id', 't.name'])
+            ->innerJoin(WrittenTask::tableName() . ' t', 't.id = wt.task_id')
+            ->orderBy('t.id ASC')->distinct()->all();
+
+        return ArrayHelper::map($tasks, 'id', 'name');
     }
 }

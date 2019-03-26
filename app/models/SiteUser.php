@@ -271,12 +271,15 @@ class SiteUser extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return array|null|ActiveRecord
      */
     public function getTeam()
     {
-        return $this->hasOne(Team::className(), ['id' => 'team_id'])
-            ->viaTable(static::teamParticipationTableName(), ['site_user_id' => 'id']);
+        return Team::find()->alias('t')
+            ->innerJoin(static::teamParticipationTableName() . ' tu', 'tu.team_id = t.id')
+            ->innerJoin(self::tableName() . ' s', 's.id = tu.site_user_id')
+            ->where(['s.id' => $this->id, 'tu.status' => DefTeamSiteUser::STATUS_CONFIRMED])
+            ->one();
     }
 
     /**

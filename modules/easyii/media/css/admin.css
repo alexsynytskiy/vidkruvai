@@ -1,10 +1,12 @@
-html{
+html {
     overflow-y: scroll;
 }
-#admin-body{
+
+#admin-body {
     font-family: 'Open Sans', sans-serif;
     background: #f0f3f3;
 }
+
 #admin-body .wrapper {
     height: 100%;
     display: table;
@@ -19,28 +21,34 @@ html{
     color: #B3B8C3;
     line-height: 50px;
 }
-#admin-body .header .logo{
+
+#admin-body .header .logo {
     float: left;
     width: 220px;
     text-align: center;
     font-size: 18px;
     color: #FFF;
 }
-#admin-body .header .logo img{
+
+#admin-body .header .logo img {
     vertical-align: baseline;
 }
-#admin-body .header .nav{
+
+#admin-body .header .nav {
     margin-left: 220px;
     padding-right: 20px;
 }
-#admin-body .header .nav a{
+
+#admin-body .header .nav a {
     color: #B3B8C3;
 }
-#admin-body .header .nav a:hover, #admin-body .header .nav a:focus, #admin-body .header .nav a:active{
+
+#admin-body .header .nav a:hover, #admin-body .header .nav a:focus, #admin-body .header .nav a:active {
     color: #fff;
     text-decoration: none;
 }
-#admin-body .header .nav a i{
+
+#admin-body .header .nav a i {
     margin-right: 5px;
 }
 
@@ -55,34 +63,101 @@ html{
     padding: 0;
     vertical-align: top;
 }
-#admin-body .sidebar a.menu-item{
+
+#admin-body .sidebar a.menu-item {
     border-top: 1px solid #333;
     display: block;
     padding: 15px 20px;
     color: #B3B8C3;
 }
-#admin-body .sidebar a.menu-item:hover, #admin-body .sidebar a.menu-item:focus{
+
+#admin-body .sidebar a.menu-item:hover, #admin-body .sidebar a.menu-item:focus {
     text-decoration: none;
     color: #FFF;
 }
-#admin-body .sidebar a.active{
+
+#admin-body .sidebar a.active {
     border-color: #27b6af;
     background: #27b6af;
     color: #fff;
 }
-#admin-body .sidebar a.active:hover{
+
+#admin-body .sidebar a.active:hover {
     background: #27b6af;
     color: #fff;
 }
 
-#admin-body .sidebar a.menu-item i{
+#admin-body .sidebar a.menu-item i {
     margin-right: 10px;
 }
-#admin-body .sidebar a.menu-item .badge{
+
+#admin-body .sidebar a.menu-item .badge {
     background: #fff;
     color: #555;
     margin-top: 2px;
     float: right;
+}
+
+.menu-opened-element:hover, .treeview-menu a:hover {
+    cursor: pointer;
+    color: #fff;
+}
+
+.sidebar li {
+    display: block;
+    padding: 15px 20px;
+    color: #B3B8C3;
+    text-decoration: none;
+}
+
+.sidebar li.open {
+    padding-bottom: 0;
+}
+
+.sidebar li a {
+    text-decoration: none;
+    color: #B3B8C3;
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.sidebar li a i {
+    margin-right: 10px;
+}
+
+.sidebar li.main-submenu.opened {
+    padding-bottom: 0;
+}
+
+.treeview-menu {
+    padding: 0;
+    margin: 0;
+    padding-left: 10px;
+    margin-top: 10px;
+    display: none;
+}
+
+.treeview-menu.open {
+    display: block !important;
+}
+
+.angle-left {
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.pull-right-container {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -9px;
+}
+
+.treeview-menu li {
+    padding: 15px 13px;
 }
 
 /*--------------- CONTENT ---------------*/
@@ -92,42 +167,49 @@ html{
     width: 100%;
     background: #fff;
 }
-#admin-body .main .page-title{
+
+#admin-body .main .page-title {
     font-size: 18px;
     background: #f6f8f8;
     padding: 13px 20px;
 }
 
-#admin-body .main .container-fluid{
+#admin-body .main .container-fluid {
     padding: 20px;
 }
-#admin-body .main a, #admin-body .main .btn, #admin-body .main .form-control, .input-group-addon{
+
+#admin-body .main a, #admin-body .main .btn, #admin-body .main .form-control, .input-group-addon {
     border-radius: 0 !important;
 }
 
 #admin-body .table {
     table-layout: fixed;
 }
-#admin-body .table th{
+
+#admin-body .table th {
     font-size: 14px;
     color: #565656;
 }
-#admin-body .table td{
+
+#admin-body .table td {
     font-size: 14px;
 }
-#admin-body .table td.control{
+
+#admin-body .table td.control {
     vertical-align: middle;
     text-align: right;
 }
-#admin-body .table td.status{
+
+#admin-body .table td.status {
     vertical-align: middle;
     text-align: center;
 }
-#admin-body .table td.vtop{
+
+#admin-body .table td.vtop {
     vertical-align: top;
 }
 
-#admin-body .switcher{
+#admin-body .switcher {
     border: none;
     background: #b3b8c3;
     color: #FFF;
@@ -137,55 +219,65 @@ html{
     border-radius: 10px;
     padding: 1px;
 }
-#admin-body .switcher .slider{
+
+#admin-body .switcher .slider {
     background: #f0f3f3;
     height: 18px;
     border-radius: 10px;
     box-shadow: none;
 }
-#admin-body .switcher.is-active{
+
+#admin-body .switcher.is-active {
     background: #27b6af;
 }
-#admin-body .switcher .textNo{
+
+#admin-body .switcher .textNo {
     color: #fff;
 }
 
-#admin-body .actions li i{
+#admin-body .actions li i {
     margin-right: 8px;
 }
-#admin-body .actions .glyphicon-menu-hamburger{
+
+#admin-body .actions .glyphicon-menu-hamburger {
     cursor: pointer;
     font-size: 15px;
     color: #777;
 }
-#admin-body .actions .glyphicon-menu-hamburger:hover{
+
+#admin-body .actions .glyphicon-menu-hamburger:hover {
     color: #337ab7;
 }
 
 /*--------------- HELPERS ---------------*/
 
-h4{
+h4 {
     text-transform: uppercase;
     font-size: 24px;
     font-weight: 300;
     color: #555;
 }
-h4 b{
+
+h4 b {
     font-weight: 400;
 }
 
-.confirm-delete{
+.confirm-delete {
     color: #a94442 !important;
 }
-.color-red{
+
+.color-red {
     color: #a94442;
 }
+
 .font-16 {
     font-size: 16px;
 }
+
 .font-12 {
     font-size: 12px;
 }
+
 .font-10 {
     font-size: 10px;
 }
@@ -197,19 +289,23 @@ h4 b{
     right: 10px;
     width: 300px;
 }
+
 .smooth {
     color: #aaa;
 }
-.dashed-link:before{
+
+.dashed-link:before {
     font-family: 'Glyphicons Halflings';
     content: "\e252";
     font-size: 10px;
     margin-right: 4px;
 }
-.dashed-link.collapsed:before{
+
+.dashed-link.collapsed:before {
     content: "\e250";
 }
-.dashed-link:hover, .dashed-link:focus{
+
+.dashed-link:hover, .dashed-link:focus {
     text-decoration: none;
     color: #333;
 }

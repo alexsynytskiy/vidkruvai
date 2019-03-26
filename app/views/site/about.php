@@ -9,7 +9,7 @@ $baseUrl = $asset->baseUrl;
 ?>
 
 <div class="steps-block questions clearfix">
-    <div class="cabinet questions">
+    <div class="cabinet questions about">
         <article>
             <div class="content-left-fixed container">
                 <div class="project-info-page-description">

@@ -12,7 +12,7 @@ use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\easyii\helpers\Mail;
 use yii\easyii\models\Setting;
-use yii\easyii\modules\tasks\models\TasksUser;
+use app\models\TasksUser;
 use yii\helpers\Url;
 use yii\helpers\VarDumper;
 

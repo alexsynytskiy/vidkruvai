@@ -173,6 +173,12 @@ class AController extends Controller
     public function actionDelete($id)
     {
         if (($model = News::findOne($id))) {
+            $newsUser = NewsUser::find()->where(['news_id' => $model->news_id])->all();
+
+            foreach ($newsUser as $item) {
+                $item->delete();
+            }
+
             $model->delete();
         } else {
             $this->error = Yii::t('easyii', 'Not found');

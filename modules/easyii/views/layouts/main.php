@@ -41,17 +41,46 @@ $moduleName = $this->context->module->id;
             </div>
             <div class="main">
                 <div class="box sidebar">
-                    <?php foreach(Yii::$app->getModule('admin')->activeModules as $module) : ?>
-                        <a href="<?= Url::to(['/admin/'.$module->name]) ?>" class="menu-item <?= ($moduleName == $module->name ? 'active' : '') ?>">
-                            <?php if($module->icon != '') : ?>
-                                <i class="glyphicon glyphicon-<?= $module->icon ?>"></i>
-                            <?php endif; ?>
-                            <?= $module->title ?>
-                            <?php if($module->notice > 0) : ?>
-                                <span class="badge"><?= $module->notice ?></span>
-                            <?php endif; ?>
+                    <li class="main-submenu">
+                        <a href="#" style="position: relative" class="menu-opened-element">
+                            <i class="glyphicon glyphicon-calendar"></i><span>Завдання</span>
+                            <span class="pull-right-container">
+                                <i class="glyphicon glyphicon-chevron-right angle-left pull-right"></i>
+                            </span>
                         </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="<?= Url::to(['/admin/tasks/']) ?>/">
+                                    <i class="fa fa-circle-o"></i> Список завдань
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?= Url::to(['/admin/writtentasksanswers/']) ?>/">
+                                    <i class="fa fa-circle-o"></i> Письмові відповіді
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-circle-o"></i> Тести відповіді</a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                    <?php foreach(Yii::$app->getModule('admin')->activeModules as $module) : ?>
+                        <?php if(!in_array($module->name, ['writtentasksanswers', 'tasks'])) : ?>
+                            <a href="<?= Url::to(['/admin/'.$module->name]) ?>"
+                               class="menu-item <?= ($moduleName === $module->name ? 'active' : '') ?>">
+                                <?php if($module->icon !== '') : ?>
+                                    <i class="glyphicon glyphicon-<?= $module->icon ?>"></i>
+                                <?php endif; ?>
+                                <?= $module->title ?>
+                                <?php if($module->notice > 0) : ?>
+                                    <span class="badge"><?= $module->notice ?></span>
+                                <?php endif; ?>
+                            </a>
+                        <?php endif; ?>
                     <?php endforeach; ?>
+
                     <a href="<?= Url::to(['/admin/settings/']).'/' ?>" class="menu-item <?= ($moduleName == 'admin' && $this->context->id == 'settings') ? 'active' :'' ?>">
                         <i class="glyphicon glyphicon-cog"></i>
                         <?= Yii::t('easyii', 'Settings') ?>

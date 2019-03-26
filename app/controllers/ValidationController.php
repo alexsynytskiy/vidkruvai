@@ -24,7 +24,7 @@ class ValidationController extends Controller
                 'class' => CaptchaAction::className(),
                 'height' => 50,
                 'maxLength' => 4,
-                'minLength' => 4,
+                'minLength' => 4
             ],
         ];
     }

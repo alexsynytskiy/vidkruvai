@@ -15,11 +15,12 @@ use app\models\search\TeamSearch;
 use app\models\SiteUser;
 use app\models\Team;
 use app\models\TeamAnswer;
+use app\models\TeamSiteUser;
 use app\models\WrittenTaskAnswer;
 use Yii;
 use yii\easyii\behaviors\StatusController;
 use yii\easyii\components\Controller;
-use yii\easyii\modules\tasks\models\TasksUser;
+use app\models\TasksUser;
 use yii\web\BadRequestHttpException;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
@@ -194,12 +195,12 @@ class AController extends Controller
                 throw new BadRequestHttpException();
             }
 
-            $userId = $request->post('userId', '');
+            $hash = $request->post('hash', '');
 
-            $user = SiteUser::findOne([$userId]);
+            $memberInvitation = TeamSiteUser::findOne(['hash' => $hash]);
 
-            if($user && $user->role !== DefTeamSiteUser::ROLE_CAPTAIN) {
-                $user->teamParticipator->mailInvitedUser();
+            if($memberInvitation && $memberInvitation->role !== DefTeamSiteUser::ROLE_CAPTAIN) {
+                $memberInvitation->mailInvitedUser();
             }
 
             return ['status' => 'success', 'message' => 'Повторне запрошення відправлено'];

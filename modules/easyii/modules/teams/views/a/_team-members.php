@@ -50,7 +50,7 @@ $baseUrl = $asset->baseUrl;
             <td>
                 <?php if ($member->status !== DefTeamSiteUser::STATUS_CONFIRMED): ?>
                     <?= Html::a('Надіслати', '#',
-                        ['data-pjax' => 0, 'data-user-id' => $memberInstance->id, 'class' => 'send-invitation-again']) ?>
+                        ['data-pjax' => 0, 'data-hash' => $member->hash, 'class' => 'send-invitation-again']) ?>
                 <?php endif; ?>
             </td>
         </tr>

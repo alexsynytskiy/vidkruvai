@@ -15,7 +15,9 @@ $baseUrl = $asset->baseUrl;
                 <div class="project-info-page-description">
                     <div class="profile-user-page">
                         <div class="image"></div>
-                            <?= $questions->text ?>
+                            <div class="questions-text">
+                                <?= $questions->text ?>
+                            </div>
                         </div>
                     </div>
                 </div>

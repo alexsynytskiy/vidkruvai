@@ -1,6 +1,6 @@
 <?php
 
-namespace yii\easyii\modules\tasks\models;
+namespace app\models;
 
 use app\models\SiteUser;
 use app\models\Task;
@@ -17,7 +17,7 @@ use yii\easyii\components\ActiveRecord;
  * @property string $created_at
  * @property string $updated_at
  *
- * @package yii\easyii\modules\tasks\models
+ * @package app\models
  */
 class TasksUser extends ActiveRecord
 {

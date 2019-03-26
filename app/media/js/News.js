@@ -5,6 +5,10 @@ var News = function () {
      * @returns {boolean}
      */
     var newsPage = function () {
+        var lazyLoadInstance = new LazyLoad({
+            elements_selector: ".lazy"
+        });
+
         var handleNewsChangeStatus = function () {
             $('body')
                 .on('click', '.read-news', function (e) {
@@ -77,9 +81,14 @@ var News = function () {
                         else {
                             $loadMore.remove();
                         }
-                    }, 'json');
+                    }, 'json').then(function () {
+                    var lazyLoadInstance = new LazyLoad({
+                        elements_selector: ".lazy"
+                    });
+                });
 
                 $loadMore.blur();
+                $(window).trigger('resize');
             });
 
             function _mark(newsIds, newsStatus, markAll) {

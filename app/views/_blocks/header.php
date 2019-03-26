@@ -24,11 +24,19 @@ switch ($controller) {
         $login = "active";
         break;
 }
+
+$user = \Yii::$app->siteUser->identity;
 ?>
 
 <nav id="main-menu" class="navbar navbar-inverse navbar-fixed-top" data-spy="affix" data-offset-top="100">
     <div class="container">
         <div class="navbar-header">
+            <?php if (!\Yii::$app->siteUser->isGuest): ?>
+                <div class="image-cropper">
+                    <img src="<?= $user->avatar ?: $baseUrl . '/img/default-avatar-user.jpg' ?>" class="avatar-menu">
+                </div>
+            <?php endif; ?>
+            
             <button aria-controls="navbar" aria-expanded="false" class="navbar-toggle collapsed"
                     data-target="#navbar" data-toggle="collapse" type="button">
                 <div class="navbar-mobile-rows">
@@ -36,7 +44,6 @@ switch ($controller) {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </div>
-                Меню
             </button>
             <a class="navbar-brand" href="/">
                 <img src="<?= $asset->baseUrl ?>/img/logo.png">
@@ -44,16 +51,9 @@ switch ($controller) {
         </div>
         <div class="navbar-collapse collapse navbar-right" id="navbar">
             <ul class="nav navbar-nav">
-                <!-- <li class="<?= $blog ?>">
-                    <a href="<?= Url::to(['/lections']) ?>">
-                        Освітні Лекції
-                    </a>
-                </li>
-                <li class="<?= $blog ?>">
-                    <a href="<?= Url::to(['/blog']) ?>">
-                        Блог
-                    </a>
-                </li> -->
+                <?php if (!\Yii::$app->siteUser->isGuest): ?>
+                    <?= $this->render('/_blocks/profile-sidebar') ?>
+                <?php endif; ?>
                 <li>
                     <a class="donate" target="_blank" href="https://coukraine.org/donate">
                         Підтримайте нас
@@ -82,11 +82,6 @@ switch ($controller) {
                     </li>
                 <?php else: ?>
                     <?= $this->render('/notifications/_top-menu-notifications') ?>
-                    <li class="last">
-                        <a href="<?= Url::to(['/profile']) ?>">
-                            <?= \Yii::$app->siteUser->identity->getFullName() ?>
-                        </a>
-                    </li>
                 <?php endif; ?>
             </ul>
         </div>

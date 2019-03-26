@@ -42,5 +42,31 @@ var SiteUserForm = function (options) {
                 }
             });
         });
+    }).on("click", '.drop-user-password', function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: '/admin/siteusers/a/drop-user-password/',
+            method: 'POST',
+            data: {userId: $(this).data('user-id'), _csrf: SiteUserCore.getCsrfToken()},
+            success: function (data) {
+                new PNotify({
+                    title: 'Успіх!',
+                    text: data.message,
+                    icon: '',
+                    type: 'success',
+                    delay: 3000 //Show the notification 4sec
+                });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                new PNotify({
+                    title: 'Помилка!',
+                    text: 'Виникла помилка!',
+                    icon: '',
+                    type: 'error',
+                    delay: 3000 //Show the notification 4sec
+                });
+            }
+        });
     });
 };

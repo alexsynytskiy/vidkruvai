@@ -114,6 +114,7 @@ class TeamSiteUser extends ActiveRecord
 
     /**
      * @return array|bool
+     * @throws \Throwable
      */
     public function getDataInvitedUser()
     {
@@ -131,6 +132,11 @@ class TeamSiteUser extends ActiveRecord
         $user = SiteUser::findOne(['email' => $this->email]);
 
         if ($user) {
+            if(!$this->site_user_id) {
+                $this->site_user_id = $user->id;
+                $this->update(false);
+            }
+
             \Yii::$app->notification->addToUser($user, DefNotification::CATEGORY_TEAM,
                 DefNotification::TYPE_TEAM_INVITATION, null,
                 [
@@ -156,6 +162,7 @@ class TeamSiteUser extends ActiveRecord
 
     /**
      * @return bool
+     * @throws \Throwable
      */
     public function mailInvitedUser()
     {

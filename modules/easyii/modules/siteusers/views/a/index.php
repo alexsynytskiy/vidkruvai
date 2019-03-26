@@ -7,7 +7,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-$this->title = 'Users';
+$this->title = 'Користувачі';
 
 $gridColumns = [
     [
@@ -64,13 +64,23 @@ $gridColumns = [
         },
     ],
     [
-        'label' => 'Switch status',
+        'label' => 'Статус',
         'content' => function ($model) {
             return Html::checkbox('', $model->status === \app\models\definitions\DefSiteUser::STATUS_ACTIVE, [
                 'class' => 'switch',
                 'data-id' => $model->primaryKey,
                 'data-link' => Url::to(['/admin/' . $this->context->module->id . '/a']),
             ]);
+        },
+    ],
+    [
+        'label' => 'Дії',
+        'content' => function ($model) {
+            return Html::a('Скинути пароль', '#', [
+                'data-pjax' => 0,
+                'data-user-id' => $model->id,
+                'class' => 'drop-user-password']
+            );
         },
     ],
 ];

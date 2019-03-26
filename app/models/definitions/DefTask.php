@@ -68,4 +68,30 @@ class DefTask extends BaseDefinition
 
         return $statuses[$key];
     }
+
+    /**
+     * @return mixed
+     */
+    public static function getStatuses()
+    {
+        $statuses = [
+            self::STATUS_ON => AppMsg::t('Активне'),
+            self::STATUS_OFF => AppMsg::t('Не активне'),
+        ];
+
+        return $statuses;
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function getRequired()
+    {
+        $statuses = [
+            self::STATUS_ON => AppMsg::t('Обов\'язкове'),
+            self::STATUS_OFF => AppMsg::t('Не обов\'язкове'),
+        ];
+
+        return $statuses;
+    }
 }

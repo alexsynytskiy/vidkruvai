@@ -52,8 +52,8 @@ body {
 
 .steps-block {
     max-width: 1028px;
-    background-color: #fff;
-    border-radius: 20px;
+    background-color: #e9ebee;
+    border-radius: 3px;
     position: absolute;
     top: 80px;
     margin: auto;
@@ -83,7 +83,7 @@ form input.form-control,
 #addschoolform-captchauser,
 .kv-fileinput-caption {
     height: 44px;
-    border-radius: 5px;
+    border-radius: 3px;
     background-color: #F7F9FB;
     padding: 12px;
     color: #373737;
@@ -101,7 +101,7 @@ button.link-button {
     background-color: #007BFF;
     border: none;
     height: 44px;
-    border-radius: 5px;
+    border-radius: 3px;
     color: #fff;
     line-height: 28px;
     font-size: 16px;
@@ -340,7 +340,7 @@ form .already a:hover {
     margin-bottom: 30px;
     width: 100%;
     min-height: 116px;
-    border-radius: 5px;
+    border-radius: 3px;
 }
 
 .steps-block.profile .questions .block:last-child {
@@ -461,7 +461,7 @@ form .already a:hover {
     margin: auto;
     line-height: 38px;
     color: #fff;
-    border-radius: 19px;
+    border-radius: 3px;
 }
 
 .steps-block.profile .questions .block .number .state.correct {
@@ -477,7 +477,7 @@ form .already a:hover {
     color: #fff;
     height: 100%;
     float: left;
-    border-radius: 5px;
+    border-radius: 3px;
     border: 2px solid #007BFF;
 }
 
@@ -572,7 +572,7 @@ form .already a:hover {
     width: calc(50% - 10px);
     float: left;
     height: 98px;
-    border-radius: 10px;
+    border-radius: 3px;
     border: 2px solid #CBD5DC;
     font-family: 'Lato', sans-serif;
     font-size: 16px;
@@ -785,24 +785,24 @@ a {
 .content-left-fixed .profile-user-page .image {
     display: block;
     width: 100%;
-    height: 286px;
+    height: 400px;
     overflow: hidden;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
     background: url(/app/media/img/create-team.png) no-repeat center;
-    background-size: 850px 286px;
+    background-size: 780px 400px;
     margin-bottom: 32px;
 }
 
 .cabinet.profile .content-left-fixed .image {
-    background: url(/app/media/img/profile.jpg) no-repeat center;
-    background-size: 850px 286px;
+    background: url(/app/media/img/profile.png) no-repeat center;
+    background-size: 780px 415px;
+    height: 430px;
     margin-bottom: 32px;
 }
 
 .cabinet.task .content-left-fixed .image {
-    background: url(/app/media/img/task.jpg) no-repeat center;
-    background-size: 850px 286px;
+    background: url(/app/media/img/task.png) no-repeat center;
     margin-bottom: 12px;
 }
 
@@ -810,8 +810,8 @@ a {
 .cabinet.profile.team .content-left-fixed .image,
 .cabinet.create-team .content-left-fixed .image,
 .cabinet.profile.team .content-left-fixed .image {
-    background: url(/app/media/img/team.jpg) no-repeat center;
-    background-size: 850px 286px;
+    background: url(/app/media/img/team.png) no-repeat center;
+    background-size: 650px 325px;
     margin-bottom: 12px;
 }
 
@@ -819,22 +819,22 @@ a {
     width: 480px;
     float: left;
     min-height: 480px;
-    background: url(/app/media/img/signup.png) no-repeat center;
+    background: url(/app/media/img/home.png) no-repeat center;
     background-size: 480px 480px;
 }
 
 .login .block-right {
-    background: url(/app/media/img/login.jpg) no-repeat center;
+    background: url(/app/media/img/login.png) no-repeat center;
     background-size: 480px 480px;
 }
 
 .add-school.login .block-right {
-    background: url(/app/media/img/signup.png) no-repeat center;
+    background: url(/app/media/img/school.png) no-repeat center;
     background-size: 480px 480px;
 }
 
 .login.register .block-right {
-    background: url(/app/media/img/register.jpg) no-repeat center;
+    background: url(/app/media/img/registration.png) no-repeat center;
     background-size: 480px 480px;
 }
 
@@ -842,6 +842,7 @@ a {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 3px 15px 0 rgba(0, 60, 125, 0.15);
+    background-color: #fff;
 }
 
 .user-form-edit {
@@ -1006,6 +1007,12 @@ button.fileinput-upload:hover span {
 }
 
 @media (max-width: 767px) {
+    .cabinet .content-left-fixed .image {
+        background-size: 100% !important;
+        height: 225px !important;
+        margin-bottom: 10px !important;
+    }
+
     .steps-block.profile a.link-additional {
         margin-left: 0;
         width: 50%;

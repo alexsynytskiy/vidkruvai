@@ -106,11 +106,11 @@ var SiteCore = function (options) {
                 }
 
                 if (isSchoolAdd) {
-                    height += 225;
+                    //height += 225;
                 }
 
                 if (isMain) {
-                    height += 180;
+                    //height += 100;
                 }
 
                 if (isCabinet) {

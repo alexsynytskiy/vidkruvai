@@ -56,8 +56,29 @@ $user = \Yii::$app->siteUser->identity;
                                 </div>
                             <?php endif; ?>
                         </div>
+
+                        <section id="comments-section" class="clearfix">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="section-title">
+                                            <p class="title">Коментарі</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12" class="clearfix">
+                                        <?= \app\modules\comment\widgets\CommentWidget::widget([
+                                            'channelName' => $task->task->hash,
+                                            'template'    => 'vidkruvai',
+                                        ]); ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                     </div>
                 </div>
+            </div>
         </article>
     </div>
 </div>

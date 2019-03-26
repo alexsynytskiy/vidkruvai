@@ -1,114 +1,106 @@
 <?php
 
-namespace yii\easyii\modules\news\controllers;
+namespace yii\easyii\modules\tasks\controllers;
 
-use app\models\CommentChannel;
-use app\models\definitions\DefSiteUser;
 use app\models\definitions\DefTask;
-use app\models\SiteUser;
+use app\models\search\TaskSearch;
 use app\models\Task;
+use app\models\WrittenTaskAnswer;
 use Yii;
-use yii\data\ActiveDataProvider;
-use yii\db\Query;
-use yii\easyii\behaviors\SortableDateController;
 use yii\easyii\behaviors\StatusController;
 use yii\easyii\components\Controller;
-use yii\easyii\components\helpers\CategoryHelper;
-use yii\easyii\helpers\Image;
-use yii\easyii\modules\news\models\News;
-use yii\easyii\modules\news\models\NewsUser;
-use yii\easyii\modules\tasks\models\TasksUser;
-use yii\helpers\ArrayHelper;
-use yii\helpers\VarDumper;
-use yii\web\UploadedFile;
+use yii\easyii\modules\tasks\models\AddTaskForm;
+use yii\web\Response;
 use yii\widgets\ActiveForm;
 
+/**
+ * Class AController
+ * @package yii\easyii\modules\tasks\controllers
+ */
 class AController extends Controller
 {
     public function behaviors()
     {
         return [
             [
-                'class' => SortableDateController::className(),
-                'model' => News::className(),
-            ],
-            [
                 'class' => StatusController::className(),
-                'model' => Task::className()
+                'model' => Task::className(),
             ]
         ];
     }
 
+    /**
+     * @return string
+     */
     public function actionIndex()
     {
-        $dataTasks = new ActiveDataProvider([
-            'query' => Task::find()->orderBy('created_at DESC')
-        ]);
+        $searchModel = new TaskSearch();
+        $queryParams = \Yii::$app->request->queryParams;
+        $dataProvider = $searchModel->search($queryParams);
 
         return $this->render('index', [
-            'dataTasks' => $dataTasks
+            'data' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
     }
 
     /**
-     * @return array|string|\yii\web\Response
-     * @throws \yii\web\HttpException
+     * @param int $id
+     * @return string|Response
+     */
+    public function actionView($id)
+    {
+        $model = WrittenTaskAnswer::findOne($id);
+
+        if ($model === null) {
+            $this->flash('error', Yii::t('easyii', 'Not found'));
+            return $this->redirect(['/admin/' . $this->module->id . '/']);
+        }
+
+        return $this->render('view', [
+            'model' => $model
+        ]);
+    }
+
+    /**
+     * @return array|string|Response
+     * @throws \yii\base\Exception
      */
     public function actionCreate()
     {
-        $model = new Task();
+        $model = new AddTaskForm();
 
         if ($model->load(Yii::$app->request->post())) {
             if (Yii::$app->request->isAjax) {
-                Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                Yii::$app->response->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($model);
-            } else {
-                if (isset($_FILES) && $this->module->settings['enableThumb']) {
-                    $model->image = UploadedFile::getInstance($model, 'image');
-                    if ($model->image && $model->validate(['image'])) {
-                        $model->image = Image::upload($model->image, 'news');
-                    } else {
-                        $model->image = '';
-                    }
-                }
-                if ($model->save()) {
-                    $siteUsers = ArrayHelper::getColumn((new Query)->select('id')
-                        ->from(SiteUser::tableName())
-                        ->where(['status' => DefSiteUser::STATUS_ACTIVE])->all(), 'id');
-
-                    foreach ($siteUsers as $userId) {
-                        $tasksUser = new TasksUser();
-                        $tasksUser->site_user_id = $userId;
-                        $tasksUser->task_id = $model->id;
-
-                        if(!$tasksUser->save()) {
-                            $this->flash('error', Yii::t('easyii/tasks',
-                                'Notifications not sent :' . VarDumper::export($tasksUser->getErrors())));
-                        }
-                    }
-
-                    $this->flash('success', Yii::t('easyii/tasks', 'Task created'));
-                    return $this->redirect(['/admin/' . $this->module->id]);
-                }
-
-                $this->flash('error', Yii::t('easyii', 'Create error. {0}', $model->formatErrors()));
-                return $this->refresh();
             }
-        } else {
-            return $this->render('create', [
-                'model' => $model
-            ]);
+
+            if ($model->add()) {
+                $this->flash('success', Yii::t('easyii', 'Завдання створено'));
+                return $this->redirect(['/admin/' . $this->module->id]);
+            }
+
+            $this->flash('error', Yii::t('easyii', 'Помилка створення завдання'));
+            return $this->refresh();
         }
+
+        return $this->render('create', [
+            'model' => $model
+        ]);
     }
 
     /**
-     * @param $id
-     * @return array|string|\yii\web\Response
-     * @throws \yii\web\HttpException
+     * @param int $id
+     * @return array|string|Response
+     * @throws \yii\db\Exception
      */
     public function actionEdit($id)
     {
-        $model = Task::findOne($id);
+        $task = Task::findOne([$id]);
+
+        $model = new AddTaskForm();
+        $model->setTask($task);
 
         if ($model === null) {
             $this->flash('error', Yii::t('easyii', 'Not found'));
@@ -117,64 +109,63 @@ class AController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             if (Yii::$app->request->isAjax) {
-                Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                Yii::$app->response->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($model);
-            } else {
-                if (isset($_FILES) && $this->module->settings['enableThumb']) {
-                    $model->image = UploadedFile::getInstance($model, 'image');
-                    if ($model->image && $model->validate(['image'])) {
-                        $model->image = Image::upload($model->image, 'news');
-                    } else {
-                        $model->image = $model->oldAttributes['image'];
-                    }
-                }
-
-                if ($model->save()) {
-                    $this->flash('success', Yii::t('easyii/tasks', 'Task updated'));
-                } else {
-                    $this->flash('error', Yii::t('easyii', 'Update error. {0}', $model->formatErrors()));
-                }
-                return $this->refresh();
             }
-        } else {
-            return $this->render('edit', [
-                'model' => $model
-            ]);
+
+            if ($model->update()) {
+                $this->flash('success', Yii::t('easyii', 'Завдання оновлено'));
+            } else {
+                $this->flash('error', Yii::t('easyii', 'Помилка при оновленні завдання'));
+            }
+
+            return $this->refresh();
         }
+
+        return $this->render('edit', [
+            'model' => $model
+        ]);
     }
 
     /**
      * @param $id
-     * @return mixed
+     * @return \yii\web\Response
      * @throws \Exception
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
      */
-    public function actionDelete($id)
+    public function actionClearImage($id)
     {
-        if (($model = Task::findOne($id))) {
-            $model->delete();
+        $model = Task::findOne($id);
+
+        if ($model === null) {
+            $this->flash('error', Yii::t('easyii', 'Not found'));
         } else {
-            $this->error = Yii::t('easyii', 'Not found');
+            $model->image = '';
+            if ($model->update()) {
+                @unlink(Yii::getAlias('@webroot') . $model->image);
+                $this->flash('success', Yii::t('easyii', 'Image cleared'));
+            } else {
+                $this->flash('error', Yii::t('easyii', 'Update error. {0}', $model->formatErrors()));
+            }
         }
-        return $this->formatResponse(Yii::t('easyii/tasks', 'Task deleted'));
+        return $this->back();
     }
 
-    public function actionUp($id)
-    {
-        return $this->move($id, 'up');
-    }
-
-    public function actionDown($id)
-    {
-        return $this->move($id, 'down');
-    }
-
+    /**
+     * @param int $id
+     * @return mixed
+     */
     public function actionOn($id)
     {
         return $this->changeStatus($id, DefTask::STATUS_ON);
     }
 
+    /**
+     * @param int $id
+     * @return mixed
+     * @throws \Throwable
+     */
     public function actionOff($id)
     {
         return $this->changeStatus($id, DefTask::STATUS_OFF);

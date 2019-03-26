@@ -49,20 +49,18 @@ switch ($controller) {
     <div class="wrapper">
         <?php if ($showUserInfo): ?>
             <a href="<?= Url::to('/profile') ?>">
-                <div class="profile-info">
+                <div class="profile-info clearfix">
                     <div class="image-cropper">
                         <img src="<?= $user->avatar ?: $baseUrl . '/img/default-avatar-user.jpg' ?>" class="avatar">
                     </div>
                     <div class="name"><?= $user->getFullName() ?></div>
-                    <div class="school"><?= $user->school ? $user->school->getFullName() : '' ?></div>
-                    <div class="rating"><?= $user->total_experience ?></div>
                 </div>
             </a>
         <?php endif; ?>
 
         <div class="menu-link <?= $profile ?>">
             <div class="icon">
-                <i class="fa fa-user"></i>
+                <i class="fa fa-user" style="font-size: 21px;"></i>
             </div>
             <a href="<?= Url::to(['profile/']) ?>">
                 <div class="text">Профіль</div>
@@ -70,7 +68,7 @@ switch ($controller) {
         </div>
         <div class="menu-link <?= $team ?>">
             <div class="icon">
-                <i class="fa fa-users" style="font-size: 24px;"></i>
+                <i class="fa fa-users" style="font-size: 17px;"></i>
             </div>
             <a href="<?= Url::to([$user->team ? '/team' : '/team/create-team']) ?>">
                 <div class="text">Команда</div>
@@ -78,24 +76,24 @@ switch ($controller) {
         </div>
         <div class="menu-link <?= $tasks ?>">
             <div class="icon">
-                <i class="fa fa-list" style="font-size: 26px;"></i>
+                <i class="fa fa-list" style="font-size: 17px;"></i>
                 <?php if ($totalTasks): ?>
                     <div class="tasks-count tasks-unread"><?= $totalTasks ?></div>
                 <?php endif; ?>
             </div>
-            <a href="<?= Url::to([$user->team ? '/tasks' : '#']) ?>">
+            <a href="<?= Url::to(['/tasks']) ?>">
                 <div class="text">Завдання</div>
             </a>
         </div>
         <div class="menu-link <?= $messages ?>">
             <div class="icon">
-                <i class="fa fa-comments" style="font-size: 26px;"></i>
+                <i class="fa fa-comments" style="font-size: 19px;"></i>
             </div>
             <div class="text">Повідомлення</div>
         </div>
         <div class="menu-link <?= $news ?>">
             <div class="icon">
-                <i class="fa fa-newspaper-o" style="font-size: 23px;"></i>
+                <i class="fa fa-newspaper-o" style="font-size: 16px;"></i>
                 <?php if ($totalNews): ?>
                     <div class="news-count news-unread"><?= $totalNews ?></div>
                 <?php endif; ?>
@@ -106,7 +104,7 @@ switch ($controller) {
         </div>
         <div class="menu-link">
             <div class="icon">
-                <i class="fa fa-sign-out" style="font-size: 28px;"></i>
+                <i class="fa fa-sign-out" style="font-size: 21px;"></i>
             </div>
             <a href="<?= Url::to(['profile/logout']) ?>">
                 <div class="text">Вихід</div>

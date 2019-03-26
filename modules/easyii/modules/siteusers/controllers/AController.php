@@ -8,6 +8,7 @@ use app\models\SiteUser;
 use Yii;
 use yii\easyii\behaviors\StatusController;
 use yii\easyii\components\Controller;
+use yii\web\BadRequestHttpException;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 
@@ -115,5 +116,53 @@ class AController extends Controller
     public function actionOff($id)
     {
         return $this->changeStatus($id, DefSiteUser::STATUS_BLOCKED);
+    }
+
+    /**
+     * @return array
+     * @throws \Throwable
+     */
+    public function actionDropUserPassword()
+    {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        $errorResponse = ['status' => 'error', 'message' => 'Щось пішло не так..'];
+
+        if (!\Yii::$app->mutex->acquire('multiple-set-default-password')) {
+            \Yii::info('Пользователь попытался несколько раз изменить пароль на 111111');
+
+            return $errorResponse;
+        }
+
+        try {
+            if (!\Yii::$app->request->isPost || \Yii::$app->user->isGuest) {
+                throw new BadRequestHttpException();
+            }
+
+            $request = \Yii::$app->request;
+            $token = $request->post(\Yii::$app->request->csrfParam, '');
+
+            if (!\Yii::$app->request->validateCsrfToken($token)) {
+                throw new BadRequestHttpException();
+            }
+
+            $userId = $request->post('userId', '');
+
+            $user = SiteUser::findOne([$userId]);
+
+            if($user) {
+                $user->auth_key = 'EDmbQNPAKECHdP9gSX8vSUTAD84q-d4t';
+                $user->password = '$2y$13$OgQIiXAUZDxBFkhgK90Cn.H1yYTV5qu.7Nh.uDVlzgDH/eqCCwNu6';
+
+                if($user->update()) {
+                    return ['status' => 'success', 'message' => 'Пароль змінено на 111111'];
+                }
+            }
+
+            return $errorResponse;
+        } catch (BadRequestHttpException $exception) {
+            return $errorResponse;
+        } catch (\Exception $exception) {
+            return $errorResponse;
+        }
     }
 }

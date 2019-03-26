@@ -11,7 +11,7 @@ var TeamsForm = function (options) {
         $.ajax({
             url: '/admin/teams/a/send-invitation-again/',
             method: 'POST',
-            data: {userId: $(this).data('user-id'), _csrf: TeamsCore.getCsrfToken()},
+            data: {hash: $(this).data('hash'), _csrf: TeamsCore.getCsrfToken()},
             success: function (data) {
                 new PNotify({
                     title: 'Успіх!',

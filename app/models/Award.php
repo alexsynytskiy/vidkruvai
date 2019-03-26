@@ -141,7 +141,7 @@ class Award extends ActiveRecord
         return ArrayHelper::map(
             static::find()
                 ->where(['archived' => self::IS_NOT_ARCHIVED])
-                ->orderBy('name')
+                ->orderBy('value ASC')
                 ->all(),
             'id',
             'name'

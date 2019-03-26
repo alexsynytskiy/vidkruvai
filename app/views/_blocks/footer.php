@@ -32,16 +32,16 @@ $asset = \app\assets\AppAsset::register($this);
                     <div class="social-block">
                         <div class="social-icon-pack">
                             <a class="social-icon" href="mailto:vidkryvai.ukrainu@gmail.com">
-                                <img class="svg" src="<?= $asset->baseUrl ?>/img/mail.png">
+                                <i class="fa fa-envelope" style="color: #afb7bd;font-size: 24px;"></i>
                             </a>
                             <a class="social-icon" target="_blank" href="https://www.instagram.com/vidkruvai.ukrainu/">
-                                <img class="svg" src="<?= $asset->baseUrl ?>/img/instagram.png">
+                                <i class="fa fa-instagram" style="color: #afb7bd;font-size: 28px;"></i>
                             </a>
                             <a class="social-icon" target="_blank" href="http://bit.ly/2DQebVI">
-                                <img class="svg" src="<?= $asset->baseUrl ?>/img/youtube.png">
+                                <i class="fa fa-youtube" style="color: #afb7bd;font-size: 24px;"></i>
                             </a>
                             <a class="social-icon" target="_blank" href="https://www.facebook.com/vidkruvai.ukrainu/">
-                                <img class="svg" src="<?= $asset->baseUrl ?>/img/facebook.png">
+                                <i class="fa fa-facebook-official" style="color: #afb7bd;font-size: 27px;"></i>
                             </a>
                         </div>
                     </div>
