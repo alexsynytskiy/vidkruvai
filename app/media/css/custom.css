@@ -28,7 +28,7 @@ body {
     border-bottom: 4px solid #F7F9FB;
 }
 
-#main-menu .navbar-brand {
+#main-menu .logo {
     padding: 0;
     height: 84px;
     position: relative;
@@ -91,11 +91,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 .navbar-brand img {
     height: 32px;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin-top: auto;
-    margin-bottom: auto;
+    margin: 28px 0;
 }
 
 .affix {
@@ -660,6 +656,11 @@ article {
     font-size: 10px;
 }
 
+.cabinet-menu .menu-link.disabled .text,
+.cabinet-menu .menu-link.disabled .icon .fa {
+    color: #97a6b3;
+}
+
 .cabinet-menu .menu-link .text {
     line-height: 25px;
     color: #000;
@@ -704,7 +705,7 @@ article {
     display: block;
     position: relative;
     width: 100%;
-    min-height: 375px;
+    min-height: 240px;
 }
 
 .cabinet-menu .profile-info {
@@ -786,6 +787,25 @@ article {
     text-align: left;
     margin-bottom: 10px;
     font-weight: bold;
+    position: relative;
+}
+
+.content-left-fixed .tasks-item .information .title a {
+    float: left;
+    margin-right: 20px;
+}
+
+.content-left-fixed .tasks-item .information .title .comments-count-task {
+    height: 15px;
+    width: 15px;
+    background: url(/app/media/img/comments.svg) no-repeat left;
+    background-size: 15px;
+    text-align: right;
+    font-size: 15px;
+    line-height: 15px;
+    padding-left: 20px;
+    float: left;
+    margin-top: 7px;
 }
 
 .content-left-fixed .tasks-item .information .title a:hover {
@@ -831,8 +851,8 @@ article {
     position: absolute;
     right: 0;
     bottom: 0;
-    margin-bottom: 32px;
-    margin-right: 32px;
+    margin-bottom: 24px;
+    margin-right: 24px;
     background-color: #007BFF;
     border-radius: 3px;
     color: #fff;
@@ -1876,7 +1896,7 @@ span.bg-success,
 }
 
 .task .categories {
-    margin: 32px 0;
+    margin: 24px 0;
     position: absolute;
     bottom: 0;
 }
@@ -1904,7 +1924,7 @@ span.bg-success,
     text-align: left;
 }
 
-.task .profile-info-main .field-writtentaskanswer-text label{
+.task .profile-info-main .field-writtentaskanswer-text label {
     text-align: left;
     font-size: 18px;
     line-height: 24px;
@@ -1949,7 +1969,7 @@ span.bg-success,
     position: absolute;
     right: 181px;
     bottom: 0;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     padding: 8px 12px !important;
     margin-left: 16px;
     font-size: 15px;
@@ -1974,24 +1994,14 @@ span.bg-success,
 
 .content-left-fixed .tasks-item .icon-states {
     position: absolute;
-    right: 8px;
-    top: 13px;
+    right: 24px;
+    top: 16px;
+    color: red;
 }
 
-.content-left-fixed .tasks-item .task-required {
-    background: url(/app/media/img/required.svg) center no-repeat;
-    background-size: 23px;
-    height: 23px;
-    width: 23px;
-    margin-bottom: 6px;
-}
-
-.content-left-fixed .tasks-item .task-new {
-    background: url(/app/media/img/new-task.svg) center no-repeat;
-    background-size: 23px;
-    height: 23px;
-    width: 23px;
-    margin: 0 auto;
+.content-left-fixed .tasks-item .icon-states .new-task {
+    color: #007bff;
+    font-size: 15px;
 }
 
 .teammates-emails-status {
@@ -2012,7 +2022,7 @@ span.bg-success,
     text-align: left;
 }
 
-.profile-user-page .profile-info-main .left-side img, 
+.profile-user-page .profile-info-main .left-side img,
 .profile-info-main .profile-team-preview .member-item img {
     max-height: 100%;
 }
@@ -2054,6 +2064,284 @@ span.btn:hover {
     max-height: 60px;
     max-width: none;
 }
+
+.content-left-fixed .block-title {
+    width: 100%;
+    height: 50px;
+    border-radius: 3px;
+    box-shadow: 0 3px 15px 0 rgba(0, 60, 125, 0.15);
+    margin-bottom: 6px;
+    background-color: #fff;
+    padding: 12px;
+}
+
+.content-left-fixed .block-title .icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 3px;
+    background-color: #3294fb;
+    float: left;
+    margin-right: 13px;
+}
+
+.content-left-fixed .block-title .icon .fa {
+    color: #fff;
+    font-size: 15px;
+    margin: 0 5px;
+}
+
+.content-left-fixed .block-title .text {
+    line-height: 26px;
+    font-size: 13px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: 0.2px;
+    color: #000;
+    float: left;
+}
+
+.content-left-fixed .block-title .statistics {
+    line-height: 26px;
+    opacity: 0.5;
+    font-size: 11px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: 0.2px;
+    text-align: right;
+    color: #000000;
+    float: right;
+}
+
+.content-left-fixed .store-main {
+    padding: 0 24px 24px 24px;
+    overflow: hidden;
+}
+
+.uk-subnav {
+    margin-bottom: 10px;
+}
+
+.uk-subnav, .uk-grid {
+    margin-left: 0;
+}
+
+.uk-subnav-pill > * > :first-child {
+    padding: 0 9px;
+    height: 30px;
+    opacity: 0.7;
+    border-radius: 3px;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+    border: solid 1px rgba(0, 0, 0, 0.05);
+    background-color: #ffffff !important;
+    line-height: 30px;
+    text-align: center;
+    font-size: 11px !important;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: 0.2px;
+    color: #000000 !important;
+    text-transform: none !important;
+}
+
+.uk-subnav > * {
+    padding-left: 5px;
+    margin-bottom: 5px;
+}
+
+.uk-subnav-pill > .uk-active > a {
+    background-image: linear-gradient(256deg, #e9edff, #ffe8fe);
+    box-shadow: none;
+    border: none;
+}
+
+.uk-child-width-1-3\@m > * {
+    width: 100% !important;
+    padding-left: 0;
+    margin-bottom: 15px;
+    max-width: 802px;
+}
+
+.uk-card-default {
+    margin-bottom: 15px;
+    box-shadow: none;
+    padding: 0;
+}
+
+.uk-subnav li:first-child {
+    padding-left: 0;
+}
+
+.uk-subnav-pill li a {
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+}
+
+.uk-subnav-pill li a:hover {
+    box-shadow: 0 2px 6px 0 #fa8dff;
+    border: solid 1px rgba(0, 0, 0, 0.05);
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+}
+
+.uk-subnav .fa {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
+    width: 0;
+}
+
+.uk-subnav.uk-subnav-pill li.uk-active a:hover .fa {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 0.5s linear;
+    width: 7px;
+    margin-left: 6px;
+}
+
+.uk-subnav-pill li.uk-active a:hover {
+    box-shadow: none;
+    border: none;
+}
+
+.uk-first-column .items {
+    padding: 16px;
+    border-radius: 4px;
+    background-image: linear-gradient(261deg, #e9edff, #ffe8fe);
+    margin-bottom: 8px;
+}
+
+.uk-first-column .progress {
+    height: 6px;
+    border-radius: 4px;
+    background-color: #f4f4f4;
+    position: relative;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.uk-first-column .progress .value {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 6px;
+    border-radius: 4px;
+    background-image: linear-gradient(266deg, #ffc7ac, #626eff);
+}
+
+.uk-first-column .progress-description {
+    line-height: 13px;
+    opacity: 0.3;
+    font-size: 11px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: 0.2px;
+    color: #000000;
+    text-align: left;
+}
+
+.uk-first-column .items .head {
+    margin-bottom: 10px;
+}
+
+.uk-first-column .items .head .title {
+    font-size: 20px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 24px;
+    letter-spacing: 0.3px;
+    color: #000000;
+    float: left;
+    margin-right: 10px;
+}
+
+.uk-first-column .items .head .icon {
+    float: left;
+    width: 16px;
+    height: 16px;
+    background-color: #000;
+    border-radius: 50%;
+}
+
+.uk-first-column .items .head .icon .fa {
+    color: #fff;
+    margin-top: 2px;
+    font-size: 10px;
+    display: block;
+}
+
+.uk-first-column .items .head .items-count {
+    font-size: 11px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 24px;
+    letter-spacing: 0.2px;
+    float: right;
+    color: #000;
+}
+
+.uk-first-column .items .level {
+    width: 161px;
+    margin-right: 5px;
+    float: left;
+}
+
+.uk-first-column .items .level .title {
+    font-size: 11px;
+    opacity: 0.5;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 13px;
+    letter-spacing: 0.2px;
+    color: #000000;
+    padding-left: 8px;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.uk-first-column .items .level .item {
+    height: 69px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    display: block;
+    background-color: transparent;
+    position: relative;
+}
+
+.uk-first-column .items .level .item.bought {
+    box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.05);
+    background-image: linear-gradient(247deg, #ffc7ac, #707cff);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+}
+
+.uk-first-column .items .level .item .body {
+    background-color: #fff;
+    height: calc(100% - 6px);
+    width: calc(100% - 6px);
+    border-radius: 4px;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+}
+
+* + .uk-grid-margin, .uk-grid + .uk-grid, .uk-grid > .uk-grid-margin {
+    margin-top: 0;
+}
+
+
 
 @media (max-width: 1199px) {
 
@@ -2100,7 +2388,7 @@ span.btn:hover {
     }
 
     .navbar-fixed-top .navbar-collapse, .navbar-fixed-bottom .navbar-collapse {
-        max-height: 350px;
+        max-height: 395px;
     }
 
     .news-item.small .comments-count-news {
@@ -2442,9 +2730,9 @@ span.btn:hover {
 
     .content-left-fixed .news-item .information {
         padding: 0 23px;
-        margin-top: 23px;
+        margin-top: 10px;
         width: 100%;
-        height: 295px;
+        height: 240px;
     }
 
     .cabinet.news-item .simple-news-page .comments-count-news {
@@ -2452,7 +2740,7 @@ span.btn:hover {
     }
 
     .content-left-fixed .news-item.first .information {
-        height: 295px;
+        height: 240px;
     }
 
     .comments-count-news {
@@ -2518,6 +2806,7 @@ span.btn:hover {
 
     .navbar-brand img {
         padding-left: 15px;
+        margin: 31px 0;
     }
 
     .container > .navbar-header {
@@ -2553,8 +2842,7 @@ span.btn:hover {
     .notification-page .dropdown-menu:before,
     .notification-page .dropdown-menu:after,
     .cabinet.achievements .dropdown-menu:before,
-    .cabinet.achievements .dropdown-menu:after
-    {
+    .cabinet.achievements .dropdown-menu:after {
         display: none;
     }
 

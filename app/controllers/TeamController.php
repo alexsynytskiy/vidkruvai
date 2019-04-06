@@ -15,7 +15,11 @@ use app\models\definitions\DefSiteUser;
 use app\models\forms\TeamCreateForm;
 use app\models\Level;
 use app\models\Team;
+use Imagine\Image\Box;
+use Imagine\Image\Point;
 use yii\easyii\helpers\Image;
+use yii\helpers\FileHelper;
+use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
 use yii\web\Response;
 use yii\web\UploadedFile;
@@ -275,6 +279,27 @@ class TeamController extends Controller
                 $model->avatar = UploadedFile::getInstance($model, 'avatar');
                 if ($model->avatar && $model->validate(['avatar'])) {
                     $model->avatar = Image::upload($model->avatar, 'team');
+
+                    $cropInfo = Json::decode(\Yii::$app->request->post('avatar_data'));
+                    $image = \yii\imagine\Image::getImagine()->open(\Yii::getAlias('@webroot') . $model->avatar);
+
+                    $oldImages = FileHelper::findFiles(\Yii::getAlias('@webroot'), [
+                        'only' => [
+                            $model->avatar . '.*',
+                        ],
+                    ]);
+
+                    foreach ($oldImages as $oldImage) {
+                        @unlink($oldImage);
+                    }
+
+                    $newSize = new Box($cropInfo['width'], $cropInfo['height']);
+                    $cropPoint = new Point($cropInfo['x'], $cropInfo['y']);
+                    $pathImage = \Yii::getAlias('@webroot') . $model->avatar;
+
+                    $image->crop($cropPoint, $newSize)->save($pathImage, ['quality' => 100]);
+                } else {
+                    $model->avatar = $model->oldAttributes['avatar'];
                 }
             }
 

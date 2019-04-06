@@ -131,6 +131,7 @@ class SiteUser extends ActiveRecord implements IdentityInterface
         return [
             'id' => 'ID',
             'email' => AppMsg::t('Email'),
+            'avatar' => AppMsg::t('Фото користувача'),
             'name' => AppMsg::t('Имя пользователя'),
             'role' => AppMsg::t('Роль'),
             'password' => AppMsg::t('Пароль'),

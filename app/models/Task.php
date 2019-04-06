@@ -30,6 +30,7 @@ use yii\helpers\ArrayHelper;
  * @property WrittenTask|Test $object
  * @property WrittenTask|Test $taskObject
  * @property Award[] $awards
+ * @property integer commentsCount
  */
 class Task extends ActiveRecord
 {
@@ -313,5 +314,17 @@ class Task extends ActiveRecord
                 $this->stateForTeam = Test::ANSWERED;
             }
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getCommentsCount()
+    {
+        return Comment::find()
+            ->alias('c')
+            ->innerJoin(CommentChannel::tableName() . ' cc', 'cc.id = c.channel_id')
+            ->where(['cc.slug' => $this->hash])
+            ->count();
     }
 }

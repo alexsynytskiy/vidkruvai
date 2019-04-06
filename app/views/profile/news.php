@@ -1,5 +1,7 @@
 <?php
 
+use \yii\easyii\modules\news\models\News;
+
 /* @var $this yii\web\View */
 /* @var $name string */
 /* @var $email string */
@@ -12,7 +14,7 @@ $asset = \app\assets\AppAsset::register($this);
 
 $baseUrl = $asset->baseUrl;
 
-$totalNews = \yii\easyii\modules\news\models\News::getUserNewsCounters();
+$totalNews = News::getUserNewsCounters();
 $totalNews = $totalNews > 0 ? $totalNews : null;
 ?>
 
@@ -30,6 +32,14 @@ $totalNews = $totalNews > 0 ? $totalNews : null;
                                 ['id' => 'mark-all-news-as-read', 'class' => count($news) ? 'no-spinner' : 'disabled']) ?>
                         </div>
                     <?php endif; ?>
+
+                    <div class="block-title">
+                        <div class="icon">
+                            <i class="fa fa-newspaper-o"></i>
+                        </div>
+                        <div class="text">Новини</div>
+                        <div class="statistics">Доступно новин <?= News::getNewsCounter() ?></div>
+                    </div>
 
                     <?php if(count($news)): ?>
                         <div id="news-list">

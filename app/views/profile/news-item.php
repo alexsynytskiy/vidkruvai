@@ -5,7 +5,7 @@
 ?>
 
 <div class="news-item small clearfix">
-    <div class="image lazy" data-bg="url(<?= $item->image ?>)" style="background-size: cover; background-position: left;"></div>
+    <div class="image lazy" data-bg="url(<?= $item->image ?>)" style="background-size: cover; background-position: left top;"></div>
     <div class="information">
         <div class="comments-count-news"><?= $item->commentsCount ?></div>
         <div class="title">

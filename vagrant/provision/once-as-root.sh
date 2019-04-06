@@ -52,7 +52,7 @@ apt-get install -y mariadb-server
 echo "Done!"
 
 info "Install PHP"
-apt-get install -y php5.6 php5.6-fpm php5.6-cli php5.6-common php5.6-intl php5.6-json php5.6-mysql php5.6-gd php5.6-imagick php5.6-curl php5.6-mcrypt php5.6-xdebug php5.6-redis php5.6-memcache php5.6-imap php5.6-mbstring php5.6-dom php5.6-soap php5.6-zip
+apt-get install -y php7.0 php7.0-fpm php7.0-mbstring php7.0-mcrypt php7.0-phpdbg php7.0-dev php7.0-curl php7.0-sqlite3 php7.0-json php7.0-gd php7.0-cli php7.0-mysql php7.0-xml
 echo "Done!"
 
 info "Install NodeJS and NPM"
@@ -74,13 +74,13 @@ sed -i "s/.*bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
 echo "Done!"
 
 info "Configure PHP-FPM"
-mv /etc/php/5.6/fpm/php.ini /etc/php/5.6/fpm/php.ini.dmp
-ln -s /var/www/vidkruvai/vagrant/php/fpm/php.ini /etc/php/5.6/fpm/php.ini
-mv /etc/php/5.6/fpm/pool.d/www.conf /etc/php/5.6/fpm/pool.d/www.conf.dmp
-ln -s /var/www/vidkruvai/vagrant/php/fpm/pool.d/www.conf /etc/php/5.6/fpm/pool.d/www.conf
-sed -i 's/user = www-data/user = vagrant/g' /etc/php/5.6/fpm/pool.d/www.conf
-sed -i 's/group = www-data/group = vagrant/g' /etc/php/5.6/fpm/pool.d/www.conf
-sed -i 's/owner = www-data/owner = vagrant/g' /etc/php/5.6/fpm/pool.d/www.conf
+mv /etc/php/7.0/fpm/php.ini /etc/php/7.0/fpm/php.ini.dmp
+ln -s /var/www/vidkruvai/vagrant/php/fpm/php.ini /etc/php/7.0/fpm/php.ini
+mv /etc/php/7.0/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.conf.dmp
+ln -s /var/www/vidkruvai/vagrant/php/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.conf
+sed -i 's/user = www-data/user = vagrant/g' /etc/php/7.0/fpm/pool.d/www.conf
+sed -i 's/group = www-data/group = vagrant/g' /etc/php/7.0/fpm/pool.d/www.conf
+sed -i 's/owner = www-data/owner = vagrant/g' /etc/php/7.0/fpm/pool.d/www.conf
 echo "Done!"
 
 info "Configure NGINX"
@@ -92,9 +92,9 @@ ln -s /var/www/vidkruvai/vagrant/nginx/app.conf /etc/nginx/sites-enabled/app.con
 echo "Done!"
 
 info "Enabling xdebug configuration"
-mv /etc/php/5.6/mods-available/xdebug.ini /etc/php/5.6/mods-available/xdebug.ini.dmp
+mv /etc/php/7.0/mods-available/xdebug.ini /etc/php/7.0/mods-available/xdebug.ini.dmp
 cp /var/www/vidkruvai/vagrant/php/mods-available/xdebug.ini /var/www/vidkruvai/vagrant/php/mods-available/xdebug-local.ini
-ln -s /var/www/vidkruvai/vagrant/php/mods-available/xdebug-local.ini /etc/php/5.6/mods-available/xdebug.ini
+ln -s /var/www/vidkruvai/vagrant/php/mods-available/xdebug-local.ini /etc/php/7.0/mods-available/xdebug.ini
 echo "Done!"
 
 info "Install composer"

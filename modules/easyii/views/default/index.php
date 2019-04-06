@@ -4,6 +4,23 @@
 $this->title = 'З поверненням, ' . Yii::$app->user->identity->username;
 
 $asset = \yii\easyii\assets\IndexAsset::register($this);
+
+//try {
+//    $client = new \Github\Client();
+//
+////    $authorization = $client->api('authorizations')->create([]);
+////    print_r($authorization); die;
+//
+//
+//    $client->authenticate('synytskyioleksa', 'marynaTsarkova93', \Github\Client::AUTH_HTTP_PASSWORD);
+//
+//    //64661590b8124719f6192cd3a7fb1fbc1d0d7abb
+//
+//    $openPullRequests = $client->api('pull_request')->all('synytskyioleksa', 'airslateinc', array('state' => 'open'));
+//}
+//catch (RuntimeException $e) {
+//    print_r($e->getMessage());
+//}
 ?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>

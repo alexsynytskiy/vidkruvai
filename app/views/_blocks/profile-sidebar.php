@@ -24,6 +24,8 @@ $team = '';
 $tasks = '';
 $messages = '';
 $news = '';
+$store = '';
+$rating = '';
 
 switch ($controller) {
     case 'profile':
@@ -40,6 +42,12 @@ switch ($controller) {
         break;
     case 'tasks':
         $tasks = 'active';
+        break;
+    case 'store':
+        $store = 'active';
+        break;
+    case 'rating':
+        $rating = 'active';
         break;
 }
 
@@ -85,11 +93,29 @@ switch ($controller) {
                 <div class="text">Завдання</div>
             </a>
         </div>
-        <div class="menu-link <?= $messages ?>">
+        <div class="menu-link <?= $store ?>">
+            <div class="icon">
+                <i class="fa fa-shopping-basket" style="font-size: 16px;"></i>
+            </div>
+            <a href="<?= Url::to(['store/']) ?>">
+                <div class="text">Магазин</div>
+            </a>
+        </div>
+        <div class="menu-link <?= $rating ?> disabled">
+            <div class="icon">
+                <i class="fa fa-star" style="font-size: 19px;"></i>
+            </div>
+            <a href="#">
+                <div class="text">Рейтинг</div>
+            </a>
+        </div>
+        <div class="menu-link <?= $messages ?> disabled">
             <div class="icon">
                 <i class="fa fa-comments" style="font-size: 19px;"></i>
             </div>
-            <div class="text">Повідомлення</div>
+            <a href="#">
+                <div class="text">Повідомлення</div>
+            </a>
         </div>
         <div class="menu-link <?= $news ?>">
             <div class="icon">

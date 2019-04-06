@@ -34,26 +34,51 @@ $form = ActiveForm::begin([
         </div>
 
         <div class="form-group clearfix">
-            <?= $form->field($model, 'avatar')->widget(\kartik\file\FileInput::className(), [
-                'options' => [
-                    'accept' => 'image/*',
-                    'multiple' => false
-                ],
-                'pluginOptions' => $model->avatar ? [
-                    'showRemove' => false,
-                    'initialPreview' => [
-                        \yii\easyii\helpers\Image::thumb($model->avatar, 240)
-                    ],
-                    'initialPreviewAsData' => true,
-                    'initialPreviewConfig' => [
-                        [
-                            'url' => \yii\helpers\Url::to([
-                                    '/team/clear-image/' . $model->id . '/team/'
-                            ]),
-                        ],
-                    ],
-                ] : ['showRemove' => false, 'initialPreviewAsData' => false]
+            <?= $form->field($model, 'avatar')->widget(\uitrick\yii2\widget\upload\crop\UploadCrop::className(), [
+                'maxSize' => 200,
+                'defaultPreviewImage' => isset($model->avatar) ? $model->avatar : $baseUrl . '/img/default-avatar-team.jpg',
+                'jcropOptions' => [
+                    'dragMode' => 'move',
+                    'viewMode' => 2,
+                    'autoCropArea' => '0.1',
+                    'restore' => false,
+                    'guides' => false,
+                    'center' => false,
+                    'movable' => true,
+                    'highlight' => false,
+                    'cropBoxMovable' => true,
+                    'cropBoxResizable' => true,
+                    'background' => false,
+                    'minCropBoxWidth' => 60,
+                    'minCropBoxHeight' => 60,
+                    'responsive' => true,
+                    'toggleDragModeOnDblclick' => false
+                ]
             ]); ?>
+
+
+            <?php
+//                $form->field($model, 'avatar')->widget(\kartik\file\FileInput::className(), [
+//                    'options' => [
+//                        'accept' => 'image/*',
+//                        'multiple' => false
+//                    ],
+//                    'pluginOptions' => $model->avatar ? [
+//                        'showRemove' => false,
+//                        'initialPreview' => [
+//                            \yii\easyii\helpers\Image::thumb($model->avatar, 240)
+//                        ],
+//                        'initialPreviewAsData' => true,
+//                        'initialPreviewConfig' => [
+//                            [
+//                                'url' => \yii\helpers\Url::to([
+//                                        '/team/clear-image/' . $model->id . '/team/'
+//                                ]),
+//                            ],
+//                        ],
+//                    ] : ['showRemove' => false, 'initialPreviewAsData' => false]
+//                ]);
+            ?>
         </div>
 
         <div class="form-group clearfix" id="team-members-emails">

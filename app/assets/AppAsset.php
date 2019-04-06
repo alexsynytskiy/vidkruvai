@@ -23,8 +23,8 @@ class AppAsset extends \yii\web\AssetBundle
         'plugins/pnotify/pnotify.min.css',
         'plugins/sweetalert/sweetalert2.min.css',
         'plugins/css/jquery.bxslider.css',
-        'css/custom-questions.css?version=30',
-        'css/custom.css?version=30',
+        'css/custom-questions.css?version=35',
+        'css/custom.css?version=35',
     ];
 
     public $js = [
@@ -51,8 +51,9 @@ class AppAsset extends \yii\web\AssetBundle
         'js/Achievements.js',
         'js/AddSchoolPage.js',
         'js/WrittenPage.js',
+        'js/StorePage.js',
         'https://cdn.jsdelivr.net/npm/vanilla-lazyload@11.0.6/dist/lazyload.min.js'
     ];
 
-    //public $publishOptions = ['forceCopy' => true];
+    public $publishOptions = ['forceCopy' => true];
 }

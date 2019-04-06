@@ -13,23 +13,23 @@ $baseUrl = $asset->baseUrl;
     <div class="image" style="background: url(<?= $item->image ?: $baseUrl . '/img/task-default.png' ?>); background-size: cover; background-repeat: no-repeat;"></div>
     <div class="information">
         <div class="icon-states">
-            <?php if ($item->required): ?>
-                <div class="task-required" data-toggle="tooltip" data-placement="top"
-                     title="<?= \app\components\AppMsg::t('Це завдання - обов\'язкове') ?>"></div>
-            <?php endif; ?>
-
             <?php if ($item->read): ?>
-                <div class="task-new" data-toggle="tooltip" data-placement="top"
-                     title="<?= \app\components\AppMsg::t('Ви отримали нове завдання!') ?>"></div>
+                <i class="fa fa-circle new-task" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                   title="<?= \app\components\AppMsg::t('Ви отримали нове завдання!') ?>"></i>
+            <?php endif; ?>
+            <?php if ($item->required): ?>
+                <i class="fa fa-asterisk" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                   title="<?= \app\components\AppMsg::t('Це завдання - обов\'язкове') ?>"></i>
             <?php endif; ?>
         </div>
 
-        <div class="title">
+        <div class="title clearfix">
             <?php if($item->stateForTeam === DefTask::ACTIVE): ?>
-            <a href="<?= \yii\helpers\Url::to(["/tasks/{$item->item_type}/" . $item->hash]) ?>"><?= $item->object->name ?></a>
+                <a href="<?= \yii\helpers\Url::to(["/tasks/{$item->item_type}/" . $item->hash]) ?>"><?= $item->object->name ?></a>
             <?php else: ?>
                 <?= $item->object->name ?>
             <?php endif; ?>
+            <div class="comments-count-task"><?= $item->commentsCount ?></div>
         </div>
 
         <div class="short">

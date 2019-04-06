@@ -45,7 +45,7 @@ $user = \Yii::$app->siteUser->identity;
                     <span class="icon-bar"></span>
                 </div>
             </button>
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand logo" href="/">
                 <img src="<?= $asset->baseUrl ?>/img/logo.png">
             </a>
         </div>

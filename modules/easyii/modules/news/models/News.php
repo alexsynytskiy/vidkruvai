@@ -182,6 +182,22 @@ class News extends ActiveRecord
     }
 
     /**
+     * @return int
+     */
+    public static function getNewsCounter()
+    {
+        $cnt = (new Query())
+            ->select(['COUNT(*) cnt'])
+            ->from(static::tableName() . ' n')
+            ->where([
+                'n.status' => self::STATUS_ON,
+            ])
+            ->one();
+
+        return (int)$cnt['cnt'];
+    }
+
+    /**
      * @param array $ids
      * @throws \yii\db\Exception
      */

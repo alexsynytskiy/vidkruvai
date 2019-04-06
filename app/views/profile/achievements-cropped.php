@@ -71,10 +71,16 @@ foreach ($dropDownFilter as $key => $item) {
                 <?= $this->render('/_blocks/profile-sidebar') ?>
             </div>
             <div class="content-left-fixed">
+                <div class="block-title">
+                    <div class="icon">
+                        <i class="fa fa-trophy"></i>
+                    </div>
+                    <div class="text">Досягнення</div>
+                </div>
+
                 <div class="project-info-page-description">
                     <div class="profile-user-page">
                         <div class="image"></div>
-
                         <div class="progress-block">
                             <div class="progress-top">
                                 <div class="row">

@@ -815,6 +815,12 @@ a {
     margin-bottom: 12px;
 }
 
+.cabinet.profile.store .content-left-fixed .image {
+    background: url(/app/media/img/store.png) no-repeat center;
+    background-size: 462px 325px;
+    margin-bottom: 12px;
+}
+
 .block-right {
     width: 480px;
     float: left;
@@ -1009,7 +1015,7 @@ button.fileinput-upload:hover span {
 @media (max-width: 767px) {
     .cabinet .content-left-fixed .image {
         background-size: 100% !important;
-        height: 225px !important;
+        height: 195px !important;
         margin-bottom: 10px !important;
     }
 

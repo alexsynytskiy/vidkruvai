@@ -24,10 +24,15 @@ use app\models\search\NotificationUserSearch;
 use app\models\SiteUser;
 use app\models\Team;
 use app\models\TeamSiteUser;
+use Imagine\Exception\InvalidArgumentException;
+use Imagine\Image\Box;
+use Imagine\Image\Point;
 use yii\easyii\components\helpers\LanguageHelper;
 use yii\easyii\helpers\Image;
 use yii\easyii\modules\news\api\News;
 use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
+use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
 use yii\web\Response;
 use yii\web\UploadedFile;
@@ -152,12 +157,12 @@ class ProfileController extends Controller
         $achievements = Achievement::getAchievementsInProgress($user->id, DefEntityAchievement::ENTITY_USER);
 
         if (count($achievements) < 3) {
-            $achievementsToStart = Achievement::getAchievementsToStart($user->id, DefEntityAchievement::ENTITY_USER,3 - count($achievements));
+            $achievementsToStart = Achievement::getAchievementsToStart($user->id, DefEntityAchievement::ENTITY_USER, 3 - count($achievements));
             $achievements = array_merge($achievements, $achievementsToStart);
         }
 
         if (count($achievements) < 3) {
-            $achievementsFinished = Achievement::getAchievementsFinished($user->id, DefEntityAchievement::ENTITY_USER,3 - count($achievements));
+            $achievementsFinished = Achievement::getAchievementsFinished($user->id, DefEntityAchievement::ENTITY_USER, 3 - count($achievements));
             $achievements = array_merge($achievementsFinished, $achievements);
         }
 
@@ -242,7 +247,7 @@ class ProfileController extends Controller
 
         $news = News::get([$slug]);
 
-        if($news) {
+        if ($news) {
             \yii\easyii\modules\news\models\News::readByIds([$news->id]);
 
             isset($news->title) ? \Yii::$app->seo->setTitle($news->title) : null;
@@ -263,9 +268,13 @@ class ProfileController extends Controller
      */
     public function actionAddSchool()
     {
+        $this->flash('success', AppMsg::t('Реєстрацію нових шкіл у цьому сезоні завершено! Спробуйте ще раз у новому сезоні!'));
+
         if (!\Yii::$app->siteUser->isGuest) {
             return $this->redirect(['/profile']);
         }
+
+        return $this->redirect(['/register']);
 
         if (!\Yii::$app->mutex->acquire('multiple-school-add')) {
             \Yii::info('Пользователь попытался несколько раз подряд добавить школу');
@@ -380,14 +389,13 @@ class ProfileController extends Controller
                 $userExistsAsUnit = SiteUser::findOne(['email' => $userTeamItem->email]);
 
                 if ($userExistsAsUnit) {
-                    if(!$userExistsAsUnit->team) {
+                    if (!$userExistsAsUnit->team) {
                         $userTeamItem->site_user_id = $userExistsAsUnit->id;
                         $userTeamItem->status = DefTeamSiteUser::STATUS_CONFIRMED;
 
                         try {
                             $userUpdated = $userTeamItem->update(false);
-                        }
-                        catch (\PDOException $e) {
+                        } catch (\PDOException $e) {
                             $this->flash('error', AppMsg::t('Ти ще не дав відповідь на запрошення в іншій команді'));
 
                             return $this->redirect(['/']);
@@ -444,7 +452,7 @@ class ProfileController extends Controller
             \Yii::$app->trigger(self::EVENT_USER_REGISTERED, $userEvent);
 
             if ($invitationRegistration && $userTeamItem) {
-                if(!$userTeamItem->team) {
+                if (!$userTeamItem->team) {
                     $userTeamItem->site_user_id = $user->id;
                     $userTeamItem->status = DefTeamSiteUser::STATUS_CONFIRMED;
 
@@ -455,8 +463,7 @@ class ProfileController extends Controller
                             DefNotification::TYPE_TEAM_USER_ACCEPTED, null,
                             ['team_member' => $user->getFullName(), 'created_at' => date('d-M-Y H:i:s')]);
                     }
-                }
-                else {
+                } else {
                     $userTeamItem->status = DefTeamSiteUser::STATUS_DECLINED;
                     $userTeamItem->update();
                 }
@@ -588,8 +595,9 @@ class ProfileController extends Controller
     /**
      * @return array|bool|string|Response
      *
-     * @throws BadRequestHttpException
      * @throws \Throwable
+     * @throws InvalidArgumentException
+     * @throws \yii\web\HttpException
      */
     public function actionUpdateProfile()
     {
@@ -621,6 +629,25 @@ class ProfileController extends Controller
                 $model->avatar = UploadedFile::getInstance($model, 'avatar');
                 if ($model->avatar && $model->validate(['avatar'])) {
                     $model->avatar = Image::upload($model->avatar, 'siteusers');
+
+                    $cropInfo = Json::decode(\Yii::$app->request->post('avatar_data'));
+                    $image = \yii\imagine\Image::getImagine()->open(\Yii::getAlias('@webroot') . $model->avatar);
+
+                    $oldImages = FileHelper::findFiles(\Yii::getAlias('@webroot'), [
+                        'only' => [
+                            $model->avatar . '.*',
+                        ],
+                    ]);
+
+                    foreach ($oldImages as $oldImage) {
+                        @unlink($oldImage);
+                    }
+
+                    $newSize = new Box($cropInfo['width'], $cropInfo['height']);
+                    $cropPoint = new Point($cropInfo['x'], $cropInfo['y']);
+                    $pathImage = \Yii::getAlias('@webroot') . $model->avatar;
+
+                    $image->crop($cropPoint, $newSize)->save($pathImage, ['quality' => 100]);
                 } else {
                     $model->avatar = $model->oldAttributes['avatar'];
                 }
@@ -631,6 +658,7 @@ class ProfileController extends Controller
             } else {
                 $this->flash('error', AppMsg::t('Профайл не змінено через внутрішню помилку'));
             }
+
             return $this->refresh();
         }
 

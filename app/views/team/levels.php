@@ -22,6 +22,14 @@ $baseUrl = $asset->baseUrl;
                     <?= $this->render('/_blocks/profile-sidebar') ?>
                 </div>
                 <div class="content-left-fixed">
+                    <div class="block-title">
+                        <div class="icon">
+                            <i class="fa fa-level-up"></i>
+                        </div>
+                        <div class="text">Рівні</div>
+                        <div class="statistics">Всього рівнів <?= count($data) ?></div>
+                    </div>
+
                     <div class="project-info-page-description">
                         <div class="profile-user-page">
                             <div class="image"></div>

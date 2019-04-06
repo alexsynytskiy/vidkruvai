@@ -28,6 +28,13 @@ $user = \Yii::$app->siteUser->identity;
                 <?= $this->render('/_blocks/profile-sidebar', ['showUserInfo' => $showUserInfo]) ?>
             </div>
             <div class="content-left-fixed">
+                <div class="block-title">
+                    <div class="icon">
+                        <i class="fa fa-user"></i>
+                    </div>
+                    <div class="text">Профіль</div>
+                </div>
+
                 <div class="project-info-page-description">
                     <div class="profile-user-page">
                         <div class="image"></div>

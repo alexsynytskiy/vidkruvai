@@ -5,6 +5,7 @@ use app\components\AppMsg;
 use yii\widgets\ActiveForm;
 
 $asset = \app\assets\AppAsset::register($this);
+//\uitrick\yii2\widget\upload\crop\UploadCropAsset::register($this);
 
 $baseUrl = $asset->baseUrl;
 ?>
@@ -45,31 +46,26 @@ $baseUrl = $asset->baseUrl;
                                     </div>
 
                                     <div class="form-group clearfix">
-                                        <?= $form->field($model, 'avatar')->widget(\kartik\file\FileInput::className(), [
-                                            'options' => [
-                                                'accept' => 'image/*',
-                                                'multiple' => false
-                                            ],
-                                            'pluginOptions' => $model->avatar ? [
-                                                'showRemove' => false,
-                                                'initialPreview' => [
-                                                    isset($model->avatar) ?
-                                                        \yii\easyii\helpers\Image::thumb($model->avatar, 240) :
-                                                        null
-                                                ],
-                                                'initialPreviewAsData' => true,
-                                                'initialPreviewConfig' => [
-                                                    [
-                                                        'url' => \yii\helpers\Url::to([
-                                                            '/profile/clear-image/' . $model->primaryKey . '/siteuser/'
-                                                        ]),
-                                                    ],
-                                                ],
-                                            ] :
-                                                [
-                                                    'showRemove' => false,
-                                                    'initialPreviewAsData' => true,
-                                                ]
+                                        <?= $form->field($model, 'avatar')->widget(\uitrick\yii2\widget\upload\crop\UploadCrop::className(), [
+                                            'maxSize' => 200,
+                                            'defaultPreviewImage' => isset($model->avatar) ? $model->avatar : $baseUrl . '/img/default-avatar-user.jpg',
+                                            'jcropOptions' => [
+                                                'dragMode' => 'move',
+                                                'viewMode' => 2,
+                                                'autoCropArea' => '0.1',
+                                                'restore' => false,
+                                                'guides' => false,
+                                                'center' => false,
+                                                'movable' => true,
+                                                'highlight' => false,
+                                                'cropBoxMovable' => true,
+                                                'cropBoxResizable' => true,
+                                                'background' => false,
+                                                'minCropBoxWidth' => 60,
+                                                'minCropBoxHeight' => 60,
+                                                'responsive' => true,
+                                                'toggleDragModeOnDblclick' => false
+                                            ]
                                         ]); ?>
                                     </div>
 
@@ -102,7 +98,7 @@ $baseUrl = $asset->baseUrl;
                                     <div class="form-group clearfix">
                                         <?= $form->field($model, 'userPassword')->passwordInput([
                                             'maxlength' => true,
-                                            'placeholder' => AppMsg::t('Новый пароль'),
+                                            'placeholder' => AppMsg::t('Новий пароль'),
                                         ]) ?>
                                     </div>
 

@@ -32,6 +32,14 @@ $totalTasks = $totalTasks > 0 ? $totalTasks : null;
                         </div>
                     <?php endif; ?>
 
+                    <div class="block-title">
+                        <div class="icon">
+                            <i class="fa fa-list"></i>
+                        </div>
+                        <div class="text">Завдання</div>
+                        <div class="statistics">Активних завдань <?= count($tasks) ?></div>
+                    </div>
+
                     <div id="tasks-list">
                         <?php foreach ($tasks as $task): ?>
                             <?= $this->render('task-item', ['item' => $task]) ?>
