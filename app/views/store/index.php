@@ -16,6 +16,7 @@ use yii\helpers\Html;
 
 \app\assets\StoreAsset::register($this);
 $asset = \app\assets\AppAsset::register($this);
+\app\assets\ModalAsset::register($this);
 
 $baseUrl = $asset->baseUrl;
 
@@ -43,13 +44,16 @@ $user = \Yii::$app->siteUser->identity;
                             <div uk-filter="target: .js-filter">
                                 <ul class="uk-subnav uk-subnav-pill">
                                     <li class="uk-active" uk-filter-control>
-                                        <a href="#">Всі категорії<i class="fa fa-times-circle"></i></a></li>
-                                    <li uk-filter-control="[data-color='infrastructure']"><a href="#">Інфраструктура<i class="fa fa-times-circle"></i></a></li>
-                                    <li uk-filter-control="[data-color='sport']"><a href="#">Спорт і здоровя<i class="fa fa-times-circle"></i></a></li>
-                                    <li uk-filter-control="[data-color='speech']"><a href="#">Спілкування та атмосфера<i class="fa fa-times-circle"></i></a></li>
-                                    <li uk-filter-control="[data-color='science']"><a href="#">Наука та розвиток<i class="fa fa-times-circle"></i></a></li>
-                                    <li uk-filter-control="[data-color='ecology']"><a href="#">Екологія ста сталість<i class="fa fa-times-circle"></i></a></li>
-                                    <li uk-filter-control="[data-color='art']"><a href="#">Арт<i class="fa fa-times-circle"></i></a></li>
+                                        <a href="#">Всі категорії<div class="close"><i class="fa fa-times"></i></div></a></li>
+                                    <li uk-filter-control="[data-color='infrastructure']"><a href="#">Інфраструктура
+                                            <div class="close"><i class="fa fa-times"></i></div>
+                                        </a>
+                                    </li>
+                                    <li uk-filter-control="[data-color='sport']"><a href="#">Спорт і здоровя<div class="close"><i class="fa fa-times"></i></div></a></li>
+                                    <li uk-filter-control="[data-color='speech']"><a href="#">Спілкування та атмосфера<div class="close"><i class="fa fa-times"></i></div></a></li>
+                                    <li uk-filter-control="[data-color='science']"><a href="#">Наука та розвиток<div class="close"><i class="fa fa-times"></i></div></a></li>
+                                    <li uk-filter-control="[data-color='ecology']"><a href="#">Екологія ста сталість<div class="close"><i class="fa fa-times"></i></div></a></li>
+                                    <li uk-filter-control="[data-color='art']"><a href="#">Арт<div class="close"><i class="fa fa-times"></i></div></a></li>
                                 </ul>
 
                                 <ul class="js-filter uk-child-width-1-2 uk-child-width-1-3@m uk-text-center" uk-grid>
@@ -57,34 +61,154 @@ $user = \Yii::$app->siteUser->identity;
                                         <div class="items clearfix">
                                             <div class="head clearfix">
                                                 <div class="title">Інфраструктура</div>
-                                                <div class="icon">
+                                                <div class="icon tooltip-new">
                                                     <i class="fa fa-lock"></i>
+                                                    <span class="tooltiptext">Tooltip text</span>
                                                 </div>
                                                 <div class="items-count">10 Елементів</div>
                                             </div>
                                             <div class="level clearfix">
                                                 <div class="title">Базовий рівень</div>
                                                 <div class="item bought">
-                                                    <div class="body">
-
+                                                    <div class="body" style="background-image: url('<?= $baseUrl ?>/img/floor1.svg')">
+                                                        <div class="body-wrapper">
+                                                            <div class="cost">800</div>
+                                                            <div class="icon tooltip-new">
+                                                                <i class="fa fa-lock"></i>
+                                                                <span class="tooltiptext">Tooltip text</span>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="level clearfix">
                                                 <div class="title">Перший рівень</div>
                                                 <div class="item">
-                                                    <div class="body">
-
+                                                    <div class="body" style="background-image: url('<?= $baseUrl ?>/img/level<?= 1 ?>.png'), url('<?= $baseUrl ?>/img/entrance.png')">
+                                                        <div class="body-wrapper">
+                                                            <div class="cost">400</div>
+                                                            <div class="icon">
+                                                                <i class="fa fa-lock"></i>
+                                                            </div>
+                                                            <a href="#" data-id="1" class="buy-item">
+                                                                <div class="cart">
+                                                                    <i class="fa fa-shopping-cart"></i>
+                                                                </div>
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="item">
-                                                    <div class="body">
-
+                                                    <div class="body" style="background-image: url('<?= $baseUrl ?>/img/level<?= 1 ?>.png'), url('<?= $baseUrl ?>/img/cycle.png')">
+                                                        <div class="body-wrapper">
+                                                            <div class="cost">500</div>
+                                                            <div class="icon">
+                                                                <i class="fa fa-lock"></i>
+                                                            </div>
+                                                            <div class="cart">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="item">
-                                                    <div class="body">
-
+                                                    <div class="body" style="background-image: url('<?= $baseUrl ?>/img/level<?= 1 ?>.png'), url('<?= $baseUrl ?>/img/cycle.png')">
+                                                        <div class="body-wrapper">
+                                                            <div class="cost">500</div>
+                                                            <div class="icon">
+                                                                <i class="fa fa-lock"></i>
+                                                            </div>
+                                                            <div class="cart">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="level clearfix">
+                                                <div class="title">Другий рівень</div>
+                                                <div class="item">
+                                                    <div class="body" style="background-image: url('<?= $baseUrl ?>/img/level<?= 1 ?>.png'), url('<?= $baseUrl ?>/img/entrance.png')">
+                                                        <div class="body-wrapper">
+                                                            <div class="cost">400</div>
+                                                            <div class="icon">
+                                                                <i class="fa fa-lock"></i>
+                                                            </div>
+                                                            <div class="cart">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                    <div class="body" style="background-image: url('<?= $baseUrl ?>/img/level<?= 1 ?>.png'), url('<?= $baseUrl ?>/img/cycle.png')">
+                                                        <div class="body-wrapper">
+                                                            <div class="cost">500</div>
+                                                            <div class="icon">
+                                                                <i class="fa fa-lock"></i>
+                                                            </div>
+                                                            <div class="cart">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="level clearfix">
+                                                <div class="title">Третій рівень</div>
+                                                <div class="item">
+                                                    <div class="body" style="background-image: url('<?= $baseUrl ?>/img/level<?= 1 ?>.png'), url('<?= $baseUrl ?>/img/entrance.png')">
+                                                        <div class="body-wrapper">
+                                                            <div class="cost">400</div>
+                                                            <div class="icon">
+                                                                <i class="fa fa-lock"></i>
+                                                            </div>
+                                                            <div class="cart">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                    <div class="body" style="background-image: url('<?= $baseUrl ?>/img/level<?= 1 ?>.png'), url('<?= $baseUrl ?>/img/cycle.png')">
+                                                        <div class="body-wrapper">
+                                                            <div class="cost">500</div>
+                                                            <div class="icon">
+                                                                <i class="fa fa-lock"></i>
+                                                            </div>
+                                                            <div class="cart">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="level clearfix">
+                                                <div class="title">Четвертий рівень</div>
+                                                <div class="item">
+                                                    <div class="body" style="background-image: url('<?= $baseUrl ?>/img/level<?= 1 ?>.png'), url('<?= $baseUrl ?>/img/entrance.png')">
+                                                        <div class="body-wrapper">
+                                                            <div class="cost">400</div>
+                                                            <div class="icon">
+                                                                <i class="fa fa-lock"></i>
+                                                            </div>
+                                                            <div class="cart">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                    <div class="body" style="background-image: url('<?= $baseUrl ?>/img/level<?= 1 ?>.png'), url('<?= $baseUrl ?>/img/cycle.png')">
+                                                        <div class="body-wrapper">
+                                                            <div class="cost">500</div>
+                                                            <div class="icon">
+                                                                <i class="fa fa-lock"></i>
+                                                            </div>
+                                                            <div class="cart">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -163,6 +287,7 @@ $user = \Yii::$app->siteUser->identity;
 
 <?php
 $pageOptions = \yii\helpers\Json::encode([
+    'elementsUrl' => \yii\helpers\Url::to('/progress/')
 ]);
 
 $this->registerJs('StorePage(' . $pageOptions . ')');

@@ -52,7 +52,7 @@ class AppAsset extends \yii\web\AssetBundle
         'js/AddSchoolPage.js',
         'js/WrittenPage.js',
         'js/StorePage.js',
-        'https://cdn.jsdelivr.net/npm/vanilla-lazyload@11.0.6/dist/lazyload.min.js'
+        'https://cdn.jsdelivr.net/npm/vanilla-lazyload@11.0.6/dist/lazyload.min.js',
     ];
 
     public $publishOptions = ['forceCopy' => true];

@@ -16,6 +16,7 @@ $asset = \app\assets\AppAsset::register($this);
 <?= $this->render('/_blocks/footer') ?>
 <?= $this->render('/_blocks/flash-messages'); ?>
 <?php $this->endBody() ?>
+<div class="load-blocker"></div>
 </body>
 </html>
 <?php $this->endPage() ?>

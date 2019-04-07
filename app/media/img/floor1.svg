@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="100%" y1="0%" x2="0%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFC7AC" offset="0%"></stop>
+            <stop stop-color="#3242FB" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ICONS_INF_1" transform="translate(-78.000000, -31.000000)">
+            <g id="Group" transform="translate(79.000000, 32.000000)">
+                <g id="LEVELS" opacity="0.3" stroke="url(#linearGradient-1)" stroke-width="1.5">
+                    <circle id="4" cx="27" cy="27" r="24"></circle>
+                    <circle id="3" cx="27" cy="27" r="27"></circle>
+                    <circle id="2" cx="27" cy="27" r="21"></circle>
+                    <circle id="1" cx="27" cy="27" r="18"></circle>
+                </g>
+                <g id="BASIC" transform="translate(11.000000, 11.000000)" fill="url(#linearGradient-1)">
+                    <circle id="Oval" cx="16" cy="16" r="16"></circle>
+                </g>
+                <path d="M30.7142857,23 L27,23 L27,26.7142857 C27,26.8720703 26.8720703,27 26.7142857,27 L23,27 L23,30.7142857 C23,30.8720703 22.8720703,31 22.7142857,31 L19,31 L19,35 L35,35 L35,19 L31,19 L31,22.7142857 C31,22.8720703 30.8720703,23 30.7142857,23 Z" id="Shape" stroke="#FFFFFF" stroke-width="0.7" fill-rule="nonzero"></path>
+                <path d="M30.1534288,32 L30.1534288,26.9375 L30.1378038,26.9375 C30.0128038,27.015625 28.7901476,27.875 28.6260851,27.9765625 L28.6260851,27.40625 C28.7823351,27.3085938 29.9776476,26.4648438 30.1456163,26.3632812 L30.6690538,26.3632812 L30.6690538,32 L30.1534288,32 Z" id="1" fill="#FFFFFF"></path>
+            </g>
+        </g>
+    </g>
+</svg>
