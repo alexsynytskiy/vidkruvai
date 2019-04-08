@@ -13,7 +13,7 @@ $user = \Yii::$app->siteUser->identity;
         <div class="header">Ви обрали:</div>
         <div class="selected-item">
             <div class="body"
-                 style="background-image: url('<?= $baseUrl ?>/img/level<?= $item['level'] ?>.png'), url('<?= $baseUrl . $item['icon'] ?>')"></div>
+                 style="background-image: url('<?= $baseUrl ?>/img/level<?= $item['level'] ?>.svg'), url('<?= $item['icon'] ?>')"></div>
         </div>
         <div class="name"><?= $item['itemName'] ?></div>
         <div class="sub-name info">

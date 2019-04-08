@@ -48,6 +48,24 @@ class CategoryQuery extends \yii\db\ActiveQuery
     }
 
     /**
+     * @return $this
+     */
+    public function storeCategory()
+    {
+        return $this->andWhere(['type' => DefCategory::TYPE_STORE_CATEGORY, 'status' => DefCategory::STATUS_ACTIVE,
+            'archived' => 'no']);
+    }
+
+    /**
+     * @return $this
+     */
+    public function storeCategoryLevel()
+    {
+        return $this->andWhere(['type' => DefCategory::TYPE_STORE_CATEGORY_LEVEL, 'status' => DefCategory::STATUS_ACTIVE,
+            'archived' => 'no']);
+    }
+
+    /**
      * @return array
      */
     public function getList()

@@ -18,6 +18,8 @@ class DefCategory extends BaseDefinition
     const TYPE_ACHIEVEMENT_GROUP = 'achievement-group';
     const TYPE_LEVEL = 'level';
     const TYPE_LEVEL_GROUP = 'level-group';
+    const TYPE_STORE_CATEGORY = 'store-category';
+    const TYPE_STORE_CATEGORY_LEVEL = 'store-category-level';
     /**
      * Statuses
      */
@@ -38,6 +40,8 @@ class DefCategory extends BaseDefinition
             self::TYPE_LEVEL => AppMsg::t('Уровни'),
             self::TYPE_LEVEL_GROUP => AppMsg::t('Группы уровней'),
             self::TYPE_ACHIEVEMENT_GROUP => AppMsg::t('Группы достижений'),
+            self::TYPE_STORE_CATEGORY => AppMsg::t('Категории магазин'),
+            self::TYPE_STORE_CATEGORY_LEVEL => AppMsg::t('Уровни категорий магазин'),
         ];
 
         return static::getListDataByReturnType($types, $returnType);

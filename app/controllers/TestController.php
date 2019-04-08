@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\components\Controller;
+use app\models\Category;
+use app\models\definitions\DefCategory;
 use app\models\definitions\DefSiteUser;
 use app\models\Task;
 use app\models\TasksUser;
@@ -180,10 +182,103 @@ class TestController extends Controller
 //        $achievement->awardIDs = [1];
 //        $a = $achievement->save();
 
+//        $categoriesTree = [
+//            [
+//                'parent' => [
+//                    'name' => 'Спілкування та атмосфера',
+//                    'slug' => 'speech',
+//                    'description' => 'Tooltip text',
+//                ],
+//                'elements' => [
+//                    'Базовий рівень',
+//                    'Перший рівень',
+//                    'Другий рівень',
+//                    'Третій рівень',
+//                    'Четвертий рівень',
+//                ]
+//            ],
+//            [
+//                'parent' => [
+//                    'name' => 'Спорт і здоров\'я',
+//                    'description' => 'Tooltip text',
+//                ],
+//                'elements' => [
+//                    'Базовий рівень',
+//                    'Перший рівень',
+//                    'Другий рівень',
+//                    'Третій рівень',
+//                    'Четвертий рівень',
+//                ]
+//            ],
+//            [
+//                'parent' => [
+//                    'name' => 'Наука та розвиток',
+//                    'description' => 'Tooltip text',
+//                ],
+//                'elements' => [
+//                    'Базовий рівень',
+//                    'Перший рівень',
+//                    'Другий рівень',
+//                    'Третій рівень',
+//                    'Четвертий рівень',
+//                ]
+//            ],
+//            [
+//                'parent' => [
+//                    'name' => 'Екологія ста сталість',
+//                    'description' => 'Tooltip text',
+//                ],
+//                'elements' => [
+//                    'Базовий рівень',
+//                    'Перший рівень',
+//                    'Другий рівень',
+//                    'Третій рівень',
+//                    'Четвертий рівень',
+//                ]
+//            ],
+//            [
+//                'parent' => [
+//                    'name' => 'Арт',
+//                    'description' => 'Tooltip text',
+//                ],
+//                'elements' => [
+//                    'Базовий рівень',
+//                    'Перший рівень',
+//                    'Другий рівень',
+//                    'Третій рівень',
+//                    'Четвертий рівень',
+//                ]
+//            ],
+//        ];
+//
+//        foreach ($categoriesTree as $categoryBlock) {
+//            $category = new Category;
+//            $category->name = $categoryBlock['parent']['name'];
+//            $category->description = $categoryBlock['parent']['description'];
+//            $category->slug = $categoryBlock['parent']['slug'];
+//            $category->type = DefCategory::TYPE_STORE_CATEGORY;
+//            $category->status = DefCategory::STATUS_ACTIVE;
+//            $category->archived = 'no';
+//            $category->makeRoot();
+//
+//            foreach ($categoryBlock['elements'] as $levelName) {
+//                $level = new Category;
+//                $level->name = $levelName;
+//                $level->description = '';
+//                $level->type = DefCategory::TYPE_STORE_CATEGORY_LEVEL;
+//                $level->status = DefCategory::STATUS_ACTIVE;
+//                $level->archived = 'no';
+//
+//                if($category) {
+//                    $level->prependTo($category);
+//                }
+//            }
+//        }
+
 //        $category = new Category;
 //        $category->name = 'Досягнення досвіду';
 //        $category->description = 'Досягнення, повязані з отриманням досвіду';
-//        $category->type = DefCategory::TYPE_ACHIEVEMENT_GROUP;
+//        $category->type = DefCategory::TYPE_STORE_CATEGORY;
 //        $category->status = DefCategory::STATUS_ACTIVE;
 //        $category->archived = 'no';
 //

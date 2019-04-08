@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\components\Controller;
+use app\models\Category;
+use app\models\StoreItem;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -27,9 +29,11 @@ class StoreController extends Controller
         \Yii::$app->seo->setDescription('Відкривай Україну');
         \Yii::$app->seo->setKeywords('Відкривай, Україну');
 
+        $categories = Category::find()->storeCategory()->all();
+
         return $this->render('index',
             [
-
+                'categories' => $categories,
             ]
         );
     }
@@ -47,20 +51,27 @@ class StoreController extends Controller
         \Yii::$app->response->format = Response::FORMAT_JSON;
 
         $itemId = (int)\Yii::$app->request->post('itemId');
+        $item = [];
 
         if (!$itemId) {
-            return [];
+            return $item;
         }
 
-        $item = [
-            'level' => 1,
-            'levelsCount' => 5,
-            'categoryName' => 'Інфраструктура',
-            'itemName' => 'Вхідна група',
-            'itemShort' => 'Короткий опис у кілька рядків',
-            'cost' => 400,
-            'icon' => '/img/floor1.svg'
-        ];
+        $storeItem = StoreItem::findOne($itemId);
+
+        if ($storeItem) {
+            $category = $storeItem->category;
+
+            $item = [
+                'level' => $storeItem->category->slug,
+                'levelsCount' => 5,
+                'categoryName' => $category->name,
+                'itemName' => $storeItem->name,
+                'itemShort' => $storeItem->description,
+                'cost' => $storeItem->cost,
+                'icon' => $storeItem->icon,
+            ];
+        }
 
         return [
             'modalContent' => $this->renderPartial('/store/modal-content', ['item' => $item]),
@@ -84,7 +95,6 @@ class StoreController extends Controller
         if (!$itemId) {
             return [];
         }
-
 
 
         return [

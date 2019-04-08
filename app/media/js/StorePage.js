@@ -1,12 +1,15 @@
 var StorePage = function (options) {
     var pageOptions = $.extend(true, {
-        elementsUrl: ''
+        elementsUrl: '',
+        modalPrepareUrl: '',
+        buyUrl: ''
     }, options);
 
     var selectors = {
         buy: '.buy-item',
         confirmFirst: '#buy-question',
-        lockPage: '.load-blocker'
+        lockPage: '.load-blocker',
+        sellItem: '.sell-item-wrapper'
     };
 
     $('body').on("click", selectors.buy, function (e) {
@@ -18,7 +21,7 @@ var StorePage = function (options) {
         var itemId = parseInt($(this).attr('data-id'));
 
         $.post(
-            '/store/modal-prepare/',
+            pageOptions.modalPrepareUrl,
             {
                 itemId: itemId, _csrf: SiteCore.getCsrfToken()
             },
@@ -32,7 +35,7 @@ var StorePage = function (options) {
     }).on("click", selectors.confirmFirst, function (e) {
         e.preventDefault();
 
-        var $modal = $(this).closest('.sell-item-wrapper');
+        var $modal = $(this).closest(selectors.sellItem);
         $modal.find('.description.short, .category, .level').hide();
         $modal.find('.sub-name.info').show();
 
@@ -45,7 +48,7 @@ var StorePage = function (options) {
         var itemId = parseInt($(this).attr('data-id'));
 
         $.post(
-            '/store/buy/',
+            pageOptions.buyUrl,
             {
                 itemId: itemId, _csrf: SiteCore.getCsrfToken()
             },
@@ -55,7 +58,7 @@ var StorePage = function (options) {
                 }
             }, 'json');
 
-        var $modal = $(this).closest('.sell-item-wrapper');
+        var $modal = $(this).closest(selectors.sellItem);
         $modal.find('.description').hide();
         $modal.find('.header').text('Ви купили:');
         $modal.find('.selected-item').addClass('bought');
@@ -66,5 +69,9 @@ var StorePage = function (options) {
         $modal.find(selectors.confirmFirst).html('Мої елементи <i class="fa fa-angle-right" aria-hidden="true"></i>');
         $modal.find(selectors.confirmFirst).parent().attr('href', pageOptions.elementsUrl);
         $modal.find(selectors.confirmFirst).addClass('success-bought');
+
+        var $soldItem = $('body').find('.buy-item[data-id="' + itemId + '"]');
+        $soldItem.closest('.item').addClass('bought');
+        $soldItem.empty();
     });
 };

@@ -25,6 +25,8 @@ use yii\helpers\Html;
  * @property string $created_at
  * @property string $status
  * @property string $archived
+ *
+ * @property StoreItem[] $storeItems
  */
 class Category extends ActiveRecord
 {
@@ -125,5 +127,24 @@ class Category extends ActiveRecord
         }
 
         return $items;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStoreItems()
+    {
+        return $this->hasMany(StoreItem::className(), ['category_id' => 'id']);
+    }
+
+    public function childrenSubItemsCount()
+    {
+        $count = 0;
+
+        foreach ($this->children()->orderBy('id ASC')->all() as $level) {
+            $count += count($level->storeItems);
+        }
+
+        return $count;
     }
 }
