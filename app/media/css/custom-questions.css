@@ -821,6 +821,12 @@ a {
     margin-bottom: 12px;
 }
 
+.cabinet.profile.progress .content-left-fixed .image {
+    background: url(/app/media/img/progress.png) no-repeat center;
+    background-size: 344px 325px;
+    margin-bottom: 12px;
+}
+
 .block-right {
     width: 480px;
     float: left;
@@ -1014,9 +1020,17 @@ button.fileinput-upload:hover span {
 
 @media (max-width: 767px) {
     .cabinet .content-left-fixed .image {
-        background-size: 100% !important;
+        background-size: 85% !important;
         height: 195px !important;
         margin-bottom: 10px !important;
+    }
+
+    .cabinet.progress .content-left-fixed .image {
+        background-size: 55% !important;
+    }
+
+    .cabinet.store .content-left-fixed .image {
+        background-size: 70% !important;
     }
 
     .steps-block.profile a.link-additional {

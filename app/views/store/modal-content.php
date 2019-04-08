@@ -37,19 +37,30 @@ $user = \Yii::$app->siteUser->identity;
         </div>
         <div class="level clearfix">
             <div class="level-wrapper clearfix">
-                <?php for ($i = 1; $i <= $item['levelsCount']; $i++): ?>
+                <?php for ($i = 0; $i < $item['levelsCount']; $i++): ?>
                     <div class="item <?= $i <= $item['level'] ? 'passed' : '' ?>">
                         <div class="center"></div>
                     </div>
                 <?php endfor; ?>
             </div>
         </div>
-        <a href="#">
-            <div id="buy-question" class="buy" data-id="1" data-name="<?= $item['itemName'] ?>"
-                 data-cost="<?= $item['cost'] ?>">Купити за <?= $item['cost'] ?> балів<i class="fa fa-angle-right"
+        <?php if($user->isCaptain()): ?>
+            <a href="#">
+                <div id="buy-question" class="buy active" data-id="1" data-name="<?= $item['itemName'] ?>"
+                     data-cost="<?= $item['cost'] ?>">Купити за <?= $item['cost'] ?> балів<i class="fa fa-angle-right"
+                                                                                             aria-hidden="true"></i></div>
+            </a>
+        <?php else: ?>
+            <div class="buy disabled">Купити за <?= $item['cost'] ?> балів<i class="fa fa-angle-right"
                                                                                          aria-hidden="true"></i></div>
-        </a>
-        <div class="description long">Сума балів буде списана з командного рахунку</div>
+        <?php endif; ?>
+        <div class="description long">
+            <?php if($user->isCaptain()): ?>
+                Сума балів буде списана з командного рахунку
+            <?php else: ?>
+                <div class="bold">Купувати елементи може лише капітан</div>
+            <?php endif; ?>
+        </div>
     </div>
     <div class="arrow-down">
         <div class="center">

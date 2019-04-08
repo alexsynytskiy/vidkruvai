@@ -26,6 +26,7 @@ $messages = '';
 $news = '';
 $store = '';
 $rating = '';
+$progress = '';
 
 switch ($controller) {
     case 'profile':
@@ -48,6 +49,9 @@ switch ($controller) {
         break;
     case 'rating':
         $rating = 'active';
+        break;
+    case 'progress':
+        $progress = 'active';
         break;
 }
 
@@ -99,6 +103,14 @@ switch ($controller) {
             </div>
             <a href="<?= Url::to(['store/']) ?>">
                 <div class="text">Магазин</div>
+            </a>
+        </div>
+        <div class="menu-link <?= $progress ?>">
+            <div class="icon">
+                <i class="fa fa-tasks" style="font-size: 17px;"></i>
+            </div>
+            <a href="<?= Url::to(['progress/']) ?>">
+                <div class="text">Прогрес</div>
             </a>
         </div>
         <div class="menu-link <?= $rating ?> disabled">

@@ -2251,8 +2251,31 @@ span.btn:hover {
 .uk-first-column .items {
     padding: 16px;
     border-radius: 4px;
-    background-image: linear-gradient(261deg, #e9edff, #ffe8fe);
     margin-bottom: 8px;
+}
+
+.uk-first-column .items.infrastructura {
+    background-image: linear-gradient(261deg, #e9edff, #ffe8fe);
+}
+
+.uk-first-column .items.sport {
+    background-image: linear-gradient(261deg, #FFE8E8, #F0E9FF);
+}
+
+.uk-first-column .items.science {
+    background-image: linear-gradient(261deg, #FBD0FF, #FDFFF8);
+}
+
+.uk-first-column .items.ecology {
+    background-image: linear-gradient(261deg, #DEFFD0, #FBFFEF);
+}
+
+.uk-first-column .items.art {
+    background-image: linear-gradient(261deg, #FFD7D0, #FFF8EF);
+}
+
+.uk-first-column .items.speech {
+    background-image: linear-gradient(261deg, #D0E9FF, #EFFEFF);
 }
 
 .uk-first-column .progress {
@@ -2299,6 +2322,7 @@ span.btn:hover {
     color: #000000;
     float: left;
     margin-right: 10px;
+    margin-left: 3px;
 }
 
 .uk-first-column .items .head .icon {
@@ -2307,6 +2331,7 @@ span.btn:hover {
     height: 16px;
     background-color: #000;
     border-radius: 50%;
+    margin-top: 5px;
 }
 
 .uk-first-column .items .head .icon .fa {
@@ -2465,7 +2490,6 @@ span.btn:hover {
     position: absolute;
     z-index: 1;
     top: 125%;
-    left: 150%;
     margin-left: -5px;
     margin-top: -5px;
     opacity: 0;
@@ -2482,6 +2506,15 @@ span.btn:hover {
     border-radius: 3px;
     box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.05);
     border: solid 1px rgba(0, 0, 0, 0.05);
+}
+
+.uk-first-column .items .level .tooltip-new .tooltiptext {
+    left: 150%;
+}
+
+.uk-first-column .items .level:last-child .tooltip-new .tooltiptext {
+    right: 150%;
+    left: -120px;
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
@@ -2608,7 +2641,7 @@ span.btn:hover {
 }
 
 .modal.sell-item .category .category-wrapper {
-    max-width: 150px;
+    max-width: 160px;
     margin-top: 10px;
     position: absolute;
     margin-left: auto;
@@ -2706,7 +2739,12 @@ span.btn:hover {
     transition: all ease 0.5s;
 }
 
-.modal.sell-item .buy:hover {
+.modal.sell-item .buy.disabled {
+    cursor: default;
+    opacity: 0.4;
+}
+
+.modal.sell-item .buy.active:hover {
     cursor: pointer;
     background-color: #68aefc;
     -webkit-transition: all ease 0.5s;
@@ -2727,13 +2765,13 @@ span.btn:hover {
     background-color: #fff;
     height: 44px;
     border-radius: 50%;
-    border: solid 1.5px #6fb4fc;
+    border: solid 2px #6fb4fc;
     margin: 15px auto 0;
 }
 
 .modal.sell-item .arrow-down .center {
     margin-top: 1px;
-    margin-left: 2px;
+    margin-left: 1px;
     width: 38px;
     height: 38px;
     background-color: #6fb4fc;
@@ -2774,6 +2812,12 @@ body .blocker.current {
     background-color: #000;
     background-color: rgba(0,0,0,0.75);
     text-align: center;
+}
+
+canvas {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
 
 @media (max-width: 1199px) {
@@ -2821,7 +2865,7 @@ body .blocker.current {
     }
 
     .navbar-fixed-top .navbar-collapse, .navbar-fixed-bottom .navbar-collapse {
-        max-height: 395px;
+        max-height: 425px;
     }
 
     .news-item.small .comments-count-news {
@@ -3191,6 +3235,18 @@ body .blocker.current {
 }
 
 @media (max-width: 767px) {
+    .uk-subnav li:first-child {
+        margin-left: 5px;
+    }
+
+    .uk-first-column .items .level {
+        width: 127px;
+    }
+
+    .uk-first-column .items .level .item .body {
+        background-size: 44px, 44px;
+    }
+    
     .questions .questions-text {
         text-align: left;
     }

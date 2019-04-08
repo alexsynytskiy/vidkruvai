@@ -62,9 +62,11 @@ class StoreController extends Controller
         if ($storeItem) {
             $category = $storeItem->category;
 
+            $parentCategory = $storeItem->category->parents()->one();
+
             $item = [
                 'level' => $storeItem->category->slug,
-                'levelsCount' => 5,
+                'levelsCount' => $parentCategory->children()->orderBy('id ASC')->count(),
                 'categoryName' => $category->name,
                 'itemName' => $storeItem->name,
                 'itemShort' => $storeItem->description,

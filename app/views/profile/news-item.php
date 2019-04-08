@@ -2,6 +2,7 @@
 /* @var $this yii\web\View */
 /* @var $item yii\easyii\modules\news\api\NewsObject */
 
+\app\assets\LazyLoadAsset::register($this);
 ?>
 
 <div class="news-item small clearfix">

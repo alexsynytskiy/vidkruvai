@@ -48,7 +48,7 @@ $user = \Yii::$app->siteUser->identity;
                                 <ul class="js-filter uk-child-width-1-2 uk-child-width-1-3@m uk-text-center" uk-grid>
                                     <?php foreach ($categories as $category): ?>
                                         <li data-color="<?= $category->slug ?>">
-                                            <div class="items clearfix">
+                                            <div class="items <?= $category->slug ?> clearfix">
                                                 <div class="head clearfix">
                                                     <div class="title"><?= $category->name ?></div>
                                                     <div class="icon tooltip-new">
