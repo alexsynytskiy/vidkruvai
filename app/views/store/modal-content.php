@@ -81,9 +81,11 @@ if($item['isBought']) {
             <?php endif; ?>
         </div>
     </div>
-    <div class="arrow-down">
-        <div class="center">
-            <i class="fa fa-angle-down" aria-hidden="true"></i>
+    <a href="#" rel="modal:close">
+        <div class="arrow-down">
+            <div class="center">
+                <i class="fa fa-close" aria-hidden="true"></i>
+            </div>
         </div>
-    </div>
+    </a>
 </div>

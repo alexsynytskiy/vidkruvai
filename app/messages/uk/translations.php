@@ -1,0 +1,4 @@
+<?php
+return [
+    'January' => 'Січень',
+];

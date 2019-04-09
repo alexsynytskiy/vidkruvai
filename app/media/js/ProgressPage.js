@@ -1,6 +1,7 @@
 var ProgressPage = function (options) {
     var pageOptions = $.extend(true, {
-        boughtItemsPerCategory: []
+        boughtItemsPerCategory: [],
+        executedTasksData : []
     }, options);
 
     var selectors = {};
@@ -10,25 +11,32 @@ var ProgressPage = function (options) {
     //
     // });
 
-    var labels = [],
-        values = [];
+    var labelsRadar = [],
+        valuesRadar = [],
+        labelsLine = [],
+        valuesLine = [];
 
     $.each(pageOptions.boughtItemsPerCategory, function(key, value) {
-        labels.push(key);
-        values.push(value);
+        labelsRadar.push(key);
+        valuesRadar.push(value);
     });
 
-    var data = {
-        labels: labels,
+    $.each(pageOptions.executedTasksData, function(key, value) {
+        labelsLine.push(value.month);
+        valuesLine.push(value.value);
+    });
+
+    var dataRadar = {
+        labels: labelsRadar,
         datasets: [{
             backgroundColor: '#ffb1c1',
             borderColor: '#ff6384',
-            data: values,
+            data: valuesRadar,
             label: 'Графік прогресу в розрізі напряму розвитку'
         }]
     };
 
-    var chartOptions = {
+    var chartOptionsRadar = {
         maintainAspectRatio: true,
         spanGaps: false,
         legend: {
@@ -58,8 +66,29 @@ var ProgressPage = function (options) {
 
     new Chart('chart-0', {
         type: 'radar',
-        data: data,
-        options: chartOptions
+        data: dataRadar,
+        options: chartOptionsRadar
+    });
+
+    new Chart('chart-1', {
+        type: 'line',
+        data: {
+            labels: labelsLine,
+            datasets: [{
+                backgroundColor: '#f7e5b8',
+                borderColor: '#ffcd56',
+                data: valuesLine,
+                label: 'Виконані завдання за місяцями',
+                fill: 'fill'
+            }]
+        },
+        scale: {
+            ticks: {
+                min: 0,
+                max: 5,
+                beginAtZero: true
+            }
+        }
     });
 
     var screenW = $(document).width();

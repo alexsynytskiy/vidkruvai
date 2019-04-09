@@ -6,6 +6,7 @@ use \yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $data array */
 /* @var $saleData array */
+/* @var $executedTasksData array */
 
 $asset = \app\assets\AppAsset::register($this);
 \app\assets\ChartAsset::register($this);
@@ -37,7 +38,7 @@ $user = \Yii::$app->siteUser->identity;
                             <div class="progress-top">
                                 <div class="progress-title level-title">
                                     <h3 class="levels-table-title">
-                                        <?= AppMsg::t('Список рівнів профілю'); ?>
+                                        <?= AppMsg::t('Історія прогресу'); ?>
                                     </h3>
                                 </div>
                             </div>
@@ -45,34 +46,39 @@ $user = \Yii::$app->siteUser->identity;
 
                         <?php if($saleData): ?>
                             <div class="levels-table-block clearfix">
-                                <table class="table col-lg-12 col-md-12">
+                                <table class="table table-striped col-lg-12 col-md-12">
                                     <thead>
                                     <tr>
-                                        <td class="col-lg-2 col-md-2"><?= AppMsg::t('Рівень'); ?></td>
-                                        <td class="col-lg-2 col-md-2"><?= AppMsg::t('Група'); ?></td>
-                                        <td class="col-lg-2 col-md-2"><?= AppMsg::t('Досвіду потрібно'); ?></td>
-                                        <td class="col-lg-3 col-md-3"><?= AppMsg::t('Завершено на (%)'); ?></td>
-                                        <td class="col-lg-3 col-md-3"><?= AppMsg::t('Нагорода'); ?></td>
+                                        <td class="col-lg-2 col-md-2"><?= AppMsg::t('Елемент'); ?></td>
+                                        <td class="col-lg-2 col-md-2"><?= AppMsg::t('Категорія'); ?></td>
+                                        <td class="col-lg-2 col-md-2"><?= AppMsg::t('Капітан'); ?></td>
+                                        <td class="col-lg-2 col-md-2"><?= AppMsg::t('Вартість'); ?></td>
+                                        <td class="col-lg-3 col-md-3"><?= AppMsg::t('Баланс до'); ?></td>
+                                        <td class="col-lg-3 col-md-3"><?= AppMsg::t('Баланс після'); ?></td>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <?php foreach($saleData as $sale):
-                                        /* @var $sell \app\models\Sale */ ?>
+                                        /* @var $sale \app\models\Sale */ ?>
                                         <tr class="">
-                                            <td class="col-lg-1 col-md-1" data-label="Рівень"><?= \yii\helpers\Html::encode(879789) ?></td>
-                                            <td class="col-lg-2 col-md-2" data-label="Група">
-                                                <?= Html::encode(78979) ?>
+                                            <td class="col-lg-3 col-md-3" data-label="Елемент"><?= \yii\helpers\Html::encode($sale->storeItem->name) ?></td>
+                                            <td class="col-lg-3 col-md-3" data-label="Категорія">
+                                                <?= Html::encode($sale->storeItem->category->parents()->one()->name) ?>
                                             </td>
-                                            <td class="col-lg-2 col-md-2" data-label="Досвіду потрібно"><?= Html::encode(567) ?></td>
-
-                                            <td class="col-lg-3 col-md-3 clearfix" data-label="Завершено на (%)"><?= 9 ?></td>
-                                            <td class="col-lg-3 col-md-3" data-label="Нагорода"><?= 6757 ?></td>
+                                            <td class="col-lg-3 col-md-3" data-label="Капітан"><?= Html::encode($sale->captain->getFullName()) ?></td>
+                                            <td class="col-lg-1 col-md-1" data-label="Вартість"><?= Html::encode($sale->storeItem->cost) ?></td>
+                                            <td class="col-lg-1 col-md-1" data-label="Баланс до"><?= Html::encode($sale->team_balance + $sale->storeItem->cost) ?></td>
+                                            <td class="col-lg-1 col-md-1" data-label="Баланс після"><?= Html::encode($sale->team_balance) ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                     </tbody>
                                 </table>
                             </div>
                         <?php endif; ?>
+                        <div style="padding: 0 32px;">
+                            <canvas id="chart-1"></canvas>
+                        </div>
+                        <div style="height: 20px;"></div>
                     </div>
                 </div>
             </div>
@@ -82,7 +88,8 @@ $user = \Yii::$app->siteUser->identity;
 
 <?php
 $pageOptions = \yii\helpers\Json::encode([
-    'boughtItemsPerCategory' => $data
+    'boughtItemsPerCategory' => $data,
+    'executedTasksData' => $executedTasksData,
 ]);
 
 $this->registerJs('ProgressPage(' . $pageOptions . ')');

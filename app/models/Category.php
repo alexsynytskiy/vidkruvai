@@ -23,6 +23,7 @@ use yii\helpers\Html;
  * @property integer $rgt
  * @property integer $depth
  * @property string $created_at
+ * @property string $enabled_after
  * @property string $status
  * @property string $archived
  *
@@ -137,6 +138,9 @@ class Category extends ActiveRecord
         return $this->hasMany(StoreItem::className(), ['category_id' => 'id']);
     }
 
+    /**
+     * @return int
+     */
     public function childrenSubItemsCount()
     {
         $count = 0;
@@ -148,6 +152,9 @@ class Category extends ActiveRecord
         return $count;
     }
 
+    /**
+     * @return int
+     */
     public function childrenSubItemsBoughtCount()
     {
         $count = 0;
@@ -155,12 +162,38 @@ class Category extends ActiveRecord
         foreach ($this->children()->orderBy('id ASC')->all() as $level) {
             /** @var StoreItem $storeItem */
             foreach ($level->storeItems as $storeItem) {
-                if($storeItem->isBought()) {
+                if ($storeItem->isBought()) {
                     ++$count;
                 }
             }
         }
 
         return $count;
+    }
+
+    /**
+     * @return bool
+     */
+    public function prevLevelPassed()
+    {
+        /** @var Category $previousLevel */
+        $previousLevel = $this->next()->one();
+
+        if (!$previousLevel) {
+            return true;
+        }
+
+        $allBought = true;
+
+        if ($previousLevel) {
+            foreach ($previousLevel->storeItems as $storeItem) {
+                if (!$storeItem->isBought()) {
+                    $allBought = false;
+                    break;
+                }
+            }
+        }
+
+        return $allBought;
     }
 }

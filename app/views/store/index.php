@@ -12,6 +12,7 @@ $baseUrl = $asset->baseUrl;
 $user = \Yii::$app->siteUser->identity;
 
 $categoryBoughtCount = 0;
+$totalExperience = $user->team->total_experience;
 ?>
 
 <div class="steps-block profile clearfix">
@@ -65,26 +66,32 @@ $categoryBoughtCount = 0;
                                                     </div>
                                                 </div>
                                                 <?php
-                                                /** @var \app\models\Category $level */
-                                                foreach ($category->children()->orderBy('id ASC')->all() as $level): ?>
-                                                    <?php $storeItems = $level->storeItems; ?>
+                                                $levels = $category->children()->orderBy('id ASC')->all();
+                                                /** @var \app\models\Category[] $levels */
+                                                foreach ($levels as $key => $level): ?>
+                                                    <?php $storeItems = $level->storeItems;
+                                                    $prevLevelPassed = $level->prevLevelPassed(); ?>
 
                                                     <div class="level clearfix">
                                                         <div class="title"><?= $level->name ?></div>
                                                         <?php foreach ($storeItems as $storeItem): ?>
                                                             <?php $itemBought = $storeItem->isBought();
-                                                            $categoryBoughtCount = $itemBought ? ++$categoryBoughtCount : $categoryBoughtCount ?>
+                                                            $categoryBoughtCount = $itemBought ? ++$categoryBoughtCount : $categoryBoughtCount;
+                                                            $itemLocked = !$prevLevelPassed || time() < strtotime($level->enabled_after) || $totalExperience < $storeItem->cost;?>
 
                                                             <div class="item <?= $itemBought ? 'bought' : '' ?>">
-                                                                <div class="body"
+                                                                <div class="body <?= $itemLocked ? 'disabled' : '' ?>"
                                                                      style="background-image: url('<?= $baseUrl ?>/img/level<?= $level->slug ?>.svg'), url('<?= $storeItem->icon ?>')">
                                                                     <div class="body-wrapper">
+                                                                        <?php if ($itemLocked): ?>
+                                                                            <div class="lock"></div>
+                                                                        <?php endif; ?>
                                                                         <div class="cost"><?= $storeItem->cost ?></div>
                                                                         <div class="icon tooltip-new">
                                                                             <i class="fa fa-lock"></i>
                                                                             <span class="tooltiptext"><?= $storeItem->description ?></span>
                                                                         </div>
-                                                                        <?php if (!$itemBought): ?>
+                                                                        <?php if (!$itemBought && !$itemLocked): ?>
                                                                             <a href="#" data-id="<?= $storeItem->id ?>"
                                                                                class="buy-item">
                                                                                 <div class="cart">

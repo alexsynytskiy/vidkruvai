@@ -801,6 +801,10 @@ a {
     margin-bottom: 32px;
 }
 
+.cabinet.profile.store .content-left-fixed .image {
+    height: 250px;
+}
+
 .cabinet.task .content-left-fixed .image {
     background: url(/app/media/img/task.png) no-repeat center;
     margin-bottom: 12px;
@@ -817,7 +821,7 @@ a {
 
 .cabinet.profile.store .content-left-fixed .image {
     background: url(/app/media/img/store.png) no-repeat center;
-    background-size: 462px 325px;
+    background-size: 355px 250px;
     margin-bottom: 12px;
 }
 

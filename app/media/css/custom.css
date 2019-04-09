@@ -2415,10 +2415,26 @@ span.btn:hover {
     box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.15);
 }
 
+.uk-first-column .items .level .item .body.disabled {
+    opacity: 0.4;
+}
+
 .uk-first-column .items .level .item .body .body-wrapper {
     height: 100%;
     width: 100%;
     position: relative;
+}
+
+.uk-first-column .items .level .item .body-wrapper .lock {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    z-index: 100;
 }
 
 .uk-first-column .items .level .item .body .cost {
@@ -2789,7 +2805,7 @@ span.btn:hover {
     color: #fff;
     width: 16px;
     height: 23px;
-    font-size: 26px;
+    font-size: 22px;
 }
 
 body .blocker.current {
@@ -2855,6 +2871,16 @@ canvas {
 }
 
 @media (max-width: 991px) {
+    .cabinet.news-item .simple-news-page .image {
+        border-bottom-left-radius: 0;
+        border-top-right-radius: 3px;
+        border-top-left-radius: 3px;
+        min-height: 100%;
+        background-repeat: no-repeat !important;
+        overflow: hidden;
+        background-size: 100% !important;
+    }
+
     .steps-block.profile {
         margin-top: 10px;
     }
@@ -3161,6 +3187,8 @@ canvas {
         width: 100%;
         border-bottom-left-radius: 0;
         border-top-right-radius: 3px;
+        background-size: 100% !important;
+        background-position: top;
     }
 
     .levels-table-block table tr, #case-grid table tr {
