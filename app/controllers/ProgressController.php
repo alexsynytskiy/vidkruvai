@@ -31,12 +31,15 @@ class ProgressController extends Controller
 
         /** @var Category $category */
         foreach ($categories as $category) {
-            $data[$category->name] = mt_rand(0, 10);
+            $data[$category->name] = $category->childrenSubItemsBoughtCount();
         }
+
+        $saleData = [1,2,3,4,5];
 
         return $this->render('index',
             [
                 'data' => $data,
+                'saleData' => $saleData,
             ]
         );
     }

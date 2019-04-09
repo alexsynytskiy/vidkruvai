@@ -46,6 +46,13 @@ var ProgressPage = function (options) {
             'samples-filler-analyser': {
                 target: 'chart-analyser'
             }
+        },
+        scale: {
+            ticks: {
+                min: 0,
+                max: 10,
+                beginAtZero: true
+            }
         }
     };
 

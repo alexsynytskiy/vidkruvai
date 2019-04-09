@@ -147,4 +147,20 @@ class Category extends ActiveRecord
 
         return $count;
     }
+
+    public function childrenSubItemsBoughtCount()
+    {
+        $count = 0;
+
+        foreach ($this->children()->orderBy('id ASC')->all() as $level) {
+            /** @var StoreItem $storeItem */
+            foreach ($level->storeItems as $storeItem) {
+                if($storeItem->isBought()) {
+                    ++$count;
+                }
+            }
+        }
+
+        return $count;
+    }
 }

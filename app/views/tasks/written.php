@@ -9,6 +9,9 @@ $asset = \app\assets\AppAsset::register($this);
 $baseUrl = $asset->baseUrl;
 
 $user = \Yii::$app->siteUser->identity;
+
+$task->task->setTaskPublicStatus();
+$stateForTeam = $task->task->stateForTeam;
 ?>
 
 <div class="steps-block profile clearfix">
@@ -29,7 +32,7 @@ $user = \Yii::$app->siteUser->identity;
                                 <?= $task->description ?>
                             </div>
 
-                            <?php if(!$answer->text && Yii::$app->siteUser->identity->isCaptain()): ?>
+                            <?php if($stateForTeam === \app\models\definitions\DefTask::ACTIVE && !$answer->text && Yii::$app->siteUser->identity->isCaptain()): ?>
                                 <?php $form = \yii\widgets\ActiveForm::begin([
                                     'enableAjaxValidation' => true,
                                     'options' => ['enctype' => 'multipart/form-data', 'class' => 'model-form']
@@ -48,12 +51,16 @@ $user = \Yii::$app->siteUser->identity;
                                     ['class' => 'btn btn-primary send-written-task']) ?>
                                 <?php \yii\widgets\ActiveForm::end(); ?>
 
-                            <?php elseif($answer->text): ?>
+                            <?php elseif($stateForTeam === \app\models\definitions\DefTask::ANSWERED && $answer->text && $answer->text !== ''): ?>
                                 <br>
                                 <div class="title written-title">Ваша відповідь, яку ми отримали:</div>
                                 <div class="text written-text">
                                     <?= $answer->text ?>
                                 </div>
+                            <?php elseif($stateForTeam !== \app\models\definitions\DefTask::ACTIVE && (!$answer->text || $answer->text === '')): ?>
+                                <br>
+                                <div class="title written-title">Ви надіслали порожню відповідь. Ми це вважаємо за пропуск цього завдання,
+                                спроба надіслати відповідь лише одна.</div>
                             <?php endif; ?>
                         </div>
 

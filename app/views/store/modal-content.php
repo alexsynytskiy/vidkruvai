@@ -6,6 +6,24 @@ $asset = \app\assets\AppAsset::register($this);
 
 $baseUrl = $asset->baseUrl;
 $user = \Yii::$app->siteUser->identity;
+
+$additionalMessage = \app\components\AppMsg::t('Сума балів буде списана з командного рахунку');
+$additionalMessageFail = false;
+
+if(!$user->isCaptain()) {
+    $additionalMessage = \app\components\AppMsg::t('Купувати елементи може лише капітан');
+    $additionalMessageFail = true;
+}
+
+if($user->team->total_experience < $item['cost']) {
+    $additionalMessage = \app\components\AppMsg::t('Недостатньо коштів на рахунку');
+    $additionalMessageFail = true;
+}
+
+if($item['isBought']) {
+    $additionalMessage = \app\components\AppMsg::t('Цей елемент вже придбано');
+    $additionalMessageFail = true;
+}
 ?>
 
 <div class="modal sell-item">
@@ -44,21 +62,22 @@ $user = \Yii::$app->siteUser->identity;
                 <?php endfor; ?>
             </div>
         </div>
-        <?php if($user->isCaptain()): ?>
+        <?php if ($user->isCaptain() && $user->team->total_experience >= $item['cost'] && !$item['isBought']): ?>
             <a href="#">
-                <div id="buy-question" class="buy active" data-id="1" data-name="<?= $item['itemName'] ?>"
+                <div id="buy-question" class="buy active" data-id="<?= $item['itemId'] ?>" data-name="<?= $item['itemName'] ?>"
                      data-cost="<?= $item['cost'] ?>">Купити за <?= $item['cost'] ?> балів<i class="fa fa-angle-right"
-                                                                                             aria-hidden="true"></i></div>
+                                                                                             aria-hidden="true"></i>
+                </div>
             </a>
         <?php else: ?>
             <div class="buy disabled">Купити за <?= $item['cost'] ?> балів<i class="fa fa-angle-right"
-                                                                                         aria-hidden="true"></i></div>
+                                                                             aria-hidden="true"></i></div>
         <?php endif; ?>
         <div class="description long">
-            <?php if($user->isCaptain()): ?>
-                Сума балів буде списана з командного рахунку
+            <?php if ($additionalMessageFail): ?>
+                <div class="bold"><?= $additionalMessage ?></div>
             <?php else: ?>
-                <div class="bold">Купувати елементи може лише капітан</div>
+                <?= $additionalMessage ?>
             <?php endif; ?>
         </div>
     </div>

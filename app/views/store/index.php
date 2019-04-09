@@ -10,6 +10,8 @@ $asset = \app\assets\AppAsset::register($this);
 $baseUrl = $asset->baseUrl;
 
 $user = \Yii::$app->siteUser->identity;
+
+$categoryBoughtCount = 0;
 ?>
 
 <div class="steps-block profile clearfix">
@@ -47,6 +49,9 @@ $user = \Yii::$app->siteUser->identity;
 
                                 <ul class="js-filter uk-child-width-1-2 uk-child-width-1-3@m uk-text-center" uk-grid>
                                     <?php foreach ($categories as $category): ?>
+                                        <?php $categoryBoughtCount = 0;
+                                        $categoryItemsCount = $category->childrenSubItemsCount(); ?>
+
                                         <li data-color="<?= $category->slug ?>">
                                             <div class="items <?= $category->slug ?> clearfix">
                                                 <div class="head clearfix">
@@ -55,16 +60,22 @@ $user = \Yii::$app->siteUser->identity;
                                                         <i class="fa fa-lock"></i>
                                                         <span class="tooltiptext"><?= $category->description ?></span>
                                                     </div>
-                                                    <div class="items-count"><?= $category->childrenSubItemsCount() ?> Елементів</div>
+                                                    <div class="items-count"><?= $categoryItemsCount ?>
+                                                        Елементів
+                                                    </div>
                                                 </div>
                                                 <?php
                                                 /** @var \app\models\Category $level */
                                                 foreach ($category->children()->orderBy('id ASC')->all() as $level): ?>
                                                     <?php $storeItems = $level->storeItems; ?>
+
                                                     <div class="level clearfix">
                                                         <div class="title"><?= $level->name ?></div>
                                                         <?php foreach ($storeItems as $storeItem): ?>
-                                                            <div class="item"> <!-- item bought -->
+                                                            <?php $itemBought = $storeItem->isBought();
+                                                            $categoryBoughtCount = $itemBought ? ++$categoryBoughtCount : $categoryBoughtCount ?>
+
+                                                            <div class="item <?= $itemBought ? 'bought' : '' ?>">
                                                                 <div class="body"
                                                                      style="background-image: url('<?= $baseUrl ?>/img/level<?= $level->slug ?>.svg'), url('<?= $storeItem->icon ?>')">
                                                                     <div class="body-wrapper">
@@ -73,12 +84,14 @@ $user = \Yii::$app->siteUser->identity;
                                                                             <i class="fa fa-lock"></i>
                                                                             <span class="tooltiptext"><?= $storeItem->description ?></span>
                                                                         </div>
-                                                                        <a href="#" data-id="<?= $storeItem->id ?>"
-                                                                           class="buy-item">
-                                                                            <div class="cart">
-                                                                                <i class="fa fa-shopping-cart"></i>
-                                                                            </div>
-                                                                        </a>
+                                                                        <?php if (!$itemBought): ?>
+                                                                            <a href="#" data-id="<?= $storeItem->id ?>"
+                                                                               class="buy-item">
+                                                                                <div class="cart">
+                                                                                    <i class="fa fa-shopping-cart"></i>
+                                                                                </div>
+                                                                            </a>
+                                                                        <?php endif; ?>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -87,11 +100,16 @@ $user = \Yii::$app->siteUser->identity;
                                                 <?php endforeach; ?>
                                             </div>
                                             <div class="progress">
-                                                <div class="value" style="width: 10%"></div>
+                                                <div class="value"
+                                                     id="<?= $category->slug ?>-chart"
+                                                     style="width: <?= ($categoryBoughtCount * 100) / $categoryItemsCount ?>%"></div>
                                             </div>
                                             <div class="progress-description">
-                                                Відкрито 1/10
-                                            </div>
+                                                Відкрито
+                                                <div style="display: inline-block"
+                                                     id="<?= $category->slug ?>-text"><?= $categoryBoughtCount ?>
+                                                    /<?= $categoryItemsCount ?>
+                                                </div>
                                         </li>
                                     <?php endforeach; ?>
                                 </ul>
@@ -106,7 +124,7 @@ $user = \Yii::$app->siteUser->identity;
 
 <?php
 $pageOptions = \yii\helpers\Json::encode([
-    'elementsUrl' => \yii\helpers\Url::to('/progress/'),
+    'elementsUrl' => \yii\helpers\Url::to('/progress'),
     'modalPrepareUrl' => '/store/modal-prepare/',
     'buyUrl' => '/store/buy/',
 ]);

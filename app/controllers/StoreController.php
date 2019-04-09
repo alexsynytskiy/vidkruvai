@@ -2,8 +2,10 @@
 
 namespace app\controllers;
 
+use app\components\AppMsg;
 use app\components\Controller;
 use app\models\Category;
+use app\models\Sale;
 use app\models\StoreItem;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -65,6 +67,7 @@ class StoreController extends Controller
             $parentCategory = $storeItem->category->parents()->one();
 
             $item = [
+                'itemId' => $storeItem->id,
                 'level' => $storeItem->category->slug,
                 'levelsCount' => $parentCategory->children()->orderBy('id ASC')->count(),
                 'categoryName' => $category->name,
@@ -72,6 +75,7 @@ class StoreController extends Controller
                 'itemShort' => $storeItem->description,
                 'cost' => $storeItem->cost,
                 'icon' => $storeItem->icon,
+                'isBought' => $storeItem->isBought()
             ];
         }
 
@@ -83,6 +87,8 @@ class StoreController extends Controller
     /**
      * @return array
      * @throws NotFoundHttpException
+     * @throws \Exception
+     * @throws \Throwable
      */
     public function actionBuy()
     {
@@ -98,9 +104,82 @@ class StoreController extends Controller
             return [];
         }
 
+        $errors = [];
+        $user = \Yii::$app->siteUser->identity;
+        $saleItem = StoreItem::findOne($itemId);
+
+        $transaction = \Yii::$app->db->beginTransaction();
+
+        try {
+            if ($saleItem) {
+                $team = $user->team;
+                $storeItemAlreadyBought = Sale::findOne(['store_item_id' => $itemId, 'team_id' => $team->id]);
+
+                /** @var Category $category */
+                $category = $saleItem->category->parents(0)->one();
+
+                if ($storeItemAlreadyBought) {
+                    return [
+                        'status' => 'error',
+                        'subStatus' => 'already-bought',
+                        'message' => AppMsg::t('Такий елемент вже придбано!'),
+                        'categorySlug' => $category ? $category->slug : '',
+                        'categoryAllElements' => $category->childrenSubItemsCount(),
+                        'categoryBoughtElements' => $category->childrenSubItemsBoughtCount(),
+                    ];
+                }
+
+                if ($team->total_experience < $saleItem->cost) {
+                    return [
+                        'status' => 'error', 'subStatus' => 'less-experience', 'message' => AppMsg::t('Недостатньо досвіду! 
+                        Виконайте доступні завдання. Якщо вже виконали - дочекайтесь нових завдань з нагородою щоб заробити більше балів'),
+                    ];
+                }
+
+                if ($team && $user->isCaptain()) {
+                    $team->total_experience -= $saleItem->cost;
+                    if ($team->validate()) {
+                        $team->update();
+
+                        $sell = new Sale;
+                        $sell->store_item_id = $itemId;
+                        $sell->captain_id = $user->id;
+                        $sell->team_id = $user->team->id;
+                        $sell->team_balance = $team->total_experience;
+
+                        if ($sell->validate()) {
+                            $sell->save();
+                        } else {
+                            $errors[] = $sell->getErrors();
+                        }
+                    } else {
+                        $errors[] = $team->getErrors();
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $errors[] = $e->getMessage();
+
+            $transaction->rollBack();
+        }
+
+        if (empty($errors)) {
+            $transaction->commit();
+
+            /** @var Category $category */
+            $category = $saleItem->category->parents()->one();
+
+            return [
+                'status' => 'success',
+                'message' => AppMsg::t('Елемент придбано!'),
+                'categorySlug' => $category ? $category->slug : '',
+                'categoryAllElements' => $category ? $category->childrenSubItemsCount() : 0,
+                'categoryBoughtElements' => $category ? $category->childrenSubItemsBoughtCount() : 0,
+            ];
+        }
 
         return [
-            'status' => 'ok',
+            'status' => 'error', 'message' => implode(', ', $errors),
         ];
     }
 }

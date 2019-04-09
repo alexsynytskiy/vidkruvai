@@ -27,7 +27,7 @@ $baseUrl = $asset->baseUrl;
             <?php if($item->stateForTeam === DefTask::ACTIVE): ?>
                 <a href="<?= \yii\helpers\Url::to(["/tasks/{$item->item_type}/" . $item->hash]) ?>"><?= $item->object->name ?></a>
             <?php else: ?>
-                <?= $item->object->name ?>
+                <div style="float: left; margin-right: 20px;"><?= $item->object->name ?></div>
             <?php endif; ?>
             <div class="comments-count-task"><?= $item->commentsCount ?></div>
         </div>

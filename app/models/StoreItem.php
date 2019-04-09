@@ -73,4 +73,10 @@ class StoreItem extends ActiveRecord
 
         return self::find()->where($params)->all();
     }
+
+    public function isBought() {
+        $user = \Yii::$app->siteUser->identity;
+
+        return Sale::find()->where(['store_item_id' => $this->id, 'team_id' => $user->team->id])->exists();
+    }
 }

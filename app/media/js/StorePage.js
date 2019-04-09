@@ -46,6 +46,7 @@ var StorePage = function (options) {
         e.preventDefault();
 
         var itemId = parseInt($(this).attr('data-id'));
+        var $modal = $(this).closest(selectors.sellItem);
 
         $.post(
             pageOptions.buyUrl,
@@ -54,24 +55,43 @@ var StorePage = function (options) {
             },
             function (response) {
                 if (typeof response.status !== 'undefined') {
+                    if(response.status === 'success') {
+                        $modal.find('.description').hide();
+                        $modal.find('.header').text('Ви купили:');
+                        $modal.find('.selected-item').addClass('bought');
+                        $modal.find('.name').text('Вітаємо!');
+                        $modal.find('.sub-name.info').hide();
+                        $modal.find('.sub-name.finish').show();
 
+                        $modal.find(selectors.confirmFirst).html('Прогрес <i class="fa fa-angle-right" aria-hidden="true"></i>');
+                        $modal.find(selectors.confirmFirst).parent().attr('href', pageOptions.elementsUrl);
+                        $modal.find(selectors.confirmFirst).removeAttr('id');
+                    }
+
+                    if(response.status === 'success' || (response.status === 'error' && response.subStatus === 'already-bought')) {
+                        var $soldItem = $('body').find('.buy-item[data-id="' + itemId + '"]');
+                        $soldItem.closest('.item').addClass('bought');
+                        $soldItem.empty();
+
+                        $('#' + response.categorySlug + '-text').text(response.categoryBoughtElements + '/' + response.categoryAllElements);
+                        $('#' + response.categorySlug + '-chart').css('width', (response.categoryBoughtElements * 100) / response.categoryAllElements + '%');
+                    }
+
+                    if(response.status === 'error' && response.subStatus === 'already-bought') {
+                        $.modal.close();
+                    }
                 }
+                else {
+                    $.modal.close();
+                }
+
+                new PNotify({
+                    title: response.status === 'error' ? 'Помилка!' : 'Успіх!',
+                    text: response.message,
+                    icon: '',
+                    type: response.status,
+                    delay: 2000
+                });
             }, 'json');
-
-        var $modal = $(this).closest(selectors.sellItem);
-        $modal.find('.description').hide();
-        $modal.find('.header').text('Ви купили:');
-        $modal.find('.selected-item').addClass('bought');
-        $modal.find('.name').text('Вітаємо!');
-        $modal.find('.sub-name.info').hide();
-        $modal.find('.sub-name.finish').show();
-
-        $modal.find(selectors.confirmFirst).html('Мої елементи <i class="fa fa-angle-right" aria-hidden="true"></i>');
-        $modal.find(selectors.confirmFirst).parent().attr('href', pageOptions.elementsUrl);
-        $modal.find(selectors.confirmFirst).addClass('success-bought');
-
-        var $soldItem = $('body').find('.buy-item[data-id="' + itemId + '"]');
-        $soldItem.closest('.item').addClass('bought');
-        $soldItem.empty();
     });
 };
