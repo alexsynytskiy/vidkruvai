@@ -23,8 +23,8 @@ class AppAsset extends \yii\web\AssetBundle
         'plugins/pnotify/pnotify.min.css',
         'plugins/sweetalert/sweetalert2.min.css',
         'plugins/css/jquery.bxslider.css',
-        'css/custom-questions.css?version=35',
-        'css/custom.css?version=35',
+        'css/custom-questions.css?version=40',
+        'css/custom.css?version=40',
     ];
 
     public $js = [

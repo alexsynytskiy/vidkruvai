@@ -10,9 +10,10 @@ $asset = \app\assets\AppAsset::register($this);
 $baseUrl = $asset->baseUrl;
 
 $user = \Yii::$app->siteUser->identity;
+$team = \Yii::$app->siteUser->identity->team;
 
 $categoryBoughtCount = 0;
-$totalExperience = $user->team->total_experience;
+$totalExperience = $team && $team->status === \app\models\definitions\DefTeam::STATUS_ACTIVE ? $team->total_experience : -1;
 ?>
 
 <div class="steps-block profile clearfix">
@@ -77,7 +78,7 @@ $totalExperience = $user->team->total_experience;
                                                         <?php foreach ($storeItems as $storeItem): ?>
                                                             <?php $itemBought = $storeItem->isBought();
                                                             $categoryBoughtCount = $itemBought ? ++$categoryBoughtCount : $categoryBoughtCount;
-                                                            $itemLocked = !$prevLevelPassed || time() < strtotime($level->enabled_after) || $totalExperience < $storeItem->cost;?>
+                                                            $itemLocked = !$prevLevelPassed || time() < strtotime($level->enabled_after) || $totalExperience < $storeItem->cost; ?>
 
                                                             <div class="item <?= $itemBought ? 'bought' : '' ?>">
                                                                 <div class="body <?= $itemLocked ? 'disabled' : '' ?>"
