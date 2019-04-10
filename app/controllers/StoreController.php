@@ -106,13 +106,13 @@ class StoreController extends Controller
 
         $errors = [];
         $user = \Yii::$app->siteUser->identity;
+        $team = $user->team;
         $saleItem = StoreItem::findOne($itemId);
 
         $transaction = \Yii::$app->db->beginTransaction();
 
         try {
             if ($saleItem) {
-                $team = $user->team;
                 $storeItemAlreadyBought = Sale::findOne(['store_item_id' => $itemId, 'team_id' => $team->id]);
 
                 /** @var Category $category */
@@ -169,12 +169,34 @@ class StoreController extends Controller
             /** @var Category $category */
             $category = $saleItem->category->parents()->one();
 
+            $openNextLevel = $saleItem->category->levelPassed();
+
+            $nextLevelElements = '';
+            if ($openNextLevel) {
+                /** @var Category $nextLevel */
+                $nextLevel = $saleItem->category->prev()->one();
+
+                foreach ($nextLevel->storeItems as $storeItem) {
+                    $itemBought = $storeItem->isBought();
+                    $itemLocked = time() < strtotime($nextLevel->enabled_after) || $team->total_experience < $storeItem->cost;
+
+                    $nextLevelElements .= $this->renderPartial('/store/store-item', [
+                        'storeItem' => $storeItem,
+                        'itemLocked' => $itemLocked,
+                        'itemBought' => $itemBought,
+                        'level' => $nextLevel,
+                    ]);
+                }
+            }
+
             return [
                 'status' => 'success',
                 'message' => AppMsg::t('Елемент придбано!'),
                 'categorySlug' => $category ? $category->slug : '',
                 'categoryAllElements' => $category ? $category->childrenSubItemsCount() : 0,
                 'categoryBoughtElements' => $category ? $category->childrenSubItemsBoughtCount() : 0,
+                'openNextLevel' => $openNextLevel,
+                'nextLevelElements' => $nextLevelElements,
             ];
         }
 

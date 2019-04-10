@@ -17,7 +17,7 @@ $user = \Yii::$app->siteUser->identity;
 ?>
 
 <div class="steps-block profile clearfix">
-    <div class="cabinet profile progress">
+    <div class="cabinet profile team-progress">
         <article>
             <div class="sidebar-right-fixed">
                 <?= $this->render('/_blocks/profile-sidebar') ?>

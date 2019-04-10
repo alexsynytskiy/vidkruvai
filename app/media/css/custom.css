@@ -539,13 +539,13 @@ article {
 }
 
 .content-left-fixed .news-item.first .image {
-    height: 380px;
+    height: 405px;
     margin: 0;
 }
 
 .content-left-fixed .news-item.first .information {
     height: 380px;
-    padding-bottom: 0;
+    padding: 10px 32px 0;
 }
 
 .content-left-fixed .news-item .information .title {
@@ -1025,7 +1025,7 @@ span.bg-success,
 .badge {
     position: absolute;
     top: 0;
-    right: 0;
+    right: -10px;
     background-color: #FF4D00;
 }
 
@@ -2337,8 +2337,13 @@ span.btn:hover {
 .uk-first-column .items .head .icon .fa {
     color: #fff;
     margin-top: 2px;
+    margin-left: 1px;
     font-size: 10px;
     display: block;
+}
+
+.uk-first-column .items .head .icon:hover {
+    cursor: pointer;
 }
 
 .uk-first-column .items .head .items-count {
@@ -2461,9 +2466,14 @@ span.btn:hover {
     right: 9px;
 }
 
+.uk-first-column .items .level .item .body .icon:hover {
+    cursor: pointer;
+}
+
 .uk-first-column .items .level .item .body .icon .fa {
     color: #fff;
     margin-top: 2px;
+    margin-left: 1px;
     font-size: 10px;
     display: block;
 }

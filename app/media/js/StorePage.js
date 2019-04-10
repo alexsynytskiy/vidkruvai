@@ -55,6 +55,8 @@ var StorePage = function (options) {
             },
             function (response) {
                 if (typeof response.status !== 'undefined') {
+                    var $soldItem = $('body').find('.buy-item[data-id="' + itemId + '"]');
+
                     if(response.status === 'success') {
                         $modal.find('.description').hide();
                         $modal.find('.header').text('Ви купили:');
@@ -66,10 +68,16 @@ var StorePage = function (options) {
                         $modal.find(selectors.confirmFirst).html('Прогрес <i class="fa fa-angle-right" aria-hidden="true"></i>');
                         $modal.find(selectors.confirmFirst).parent().attr('href', pageOptions.elementsUrl);
                         $modal.find(selectors.confirmFirst).removeAttr('id');
+
+                        if(response.openNextLevel) {
+                            var $currentLevel = $soldItem.closest('.level'),
+                            $nextLevel = $currentLevel.next();
+                            $nextLevel.find('.item').remove();
+                            $nextLevel.append(response.nextLevelElements);
+                        }
                     }
 
                     if(response.status === 'success' || (response.status === 'error' && response.subStatus === 'already-bought')) {
-                        var $soldItem = $('body').find('.buy-item[data-id="' + itemId + '"]');
                         $soldItem.closest('.item').addClass('bought');
                         $soldItem.empty();
 

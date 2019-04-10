@@ -648,8 +648,6 @@ class ProfileController extends Controller
                     $pathImage = \Yii::getAlias('@webroot') . $model->avatar;
 
                     $image->crop($cropPoint, $newSize)->save($pathImage, ['quality' => 100]);
-                } else {
-                    $model->avatar = $model->oldAttributes['avatar'];
                 }
             }
 

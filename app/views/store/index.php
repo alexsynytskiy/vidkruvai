@@ -59,7 +59,7 @@ $totalExperience = $team && $team->status === \app\models\definitions\DefTeam::S
                                                 <div class="head clearfix">
                                                     <div class="title"><?= $category->name ?></div>
                                                     <div class="icon tooltip-new">
-                                                        <i class="fa fa-lock"></i>
+                                                        <i class="fa fa-info"></i>
                                                         <span class="tooltiptext"><?= $category->description ?></span>
                                                     </div>
                                                     <div class="items-count"><?= $categoryItemsCount ?>
@@ -80,29 +80,12 @@ $totalExperience = $team && $team->status === \app\models\definitions\DefTeam::S
                                                             $categoryBoughtCount = $itemBought ? ++$categoryBoughtCount : $categoryBoughtCount;
                                                             $itemLocked = !$prevLevelPassed || time() < strtotime($level->enabled_after) || $totalExperience < $storeItem->cost; ?>
 
-                                                            <div class="item <?= $itemBought ? 'bought' : '' ?>">
-                                                                <div class="body <?= $itemLocked ? 'disabled' : '' ?>"
-                                                                     style="background-image: url('<?= $baseUrl ?>/img/level<?= $level->slug ?>.svg'), url('<?= $storeItem->icon ?>')">
-                                                                    <div class="body-wrapper">
-                                                                        <?php if ($itemLocked): ?>
-                                                                            <div class="lock"></div>
-                                                                        <?php endif; ?>
-                                                                        <div class="cost"><?= $storeItem->cost ?></div>
-                                                                        <div class="icon tooltip-new">
-                                                                            <i class="fa fa-lock"></i>
-                                                                            <span class="tooltiptext"><?= $storeItem->description ?></span>
-                                                                        </div>
-                                                                        <?php if (!$itemBought && !$itemLocked): ?>
-                                                                            <a href="#" data-id="<?= $storeItem->id ?>"
-                                                                               class="buy-item">
-                                                                                <div class="cart">
-                                                                                    <i class="fa fa-shopping-cart"></i>
-                                                                                </div>
-                                                                            </a>
-                                                                        <?php endif; ?>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                            <?= $this->render('store-item', [
+                                                                'itemLocked' => $itemLocked,
+                                                                'itemBought' => $itemBought,
+                                                                'storeItem' => $storeItem,
+                                                                'level' => $level,
+                                                            ]) ?>
                                                         <?php endforeach; ?>
                                                     </div>
                                                 <?php endforeach; ?>

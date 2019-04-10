@@ -196,4 +196,21 @@ class Category extends ActiveRecord
 
         return $allBought;
     }
+
+    /**
+     * @return bool
+     */
+    public function levelPassed()
+    {
+        $allBought = true;
+
+        foreach ($this->storeItems as $storeItem) {
+            if (!$storeItem->isBought()) {
+                $allBought = false;
+                break;
+            }
+        }
+
+        return $allBought;
+    }
 }

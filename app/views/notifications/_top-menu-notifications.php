@@ -14,7 +14,7 @@ $notificationTitle = AppMsg::t('Сповіщення (<span class="total-notific
     <a id="mobile-name" href="<?= \yii\helpers\Url::to(['/profile']) ?>">
         <?= \Yii::$app->siteUser->identity->getFullName() ?>
     </a>
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+    <a href="<?= \yii\helpers\Url::to('/profile/notifications') ?>">
         <i class="fa fa-bell heading-icon"></i>
         <span class="visible-xs-inline-block position-right"></span>
         <span class="badge bg-warning-400 total-notifications"><?= $notificationCounters['total'] ?: ''; ?></span>

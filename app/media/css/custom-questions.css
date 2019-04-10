@@ -825,7 +825,7 @@ a {
     margin-bottom: 12px;
 }
 
-.cabinet.profile.progress .content-left-fixed .image {
+.cabinet.profile.team-progress .content-left-fixed .image {
     background: url(/app/media/img/progress.png) no-repeat center;
     background-size: 344px 325px;
     margin-bottom: 12px;
@@ -1029,7 +1029,7 @@ button.fileinput-upload:hover span {
         margin-bottom: 10px !important;
     }
 
-    .cabinet.progress .content-left-fixed .image {
+    .cabinet.team-progress .content-left-fixed .image {
         background-size: 55% !important;
     }
 

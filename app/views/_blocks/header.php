@@ -4,6 +4,8 @@ use yii\helpers\Url;
 
 $asset = \app\assets\AppAsset::register($this);
 
+$baseUrl = $asset->baseUrl;
+
 $currentPage = Yii::$app->controller->action->id;
 $controller = Yii::$app->controller->id;
 
