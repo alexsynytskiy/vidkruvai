@@ -1,7 +1,6 @@
 var ProgressPage = function (options) {
     var pageOptions = $.extend(true, {
-        boughtItemsPerCategory: [],
-        executedTasksData : []
+        boughtItemsPerCategory: []
     }, options);
 
     var selectors = {};
@@ -12,18 +11,11 @@ var ProgressPage = function (options) {
     // });
 
     var labelsRadar = [],
-        valuesRadar = [],
-        labelsLine = [],
-        valuesLine = [];
+        valuesRadar = [];
 
     $.each(pageOptions.boughtItemsPerCategory, function(key, value) {
         labelsRadar.push(key);
         valuesRadar.push(value);
-    });
-
-    $.each(pageOptions.executedTasksData, function(key, value) {
-        labelsLine.push(value.month);
-        valuesLine.push(value.value);
     });
 
     var dataRadar = {
@@ -32,7 +24,7 @@ var ProgressPage = function (options) {
             backgroundColor: '#ffb1c1',
             borderColor: '#ff6384',
             data: valuesRadar,
-            label: 'Графік прогресу в розрізі напряму розвитку'
+            label: 'Графік впливу придбань на розвиток школи та міста за напрямами'
         }]
     };
 
@@ -68,27 +60,6 @@ var ProgressPage = function (options) {
         type: 'radar',
         data: dataRadar,
         options: chartOptionsRadar
-    });
-
-    new Chart('chart-1', {
-        type: 'line',
-        data: {
-            labels: labelsLine,
-            datasets: [{
-                backgroundColor: '#f7e5b8',
-                borderColor: '#ffcd56',
-                data: valuesLine,
-                label: 'Виконані завдання за місяцями',
-                fill: 'fill'
-            }]
-        },
-        scale: {
-            ticks: {
-                min: 0,
-                max: 5,
-                beginAtZero: true
-            }
-        }
     });
 
     var screenW = $(document).width();

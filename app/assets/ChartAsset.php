@@ -19,5 +19,5 @@ class ChartAsset extends \yii\web\AssetBundle
         'https://www.chartjs.org/dist/2.8.0/Chart.min.js'
     ];
 
-    public $publishOptions = ['forceCopy' => true];
+    //public $publishOptions = ['forceCopy' => true];
 }

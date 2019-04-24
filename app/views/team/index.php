@@ -13,11 +13,12 @@ use yii\helpers\Html;
 /* @var $nextLevels array */
 /* @var $preview boolean */
 /* @var array $entityCredentials */
+/* @var $executedTasksData array */
 
 $asset = \app\assets\AppAsset::register($this);
+\app\assets\ChartAsset::register($this);
 
 $baseUrl = $asset->baseUrl;
-
 $user = \Yii::$app->siteUser->identity;
 ?>
 
@@ -92,6 +93,18 @@ $user = \Yii::$app->siteUser->identity;
                                                 </div>
 
                                                 <?php if (count($previousLevels) || count($nextLevels) || !empty($levelInfo)): ?>
+                                                    <div class="progress-top mb-0">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="progress-title level-title mt-30">
+                                                                    <h3>
+                                                                        <?= AppMsg::t('Прогрес виконаних завдань'); ?>
+                                                                    </h3>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <canvas id="chart-1"></canvas>
                                                     <div class="black-panel mb-50 pb-20 pt-20-i personal-levels">
                                                         <div class="progress-block pt-0 mt-0">
                                                             <div class="progress-top mb-0">
@@ -210,7 +223,7 @@ $user = \Yii::$app->siteUser->identity;
                                                 <div class="progress-top mb-0">
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                            <div class="progress-title mb-10 pl-32">
+                                                            <div class="progress-title mb-10 pl-24">
                                                                 <h3>
                                                                     <?= AppMsg::t('Команда'); ?>
                                                                 </h3>
@@ -219,7 +232,7 @@ $user = \Yii::$app->siteUser->identity;
 
                                                     </div>
                                                 </div>
-                                                <div class="team-items mb-0 pl-32">
+                                                <div class="team-items mb-0 pl-24">
                                                     <div class="row">
                                                         <div class="col-lg-12">
                                                             <?php if (!$user->team && !$preview &&
@@ -248,6 +261,7 @@ $user = \Yii::$app->siteUser->identity;
 
 <?php
 $pageOptions = \yii\helpers\Json::encode([
+    'executedTasksData' => $executedTasksData,
 ]);
 
 $this->registerJs('ProfilePage(' . $pageOptions . ')');

@@ -31,6 +31,7 @@ use yii\helpers\VarDumper;
  * @property TeamSiteUser[] $teamUsers
  * @property School $school
  * @property Level $level
+ * @property City $city
  *
  * @package app\models
  */

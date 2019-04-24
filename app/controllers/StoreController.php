@@ -7,6 +7,8 @@ use app\components\Controller;
 use app\models\Category;
 use app\models\Sale;
 use app\models\StoreItem;
+use app\models\Team;
+use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -25,6 +27,26 @@ class StoreController extends Controller
 
         if ($status !== true) {
             return $status;
+        }
+
+        if(!in_array(\Yii::$app->siteUser->identity->email, [
+            'parasolkailb@gmail.com',
+            'mariiapanchenko@gmail.com',
+            'fr@coukraine.org',
+            'm.panchenko@coukraine.org',
+            'relleka@ukr.net',
+            'a.matviienko@coukraine.org',
+            'n.netreba@coukraine.org',
+            'nmnetreba@gmail.com',
+            'vidkryvai.ukrainu@gmail.com',
+            'v.ilyina@ukr.net',
+            'alionaculturerazom@gmail.com',
+            'Svitpustova@gmail.com',
+            'alexsynytskiy@ukr.net',
+            'denbooker@gmail.com',
+        ])) {
+            $this->flash('error', AppMsg::t('Розділ поки що не доступний'));
+            return $this->redirect('/profile');
         }
 
         \Yii::$app->seo->setTitle('Магазин');
@@ -66,6 +88,9 @@ class StoreController extends Controller
 
             $parentCategory = $storeItem->category->parents()->one();
 
+            $user = \Yii::$app->siteUser->identity;
+            $team = $user->team;
+
             $item = [
                 'itemId' => $storeItem->id,
                 'level' => $storeItem->category->slug,
@@ -73,7 +98,7 @@ class StoreController extends Controller
                 'categoryName' => $category->name,
                 'itemName' => $storeItem->name,
                 'itemShort' => $storeItem->description,
-                'cost' => $storeItem->cost,
+                'cost' => $storeItem->teamAdoptedCost($team->id),
                 'icon' => $storeItem->icon,
                 'isBought' => $storeItem->isBought()
             ];
@@ -116,20 +141,20 @@ class StoreController extends Controller
                 $storeItemAlreadyBought = Sale::findOne(['store_item_id' => $itemId, 'team_id' => $team->id]);
 
                 /** @var Category $category */
-                $category = $saleItem->category->parents(0)->one();
+                $category = $saleItem->category->parents()->one();
 
                 if ($storeItemAlreadyBought) {
-                    return [
+                    return ArrayHelper::merge([
                         'status' => 'error',
                         'subStatus' => 'already-bought',
                         'message' => AppMsg::t('Такий елемент вже придбано!'),
                         'categorySlug' => $category ? $category->slug : '',
                         'categoryAllElements' => $category->childrenSubItemsCount(),
                         'categoryBoughtElements' => $category->childrenSubItemsBoughtCount(),
-                    ];
+                    ], $this->renderLevelElements($saleItem, $team));
                 }
 
-                if ($team->total_experience < $saleItem->cost) {
+                if ($team->total_experience < $saleItem->teamAdoptedCost($team->id)) {
                     return [
                         'status' => 'error', 'subStatus' => 'less-experience', 'message' => AppMsg::t('Недостатньо досвіду! 
                         Виконайте доступні завдання. Якщо вже виконали - дочекайтесь нових завдань з нагородою щоб заробити більше балів'),
@@ -137,7 +162,11 @@ class StoreController extends Controller
                 }
 
                 if ($team && $user->isCaptain()) {
-                    $team->total_experience -= $saleItem->cost;
+                    $cost = $saleItem->teamAdoptedCost($team->id);
+
+                    $team->total_experience -= $cost;
+                    $team->level_experience -= $cost;
+
                     if ($team->validate()) {
                         $team->update();
 
@@ -145,10 +174,13 @@ class StoreController extends Controller
                         $sell->store_item_id = $itemId;
                         $sell->captain_id = $user->id;
                         $sell->team_id = $user->team->id;
+                        $sell->city_id = $user->school->city_id;
                         $sell->team_balance = $team->total_experience;
 
                         if ($sell->validate()) {
                             $sell->save();
+
+                            $sell->processCityElements($user);
                         } else {
                             $errors[] = $sell->getErrors();
                         }
@@ -166,42 +198,75 @@ class StoreController extends Controller
         if (empty($errors)) {
             $transaction->commit();
 
+
+
             /** @var Category $category */
             $category = $saleItem->category->parents()->one();
 
-            $openNextLevel = $saleItem->category->levelPassed();
-
-            $nextLevelElements = '';
-            if ($openNextLevel) {
-                /** @var Category $nextLevel */
-                $nextLevel = $saleItem->category->prev()->one();
-
-                foreach ($nextLevel->storeItems as $storeItem) {
-                    $itemBought = $storeItem->isBought();
-                    $itemLocked = time() < strtotime($nextLevel->enabled_after) || $team->total_experience < $storeItem->cost;
-
-                    $nextLevelElements .= $this->renderPartial('/store/store-item', [
-                        'storeItem' => $storeItem,
-                        'itemLocked' => $itemLocked,
-                        'itemBought' => $itemBought,
-                        'level' => $nextLevel,
-                    ]);
-                }
-            }
-
-            return [
+            return ArrayHelper::merge([
                 'status' => 'success',
                 'message' => AppMsg::t('Елемент придбано!'),
                 'categorySlug' => $category ? $category->slug : '',
                 'categoryAllElements' => $category ? $category->childrenSubItemsCount() : 0,
                 'categoryBoughtElements' => $category ? $category->childrenSubItemsBoughtCount() : 0,
-                'openNextLevel' => $openNextLevel,
-                'nextLevelElements' => $nextLevelElements,
-            ];
+            ], $this->renderLevelElements($saleItem, $team));
         }
 
         return [
             'status' => 'error', 'message' => implode(', ', $errors),
         ];
+    }
+
+    /**
+     * @param StoreItem $saleItem
+     * @param Team $team
+     *
+     * @return array
+     */
+    public function renderLevelElements($saleItem, $team)
+    {
+        $openNextLevel = $saleItem->category->levelPassed();
+
+        $nextLevelElements = '';
+        $currentLevelElements = '';
+
+        if ($openNextLevel) {
+            /** @var Category $nextLevel */
+            $nextLevel = $saleItem->category->prev()->one();
+
+            if ($nextLevel) {
+                $this->renderLevel($nextLevel, $team, $nextLevelElements);
+            }
+        }
+
+        $this->renderLevel($saleItem->category, $team, $currentLevelElements);
+
+        return [
+            'openNextLevel' => $openNextLevel,
+            'nextLevelElements' => $nextLevelElements,
+            'currentLevelElements' => $currentLevelElements,
+        ];
+    }
+
+    /**
+     * @param Category $level
+     * @param Team $team
+     * @param $levelElements
+     */
+    public function renderLevel($level, $team, &$levelElements)
+    {
+        foreach ($level->storeItems as $storeItem) {
+            $itemBought = $storeItem->isBought();
+            $itemLocked = $itemBought ? false : time() < strtotime($level->enabled_after) ||
+                $team->total_experience < $storeItem->teamAdoptedCost($team->id);
+
+            $levelElements .= $this->renderPartial('/store/store-item', [
+                'storeItem' => $storeItem,
+                'itemLocked' => $itemLocked,
+                'itemBought' => $itemBought,
+                'level' => $level,
+                'teamId' => $team->id,
+            ]);
+        }
     }
 }

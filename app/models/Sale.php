@@ -7,6 +7,7 @@ use app\models\definitions\DefStoreItem;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "sale".
@@ -15,6 +16,7 @@ use yii\db\Expression;
  * @property integer $store_item_id
  * @property integer $team_id
  * @property integer $captain_id
+ * @property integer $city_id
  * @property integer $team_balance
  * @property string $created_at
  *
@@ -56,7 +58,7 @@ class Sale extends ActiveRecord
     {
         return [
             [['store_item_id', 'team_id', 'captain_id'], 'required'],
-            [['store_item_id', 'team_id', 'captain_id'], 'integer'],
+            [['store_item_id', 'team_id', 'captain_id', 'city_id'], 'integer'],
             [['created_at'], 'safe'],
         ];
     }
@@ -69,7 +71,6 @@ class Sale extends ActiveRecord
         return [
             'id' => 'ID',
             'created_at' => AppMsg::t('Створено'),
-            'name' => AppMsg::t('Назва'),
         ];
     }
 
@@ -95,5 +96,84 @@ class Sale extends ActiveRecord
     public function getStoreItem()
     {
         return $this->hasOne(StoreItem::className(), ['id' => 'store_item_id']);
+    }
+
+    /**
+     * @param SiteUser $user
+     */
+    public function processCityElements($user)
+    {
+        $city = $this->captain->school->city;
+        $teamId = $user->team->id;
+
+        $openedCityElements = StoreItem::find()
+            ->alias('si')
+            ->select('si.id')
+            ->innerJoin(self::tableName() . ' s', 'si.id = s.store_item_id')
+            ->where([
+                's.city_id' => $city->id,
+                'si.type' => DefStoreItem::TYPE_CITY,
+                's.team_id' => $teamId,
+            ])
+            ->all();
+
+        $openedCityElementsIds = ArrayHelper::getColumn($openedCityElements, 'id');
+
+        $openedCitySchoolElements = StoreItem::find()
+            ->alias('si')
+            ->select('si.id')
+            ->innerJoin(self::tableName() . ' s', 'si.id = s.store_item_id')
+            ->where([
+                's.city_id' => $city->id,
+                'si.type' => DefStoreItem::TYPE_SCHOOL,
+                's.team_id' => $teamId,
+            ])
+            ->all();
+
+        $openedCitySchoolElementsIds = ArrayHelper::getColumn($openedCitySchoolElements, 'id');
+
+        /** @var StoreItem[] $cityElementsToCheck */
+        $cityElementsToCheck = StoreItem::find()
+            ->where(['type' => DefStoreItem::TYPE_CITY])
+            ->andWhere(['like', 'open_rule', $this->store_item_id])
+            ->all();
+
+        foreach ($cityElementsToCheck as $cityElement) {
+            $cityRule = array_map('intval', explode(',', $cityElement->open_rule));
+
+            $allElementsPassed = true;
+            foreach ($cityRule as $rule) {
+                if (!in_array((int)$rule, $openedCitySchoolElementsIds, true)) {
+                    $allElementsPassed = false;
+                }
+            }
+
+            if ($allElementsPassed && !in_array($cityElement->id, $openedCityElementsIds, true)) {
+                $sell = new self;
+                $sell->store_item_id = $cityElement->id;
+                $sell->captain_id = $user->id;
+                $sell->team_id = $user->team->id;
+                $sell->city_id = $user->school->city_id;
+
+                if ($sell->validate()) {
+                    $sell->save();
+                }
+            }
+        }
+    }
+
+    /**
+     * @param string $type
+     * @param int $teamId
+     *
+     * @return array|ActiveRecord[]
+     */
+    public static function getSalesByType($type, $teamId)
+    {
+        return static::find()
+            ->alias('s')
+            ->innerJoin(StoreItem::tableName() . ' si', 's.store_item_id = si.id')
+            ->where(['s.team_id' => $teamId, 'si.type' => $type])
+            ->all();
     }
 }

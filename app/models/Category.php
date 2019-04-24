@@ -5,6 +5,7 @@ namespace app\models;
 use app\components\activeQuery\CategoryQuery;
 use app\components\AppMsg;
 use app\models\definitions\DefCategory;
+use app\models\definitions\DefStoreItem;
 use creocoder\nestedsets\NestedSetsBehavior;
 use yii\behaviors\SluggableBehavior;
 use yii\db\ActiveRecord;
@@ -28,6 +29,7 @@ use yii\helpers\Html;
  * @property string $archived
  *
  * @property StoreItem[] $storeItems
+ * @property StoreItem[] $storeItemsCity
  */
 class Category extends ActiveRecord
 {
@@ -95,17 +97,18 @@ class Category extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => AppMsg::t('Название'),
-            'description' => AppMsg::t('Описание'),
+            'name' => AppMsg::t('Назва'),
+            'description' => AppMsg::t('Опис'),
             'type' => AppMsg::t('Тип'),
             'slug' => AppMsg::t('Slug'),
-            'created_at' => AppMsg::t('Created At'),
-            'status' => AppMsg::t('Статус'),
             'tree' => 'Tree',
             'lft' => 'Lft',
             'rgt' => 'Rgt',
             'depth' => 'Depth',
-            'parentNodeId' => AppMsg::t('Родительская категория'),
+            'status' => AppMsg::t('Статус'),
+            'parentNodeId' => AppMsg::t('Батьківська категорія'),
+            'enabled_after' => AppMsg::t('Активна з'),
+            'created_at' => AppMsg::t('Створено'),
         ];
     }
 
@@ -135,18 +138,30 @@ class Category extends ActiveRecord
      */
     public function getStoreItems()
     {
-        return $this->hasMany(StoreItem::className(), ['category_id' => 'id']);
+        return $this->hasMany(StoreItem::className(), ['category_id' => 'id'])
+            ->andOnCondition(['type' => DefStoreItem::TYPE_SCHOOL]);
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStoreItemsCity()
+    {
+        return $this->hasMany(StoreItem::className(), ['category_id' => 'id'])
+            ->andOnCondition(['type' => DefStoreItem::TYPE_CITY]);
+    }
+
+    /**
+     * @param string $type
      * @return int
      */
-    public function childrenSubItemsCount()
+    public function childrenSubItemsCount($type = DefStoreItem::TYPE_SCHOOL)
     {
         $count = 0;
 
+        /** @var Category $level */
         foreach ($this->children()->orderBy('id ASC')->all() as $level) {
-            $count += count($level->storeItems);
+            $count += $type === DefStoreItem::TYPE_SCHOOL ? count($level->storeItems) : count($level->storeItemsCity);
         }
 
         return $count;
@@ -178,14 +193,19 @@ class Category extends ActiveRecord
     {
         /** @var Category $previousLevel */
         $previousLevel = $this->next()->one();
-
-        if (!$previousLevel) {
-            return true;
-        }
-
         $allBought = true;
 
         if ($previousLevel) {
+            if (!$previousLevel->storeItems) {
+                do {
+                    $previousLevel = $previousLevel->next()->one();
+                } while ($previousLevel && !$previousLevel->storeItems);
+            }
+
+            if (!$previousLevel) {
+                return true;
+            }
+
             foreach ($previousLevel->storeItems as $storeItem) {
                 if (!$storeItem->isBought()) {
                     $allBought = false;

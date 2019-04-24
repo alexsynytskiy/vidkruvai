@@ -53,7 +53,8 @@ class AppAsset extends \yii\web\AssetBundle
         'js/WrittenPage.js',
         'js/StorePage.js',
         'js/ProgressPage.js',
+        'js/RatingPage.js',
     ];
 
-    public $publishOptions = ['forceCopy' => true];
+    //public $publishOptions = ['forceCopy' => true];
 }

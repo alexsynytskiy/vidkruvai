@@ -64,7 +64,26 @@ $moduleName = $this->context->module->id;
                             </li>
                         </ul>
                     </li>
-
+                    <li class="main-submenu">
+                        <a href="#" style="position: relative" class="menu-opened-element">
+                            <i class="glyphicon glyphicon-shopping-cart"></i><span>Магазин</span>
+                            <span class="pull-right-container">
+                                <i class="glyphicon glyphicon-chevron-right angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="active">
+                                <a href="#">
+                                    <i class="fa fa-circle-o"></i> Список елементів
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-circle-o"></i> Придбання команд
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
                     <?php foreach(Yii::$app->getModule('admin')->activeModules as $module) : ?>
                         <?php if(!in_array($module->name, ['writtentasksanswers', 'tasks'])) : ?>

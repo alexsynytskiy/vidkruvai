@@ -10,7 +10,9 @@ use yii\db\ActiveRecord;
  *
  * @property integer $id
  * @property string $name
+ * @property string $map_code
  *
+ * @property City[] $cities
  */
 class State extends ActiveRecord
 {
@@ -29,7 +31,7 @@ class State extends ActiveRecord
     {
         return [
             [['id', 'name'], 'required'],
-            [['name'], 'string'],
+            [['name', 'map_code'], 'string'],
         ];
     }
 
@@ -42,6 +44,14 @@ class State extends ActiveRecord
             'id' => 'ID',
             'name' => AppMsg::t('Назва'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCities()
+    {
+        return $this->hasMany(City::className(), ['state_id' => 'id']);
     }
 
     /**

@@ -5,8 +5,10 @@ namespace app\controllers;
 use app\components\AppMsg;
 use app\components\Controller;
 use app\models\Category;
+use app\models\definitions\DefStoreItem;
 use app\models\definitions\DefTeam;
 use app\models\Sale;
+use app\models\StoreItem;
 use app\models\WrittenTaskAnswer;
 use yii\db\Query;
 
@@ -25,6 +27,26 @@ class ProgressController extends Controller
 
         if ($status !== true) {
             return $status;
+        }
+
+        if(!in_array(\Yii::$app->siteUser->identity->email, [
+            'parasolkailb@gmail.com',
+            'mariiapanchenko@gmail.com',
+            'fr@coukraine.org',
+            'm.panchenko@coukraine.org',
+            'relleka@ukr.net',
+            'a.matviienko@coukraine.org',
+            'n.netreba@coukraine.org',
+            'nmnetreba@gmail.com',
+            'vidkryvai.ukrainu@gmail.com',
+            'v.ilyina@ukr.net',
+            'alionaculturerazom@gmail.com',
+            'Svitpustova@gmail.com',
+            'alexsynytskiy@ukr.net',
+            'denbooker@gmail.com',
+        ])) {
+            $this->flash('error', AppMsg::t('Розділ поки що не доступний'));
+            return $this->redirect('/profile');
         }
 
         \Yii::$app->seo->setTitle('Прогрес');
@@ -56,20 +78,15 @@ class ProgressController extends Controller
             $data[$category->name] = $category->childrenSubItemsBoughtCount();
         }
 
-        $saleData = Sale::find()->where(['team_id' => $team->id])->all();
+        $saleDataSchool = Sale::getSalesByType(DefStoreItem::TYPE_SCHOOL, $team->id);
 
-        $executedTasksData = (new Query)->from(WrittenTaskAnswer::tableName())->select(['MONTHNAME(updated_at) as month', 'count(id) value'])
-            ->where(['team_id' => $team->id])->andWhere(['!=', 'text', ['', null]])->groupBy(['MONTH(updated_at)'])->all();
-
-        foreach ($executedTasksData as $monthData) {
-            $monthData['month'] = \Yii::t('app', $monthData['month']);
-        }
+        $saleDataCity = Sale::getSalesByType(DefStoreItem::TYPE_CITY, $team->id);
 
         return $this->render('index',
             [
                 'data' => $data,
-                'saleData' => $saleData,
-                'executedTasksData' => $executedTasksData,
+                'saleDataSchool' => $saleDataSchool,
+                'saleDataCity' => $saleDataCity,
             ]
         );
     }

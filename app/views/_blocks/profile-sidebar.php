@@ -113,11 +113,11 @@ switch ($controller) {
                 <div class="text">Прогрес</div>
             </a>
         </div>
-        <div class="menu-link <?= $rating ?> disabled">
+        <div class="menu-link <?= $rating ?>">
             <div class="icon">
                 <i class="fa fa-star" style="font-size: 19px;"></i>
             </div>
-            <a href="#">
+            <a href="<?= Url::to(['rating/']) ?>">
                 <div class="text">Рейтинг</div>
             </a>
         </div>

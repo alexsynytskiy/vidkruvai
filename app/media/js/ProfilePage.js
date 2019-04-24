@@ -1,5 +1,7 @@
 var ProfilePage = function (options) {
-    var pageOptions = $.extend(true, {}, options);
+    var pageOptions = $.extend(true, {
+        executedTasksData : []
+    }, options);
 
     var selectors = {
         blockStart: '.i',
@@ -28,4 +30,36 @@ var ProfilePage = function (options) {
             }
         }
     });
+
+    var labelsLine = [],
+        valuesLine = [];
+
+    $.each(pageOptions.executedTasksData, function(key, value) {
+        labelsLine.push(value.month);
+        valuesLine.push(value.value);
+    });
+
+    new Chart('chart-1', {
+        type: 'line',
+        data: {
+            labels: labelsLine,
+            datasets: [{
+                backgroundColor: '#f7e5b8',
+                borderColor: '#ffcd56',
+                data: valuesLine,
+                label: 'Виконані завдання за місяцями',
+                fill: 'fill'
+            }]
+        },
+        scale: {
+            ticks: {
+                min: 0,
+                max: 5,
+                beginAtZero: true
+            }
+        }
+    });
+
+    var screenW = $(document).width();
+    SiteCore.windowSize(screenW);
 };

@@ -3,6 +3,8 @@
 namespace app\models;
 
 use app\components\AppMsg;
+use app\models\definitions\DefTeam;
+use app\models\definitions\DefTeamSiteUser;
 use yii\db\ActiveRecord;
 
 /**
@@ -11,6 +13,8 @@ use yii\db\ActiveRecord;
  * @property integer $id
  * @property integer $state_id
  * @property string $city
+ * @property integer $latitude
+ * @property integer $longitude
  *
  * @property State $state
  */
@@ -76,5 +80,24 @@ class City extends ActiveRecord
         }
 
         return $names;
+    }
+
+    /**
+     * @return Team[]
+     */
+    public function getActiveTeams()
+    {
+        return Team::find()
+            ->alias('t')
+            ->innerJoin(TeamSiteUser::tableName() . ' tsu', 'tsu.team_id = t.id')
+            ->innerJoin(SiteUser::tableName() . ' su', 'tsu.site_user_id = su.id')
+            ->innerJoin(School::tableName() . ' s', 'su.school_id = s.id')
+            ->innerJoin(self::tableName() . ' c', 's.city_id = c.id')
+            ->where([
+                'c.id' => $this->id,
+                'tsu.role' => DefTeamSiteUser::ROLE_CAPTAIN,
+                't.status' => DefTeam::STATUS_ACTIVE
+            ])
+            ->all();
     }
 }

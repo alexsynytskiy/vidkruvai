@@ -24,8 +24,10 @@ $(function () {
     }).on('click', '.language-switch a', function () {
         $(this).parent().toggleClass('open');
     }).on('click', '.menu-opened-element', function () {
-        $('.treeview-menu').toggleClass('open');
-        $('.main-submenu').toggleClass('open');
+        var $node = $(this).parent();
+
+        $node.find('.treeview-menu').toggleClass('open');
+        $node.toggleClass('open');
     }).on('click', '.move-up, .move-down', function () {
         var button = $(this).addClass('disabled');
 

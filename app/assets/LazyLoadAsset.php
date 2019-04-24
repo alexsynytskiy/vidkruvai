@@ -19,5 +19,5 @@ class LazyLoadAsset extends \yii\web\AssetBundle
         'https://cdn.jsdelivr.net/npm/vanilla-lazyload@11.0.6/dist/lazyload.min.js'
     ];
 
-    public $publishOptions = ['forceCopy' => true];
+    //public $publishOptions = ['forceCopy' => true];
 }

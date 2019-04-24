@@ -23,5 +23,5 @@ class ModalAsset extends \yii\web\AssetBundle
         'https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js'
     ];
 
-    public $publishOptions = ['forceCopy' => true];
+    //public $publishOptions = ['forceCopy' => true];
 }

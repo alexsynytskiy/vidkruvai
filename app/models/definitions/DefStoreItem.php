@@ -12,6 +12,12 @@ use app\components\BaseDefinition;
 class DefStoreItem extends BaseDefinition
 {
     /**
+     * Types
+     */
+    const TYPE_SCHOOL = 'school';
+    const TYPE_CITY = 'city';
+
+    /**
      * Statuses
      */
     const STATUS_ACTIVE = 'active';

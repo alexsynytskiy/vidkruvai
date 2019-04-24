@@ -14,6 +14,8 @@ use yii\db\ActiveRecord;
  * @property string $description
  * @property integer $category_id
  * @property integer $cost
+ * @property string $type
+ * @property string $open_rule
  * @property string $icon
  *
  * @property Category $category
@@ -65,7 +67,7 @@ class StoreItem extends ActiveRecord
      */
     public function getList($categoryId = null)
     {
-        $params = ['status' => DefStoreItem::STATUS_ACTIVE];
+        $params = ['status' => DefStoreItem::STATUS_ACTIVE, 'type' => 'school'];
 
         if ($categoryId) {
             $params['id'] = $categoryId;
@@ -74,9 +76,33 @@ class StoreItem extends ActiveRecord
         return self::find()->where($params)->all();
     }
 
-    public function isBought() {
+    /**
+     * @return bool
+     */
+    public function isBought()
+    {
         $user = \Yii::$app->siteUser->identity;
 
         return Sale::find()->where(['store_item_id' => $this->id, 'team_id' => $user->team->id])->exists();
+    }
+
+    /**
+     * @param integer $cityId
+     * @return bool
+     */
+    public function isBoughtCity($cityId)
+    {
+        return Sale::find()->where(['store_item_id' => $this->id, 'city_id' => $cityId])->exists();
+    }
+
+    /**
+     * @param int $teamId
+     * @return float|int
+     */
+    public function teamAdoptedCost($teamId)
+    {
+        //$team = Team::findOne($teamId);
+        //return $team ? $this->cost * count($team->school->city->getActiveTeams()) : -1;
+        return $this->cost;
     }
 }

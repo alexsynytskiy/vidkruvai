@@ -1166,10 +1166,15 @@ span.bg-success,
 
 .progress-block .progress-top .progress-title h3 {
     font-family: 'Lato', sans-serif;
-    font-size: 18px;
-    font-weight: bold;
     margin-top: 23px;
     text-align: left;
+    font-size: 20px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 24px;
+    letter-spacing: 0.3px;
+    color: #000000;
 }
 
 .fa.sidebar-icon {
@@ -1261,8 +1266,8 @@ span.bg-success,
     padding: 10px 32px;
 }
 
-.pl-32 {
-    padding-left: 32px;
+.pl-24 {
+    padding-left: 24px;
 }
 
 .current-level {
@@ -2421,7 +2426,6 @@ span.btn:hover {
 }
 
 .uk-first-column .items .level .item .body.disabled {
-    opacity: 0.4;
 }
 
 .uk-first-column .items .level .item .body .body-wrapper {
@@ -2440,6 +2444,9 @@ span.btn:hover {
     right: 0;
     margin: 0;
     z-index: 100;
+    opacity: 0.8;
+    background-color: #fff;
+    border-radius: 4px;
 }
 
 .uk-first-column .items .level .item .body .cost {
@@ -2464,6 +2471,7 @@ span.btn:hover {
     position: absolute;
     top: 7px;
     right: 9px;
+    z-index: 1000;
 }
 
 .uk-first-column .items .level .item .body .icon:hover {
@@ -2836,7 +2844,7 @@ body .blocker.current {
     padding: 20px;
     box-sizing: border-box;
     background-color: #000;
-    background-color: rgba(0,0,0,0.75);
+    background-color: rgba(0, 0, 0, 0.75);
     text-align: center;
 }
 
@@ -2844,6 +2852,141 @@ canvas {
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+}
+
+#mapsvg {
+    width: 100% !important;
+    max-width: 800px !important;
+    margin: 0 auto;
+}
+
+.graph {
+    min-width: 130px;
+}
+
+.graph .rating {
+    height: 50px;
+    position: relative;
+}
+
+.graph .rating .value {
+    width: 3px;
+    border-radius: 3px;
+    background-color: #3294fb;
+    margin-right: 3px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.graph .title,
+.mapsvg-tooltip.mapsvg-tt-bottom-right b {
+    margin-top: 7px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 18px;
+    letter-spacing: 0.3px;
+    color: #000000;
+}
+
+.mapsvg-tooltip.mapsvg-tt-bottom-right b {
+    font-weight: bold;
+    display: block;
+}
+
+.mapsvg-tooltip.mapsvg-tt-bottom-right {
+    text-align: left;
+    font-size: 12px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 17px;
+    letter-spacing: 0.3px;
+    color: #000000;
+}
+
+.mapsvg-popover.mapsvg-popover-animate,
+.mapsvg-tooltip.mapsvg-tt-bottom-right {
+    box-shadow: 0 3px 15px 0 rgba(0, 60, 125, 0.35) !important;
+    border: none !important;
+    max-width: 250px !important;
+}
+
+.mapsvg-popover:before {
+    display: none !important;
+}
+
+.mapsvg-tooltip.mapsvg-tt-bottom-right {
+    padding: 15px;
+}
+
+.mapsvg-buttons {
+    box-shadow: 1px 2px 2px 1px rgba(0, 60, 125, 0.35) !important;
+    border-radius: 3px;
+    border: none !important;
+}
+
+.rating-table.table .first {
+    background-image: linear-gradient(266deg, #ffa4a4, #fffce8);
+}
+
+.rating-table.table .second {
+    background-image: linear-gradient(266deg, #fbc4c4, #f9f7ed);
+}
+
+.rating-table.table .third {
+    background-image: linear-gradient(266deg, #fde3e3, #fbfaf3);
+}
+
+.rating-table.table-bordered {
+    border: 1px solid #dedede;
+    border-radius: 4px;
+}
+
+.rating-table.table thead td {
+    font-size: 11px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.2px;
+    color: #000000;
+}
+
+.rating-table.table td {
+    text-align: center;
+    font-size: 11px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.2px;
+    color: #000000;
+}
+
+.table-bordered > thead > tr > th, .table-bordered > thead > tr > td {
+    border-width: 1px;
+}
+
+.rating-table.table tr.active {
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #3194ff;
+}
+
+.rating-table.table td.state-name {
+    font-size: 13px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.2px;
+    color: #3294fb;
+    text-align: right;
 }
 
 @media (max-width: 1199px) {

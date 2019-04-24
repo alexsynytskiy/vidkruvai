@@ -19,7 +19,7 @@ var SiteCore = function (options) {
                 }
             });
 
-            const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            var IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
             if (IS_IOS) {
                 document.documentElement.classList.add('ios');
@@ -110,7 +110,7 @@ var SiteCore = function (options) {
                 }
 
                 if (isMain) {
-                    //height += 100;
+                    height += 100;
                 }
 
                 if (isCabinet) {

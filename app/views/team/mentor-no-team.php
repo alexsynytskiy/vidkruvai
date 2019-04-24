@@ -35,7 +35,7 @@ $asset = \app\assets\AppAsset::register($this);
                                             <div class="progress-top mb-0">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <div class="progress-title mb-10 pl-32">
+                                                        <div class="progress-title mb-10 pl-24">
                                                             <h3>
                                                                 <?= AppMsg::t('Команда'); ?>
                                                             </h3>
@@ -44,7 +44,7 @@ $asset = \app\assets\AppAsset::register($this);
 
                                                 </div>
                                             </div>
-                                            <div class="team-items mb-0 pl-32">
+                                            <div class="team-items mb-0 pl-24">
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         Вас ще не запросили в команду! Чекайте на запрошення приєднатися від капітана

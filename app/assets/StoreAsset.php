@@ -24,5 +24,5 @@ class StoreAsset extends \yii\web\AssetBundle
         'https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit-icons.min.js',
     ];
 
-    public $publishOptions = ['forceCopy' => true];
+    //public $publishOptions = ['forceCopy' => true];
 }

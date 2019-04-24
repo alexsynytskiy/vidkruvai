@@ -68,13 +68,6 @@ var StorePage = function (options) {
                         $modal.find(selectors.confirmFirst).html('Прогрес <i class="fa fa-angle-right" aria-hidden="true"></i>');
                         $modal.find(selectors.confirmFirst).parent().attr('href', pageOptions.elementsUrl);
                         $modal.find(selectors.confirmFirst).removeAttr('id');
-
-                        if(response.openNextLevel) {
-                            var $currentLevel = $soldItem.closest('.level'),
-                            $nextLevel = $currentLevel.next();
-                            $nextLevel.find('.item').remove();
-                            $nextLevel.append(response.nextLevelElements);
-                        }
                     }
 
                     if(response.status === 'success' || (response.status === 'error' && response.subStatus === 'already-bought')) {
@@ -83,6 +76,16 @@ var StorePage = function (options) {
 
                         $('#' + response.categorySlug + '-text').text(response.categoryBoughtElements + '/' + response.categoryAllElements);
                         $('#' + response.categorySlug + '-chart').css('width', (response.categoryBoughtElements * 100) / response.categoryAllElements + '%');
+
+                        var $currentLevel = $soldItem.closest('.level');
+                        $currentLevel.find('.item').remove();
+                        $currentLevel.append(response.currentLevelElements);
+
+                        if(response.openNextLevel) {
+                            var $nextLevel = $currentLevel.next();
+                            $nextLevel.find('.item').remove();
+                            $nextLevel.append(response.nextLevelElements);
+                        }
                     }
 
                     if(response.status === 'error' && response.subStatus === 'already-bought') {

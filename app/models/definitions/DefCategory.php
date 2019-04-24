@@ -48,6 +48,27 @@ class DefCategory extends BaseDefinition
     }
 
     /**
+     * @param string $key
+     *
+     * @see BaseDefinition::getListDataByReturnType()
+     *
+     * @return array
+     */
+    public static function getListType($key)
+    {
+        $types = [
+            self::TYPE_ACHIEVEMENT => AppMsg::t('Достижения'),
+            self::TYPE_LEVEL => AppMsg::t('Уровни'),
+            self::TYPE_LEVEL_GROUP => AppMsg::t('Группы уровней'),
+            self::TYPE_ACHIEVEMENT_GROUP => AppMsg::t('Группы достижений'),
+            self::TYPE_STORE_CATEGORY => AppMsg::t('Категории магазин'),
+            self::TYPE_STORE_CATEGORY_LEVEL => AppMsg::t('Уровни категорий магазин'),
+        ];
+
+        return $types[$key];
+    }
+
+    /**
      * @param string $returnType
      *
      * @see BaseDefinition::getListDataByReturnType()

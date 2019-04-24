@@ -3,14 +3,8 @@
 namespace app\controllers;
 
 use app\components\Controller;
-use app\models\Category;
-use app\models\definitions\DefCategory;
-use app\models\definitions\DefSiteUser;
-use app\models\Task;
-use app\models\TasksUser;
+use app\models\Sale;
 use app\models\Team;
-use app\models\TeamSiteUser;
-use yii\helpers\VarDumper;
 
 /**
  * Class NewsController
@@ -20,6 +14,36 @@ class TestController extends Controller
 {
     public function actionGenerate()
     {
+//        /** @var Sale[] $sales */
+//        $sales = Sale::find()->all();
+//
+//        $transaction = \Yii::$app->db->beginTransaction();
+//
+//        try {
+//            foreach ($sales as $sale) {
+//                $cost = $sale->storeItem->cost;
+//
+//                if ($cost) {
+//                    $team = Team::findOne($sale->team_id);
+//
+//                    if ($team) {
+//                        $team->total_experience += $cost;
+//                    }
+//
+//                    $team->update();
+//                }
+//
+//                $sale->delete();
+//            }
+//        } catch (\Exception $e) {
+//            $transaction->rollBack();
+//
+//            print_r($e->getMessage());
+//            die;
+//        }
+//
+//        $transaction->commit();
+
 //        $team = Team::findOne([365]);
 //        $teamSiteUser = TeamSiteUser::findOne(['hash' => 'SCInAmosPMZ95ylsZaL5u2YLXHGAksbe']);
 //

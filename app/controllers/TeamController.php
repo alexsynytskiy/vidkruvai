@@ -15,8 +15,10 @@ use app\models\definitions\DefSiteUser;
 use app\models\forms\TeamCreateForm;
 use app\models\Level;
 use app\models\Team;
+use app\models\WrittenTaskAnswer;
 use Imagine\Image\Box;
 use Imagine\Image\Point;
+use yii\db\Query;
 use yii\easyii\helpers\Image;
 use yii\helpers\FileHelper;
 use yii\helpers\Json;
@@ -139,6 +141,17 @@ class TeamController extends Controller
             $achievements = array_merge($achievementsFinished, $achievements);
         }
 
+        $executedTasksData = (new Query)->from(WrittenTaskAnswer::tableName())
+            ->select(['MONTHNAME(updated_at) as month', 'count(id) value'])
+            ->where(['team_id' => $team->id])
+            ->andWhere(['!=', 'text', ['', null]])
+            ->groupBy(['MONTH(updated_at)'])
+            ->all();
+
+        foreach ($executedTasksData as $monthData) {
+            $monthData['month'] = \Yii::t('app', $monthData['month']);
+        }
+
         return $this->render('index',
             [
                 'showTeamInfo' => false,
@@ -147,7 +160,8 @@ class TeamController extends Controller
                 'levelInfo' => $levelInfo,
                 'previousLevels' => $previousLevels,
                 'nextLevels' => $nextLevels,
-                'teamCredentials' => EntityHelper::getEntityCredentials(DefEntityAchievement::ENTITY_TEAM, $team->id)
+                'teamCredentials' => EntityHelper::getEntityCredentials(DefEntityAchievement::ENTITY_TEAM, $team->id),
+                'executedTasksData' => $executedTasksData,
             ]
         );
     }

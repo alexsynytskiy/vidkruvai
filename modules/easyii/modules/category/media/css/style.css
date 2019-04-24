@@ -1,0 +1,13 @@
+.labels-text .col-md-6 {
+    margin-bottom: 10px;
+    padding: 0;
+    font-weight: bold;
+}
+
+.labels-text .col-md-6 .text-block {
+    font-weight: normal;
+}
+
+.switcher.default .text {
+    color: transparent !important;
+}

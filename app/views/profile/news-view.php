@@ -32,23 +32,23 @@ $baseUrl = $asset->baseUrl;
                                 </div>
                             </div>
 
-                            <div class="pl-32">
+                            <div class="pl-24">
                                 <h3><?= $newsItem->title ?></h3>
                             </div>
 
-                            <div class="item-date pl-32">
+                            <div class="item-date pl-24">
                                 <?= date('d.m.Y', $newsItem->time); ?>
                             </div>
 
-                            <div class="text pl-32">
+                            <div class="text pl-24">
                                 <?= $newsItem->short ?>
 
                                 <?= $newsItem->text ?>
                             </div>
 
                             <?php if(count($newsItem->tags)): ?>
-                                <h4 class="pl-32">Теги</h4>
-                                <ul class="tags pl-32 clearfix">
+                                <h4 class="pl-24">Теги</h4>
+                                <ul class="tags pl-24 clearfix">
                                     <?php foreach ($newsItem->tags as $tag): ?>
                                         <li>
                                             <a href="<?= \yii\helpers\Url::to(['/profile/news/' . $tag->name]) ?>">
