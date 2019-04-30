@@ -106,31 +106,17 @@ class Sale extends ActiveRecord
         $city = $this->captain->school->city;
         $teamId = $user->team->id;
 
-        $openedCityElements = StoreItem::find()
+        $openedElements = StoreItem::find()
             ->alias('si')
             ->select('si.id')
             ->innerJoin(self::tableName() . ' s', 'si.id = s.store_item_id')
             ->where([
                 's.city_id' => $city->id,
-                'si.type' => DefStoreItem::TYPE_CITY,
                 's.team_id' => $teamId,
             ])
             ->all();
 
-        $openedCityElementsIds = ArrayHelper::getColumn($openedCityElements, 'id');
-
-        $openedCitySchoolElements = StoreItem::find()
-            ->alias('si')
-            ->select('si.id')
-            ->innerJoin(self::tableName() . ' s', 'si.id = s.store_item_id')
-            ->where([
-                's.city_id' => $city->id,
-                'si.type' => DefStoreItem::TYPE_SCHOOL,
-                's.team_id' => $teamId,
-            ])
-            ->all();
-
-        $openedCitySchoolElementsIds = ArrayHelper::getColumn($openedCitySchoolElements, 'id');
+        $openedElementsIds = ArrayHelper::getColumn($openedElements, 'id');
 
         /** @var StoreItem[] $cityElementsToCheck */
         $cityElementsToCheck = StoreItem::find()
@@ -139,24 +125,26 @@ class Sale extends ActiveRecord
             ->all();
 
         foreach ($cityElementsToCheck as $cityElement) {
-            $cityRule = array_map('intval', explode(',', $cityElement->open_rule));
+            if(!in_array($cityElement->id, $openedElementsIds, true)) {
+                $cityRule = array_map('intval', explode(',', $cityElement->open_rule));
 
-            $allElementsPassed = true;
-            foreach ($cityRule as $rule) {
-                if (!in_array((int)$rule, $openedCitySchoolElementsIds, true)) {
-                    $allElementsPassed = false;
+                $allElementsPassed = true;
+                foreach ($cityRule as $rule) {
+                    if (!in_array((int)$rule, $openedElementsIds, true)) {
+                        $allElementsPassed = false;
+                    }
                 }
-            }
 
-            if ($allElementsPassed && !in_array($cityElement->id, $openedCityElementsIds, true)) {
-                $sell = new self;
-                $sell->store_item_id = $cityElement->id;
-                $sell->captain_id = $user->id;
-                $sell->team_id = $user->team->id;
-                $sell->city_id = $user->school->city_id;
+                if ($allElementsPassed) {
+                    $sell = new self;
+                    $sell->store_item_id = $cityElement->id;
+                    $sell->captain_id = $user->id;
+                    $sell->team_id = $user->team->id;
+                    $sell->city_id = $user->school->city_id;
 
-                if ($sell->validate()) {
-                    $sell->save();
+                    if ($sell->validate()) {
+                        $sell->save();
+                    }
                 }
             }
         }

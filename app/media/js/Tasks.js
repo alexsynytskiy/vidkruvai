@@ -53,7 +53,7 @@ var Tasks = function () {
                 }).on('click', '#load-more-tasks', function (e) {
                 e.preventDefault();
 
-                const $loadMore = $(this),
+                var $loadMore = $(this),
                     lastId = parseInt($loadMore.attr('data-last-id'));
 
                 $.post(

@@ -86,8 +86,22 @@ var RatingPage = function (options) {
                 hover: -7,
                 selected: "#abb2ff"
             },
-            zoom: {on: true, limit: [0, 10], delta: 2, buttons: {on: true, location: "right"}, mousewheel: true},
-            scroll: {on: true, limit: true, background: false, spacebar: false},
+            zoom: {
+                on: true,
+                limit: [0, 10],
+                delta: 2,
+                buttons: {
+                    on: true,
+                    location: "right"
+                },
+                mousewheel: true
+            },
+            scroll: {
+                on: true,
+                limit: true,
+                background: false,
+                spacebar: false
+            },
             markerLastID: 1,
             cursor: "pointer",
             width: 2000,

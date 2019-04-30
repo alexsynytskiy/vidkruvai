@@ -45,7 +45,7 @@ $user = \Yii::$app->siteUser->identity;
 
                         <?php if ($saleDataSchool): ?>
                             <div class="levels-table-block clearfix">
-                                <table class="table table-striped col-lg-12 col-md-12">
+                                <table class="table table-bordered rating-table col-lg-12 col-md-12">
                                     <thead>
                                     <tr>
                                         <td class="col-lg-2 col-md-2"><?= AppMsg::t('Елемент'); ?></td>

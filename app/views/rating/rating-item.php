@@ -16,7 +16,11 @@ $baseUrl = $asset->baseUrl;
         <div class="body-wrapper">
             <div class="icon tooltip-new">
                 <i class="fa <?= !$itemBought ? 'fa-lock' : 'fa-info' ?>"></i>
-                <span class="tooltiptext"><?= $storeItem->name ?></span>
+                <span class="tooltiptext">
+                    <div class="bold"><?= $storeItem->name ?></div>
+                    <br><br>
+                    <?= $storeItem->description ?>
+                </span>
             </div>
             <?php if (!$itemBought): ?>
                 <div class="lock"></div>

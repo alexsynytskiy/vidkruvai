@@ -52,9 +52,8 @@ $city = \app\models\City::findOne($cityId);
                                 <div class="level clearfix">
                                     <div class="title"><?= $level->name ?></div>
                                     <?php foreach ($storeItems as $storeItem): ?>
-                                        <?php $itemBought = $storeItem->isBought();
-                                        $categoryBoughtCount = $itemBought ? ++$categoryBoughtCount : $categoryBoughtCount;
-                                        $itemLocked = $itemBought ? false : !$prevLevelPassed || time() < strtotime($level->enabled_after) ?>
+                                        <?php $itemBought = $storeItem->isBoughtCity($city->id);
+                                        $categoryBoughtCount = $itemBought ? ++$categoryBoughtCount : $categoryBoughtCount; ?>
 
                                         <?= $this->render('rating-item', [
                                             'itemBought' => $itemBought,

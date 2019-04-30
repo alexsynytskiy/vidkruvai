@@ -92,7 +92,13 @@ class StoreItem extends ActiveRecord
      */
     public function isBoughtCity($cityId)
     {
-        return Sale::find()->where(['store_item_id' => $this->id, 'city_id' => $cityId])->exists();
+        $user = \Yii::$app->siteUser->identity;
+
+        return Sale::find()->where([
+            'store_item_id' => $this->id,
+            'team_id' => $user->team->id,
+            'city_id' => $cityId
+        ])->exists();
     }
 
     /**

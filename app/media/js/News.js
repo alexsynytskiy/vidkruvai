@@ -54,7 +54,7 @@ var News = function () {
                 }).on('click', '#load-more-news', function (e) {
                 e.preventDefault();
 
-                const $loadMore = $(this),
+                var $loadMore = $(this),
                     lastId = parseInt($loadMore.attr('data-last-id'));
 
                 $.post(

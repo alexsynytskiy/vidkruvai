@@ -44,6 +44,10 @@ class StoreController extends Controller
             'Svitpustova@gmail.com',
             'alexsynytskiy@ukr.net',
             'denbooker@gmail.com',
+            'dzuibloyaroslava@gmail.com',
+            'dashasmr2002@gmail.com',
+            'cawakovalenko7@gmail.com',
+            'belks887@gmail.com'
         ])) {
             $this->flash('error', AppMsg::t('Розділ поки що не доступний'));
             return $this->redirect('/profile');

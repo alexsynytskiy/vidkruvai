@@ -109,7 +109,9 @@ class RatingHelper
              */
             foreach ($stateCategories as $categoryName => $ratingValue) {
                 $statesRating[$stateName][$categoryName] = $ratingValue ?
-                    round($ratingValue / $stateCities[$stateName], 2) : 0;
+                    round($ratingValue / ($stateCities[$stateName] *
+                            Category::findOne(['name' => $categoryName])->childrenSubItemsCount(DefStoreItem::TYPE_CITY)), 2) : 0;
+
             }
         }
 
