@@ -2519,7 +2519,7 @@ span.btn:hover {
 /* Tooltip text */
 .tooltip-new .tooltiptext {
     visibility: hidden;
-    width: 220px;
+    width: 130px;
     background-color: #fff;
     position: absolute;
     z-index: 1;
@@ -2540,6 +2540,7 @@ span.btn:hover {
     border-radius: 3px;
     border: solid 1px rgba(0, 0, 0, 0.05);
     box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.15);
+    overflow: hidden;
 }
 
 .uk-first-column .items .level .tooltip-new .tooltiptext {
@@ -2548,7 +2549,7 @@ span.btn:hover {
 
 .uk-first-column .items .level:last-child .tooltip-new .tooltiptext {
     right: 150%;
-    left: -120px;
+    left: -129px;
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
@@ -2857,7 +2858,12 @@ canvas {
 #mapsvg {
     width: 100% !important;
     max-width: 800px !important;
-    margin: 0 auto;
+    margin: 30px auto 0;
+    overflow: unset;
+}
+
+.mapsvg-wrap {
+    overflow: hidden;
 }
 
 .graph {

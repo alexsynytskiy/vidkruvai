@@ -18,7 +18,11 @@ $baseUrl = $asset->baseUrl;
         <div class="body-wrapper">
             <div class="icon tooltip-new">
                 <i class="fa <?= $itemLocked ? 'fa-lock' : 'fa-info' ?>"></i>
-                <span class="tooltiptext"><?= $storeItem->description ?></span>
+                <span class="tooltiptext">
+                    <div class="bold"><?= $storeItem->name ?></div>
+                    <br>
+                    <?= str_replace("&nbsp;", ' ', $storeItem->description) ?>
+                </span>
             </div>
             <?php if ($itemLocked): ?>
                 <div class="lock"></div>

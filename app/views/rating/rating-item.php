@@ -18,8 +18,8 @@ $baseUrl = $asset->baseUrl;
                 <i class="fa <?= !$itemBought ? 'fa-lock' : 'fa-info' ?>"></i>
                 <span class="tooltiptext">
                     <div class="bold"><?= $storeItem->name ?></div>
-                    <br><br>
-                    <?= $storeItem->description ?>
+                    <br>
+                    <?= html_entity_decode($storeItem->description) ?>
                 </span>
             </div>
             <?php if (!$itemBought): ?>
