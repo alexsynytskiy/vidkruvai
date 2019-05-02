@@ -2080,6 +2080,68 @@ span.btn:hover {
     padding: 12px;
 }
 
+.content-left-fixed .block-title.notification {
+    background-image: linear-gradient(261deg, #e9edff, #ffe8fe);
+    box-shadow: none;
+    padding: 19px 35px;
+    height: auto;
+}
+
+.content-left-fixed .block-title.notification .title {
+    font-size: 20px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 24px;
+    letter-spacing: 0.3px;
+    color: #000000;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.content-left-fixed .block-title.notification .sub-title {
+    line-height: 20px;
+    font-size: 17px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: 0.2px;
+    color: #000000;
+    text-align: left;
+}
+
+.content-left-fixed .block-title.notification #rules-store-ready {
+    float: right;
+    line-height: 13px;
+    padding: 12px 8px;
+    opacity: 1;
+    border-radius: 3px;
+    background-color: #3294fb;
+    font-size: 11px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: 0.2px;
+    color: #ffffff;
+    margin-top: 37px;
+    margin-bottom: 5px;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+}
+
+.content-left-fixed .block-title.notification #rules-store-ready:hover {
+    cursor: pointer;
+    opacity: 0.7;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+}
+
 .content-left-fixed .block-title .icon {
     width: 26px;
     height: 26px;
@@ -2666,6 +2728,11 @@ span.btn:hover {
     text-align: center;
     color: #000000;
     margin: 0 auto 14px;
+}
+
+.modal.sell-item .description.modal-desc {
+    max-width: 220px;
+    text-align: left;
 }
 
 .modal.sell-item .category {

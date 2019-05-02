@@ -29,7 +29,7 @@ class StoreController extends Controller
             return $status;
         }
 
-        if(!in_array(\Yii::$app->siteUser->identity->email, [
+        if (!in_array(\Yii::$app->siteUser->identity->email, [
             'parasolkailb@gmail.com',
             'mariiapanchenko@gmail.com',
             'fr@coukraine.org',
@@ -43,11 +43,7 @@ class StoreController extends Controller
             'alionaculturerazom@gmail.com',
             'Svitpustova@gmail.com',
             'alexsynytskiy@ukr.net',
-            'denbooker@gmail.com',
-            'dzuibloyaroslava@gmail.com',
-            'dashasmr2002@gmail.com',
-            'cawakovalenko7@gmail.com',
-            'belks887@gmail.com'
+            'denbooker@gmail.com'
         ])) {
             $this->flash('error', AppMsg::t('Розділ поки що не доступний'));
             return $this->redirect('/profile');
@@ -203,7 +199,6 @@ class StoreController extends Controller
             $transaction->commit();
 
 
-
             /** @var Category $category */
             $category = $saleItem->category->parents()->one();
 
@@ -272,5 +267,47 @@ class StoreController extends Controller
                 'teamId' => $team->id,
             ]);
         }
+    }
+
+    /**
+     * @return array
+     * @throws NotFoundHttpException
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function actionRulesRead()
+    {
+        if (!\Yii::$app->request->isPost || !\Yii::$app->request->isAjax) {
+            throw new NotFoundHttpException();
+        }
+
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $errors = [];
+
+        $teamId = \Yii::$app->siteUser->identity->team->id;
+        $team = Team::findOne($teamId);
+
+        if ($team) {
+            $team->store_ready = 1;
+
+            if ($team->update(false)) {
+                return [
+                    'status' => 'success',
+                    'categories' => $this->renderPartial('/store/categories', [
+                        'categories' => Category::find()->storeCategory()->all()
+                    ])
+                ];
+            }
+
+            $errors[] = $team->getErrors();
+        }
+        else {
+            $errors[] = 'Команду не знайдено';
+        }
+
+        return [
+            'status' => 'error', 'message' => implode(', ', $errors),
+        ];
     }
 }

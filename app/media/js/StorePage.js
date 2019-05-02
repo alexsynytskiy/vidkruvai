@@ -2,14 +2,18 @@ var StorePage = function (options) {
     var pageOptions = $.extend(true, {
         elementsUrl: '',
         modalPrepareUrl: '',
-        buyUrl: ''
+        buyUrl: '',
+        rulesReadUrl: ''
     }, options);
 
     var selectors = {
         buy: '.buy-item',
         confirmFirst: '#buy-question',
         lockPage: '.load-blocker',
-        sellItem: '.sell-item-wrapper'
+        sellItem: '.sell-item-wrapper',
+        rulesReadId: '#rules-store-ready',
+        schoolStoreBlock: '#school-store',
+        rulesStoreNotificationBlock: '#rules-store-notification'
     };
 
     $('body').on("click", selectors.buy, function (e) {
@@ -30,6 +34,25 @@ var StorePage = function (options) {
                 $('body').css('overflow', 'none');
                 if (typeof response.modalContent !== 'undefined') {
                     $(response.modalContent).appendTo('body').modal();
+                }
+            }, 'json');
+    }).on("click", selectors.rulesReadId, function (e) {
+        e.preventDefault();
+        $(selectors.lockPage).show();
+
+        $.post(
+            pageOptions.rulesReadUrl,
+            {
+                _csrf: SiteCore.getCsrfToken()
+            },
+            function (response) {
+                if (typeof response.status !== 'undefined') {
+                    $(selectors.lockPage).hide();
+                    $(selectors.rulesStoreNotificationBlock).hide();
+                    $(selectors.schoolStoreBlock).append(response.categories);
+
+                    var screenW = $(document).width();
+                    SiteCore.windowSize(screenW);
                 }
             }, 'json');
     }).on("click", selectors.confirmFirst, function (e) {

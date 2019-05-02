@@ -20,6 +20,19 @@ $baseUrl = $asset->baseUrl;
                     <div class="bold"><?= $storeItem->name ?></div>
                     <br>
                     <?= html_entity_decode($storeItem->description) ?>
+
+                    <?php if($itemBought): ?>
+                        <br>
+                        <br>
+                        <div class="bold">Відкрито після придбань:</div>
+                        <?php foreach (explode(',', $storeItem->open_rule) as $ruleID): ?>
+                            <?php $causedItem = \app\models\StoreItem::findOne($ruleID); ?>
+                            <?php if($causedItem): ?>
+                                <?= $causedItem->name ?>
+                                <br>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </span>
             </div>
             <?php if (!$itemBought): ?>

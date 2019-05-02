@@ -24,7 +24,7 @@ class AppAsset extends \yii\web\AssetBundle
         'plugins/sweetalert/sweetalert2.min.css',
         'plugins/css/jquery.bxslider.css',
         'css/custom-questions.css?version=45',
-        'css/custom.css?version=45',
+        'css/custom.css?version=50',
     ];
 
     public $js = [
@@ -56,5 +56,5 @@ class AppAsset extends \yii\web\AssetBundle
         'js/RatingPage.js',
     ];
 
-    //public $publishOptions = ['forceCopy' => true];
+    public $publishOptions = ['forceCopy' => true];
 }

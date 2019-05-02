@@ -25,6 +25,7 @@ use yii\helpers\VarDumper;
  * @property integer $level_id
  * @property integer $level_experience
  * @property integer $total_experience
+ * @property integer $store_ready
  * @property string $created_at
  * @property string $updated_at
  *
@@ -53,7 +54,7 @@ class Team extends ActiveRecord
     public function rules()
     {
         return [
-            [['level_id'], 'integer'],
+            [['level_id', 'store_ready'], 'integer'],
             [['name', 'status'], 'string', 'max' => 255],
             [['created_at', 'updated_at'], 'safe'],
         ];

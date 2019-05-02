@@ -46,7 +46,7 @@ if($item['isBought']) {
             за
             <div class="bold"><?= $item['cost'] ?> балів</div>
         </div>
-        <div class="description short"><?= $item['itemShort'] ?></div>
+        <div class="description short modal-desc"><?= $item['itemShort'] ?></div>
         <div class="category">
             <div class="category-wrapper clearfix">
                 <i class="fa fa-star icon"></i>
