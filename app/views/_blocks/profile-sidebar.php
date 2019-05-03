@@ -97,7 +97,7 @@ switch ($controller) {
                 <div class="text">Завдання</div>
             </a>
         </div>
-        <div class="menu-link <?= $store ?> disabled">
+        <div class="menu-link <?= $store ?>">
             <div class="icon">
                 <i class="fa fa-shopping-basket" style="font-size: 16px;"></i>
             </div>
@@ -105,7 +105,7 @@ switch ($controller) {
                 <div class="text">Магазин</div>
             </a>
         </div>
-        <div class="menu-link <?= $progress ?> disabled">
+        <div class="menu-link <?= $progress ?>">
             <div class="icon">
                 <i class="fa fa-tasks" style="font-size: 17px;"></i>
             </div>
@@ -113,7 +113,7 @@ switch ($controller) {
                 <div class="text">Прогрес</div>
             </a>
         </div>
-        <div class="menu-link <?= $rating ?> disabled">
+        <div class="menu-link <?= $rating ?>">
             <div class="icon">
                 <i class="fa fa-star" style="font-size: 19px;"></i>
             </div>

@@ -29,26 +29,6 @@ class StoreController extends Controller
             return $status;
         }
 
-        if (!in_array(\Yii::$app->siteUser->identity->email, [
-            'parasolkailb@gmail.com',
-            'mariiapanchenko@gmail.com',
-            'fr@coukraine.org',
-            'm.panchenko@coukraine.org',
-            'relleka@ukr.net',
-            'a.matviienko@coukraine.org',
-            'n.netreba@coukraine.org',
-            'nmnetreba@gmail.com',
-            'vidkryvai.ukrainu@gmail.com',
-            'v.ilyina@ukr.net',
-            'alionaculturerazom@gmail.com',
-            'Svitpustova@gmail.com',
-            'alexsynytskiy@ukr.net',
-            'denbooker@gmail.com'
-        ])) {
-            $this->flash('error', AppMsg::t('Розділ поки що не доступний'));
-            return $this->redirect('/profile');
-        }
-
         \Yii::$app->seo->setTitle('Магазин');
         \Yii::$app->seo->setDescription('Відкривай Україну');
         \Yii::$app->seo->setKeywords('Відкривай, Україну');

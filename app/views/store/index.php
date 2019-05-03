@@ -30,9 +30,11 @@ $team = \Yii::$app->siteUser->identity->team;
                             Вітаємо у Магазині!
                         </div>
                         <div class="sub-title">
-                            Перш ніж робити покупки необхідно ознайомитись з <a href="#">інструкцією</a>.
+                            Перш ніж робити покупки необхідно ознайомитись з
+                            <a href="<?= \yii\helpers\Url::to('/profile/news-item/opis-gejmifikacii-na-sajti') ?>">інструкцією</a>.
                         </div>
                         <div id="rules-store-ready">
+                            <i class="fa fa-check" aria-hidden="true"></i>
                             Так, зрозуміло
                         </div>
                         <div class="clearfix"></div>

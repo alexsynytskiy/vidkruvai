@@ -39,7 +39,7 @@ foreach ($marksJS as $key => $mark) {
 
                 <div class="project-info-page-description">
                     <div class="profile-user-page">
-                        <div style="height: 20px;"></div>
+                        <div style="height: 1px;"></div>
 
                         <div class="progress-block pl-24">
                             <div class="progress-top">

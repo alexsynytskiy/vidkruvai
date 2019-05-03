@@ -3,8 +3,13 @@
 namespace app\controllers;
 
 use app\components\Controller;
+use app\models\definitions\DefNotification;
+use app\models\definitions\DefSiteUser;
 use app\models\Sale;
 use app\models\Team;
+use app\models\TeamSiteUser;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 /**
  * Class NewsController
@@ -44,7 +49,30 @@ class TestController extends Controller
 //
 //        $transaction->commit();
 
-//        $team = Team::findOne([365]);
+//        /** @var Team[] $teams */
+//        $teams = Team::find()
+//            ->where(['status' => 'active'])
+//            ->andWhere(['>', 'id', 300])
+//            ->all();
+//
+//        foreach ($teams as $team) {
+//            /** @var TeamSiteUser $teamUser */
+//            foreach ($team->teamUsers as $teamUser) {
+//                if ($teamUser->user && $teamUser->user->status === DefSiteUser::STATUS_ACTIVE) {
+//                    $user = $teamUser->user;
+//
+//                    \Yii::$app->notification->addToUser($user, DefNotification::CATEGORY_TEAM,
+//                        DefNotification::TYPE_ALL_NOTIFICATION, null,
+//                        [
+//                            'link_news' => Html::a('На сайті відкрито розділ гейміфікації!',
+//                            Url::to(['/profile/news-item/opis-gejmifikacii-na-sajti'])),
+//                            'created_at' => date('d.m.Y H:i:s'),
+//                        ]);
+//                }
+//            }
+//        }
+
+
 //        $teamSiteUser = TeamSiteUser::findOne(['hash' => 'SCInAmosPMZ95ylsZaL5u2YLXHGAksbe']);
 //
 //        if($team && $teamSiteUser) {
@@ -68,8 +96,8 @@ class TestController extends Controller
 //                ]);
 //            }
 //        }
-//
-//        die('ok');
+
+       // die('ok');
 
 //        /** @var Task[] $tasks */
 //        $tasks = Task::find()
