@@ -2,8 +2,11 @@
 
 /* @var \app\models\Category[] $categories */
 /* @var integer $cityId */
+/* @var integer $teamId */
 
 $city = \app\models\City::findOne($cityId);
+$teamId = isset($teamId) ? $teamId : \Yii::$app->siteUser->identity->team->id;
+$team = \app\models\Team::findOne($teamId);
 ?>
 
 <div uk-filter="target: .js-filter">
@@ -32,11 +35,11 @@ $city = \app\models\City::findOne($cityId);
                 <li data-color="<?= $category->slug ?>">
                     <div class="items <?= $category->slug ?> clearfix">
                         <div class="head clearfix">
-                            <div class="title"><?= $city->city ?>, <?= $city->state->name ?> область - <?= $category->name ?></div>
                             <div class="icon tooltip-new">
                                 <i class="fa fa-info"></i>
                                 <span class="tooltiptext"><?= $category->description ?></span>
                             </div>
+                            <div class="title">Команда <?= $team->name ?> (<?= $city->city ?>, <?= $city->state->name ?> область) - <?= $category->name ?></div>
                             <div class="items-count"><?= $categoryItemsCount ?>
                                 Елементів
                             </div>
@@ -52,7 +55,7 @@ $city = \app\models\City::findOne($cityId);
                                 <div class="level clearfix">
                                     <div class="title"><?= $level->name ?></div>
                                     <?php foreach ($storeItems as $storeItem): ?>
-                                        <?php $itemBought = $storeItem->isBoughtCity($city->id);
+                                        <?php $itemBought = $storeItem->isBoughtCity($city->id, $teamId);
                                         $categoryBoughtCount = $itemBought ? ++$categoryBoughtCount : $categoryBoughtCount; ?>
 
                                         <?= $this->render('rating-item', [

@@ -89,6 +89,7 @@ class RatingController extends Controller
         \Yii::$app->response->format = Response::FORMAT_JSON;
 
         $cityId = (int)\Yii::$app->request->post('cityId');
+        $teamId = (int)\Yii::$app->request->post('teamId');
 
         if (!$cityId) {
             return [];
@@ -103,6 +104,7 @@ class RatingController extends Controller
             $progress = $this->renderPartial('city-infrastructure', [
                 'categories' => $categories,
                 'cityId' => $cityId,
+                'teamId' => $teamId,
             ]);
         } catch (\Exception $e) {
             $errors[] = $e->getMessage();

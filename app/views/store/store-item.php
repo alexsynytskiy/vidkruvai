@@ -10,6 +10,9 @@
 $asset = \app\assets\AppAsset::register($this);
 
 $baseUrl = $asset->baseUrl;
+
+$description = htmlentities($storeItem->description, null, 'utf-8');
+$description = str_replace("&nbsp;", " ", $description);
 ?>
 
 <div class="item <?= $itemBought ? 'bought' : '' ?>">
@@ -21,7 +24,7 @@ $baseUrl = $asset->baseUrl;
                 <span class="tooltiptext">
                     <div class="bold"><?= $storeItem->name ?></div>
                     <br>
-                    <?= str_replace("&nbsp;", ' ', $storeItem->description) ?>
+                    <?= $description ?>
                 </span>
             </div>
             <?php if ($itemLocked): ?>

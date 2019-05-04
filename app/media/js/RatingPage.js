@@ -8,7 +8,7 @@ var RatingPage = function (options) {
     }, options);
 
     var selectors = {
-        marker: '.mapsvg-marker',
+        marker: '.team-name',
         cityStore: '.store-main',
         lockPage: '.load-blocker',
         progressBlock: '.cities-main',
@@ -26,7 +26,9 @@ var RatingPage = function (options) {
         $.post(
             pageOptions.cityProgressUrl,
             {
-                cityId: $(this).attr('id'), _csrf: SiteCore.getCsrfToken()
+                cityId: $(this).data('city-id'),
+                teamId: $(this).data('team-id'),
+                _csrf: SiteCore.getCsrfToken()
             },
             function (response) {
                 $(selectors.lockPage).hide();

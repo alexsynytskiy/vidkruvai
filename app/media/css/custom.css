@@ -2183,7 +2183,6 @@ span.btn:hover {
 
 .content-left-fixed .store-main {
     padding: 0 24px 24px 24px;
-    overflow: hidden;
 }
 
 .uk-subnav {
@@ -2399,6 +2398,8 @@ span.btn:hover {
     background-color: #000;
     border-radius: 50%;
     margin-top: 5px;
+    margin-right: 8px;
+    margin-left: 4px;
 }
 
 .uk-first-column .items .head .icon .fa {
@@ -3060,6 +3061,18 @@ canvas {
     letter-spacing: 0.2px;
     color: #3294fb;
     text-align: right;
+}
+
+.city-teams {
+    text-align: left;
+}
+
+a.team-name {
+    display: block;
+}
+
+.mapsvg-marker:hover {
+    cursor: pointer;
 }
 
 @media (max-width: 1199px) {

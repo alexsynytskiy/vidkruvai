@@ -89,7 +89,8 @@ class MapHelper
                 $tooltip = '';
 
                 foreach ($city->getActiveTeams() as $cityTeam) {
-                    $tooltip .= '<br>' . $cityTeam->name;
+                    $tooltip .= '<a href="#" class="team-name" data-city-id="' . $city->id .
+                        '" data-team-id="' . $cityTeam->id . '">' . $cityTeam->name . '</a>';
                 }
 
                 $marksJS[$city->id] = [
@@ -101,6 +102,7 @@ class MapHelper
                     'height' => 53,
                     'geoCoords' => [$city->latitude, $city->longitude],
                     'tooltip' => '<b>' . $city->city . ', команди:</b>' . $tooltip,
+                    'popover' => '<div class="city-teams"><b>' . $city->city . ', команди:</b>' . $tooltip . '</div>',
                 ];
             }
         }
